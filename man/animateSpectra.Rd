@@ -16,12 +16,33 @@ animateSpectra(
 }
 \arguments{
 \item{sim}{A MizerSim object}
+
+\item{species}{Name or vector of names of the species to be plotted. By
+default all species are plotted.}
+
+\item{wlim}{A numeric vector of length two providing lower and upper limits
+for the w axis. Use NA to refer to the existing minimum or maximum.}
+
+\item{ylim}{A numeric vector of length two providing lower and upper limits
+for the y axis. Use NA to refer to the existing minimum or maximum. Any
+values below 1e-20 are always cut off.}
+
+\item{power}{The abundance is plotted as the number density times the weight
+raised to \code{power}. The default \code{power = 1} gives the biomass
+density, whereas \code{power = 2} gives the biomass density with respect
+to logarithmic size bins.}
+
+\item{total}{A boolean value that determines whether the total over all
+species in the system is plotted as well. Default is FALSE}
+
+\item{plankton}{A boolean value that determines whether plankton is included.
+Default is TRUE.}
 }
 \description{
 Animation of the abundance spectra
 }
 \examples{
 sim <- project(NS_params, t_max = 15, effort = 1)
-
+animateSpectra(sim)
 }
 \concept{plotting functions}

@@ -1,7 +1,21 @@
 #' Animation of the abundance spectra
 #'
 #' @param sim A MizerSim object
-#' @inheritParams plotSpectra
+#' @param species Name or vector of names of the species to be plotted. By
+#'   default all species are plotted.
+#' @param wlim A numeric vector of length two providing lower and upper limits
+#'   for the w axis. Use NA to refer to the existing minimum or maximum.
+#' @param ylim A numeric vector of length two providing lower and upper limits
+#'   for the y axis. Use NA to refer to the existing minimum or maximum. Any
+#'   values below 1e-20 are always cut off.
+#' @param power The abundance is plotted as the number density times the weight
+#' raised to \code{power}. The default \code{power = 1} gives the biomass
+#' density, whereas \code{power = 2} gives the biomass density with respect
+#' to logarithmic size bins.
+#' @param total A boolean value that determines whether the total over all
+#'   species in the system is plotted as well. Default is FALSE
+#' @param plankton A boolean value that determines whether plankton is included.
+#'   Default is TRUE.
 #' @export
 #' @family plotting functions
 #' @examples
@@ -27,7 +41,8 @@ animateSpectra <- function(sim,
         warning(paste("The following species do not exist in the model and are ignored:",
                       species[invalid_species]))
     }
-    nf <- melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species, , drop = FALSE])
+    nf <- reshape2::melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species,
+                               , drop = FALSE])
 
     # Add plankton ----
     if (plankton) {
