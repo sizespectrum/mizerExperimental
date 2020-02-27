@@ -12,8 +12,9 @@ improved while being used by the community. Once matured,
 frequently-used features can be moved to the core mizer package.
 
 If you have code for working with mizer that you feel might be useful to
-other mizer users, please email <gustav.delius@gmail.com> who will
-discuss how it could be included in this package.
+other mizer users, please describe it in [a new issue on the issue
+tracker](https://github.com/sizespectrum/mizerExperimental/issues/new)
+and we’ll comment on how it can be included in this package.
 
 ## Installation
 
