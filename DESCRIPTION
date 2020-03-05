@@ -12,15 +12,18 @@ License: GPL-3
 Imports:
     assertthat,
     dplyr,
+    ggplot2,
     mizer (>= 1.0.1.9001),
     plotly
 Suggests:
     pkgdown,
     rmarkdown,
     roxygen2,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    vdiffr
 Collate:
     animateSpectra.R
+    displayFrames.R
     help.R
 Encoding: UTF-8
 LazyData: true

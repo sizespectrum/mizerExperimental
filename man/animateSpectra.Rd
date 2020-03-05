@@ -45,4 +45,8 @@ Animation of the abundance spectra
 sim <- project(NS_params, t_max = 15, effort = 1)
 animateSpectra(sim)
 }
+\seealso{
+Other plotting functions: 
+\code{\link{displayFrames}()}
+}
 \concept{plotting functions}

@@ -42,3 +42,7 @@ devtools::install_github("sizespectrum/mizerExperimental")
 ## Features
 
   - Animated plot of mizer simulation with `animateSpectra()`
+
+  - Showing two plots side-by-side with the same axes and the same
+    legend. This is made possible for some of the plots via the
+    `displayFrames()` function.
