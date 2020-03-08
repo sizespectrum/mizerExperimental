@@ -46,3 +46,6 @@ devtools::install_github("sizespectrum/mizerExperimental")
   - Showing two plots side-by-side with the same axes and the same
     legend. This is made possible for some of the plots via the
     `displayFrames()` function.
+
+  - New wrapper function `newSheldonParams()` that sets up a single
+    species in a power-law background.
