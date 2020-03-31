@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • mizerExperimental</title>
+<title>Launch shiny gadget for tuning parameters — tuneParams • mizerExperimental</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Launch shiny gadget for tuning parameters — tuneParams" />
+<meta property="og:description" content="The shiny gadget has sliders for the model parameters and tabs with a
+variety of plots to visualise the steady-state" />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -105,153 +107,72 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Launch shiny gadget for tuning parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/tuneParams.R'><code>R/tuneParams.R</code></a></small>
+    <div class="hidden name"><code>tuneParams.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>The shiny gadget has sliders for the model parameters and tabs with a
+variety of plots to visualise the steady-state</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>tuneParams</span>(<span class='no'>p</span>, <span class='kw'>catch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-new-model-setup-functions" class="hasAnchor"><a href="#section-new-model-setup-functions" class="anchor"></a>New model setup functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="newSheldonParams.html">newSheldonParams()</a></code> </p>
-        </td>
-        <td><p>Set up parameters for a single species in a Sheldon power-law background</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-new-plotting-functions" class="hasAnchor"><a href="#section-new-plotting-functions" class="anchor"></a>New plotting functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="animateSpectra.html">animateSpectra()</a></code> </p>
-        </td>
-        <td><p>Animation of the abundance spectra</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="displayFrames.html">displayFrames()</a></code> </p>
-        </td>
-        <td><p>Display frames</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBiomassFrame.html">getBiomassFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of biomass of species through time, ready for ggplot2</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSSBFrame.html">getSSBFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of spawning stock biomass of species through time,
-ready for ggplot2</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-interactively-tuning-a-multispecies-model" class="hasAnchor"><a href="#section-interactively-tuning-a-multispecies-model" class="anchor"></a>Interactively tuning a multispecies model</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="tuneParams.html">tuneParams()</a></code> </p>
-        </td>
-        <td><p>Launch shiny gadget for tuning parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="markBackground.html">markBackground()</a></code> </p>
-        </td>
-        <td><p>Designate species as background species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addSpecies.html">addSpecies()</a></code> </p>
-        </td>
-        <td><p>Add new species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="removeSpecies.html">removeSpecies()</a></code> </p>
-        </td>
-        <td><p>Remove species from an ecosystem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="renameSpecies.html">renameSpecies()</a></code> </p>
-        </td>
-        <td><p>Rename species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="retuneBackground.html">retuneBackground()</a></code> </p>
-        </td>
-        <td><p>Retunes abundance of background species.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rescaleAbundance.html">rescaleAbundance()</a></code> </p>
-        </td>
-        <td><p>Rescale Abundance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rescaleSystem.html">rescaleSystem()</a></code> </p>
-        </td>
-        <td><p>Rescale System</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="updateInitialValues.html">updateInitialValues()</a></code> </p>
-        </td>
-        <td><p>Update the initial values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pruneSpecies.html">pruneSpecies()</a></code> </p>
-        </td>
-        <td><p>Removes species with abundance below a threshold</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>p</th>
+      <td><p>MizerParams object to tune. If missing, the gadget tries to recover
+information from log files left over from aborted previous runs.</p></td>
+    </tr>
+    <tr>
+      <th>catch</th>
+      <td><p>Data frame holding binned observed catch data. The data can
+be binned either into length bins or weight bins. In the former case the data
+frame should have columns <code>length</code> and <code>dl</code> holding the start of
+the size bins in cm and the width of the size bins in cm respectively. In
+the latter case the data frame should have columns <code>weight</code> and
+<code>dw</code> holding the start of the size bins in grams and the width of the
+size bins in grams. The data frame also needs to have the columns
+<code>species</code> (the name of the species), <code>catch</code> (the number of
+individuals of a particular species caught in a size bin).</p>
+<p>This gadget is meant for tuning a model to steady state. It is not meant for
+tuning the dynamics of the model. That should be done in a second step using
+functions like <code>setRmax()</code> or <code>changePlankton()</code>.</p>
+<p>The function opens a shiny gadget, an interactive web page. This page has
+a side panel with controls for various model parameters and a main panel
+with tabs for various diagnostic plots.</p>
+<p>After you click the "Done" button in the side panel, the function will return
+the parameter object in the state at that time, with <code>Rmax</code> set to <code>Inf</code>
+and <code>erepro</code> set to the value it had after the last run to steady state.</p>
+<p>The gadget keeps a log of all steady states you create while working with
+the gadget. You can go back to the last steady state by hitting the "Undo"
+button. You can go back an arbitrary number of states and also go forward
+again. There is also a button to go right back to the initial steady state.
+When you leave the gadget by hitting the "Done" button, this log is cleared.
+If you stop the gadget from RStudio by hitting the "Stop" button, then the
+log is left behind. You can then restart the gadget by calling <code>tuneParams()</code>
+without a <code>params</code> argument and it will re-instate the states from the log.</p>
+<p>At any time the gadget allows the user to download the current params object
+as an .rds file via the "Download" button in the "File" section, or to
+upload a params object from an .rds file.</p>
+<p>There are currently several restrictions on what the gadget can do:</p>
+<p>The gadget currently assumes that each species is selected by only one gear.
+It allows the user to change the parameters for that gear. It also enforces
+the same effort for all gears. It sets all efforts to that for the first
+gear and then allows the user to change that single effort value.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The tuned MizerParams object</p>
+
+  </div>
   <div class="col-md-3 hidden-xs" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

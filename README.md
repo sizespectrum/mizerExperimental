@@ -49,3 +49,5 @@ devtools::install_github("sizespectrum/mizerExperimental")
 
   - New wrapper function `newSheldonParams()` that sets up a single
     species in a power-law background.
+
+  - Functions and a shiny app for interactively tuning parameters.

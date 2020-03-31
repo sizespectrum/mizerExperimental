@@ -5,6 +5,3 @@
 \alias{mizerExperimental}
 \alias{mizerExperimental-package}
 \title{mizerExperimental: Extends the mizer package with experimental features}
-\description{
-mizerExperimental: Extends the mizer package with experimental features
-}

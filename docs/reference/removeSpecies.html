@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • mizerExperimental</title>
+<title>Remove species from an ecosystem — removeSpecies • mizerExperimental</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Remove species from an ecosystem — removeSpecies" />
+<meta property="og:description" content="This function simply removes all entries from the MizerParams object that
+refer to the selected species. It does not recalculate the steady state for
+the remaining species or retune their reproductive efficiency." />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -105,153 +108,41 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Remove species from an ecosystem</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/manipulateParams.R'><code>R/manipulateParams.R</code></a></small>
+    <div class="hidden name"><code>removeSpecies.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function simply removes all entries from the MizerParams object that
+refer to the selected species. It does not recalculate the steady state for
+the remaining species or retune their reproductive efficiency.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>removeSpecies</span>(<span class='no'>params</span>, <span class='no'>species</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-new-model-setup-functions" class="hasAnchor"><a href="#section-new-model-setup-functions" class="anchor"></a>New model setup functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="newSheldonParams.html">newSheldonParams()</a></code> </p>
-        </td>
-        <td><p>Set up parameters for a single species in a Sheldon power-law background</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-new-plotting-functions" class="hasAnchor"><a href="#section-new-plotting-functions" class="anchor"></a>New plotting functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="animateSpectra.html">animateSpectra()</a></code> </p>
-        </td>
-        <td><p>Animation of the abundance spectra</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="displayFrames.html">displayFrames()</a></code> </p>
-        </td>
-        <td><p>Display frames</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBiomassFrame.html">getBiomassFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of biomass of species through time, ready for ggplot2</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSSBFrame.html">getSSBFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of spawning stock biomass of species through time,
-ready for ggplot2</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-interactively-tuning-a-multispecies-model" class="hasAnchor"><a href="#section-interactively-tuning-a-multispecies-model" class="anchor"></a>Interactively tuning a multispecies model</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="tuneParams.html">tuneParams()</a></code> </p>
-        </td>
-        <td><p>Launch shiny gadget for tuning parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="markBackground.html">markBackground()</a></code> </p>
-        </td>
-        <td><p>Designate species as background species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="addSpecies.html">addSpecies()</a></code> </p>
-        </td>
-        <td><p>Add new species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="removeSpecies.html">removeSpecies()</a></code> </p>
-        </td>
-        <td><p>Remove species from an ecosystem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="renameSpecies.html">renameSpecies()</a></code> </p>
-        </td>
-        <td><p>Rename species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="retuneBackground.html">retuneBackground()</a></code> </p>
-        </td>
-        <td><p>Retunes abundance of background species.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rescaleAbundance.html">rescaleAbundance()</a></code> </p>
-        </td>
-        <td><p>Rescale Abundance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rescaleSystem.html">rescaleSystem()</a></code> </p>
-        </td>
-        <td><p>Rescale System</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="updateInitialValues.html">updateInitialValues()</a></code> </p>
-        </td>
-        <td><p>Update the initial values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pruneSpecies.html">pruneSpecies()</a></code> </p>
-        </td>
-        <td><p>Removes species with abundance below a threshold</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>params</th>
+      <td><p>A mizer params object for the original system.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p>A vector of the names of the species to be deleted or a boolean
+vector indicating for each species whether it is to be removed (TRUE) or
+not.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of type MizerParams</p>
+
+  </div>
   <div class="col-md-3 hidden-xs" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

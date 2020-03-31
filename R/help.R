@@ -1,6 +1,6 @@
 #' mizerExperimental: Extends the mizer package with experimental features
 #'
-#' @import mizer dplyr ggplot2
+#' @import mizer dplyr ggplot2 assertthat shiny
 #' @importFrom reshape2 melt
 #' @rawNamespace import(plotly, except = last_plot)
 #' @docType package

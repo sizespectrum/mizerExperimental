@@ -1,1 +1,24 @@
 destination: docs
+
+reference:
+- title: New model setup functions
+  contents:
+  - newSheldonParams
+- title: New plotting functions
+  contents:
+  - animateSpectra
+  - displayFrames
+  - getBiomassFrame
+  - getSSBFrame
+- title: Interactively tuning a multispecies model
+  contents:
+  - tuneParams
+  - markBackground
+  - addSpecies
+  - removeSpecies
+  - renameSpecies
+  - retuneBackground
+  - rescaleAbundance
+  - rescaleSystem
+  - updateInitialValues
+  - pruneSpecies
