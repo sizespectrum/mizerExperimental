@@ -148,7 +148,7 @@ newSheldonParams <- function(w_inf = 100,
             n = n,
             p = p,
             w_pp_cutoff = w_inf,
-            plankton_dynamics = "plankton_constant"
+            resource_dynamics = "resource_constant"
         ))
     # No cannibalism
     params@interaction[] <- 0
@@ -185,14 +185,14 @@ newSheldonParams <- function(w_inf = 100,
     # Steady state solution of the upwind-difference scheme used in project
     initial_n[1, idxs] <- c(1, cumprod(gg[idx] / ((gg + mumu * dw)[idx + 1])))
 
-    # The plankton was already set up by newMultispeciesParams()
+    # The resource was already set up by newMultispeciesParams()
     initial_n_pp <- params@initial_n_pp
 
     # Normalise abundance so that the maximum ratio between the species
     # abundance and community abundance is 1/2
     fish <- (length(params@w_full) - length(params@w) + 1):length(params@w_full)
     imax <- which.max(initial_n[1, ] / initial_n_pp[fish]) # index in fish spectrum
-    pmax <- imax + length(params@w_full) - length(params@w) # corresponding plankton index
+    pmax <- imax + length(params@w_full) - length(params@w) # corresponding resource index
     initial_n <- initial_n / initial_n[1, imax] * initial_n_pp[pmax] / 2
 
     ## Set erepro to meet boundary condition ----
@@ -214,7 +214,7 @@ newSheldonParams <- function(w_inf = 100,
         erepro_final <- (rfac / (rfac - 1)) * erepro_final
     }
     params@species_params$erepro <- erepro_final
-    # Record abundance of fish and plankton at steady state, as slots.
+    # Record abundance of fish and resource at steady state, as slots.
     params@initial_n <- initial_n
     params@initial_n_pp <- initial_n_pp
     # set rmax=fac*RDD
@@ -232,10 +232,10 @@ newSheldonParams <- function(w_inf = 100,
 get_power_law_mort <- function(params) {
     params@interaction[] <- 0
     params@interaction[1, 1] <- 1
-    params@initial_n[1, ] <- params@plankton_params$kappa *
-        params@w^(-params@plankton_params$lambda)
+    params@initial_n[1, ] <- params@resource_params$kappa *
+        params@w^(-params@resource_params$lambda)
     return(getPredMort(params)[1, 1] /
                params@w[[1]] ^ (1 + params@species_params$q[[1]] -
-                                    params@plankton_params$lambda))
+                                    params@resource_params$lambda))
 }
 

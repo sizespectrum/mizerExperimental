@@ -29,7 +29,7 @@ following rescalings in the params object:
 \item The initial abundances \code{initial_n}, \code{initial_n_pp} and
   \code{initial_n_other} are rescaled by \eqn{c}.
 \item The search volume is rescaled by \eqn{1/c}.
-\item The plankton carrying capacity is rescaled by \eqn{c}
+\item The resource carrying capacity is rescaled by \eqn{c}
 \item The maximum reproduction rate \eqn{R_{max}}, if used, is rescaled by
   \eqn{c}.
 }
@@ -39,6 +39,6 @@ one first calls \code{rescaleSystem} and then runs a simulation with
 \code{project} or whether one first runs a simulation and then rescales the
 resulting abundances.
 
-Note that if you use non-standard plankton dynamics or other components then you
+Note that if you use non-standard resource dynamics or other components then you
 may need to rescale additional parameters that appear in those dynamics.
 }

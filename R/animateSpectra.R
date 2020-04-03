@@ -14,7 +14,7 @@
 #' to logarithmic size bins.
 #' @param total A boolean value that determines whether the total over all
 #'   species in the system is plotted as well. Default is FALSE
-#' @param plankton A boolean value that determines whether plankton is included.
+#' @param resource A boolean value that determines whether resource is included.
 #'   Default is TRUE.
 #' @export
 #' @family plotting functions
@@ -27,7 +27,7 @@ animateSpectra <- function(sim,
                            ylim = c(NA, NA),
                            power = 1,
                            total = FALSE,
-                           plankton = TRUE) {
+                           resource = TRUE) {
 
     # Select species ----
     if (missing(species)) {
@@ -44,10 +44,10 @@ animateSpectra <- function(sim,
     nf <- reshape2::melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species,
                                , drop = FALSE])
 
-    # Add plankton ----
-    if (plankton) {
+    # Add resource ----
+    if (resource) {
         nf_pp <- melt(sim@n_pp)
-        nf_pp$sp <- "Plankton"
+        nf_pp$sp <- "Resource"
         nf <- rbind(nf, nf_pp)
     }
     # Add total ----

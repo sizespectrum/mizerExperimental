@@ -240,7 +240,7 @@ rescaleAbundance <- function(params, factor) {
 #' \item The initial abundances \code{initial_n}, \code{initial_n_pp} and
 #'   \code{initial_n_other} are rescaled by \eqn{c}.
 #' \item The search volume is rescaled by \eqn{1/c}.
-#' \item The plankton carrying capacity is rescaled by \eqn{c}
+#' \item The resource carrying capacity is rescaled by \eqn{c}
 #' \item The maximum reproduction rate \eqn{R_{max}}, if used, is rescaled by
 #'   \eqn{c}.
 #' }
@@ -250,7 +250,7 @@ rescaleAbundance <- function(params, factor) {
 #' \code{project} or whether one first runs a simulation and then rescales the
 #' resulting abundances.
 #'
-#' Note that if you use non-standard plankton dynamics or other components then you
+#' Note that if you use non-standard resource dynamics or other components then you
 #' may need to rescale additional parameters that appear in those dynamics.
 #'
 #' @param params A mizer params object
@@ -264,9 +264,9 @@ rescaleSystem <- function(params, factor) {
                 is.number(factor),
                 factor > 0)
 
-    # Plankton replenishment rate
+    # Resource replenishment rate
     params@cc_pp <- params@cc_pp * factor
-    params@plankton_params$kappa <- params@plankton_params$kappa * factor
+    params@resource_params$kappa <- params@resource_params$kappa * factor
 
     # Rmax
     # r_max is a deprecated spelling of R_max. Get rid of it.
@@ -290,9 +290,9 @@ rescaleSystem <- function(params, factor) {
     for (res in names(initial_n_other)) {
         initial_n_other[[res]] <- initial_n_other[[res]] * factor
     }
-    initial_n(params) <- params@initial_n * factor
-    initial_n_pp(params) <- params@initial_n_pp * factor
-    initial_n_other(params) = initial_n_other
+    initialN(params) <- params@initial_n * factor
+    initialNResource(params) <- params@initial_n_pp * factor
+    initialNOther(params) = initial_n_other
 
     return(params)
 }
@@ -475,12 +475,12 @@ addSpecies <- function(params, species_params, interaction) {
         no_w = length(params@w),
         initial_effort = params@initial_effort
     )
-    # Use the same plankton spectrum as params
+    # Use the same resource spectrum as params
     p@initial_n_pp <- params@initial_n_pp
     p@cc_pp <- params@cc_pp
     p@rr_pp <- params@rr_pp
-    p@plankton_dynamics <- params@plankton_dynamics
-    p@plankton_params <- params@plankton_params
+    p@resource_dynamics <- params@resource_dynamics
+    p@resource_params <- params@resource_params
     # Preserve comment
     comment(p) <- comment(params)
 
@@ -519,9 +519,9 @@ addSpecies <- function(params, species_params, interaction) {
         # Sheldon spectrum.
         # We look at the maximum of abundance times w^lambda
         # because that is always an increasing function at small size.
-        idx <- which.max(p@initial_n[i, ] * p@w^p@plankton_params$lambda)
+        idx <- which.max(p@initial_n[i, ] * p@w^p@resource_params$lambda)
         p@initial_n[i, ] <- p@initial_n[i, ] *
-            p@plankton_params$kappa * p@w[idx]^(-p@plankton_params$lambda) / p@initial_n[i, idx] / 100
+            p@resource_params$kappa * p@w[idx]^(-p@resource_params$lambda) / p@initial_n[i, idx] / 100
         p@A[i] <- sum(p@initial_n[i, ] * p@w * p@dw * p@maturity[i, ])
     }
 
@@ -556,12 +556,12 @@ addSpecies <- function(params, species_params, interaction) {
 updateInitialValues <- function(params) {
     assert_that(is(params, "MizerParams"))
     # Calculate the rates in the current background
-    plankton_mort <- getPlanktonMort(params)
+    resource_mort <- getResourceMort(params)
     mumu <- getMort(params)
     gg <- getEGrowth(params)
-    # Recompute plankton
+    # Recompute resource
     params@initial_n_pp <- params@rr_pp * params@cc_pp /
-        (params@rr_pp + plankton_mort)
+        (params@rr_pp + resource_mort)
     # Recompute all species
     for (sp in 1:length(params@species_params$species)) {
         w_inf_idx <- min(sum(params@w < params@species_params[sp, "w_inf"]) + 1,

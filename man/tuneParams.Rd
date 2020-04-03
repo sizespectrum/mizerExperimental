@@ -22,7 +22,7 @@ individuals of a particular species caught in a size bin).
 
 This gadget is meant for tuning a model to steady state. It is not meant for
 tuning the dynamics of the model. That should be done in a second step using
-functions like \code{setRmax()} or \code{changePlankton()}.
+functions like \code{setRmax()} or \code{changeResource()}.
 
 The function opens a shiny gadget, an interactive web page. This page has
 a side panel with controls for various model parameters and a main panel

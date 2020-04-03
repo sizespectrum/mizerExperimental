@@ -27,7 +27,7 @@
 #'
 #' This gadget is meant for tuning a model to steady state. It is not meant for
 #' tuning the dynamics of the model. That should be done in a second step using
-#' functions like `setRmax()` or `changePlankton()`.
+#' functions like `setRmax()` or `changeResource()`.
 #'
 #' The function opens a shiny gadget, an interactive web page. This page has
 #' a side panel with controls for various model parameters and a main panel
@@ -183,7 +183,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                 "->",
                 tags$a("General", href = "#general"),
                 "->",
-                tags$a("Plankton", href = "#plankton"),
+                tags$a("Resource", href = "#resource"),
                 "->",
                 tags$a("File", href = "#file"),
                 tags$br(),
@@ -255,10 +255,10 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                                                   selected = "Proportion",
                                                   inline = TRUE),
                                      plotlyOutput("plot_pred")),
-                            tabPanel("Plankton",
-                                     plotOutput("plot_plankton", width = "84%"),
-                                     plotlyOutput("plot_plankton_pred"),
-                                     radioButtons("plankton_death_prop", "Show",
+                            tabPanel("Resource",
+                                     plotOutput("plot_resource", width = "84%"),
+                                     plotlyOutput("plot_resource_pred"),
+                                     radioButtons("resource_death_prop", "Show",
                                                   choices = c("Proportion", "Rate"),
                                                   selected = "Proportion",
                                                   inline = TRUE)),
@@ -539,7 +539,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                                          min = 0,
                                          max = 1),
                              tags$h3(tags$a(id = "interactions"), "Prey interactions"),
-                             sliderInput("interaction_p", "Plankton",
+                             sliderInput("interaction_p", "Resource",
                                          value = sp$interaction_p,
                                          min = 0,
                                          max = 1,
@@ -561,22 +561,22 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
         output$general_params <- renderUI({
 
             p <- isolate(params())
-            log_r_pp <- log10(p@plankton_params$r_pp)
+            log_r_pp <- log10(p@resource_params$r_pp)
 
             l1 <- list(
-                tags$h3(tags$a(id = "plankton"), "Plankton"),
+                tags$h3(tags$a(id = "resource"), "Resource"),
                 numericInput("lambda", "Sheldon exponent lambda",
-                             value = p@plankton_params$lambda,
+                             value = p@resource_params$lambda,
                              min = 1.9, max = 2.2, step = 0.005),
-                numericInput("kappa", "Plankton coefficient kappa",
-                             value = p@plankton_params$kappa),
-                sliderInput("log_r_pp", "log10 Plankton replenishment rate",
+                numericInput("kappa", "Resource coefficient kappa",
+                             value = p@resource_params$kappa),
+                sliderInput("log_r_pp", "log10 Resource replenishment rate",
                             value = log_r_pp, min = -1, max = 4, step = 0.05),
-                numericInput("n_plankton", "Exponent of replenishment rate",
-                             value = p@plankton_params$n,
+                numericInput("n_resource", "Exponent of replenishment rate",
+                             value = p@resource_params$n,
                              min = 0.6, max = 0.8, step = 0.005),
-                numericInput("w_pp_cutoff", "Largest plankton",
-                             value = p@plankton_params$w_pp_cutoff,
+                numericInput("w_pp_cutoff", "Largest resource",
+                             value = p@resource_params$w_pp_cutoff,
                              min = 1e-10,
                              max = 1e3),
                 tags$h3(tags$a(id = "file"), "File management"),
@@ -650,7 +650,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                     input$rescale
             }
             p@cc_pp <- p@cc_pp * input$rescale
-            p@plankton_params$kappa <- p@plankton_params$kappa * input$rescale
+            p@resource_params$kappa <- p@resource_params$kappa * input$rescale
             n0 <- n0 * input$rescale
             # To keep the same per-capity behaviour, we have to scale down the
             # search volume
@@ -749,20 +749,20 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             }
         })
 
-        ## Adjust plankton ####
+        ## Adjust resource ####
         observe({
             req(input$kappa,
                 input$lambda,
                 input$log_r_pp,
                 input$w_pp_cutoff,
-                input$n_plankton)
+                input$n_resource)
             p <- isolate(params())
-            p <- setPlankton(p,
+            p <- setResource(p,
                              kappa = input$kappa,
                              lambda = input$lambda,
                              r_pp = 10^input$log_r_pp,
                              w_pp_cutoff = input$w_pp_cutoff,
-                             n = input$n_plankton)
+                             n = input$n_resource)
             params(p)
         })
 
@@ -1712,8 +1712,8 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             }
         })
 
-        ## Plot plankton ####
-        output$plot_plankton <- renderPlot({
+        ## Plot resource ####
+        output$plot_resource <- renderPlot({
             p <- params()
             select <- (p@cc_pp > 0)
             plot_dat <- data.frame(
@@ -1722,13 +1722,13 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             )
             ggplot(plot_dat) +
                 geom_line(aes(x, y)) +
-                scale_x_log10("Plankton size [g]") +
+                scale_x_log10("Resource size [g]") +
                 ylab("Proportion of carrying capacity") +
                 theme_grey(base_size = 16)
         })
 
-        ## Plot plankton predators ####
-        output$plot_plankton_pred <- renderPlotly({
+        ## Plot resource predators ####
+        output$plot_resource_pred <- renderPlotly({
             p <- params()
             species <- factor(p@species_params$species,
                               levels = p@species_params$species)
@@ -1737,7 +1737,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                 getPredRate(p)[, select]
             total <- colSums(pred_rate)
             ylab <- "Death rate [1/year]"
-            if (input$plankton_death_prop == "Proportion") {
+            if (input$resource_death_prop == "Proportion") {
                 pred_rate <- pred_rate / rep(total, each = dim(pred_rate)[[1]])
                 ylab = "Proportion of predation"
             }
@@ -1748,7 +1748,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                 w = rep(p@w_full[select], each = dim(pred_rate)[[1]]))
             ggplot(plot_dat) +
                 geom_area(aes(x = w, y = value, fill = Predator)) +
-                scale_x_log10("Plankton size [g]") +
+                scale_x_log10("Resource size [g]") +
                 ylab(ylab) +
                 scale_fill_manual(values = p@linecolour) +
                 theme_grey(base_size = base_size)

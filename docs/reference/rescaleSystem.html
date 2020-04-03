@@ -151,7 +151,7 @@ following rescalings in the params object:</p><ul>
 <li><p>The initial abundances <code>initial_n</code>, <code>initial_n_pp</code> and
   <code>initial_n_other</code> are rescaled by \(c\).</p></li>
 <li><p>The search volume is rescaled by \(1/c\).</p></li>
-<li><p>The plankton carrying capacity is rescaled by \(c\)</p></li>
+<li><p>The resource carrying capacity is rescaled by \(c\)</p></li>
 <li><p>The maximum reproduction rate \(R_{max}\), if used, is rescaled by
   \(c\).</p></li>
 </ul><p>The effect of this is that the dynamics of the rescaled system are identical
@@ -159,7 +159,7 @@ to those of the unscaled system, in the sense that it does not matter whether
 one first calls <code>rescaleSystem</code> and then runs a simulation with
 <code>project</code> or whether one first runs a simulation and then rescales the
 resulting abundances.</p>
-<p>Note that if you use non-standard plankton dynamics or other components then you
+<p>Note that if you use non-standard resource dynamics or other components then you
 may need to rescale additional parameters that appear in those dynamics.</p>
 
   </div>

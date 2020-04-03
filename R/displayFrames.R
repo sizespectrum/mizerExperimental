@@ -188,7 +188,7 @@ getBiomassFrame <- function(sim,
     # Force Species column to be a factor (otherwise if numeric labels are
     # used they may be interpreted as integer and hence continuous).
     # Need to keep species in order for legend.
-    species_levels <- c(dimnames(sim@n)$sp, "Background", "Plankton", "Total")
+    species_levels <- c(dimnames(sim@n)$sp, "Background", "Resource", "Total")
     bm$Species <- factor(bm$Species, levels = species_levels)
 
     # Select species

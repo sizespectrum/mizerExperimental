@@ -11,7 +11,7 @@ animateSpectra(
   ylim = c(NA, NA),
   power = 1,
   total = FALSE,
-  plankton = TRUE
+  resource = TRUE
 )
 }
 \arguments{
@@ -35,7 +35,7 @@ to logarithmic size bins.}
 \item{total}{A boolean value that determines whether the total over all
 species in the system is plotted as well. Default is FALSE}
 
-\item{plankton}{A boolean value that determines whether plankton is included.
+\item{resource}{A boolean value that determines whether resource is included.
 Default is TRUE.}
 }
 \description{
