@@ -170,6 +170,7 @@ removeSpecies <- function(params, species) {
     if (length(dim(params@ft_pred_kernel_p)) == 2) {
         params@ft_pred_kernel_p <- params@ft_pred_kernel_p[keep, , drop = FALSE]
     }
+    params@ft_mask <- params@ft_mask[keep, , drop = FALSE]
     params@mu_b <- params@mu_b[keep, , drop = FALSE]
     params@species_params <- params@species_params[keep, , drop = FALSE]
     params@interaction <- params@interaction[keep, keep, drop = FALSE]
@@ -327,6 +328,14 @@ renameSpecies <- function(params, replace) {
     names(species) <- NULL
     rownames(params@species_params) <- species
     params@species_params$species <- species
+    params@gear_params$species <- as.character(params@gear_params$species)
+    for (i in 1:nrow(params@gear_params)) {
+        if (params@gear_params$species[[i]] %in% names(replace)) {
+            params@gear_params$species[[i]] <-
+                replace[[params@gear_params$species[[i]]]]
+        }
+    }
+    params@gear_params$species <- as.factor(params@gear_params$species)
     linenames <- names(params@linecolour)
     names(linenames) <- linenames
     linenames[to_replace] <- replace

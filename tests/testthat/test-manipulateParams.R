@@ -83,7 +83,6 @@ test_that("retuneReproductiveEfficiency works", {
 
 # renameSpecies ----
 test_that("renameSpecies works", {
-    skip("Renaming in `gear_params` slot is not yet implemented.")
     sp <- NS_species_params
     p <- newMultispeciesParams(sp)
     sp$species <- tolower(sp$species)
