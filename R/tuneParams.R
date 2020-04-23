@@ -403,7 +403,16 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             p <- isolate(params())
 
             sp <- p@species_params[input$sp, ]
-            gp <- p@gear_params[input$sp, ]
+            gp <- p@gear_params[p@gear_params$species == input$sp, ]
+            if (nrow(gp) != 1) {
+                showModal(modalDialog(
+                    title = "Invalid gear specification",
+                    HTML(paste0("Currently you can only use models where each ",
+                                "species is caught by only one gear. In this model ",
+                                input$sp, " is caught by ", nrow(gp), " gears.")),
+                    easyClose = TRUE
+                ))
+            }
             n0 <- p@initial_n[input$sp, p@w_min_idx[input$sp]]
             # If there are several gears, we only use the effort for the first.
             # If this is changed by the user, all efforts will be set the same.
@@ -827,6 +836,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             req(input$catchability)
             p <- isolate(params())
             sp <- isolate(input$sp)
+            gear_idx <- which(p@gear_params$species == sp)
 
             if (sp != sp_old_fishing) {
                 sp_old_fishing <<- sp
@@ -836,27 +846,27 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                 updateSliderInput(session, "catchability",
                                   min = signif(max(input$catchability / 2 - 1, 0), 2),
                                   max = signif(max(input$catchability * 2, 2), 2))
-                p@gear_params[sp, "catchability"]  <- input$catchability
+                p@gear_params[gear_idx, "catchability"]  <- input$catchability
                 updateSliderInput(session, "effort",
                                   max = signif((input$effort + 1) * 1.5, 2))
 
-                if (p@gear_params[sp, "sel_func"] == "knife_edge") {
+                if (p@gear_params[gear_idx, "sel_func"] == "knife_edge") {
                     updateSliderInput(session, "knife_edge_size",
                                       max = signif(input$knife_edge_size * 2, 2))
-                    p@gear_params[sp, "knife_edge_size"]   <- input$knife_edge_size
+                    p@gear_params[gear_idx, "knife_edge_size"]   <- input$knife_edge_size
                 }
-                if (p@gear_params[sp, "sel_func"] == "sigmoid_length" ||
-                    p@gear_params[sp, "sel_func"] == "double_sigmoid_length") {
+                if (p@gear_params[gear_idx, "sel_func"] == "sigmoid_length" ||
+                    p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
                     updateSliderInput(session, "l50",
                                       max = signif(input$l50 * 2, 2))
                     updateSliderInput(session, "ldiff",
                                       max = signif(input$l50 / 10, 2))
-                    p@gear_params[sp, "l50"]   <- input$l50
-                    p@gear_params[sp, "l25"]   <- input$l50 - input$ldiff
+                    p@gear_params[gear_idx, "l50"]   <- input$l50
+                    p@gear_params[gear_idx, "l25"]   <- input$l50 - input$ldiff
                 }
-                if (p@gear_params[sp, "sel_func"] == "double_sigmoid_length") {
-                    p@gear_params[sp, "l50_right"]   <- input$l50_right
-                    p@gear_params[sp, "l25_right"]   <- input$l50_right + input$ldiff_right
+                if (p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
+                    p@gear_params[gear_idx, "l50_right"]   <- input$l50_right
+                    p@gear_params[gear_idx, "l25_right"]   <- input$l50_right + input$ldiff_right
                     updateSliderInput(session, "l50_right",
                                       max = signif(input$l50_right * 2, 2))
                     updateSliderInput(session, "ldiff_right",
