@@ -452,6 +452,8 @@ addSpecies <- function(params, species_params, interaction) {
         inter[new_sp, new_sp] <- interaction
     } else if (all(dim(interaction) != c(no_sp, no_sp))) {
         stop("interaction matrix has invalid dimensions.")
+    } else {
+        inter <- interaction
     }
 
     # combine species params ----
