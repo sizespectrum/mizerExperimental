@@ -108,7 +108,7 @@ getSSBFrame <- function(sim,
     if (total) {
         b <- cbind(b, Total = b_total)
     }
-    bm <- reshape2::melt(b)
+    bm <- mizer::melt(b)
     # Implement ylim and a minimal cutoff
     min_value <- 1e-20
     bm <- bm[bm$value >= min_value &
@@ -176,7 +176,7 @@ getBiomassFrame <- function(sim,
         b <- cbind(b, Total = b_total)
         species <- c("Total", species)
     }
-    bm <- reshape2::melt(b)
+    bm <- mizer::melt(b)
 
     # Implement ylim and a minimal cutoff
     min_value <- 1e-20

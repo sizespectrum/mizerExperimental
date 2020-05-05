@@ -17,7 +17,7 @@
 #' recruitment relationship, the function can set a Beverton-Holt type stock
 #' recruitment relationship that imposes a maximal reproduction rate that is a
 #' multiple of the recruitment rate at steady state. That multiple is set by the
-#' argument \code{rfac}.
+#' argument \code{R_factor}.
 #'
 #' @param w_inf Asymptotic size of species
 #' @param w_min Egg size of species
@@ -47,9 +47,9 @@
 #' @param ext_mort_prop The proportion of the total mortality that comes from
 #'   external mortality, i.e., from sources not explicitly modelled. A number in
 #'   the interval [0, 1).
-#' @param rfac The factor such that \code{R_max = rfac * R}, where \code{R_max}
+#' @param R_factor The factor such that \code{R_max = R_factor * R}, where \code{R_max}
 #'   is the maximum recruitment allowed and \code{R} is the steady-state
-#'   recruitment. Thus the larger \code{rfac} the less the impact of the
+#'   recruitment. Thus the larger \code{R_factor} the less the impact of the
 #'   non-linear stock-recruitment curve.
 #' @export
 #' @return An object of type \code{MizerParams}
@@ -77,7 +77,7 @@ newSheldonParams <- function(w_inf = 100,
                              f0 = 0.6,
                              gamma = NA,
                              ext_mort_prop = 0,
-                             rfac = 4) {
+                             R_factor = 4) {
     no_sp <- 1
     ## Much of the following code is copied from newTraitParams
 
@@ -87,9 +87,9 @@ newSheldonParams <- function(w_inf = 100,
              " because it should be the proportion of the total mortality",
              " coming from sources other than predation.")
     }
-    if (rfac <= 1) {
-        message("rfac needs to be larger than 1. Setting rfac=1.01")
-        rfac <- 1.01
+    if (R_factor <= 1) {
+        message("R_factor needs to be larger than 1. Setting R_factor=1.01")
+        R_factor <- 1.01
     }
     no_w <- round(no_w)
     if (no_w < 1) {
@@ -208,20 +208,20 @@ newSheldonParams <- function(w_inf = 100,
             (initial_n[i, params@w_min_idx[i]] *
                  (gg0 + DW * mumu0)) / rdi[i]
     }
-    if (is.finite(rfac)) {
-        # erepro has been multiplied by a factor of (rfac/(rfac-1)) to
+    if (is.finite(R_factor)) {
+        # erepro has been multiplied by a factor of (R_factor/(R_factor-1)) to
         # compensate for using a stock recruitment relationship.
-        erepro_final <- (rfac / (rfac - 1)) * erepro_final
+        erepro_final <- (R_factor / (R_factor - 1)) * erepro_final
     }
     params@species_params$erepro <- erepro_final
     # Record abundance of fish and resource at steady state, as slots.
     params@initial_n <- initial_n
     params@initial_n_pp <- initial_n_pp
     # set rmax=fac*RDD
-    # note that erepro has been multiplied by a factor of (rfac/(rfac-1)) to
+    # note that erepro has been multiplied by a factor of (R_factor/(R_factor-1)) to
     # compensate for using a stock recruitment relationship.
     params@species_params$R_max <-
-        (rfac - 1) * getRDI(params, initial_n, initial_n_pp)
+        (R_factor - 1) * getRDI(params, initial_n, initial_n_pp)
 
     return(params)
 }

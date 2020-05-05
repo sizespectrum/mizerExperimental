@@ -66,7 +66,7 @@ test_that("addSpecies does not allow duplicate species", {
 
 # retuneReproductiveEfficiency ----
 test_that("retuneReproductiveEfficiency works", {
-    p <- newTraitParams(rfac = Inf)
+    p <- newTraitParams(R_factor = Inf)
     no_sp <- nrow(p@species_params)
     erepro <- p@species_params$erepro
     p@species_params$erepro[5] <- 15

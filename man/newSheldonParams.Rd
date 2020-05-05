@@ -22,7 +22,7 @@ newSheldonParams(
   f0 = 0.6,
   gamma = NA,
   ext_mort_prop = 0,
-  rfac = 4
+  R_factor = 4
 )
 }
 \arguments{
@@ -71,9 +71,9 @@ by \code{\link{get_gamma_default}} using the value of \code{f0}.}
 external mortality, i.e., from sources not explicitly modelled. A number in
 the interval [0, 1).}
 
-\item{rfac}{The factor such that \code{R_max = rfac * R}, where \code{R_max}
+\item{R_factor}{The factor such that \code{R_max = R_factor * R}, where \code{R_max}
 is the maximum recruitment allowed and \code{R} is the steady-state
-recruitment. Thus the larger \code{rfac} the less the impact of the
+recruitment. Thus the larger \code{R_factor} the less the impact of the
 non-linear stock-recruitment curve.}
 }
 \value{
@@ -98,7 +98,7 @@ Although the steady state is often stable without imposing a stock
 recruitment relationship, the function can set a Beverton-Holt type stock
 recruitment relationship that imposes a maximal reproduction rate that is a
 multiple of the recruitment rate at steady state. That multiple is set by the
-argument \code{rfac}.
+argument \code{R_factor}.
 }
 \examples{
 \dontrun{

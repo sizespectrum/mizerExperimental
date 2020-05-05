@@ -41,7 +41,7 @@ animateSpectra <- function(sim,
         warning(paste("The following species do not exist in the model and are ignored:",
                       species[invalid_species]))
     }
-    nf <- reshape2::melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species,
+    nf <- mizer::melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species,
                                , drop = FALSE])
 
     # Add resource ----
