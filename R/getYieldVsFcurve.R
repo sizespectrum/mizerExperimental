@@ -48,7 +48,7 @@ getYieldVsFcurve <- function(params,
     if (bPlot) {
         plot(Frange, yield, type="b", lwd=3,
              xlab="Fishing mortality (1/yr)", ylab="Yield",
-             main=species_params(p)$species[ixSpecies])
+             main=species_params(params)$species[ixSpecies])
     }
 
     return( list(F = Frange, yield=yield) )
