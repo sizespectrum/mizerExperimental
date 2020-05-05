@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Display frames — displayFrames • mizerExperimental</title>
+<title>Calculate a yield-vs-F curve for a species. — getYieldVsFcurve • mizerExperimental</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,12 @@
 
 
 
-<meta property="og:title" content="Display frames — displayFrames" />
-<meta property="og:description" content="Takes two data frames with plotting data and displays them side-by-side,
-using the same axes and legend." />
+<meta property="og:title" content="Calculate a yield-vs-F curve for a species. — getYieldVsFcurve" />
+<meta property="og:description" content="Calculates the yield of a species for a range of fishing mortalities
+for species across all gears at each
+simulation time step. **Note:** The function just returns the yield
+at the last time step of the simulation, which might not have converged,
+or might oscillate." />
 
 
 
@@ -109,77 +112,62 @@ using the same axes and legend." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Display frames</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/displayFrames.R'><code>R/displayFrames.R</code></a></small>
-    <div class="hidden name"><code>displayFrames.Rd</code></div>
+    <h1>Calculate a yield-vs-F curve for a species.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/getYieldVsFcurve.R'><code>R/getYieldVsFcurve.R</code></a></small>
+    <div class="hidden name"><code>getYieldVsFcurve.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes two data frames with plotting data and displays them side-by-side,
-using the same axes and legend.</p>
+    <p>Calculates the yield of a species for a range of fishing mortalities
+for species across all gears at each
+simulation time step. **Note:** The function just returns the yield
+at the last time step of the simulation, which might not have converged,
+or might oscillate.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>displayFrames</span>(<span class='no'>f1</span>, <span class='no'>f2</span>, <span class='no'>params</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>y_ticks</span> <span class='kw'>=</span> <span class='fl'>6</span>)</pre>
+    <pre class="usage"><span class='fu'>getYieldVsFcurve</span>(<span class='no'>params</span>, <span class='no'>ixSpecies</span>, <span class='kw'>nSteps</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>Fmax</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>bPlot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>f1</th>
-      <td><p>Data frame for left plot</p></td>
-    </tr>
-    <tr>
-      <th>f2</th>
-      <td><p>Data frame for right plot</p></td>
-    </tr>
-    <tr>
       <th>params</th>
-      <td><p>A MizerParams object</p></td>
+      <td><p>An object of class `MizerParams`.</p></td>
     </tr>
     <tr>
-      <th>xlab</th>
-      <td><p>Label for x-axis. Defaults to first variable name.</p></td>
+      <th>ixSpecies</th>
+      <td><p>The species number to make the calculation over</p></td>
     </tr>
     <tr>
-      <th>ylab</th>
-      <td><p>Label for y-axis. Defaults to third variable name.</p></td>
+      <th>nSteps</th>
+      <td><p>The number of steps in F to calculate</p></td>
     </tr>
     <tr>
-      <th>y_ticks</th>
-      <td><p>The approximate number of ticks desired on the y axis</p></td>
+      <th>Fmax</th>
+      <td><p>The maximum fishing mortality</p></td>
+    </tr>
+    <tr>
+      <th>bPlot</th>
+      <td><p>Boolean that indicates whether a plot is to be made</p></td>
+    </tr>
+    <tr>
+      <th>Frange</th>
+      <td><p>The range of fishing mortalities to run over</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ggplot2 object</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The two data frames each need to have the same three variables. The first
-variable will go on the x-axis, the third on the y-axis with a logarithmic
-scale. The second variable should be the species and will be used to group
-the data and display with the linetype and linecolour specified by the
-<code>linetype</code> and <code>linecolour</code> slots of the <code>params</code> object.</p>
-<p>The recommended way is to obtain the data frames using one of the supplied
-functions, e.g., <code><a href='getBiomassFrame.html'>getBiomassFrame</a></code>, <code><a href='getSSBFrame.html'>getSSBFrame</a></code>.</p>
+    <p>An list with yields and fishing mortalities</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>plotting_functions</code>,
-  <code><a href='getBiomassFrame.html'>getBiomassFrame</a></code>, <code><a href='getSSBFrame.html'>getSSBFrame</a></code></p>
-<p>Other frame functions: 
-<code><a href='getBiomassFrame.html'>getBiomassFrame</a>()</code>,
-<code><a href='getSSBFrame.html'>getSSBFrame</a>()</code></p>
-<p>Other plotting functions: 
-<code><a href='animateSpectra.html'>animateSpectra</a>()</code></p></div>
+    <div class='dont-index'><p>[getYield()]</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Set up example MizerParams and MizerSim objects</span>
-<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressMessages</a></span>(<span class='fu'>newMultispeciesParams</span>(<span class='no'>NS_species_params_gears</span>, <span class='no'>inter</span>))
-<span class='no'>sim0</span> <span class='kw'>&lt;-</span> <span class='fu'>project</span>(<span class='no'>params</span>, <span class='kw'>effort</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='kw'>t_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>sim1</span> <span class='kw'>&lt;-</span> <span class='fu'>project</span>(<span class='no'>params</span>, <span class='kw'>effort</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>t_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='co'># Display biomass from each simulation next to each other</span>
-<span class='fu'>displayFrames</span>(<span class='fu'><a href='getBiomassFrame.html'>getBiomassFrame</a></span>(<span class='no'>sim0</span>), <span class='fu'><a href='getBiomassFrame.html'>getBiomassFrame</a></span>(<span class='no'>sim1</span>), <span class='no'>params</span>)</div><div class='img'><img src='displayFrames-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='no'>NS_species_params_gears</span>, <span class='no'>inter</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>getYieldVsFcurve</span>(<span class='no'>params</span>,<span class='fl'>11</span>,<span class='kw'>bPlot</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

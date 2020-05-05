@@ -41,6 +41,8 @@ devtools::install_github("sizespectrum/mizerExperimental")
 
 ## Features
 
+  - `getYieldVsFcurve()` for calculating and plotting yield curve.
+
   - Animated plot of mizer simulation with `animateSpectra()`
 
   - Showing two plots side-by-side with the same axes and the same
