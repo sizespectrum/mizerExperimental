@@ -17,7 +17,7 @@
 #' @export
 #' @family summary functions
 #' @concept summary_function
-#' @seealso [getYield()]
+#' @md
 #' @examples
 #' \dontrun{
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)

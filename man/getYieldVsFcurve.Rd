@@ -7,7 +7,7 @@
 getYieldVsFcurve(params, ixSpecies, nSteps = 10, Fmax = 3, bPlot = FALSE)
 }
 \arguments{
-\item{params}{An object of class `MizerParams`.}
+\item{params}{An object of class \code{MizerParams}.}
 
 \item{ixSpecies}{The species number to make the calculation over}
 
@@ -25,7 +25,7 @@ An list with yields and fishing mortalities
 \description{
 Calculates the yield of a species for a range of fishing mortalities
 for species across all gears at each
-simulation time step. **Note:** The function just returns the yield
+simulation time step. \strong{Note:} The function just returns the yield
 at the last time step of the simulation, which might not have converged,
 or might oscillate.
 }
@@ -34,9 +34,6 @@ or might oscillate.
 params <- newMultispeciesParams(NS_species_params_gears, inter)
 y <- getYieldVsFcurve(params,11,bPlot=TRUE)
 }
-}
-\seealso{
-[getYield()]
 }
 \concept{summary functions}
 \concept{summary_function}
