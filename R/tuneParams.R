@@ -837,6 +837,14 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             p <- isolate(params())
             sp <- isolate(input$sp)
             gear_idx <- which(p@gear_params$species == sp)
+            if (length(gear_idx) != 1) {
+                showModal(modalDialog(
+                    title = "Invalid gear specification",
+                    HTML(paste0("Currently you can only use models where each ",
+                                "species is caught by only one gear")),
+                    easyClose = TRUE
+                ))
+            }
 
             if (sp != sp_old_fishing) {
                 sp_old_fishing <<- sp
