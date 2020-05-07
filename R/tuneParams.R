@@ -548,8 +548,8 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                                          min = 0,
                                          max = 1),
                              tags$h3(tags$a(id = "interactions"), "Prey interactions"),
-                             sliderInput("interaction_p", "Resource",
-                                         value = sp$interaction_p,
+                             sliderInput("interaction_resource", "Resource",
+                                         value = sp$interaction_resource,
                                          min = 0,
                                          max = 1,
                                          step = 0.05)
@@ -1019,14 +1019,14 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
 
         ## Adjust species parameters ####
         observe({
-            req(input$interaction_p,
+            req(input$interaction_resource,
                 input$alpha, input$ks, input$k, input$z0)
             p <- isolate(params())
             sp <- isolate(input$sp)
 
             # Create updated species params data frame
             species_params <- p@species_params
-            species_params[sp, "interaction_p"] <- input$interaction_p
+            species_params[sp, "interaction_resource"] <- input$interaction_resource
             species_params[sp, "alpha"] <- input$alpha
             species_params[sp, "ks"]    <- input$ks
             species_params[sp, "k"]     <- input$k
@@ -1641,7 +1641,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
                 p@interaction[sp, ] %*% p@initial_n
             totalx <- total_n * p@w_full
             #totalx <- totalx / sum(totalx * dx)
-            phix <- getPredationKernel(p)[sp, wp_idx, ]
+            phix <- getPredKernel(p)[sp, wp_idx, ]
             pr <- totalx * phix
             br <- pr * p@w_full
             # convert to proportions
@@ -1751,7 +1751,7 @@ tuneParams <- function(p, catch = NULL) { #, stomach = NULL) {
             species <- factor(p@species_params$species,
                               levels = p@species_params$species)
             select <- (p@cc_pp > 0)
-            pred_rate <- p@species_params$interaction_p *
+            pred_rate <- p@species_params$interaction_resource *
                 getPredRate(p)[, select]
             total <- colSums(pred_rate)
             ylab <- "Death rate [1/year]"
