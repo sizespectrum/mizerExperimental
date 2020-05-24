@@ -68,9 +68,7 @@ biomassTab <- function(input, output, session, params, logs, ...) {
         biomass_model <- foreground_indices  # create vector of right length
         for (i in seq_along(foreground_indices)) {
             sp <- foreground_indices[i]
-            cum_biomass <- cumsum(p@initial_n[sp, ] * p@w * p@dw)
-            cutoff_idx <- which.max(p@w >= cutoff[sp])
-            biomass_model[i] <- max(cum_biomass) - cum_biomass[cutoff_idx]
+            biomass_model[i] <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff[[sp]]])
         }
         species <- factor(p@species_params$species[foreground],
                           levels = p@species_params$species[foreground])
@@ -108,9 +106,7 @@ biomassTab <- function(input, output, session, params, logs, ...) {
         abundance_model <- foreground_indices  # create vector of right length
         for (i in seq_along(foreground_indices)) {
             sp <- foreground_indices[i]
-            cum_abundance <- cumsum(p@initial_n[sp, ] * p@dw)
-            cutoff_idx <- which.max(p@w >= cutoff[sp])
-            abundance_model[i] <- max(cum_abundance) - cum_abundance[cutoff_idx]
+            abundance_model[i] <- sum((p@initial_n[sp, ] * p@dw)[p@w >= cutoff[[sp]]])
         }
         species <- factor(p@species_params$species[foreground],
                           levels = p@species_params$species[foreground])
@@ -198,9 +194,9 @@ biomassTab <- function(input, output, session, params, logs, ...) {
                       angle = 90)
         if (input$biomass_observed) {
             cutoff_idx <- which.max(p@w >= input$cutoff_size)
-            target <- input$biomass_observed + biomass[cutoff_idx]
+            target <- input$biomass_observed + biomass[[cutoff_idx]]
             pl <- pl +
-                geom_hline(yintercept = biomass[cutoff_idx]) +
+                geom_hline(yintercept = biomass[[cutoff_idx]]) +
                 geom_vline(xintercept = input$cutoff_size) +
                 geom_hline(yintercept = target, color = "green")
         }
@@ -209,20 +205,25 @@ biomassTab <- function(input, output, session, params, logs, ...) {
 
     # Tune egg density ----
     # The "Tune egg density" button calculates the ratio of observed and
-    # model biomass and then multiplies the egg density by that ratio. It
-    # then runs the system to steady state.
+    # model biomass and then multiplies the egg density by that ratio.
     observeEvent(input$tune_egg, {
-        p <- isolate(params())
-        sp <- which.max(p@species_params$species == isolate(input$sp))
+        p <- params()
+        sp <- which.max(p@species_params$species == input$sp)
         if ("biomass_observed" %in% names(p@species_params) &&
-            !is.na(p@species_params$biomass_observed[sp]) &&
-            p@species_params$biomass_observed[sp] > 0) {
-            total <- sum(p@initial_n[sp, ] * p@w * p@dw)
-            n0 <- isolate(input$n0) *
-                p@species_params$biomass_observed[sp] / total
+                !is.na(p@species_params$biomass_observed[[sp]]) &&
+                p@species_params$biomass_observed[[sp]] > 0) {
+            cutoff <- p@species_params$cutoff_size[[sp]]
+            if (is.null(cutoff) || is.na(cutoff)) {
+                cutoff <- p@species_params$w_mat[[sp]] / 20
+            }
+            total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
+            n0 <- input$n0 *
+                p@species_params$biomass_observed[[sp]] / total
+            print(total)
+            print(p@species_params$biomass_observed[[sp]])
             # rescale abundance to new egg density
             p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
-                p@initial_n[sp, p@w_min_idx[sp]]
+                p@initial_n[sp, p@w_min_idx[[sp]]]
 
             updateSliderInput(session, "n0",
                               value = n0,
