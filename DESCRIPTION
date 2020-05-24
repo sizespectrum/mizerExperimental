@@ -35,6 +35,9 @@ Collate:
     manipulateParams.R
     newSheldonParams.R
     tuneParams.R
+    tuneParams_controls.R
+    tuneParams_tabs.R
+    tuneParams_helpers.R
     getYieldVsFcurve.R
 Encoding: UTF-8
 LazyData: true
