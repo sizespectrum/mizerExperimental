@@ -18,6 +18,7 @@ Imports:
     ggplot2,
     methods,
     plotly,
+    rintrojs,
     shiny,
     shinyjs,
     tibble,

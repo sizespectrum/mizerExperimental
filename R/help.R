@@ -11,7 +11,7 @@
 #' [a new issue on the issue tracker](https://github.com/sizespectrum/mizerExperimental/issues/new)
 #' and we'll comment on how it can be included in this package.
 #'
-#' @import mizer methods dplyr ggplot2 assertthat shiny
+#' @import mizer methods dplyr ggplot2 assertthat shiny rintrojs
 #' @importFrom stats runif
 #' @rawNamespace import(plotly, except = last_plot)
 #' @docType package
