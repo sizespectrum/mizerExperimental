@@ -4,21 +4,28 @@
 \alias{tuneParams}
 \title{Launch shiny gadget for tuning parameters}
 \usage{
-tuneParams(p, catch = NULL)
+tuneParams(
+  p,
+  controls = list("egg", "predation", "fishing", "reproduction", "other",
+    "interaction", "resource"),
+  tabs = list("Spectra", "Biomass", "Growth", "Repro", "Catch", "Rates", "Prey",
+    "Diet", "Death", "Resource", "Sim"),
+  ...
+)
 }
 \arguments{
 \item{p}{MizerParams object to tune. If missing, the gadget tries to recover
 information from log files left over from aborted previous runs.}
 
-\item{catch}{Data frame holding binned observed catch data. The data can
-be binned either into length bins or weight bins. In the former case the data
-frame should have columns \code{length} and \code{dl} holding the start of
-the size bins in cm and the width of the size bins in cm respectively. In
-the latter case the data frame should have columns \code{weight} and
-\code{dw} holding the start of the size bins in grams and the width of the
-size bins in grams. The data frame also needs to have the columns
-\code{species} (the name of the species), \code{catch} (the number of
-individuals of a particular species caught in a size bin).
+\item{controls}{A list with the names of the sections of input
+parameters that should be displayed in the sidebar. Each entry in the
+list is a string. For an entry "foo" there needs to be a function
+"fooInputs" that defines the input elements and a function "foo" that
+processes those inputs to change the params object.}
+
+\item{tabs}{A list with the names of tabs.}
+
+\item{...}{Other params needed by individual tabs.
 
 This gadget is meant for tuning a model to steady state. It is not meant for
 tuning the dynamics of the model. That should be done in a second step using
