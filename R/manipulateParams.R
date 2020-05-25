@@ -52,6 +52,10 @@ markBackground <- function(object, species) {
 retuneBackground <- function(params) {
     no_sp <- nrow(params@species_params)  # Number of species
     L <- is.na(params@A)
+    if (!any(L)) {
+        message("There are no background species.")
+        return(params)
+    }
 
     # We find the abundance multipliers A_i so
     # that the integral of the square of the relative distance
