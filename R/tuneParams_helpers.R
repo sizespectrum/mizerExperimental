@@ -1,4 +1,5 @@
 prepare_params <- function(p) {
+    p@species_params$species <- as.character(p@species_params$species)
     rownames(p@species_params) <- p@species_params$species
     p <- set_species_param_default(p, "a", 0.006)
     p <- set_species_param_default(p, "b", 3)
