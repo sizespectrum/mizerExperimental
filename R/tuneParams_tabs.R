@@ -437,7 +437,13 @@ catchTabUI <- function() {
     )
 }
 
-
+#' Serve tab with catch data
+#'
+#' @param input Reactive holding the inputs
+#' @param output Reactive holding the outputs
+#' @param session Shiny session
+#' @param params Reactive value holding a MizerParams object.
+#' @param logs Environment holding the log of steady states.
 #' @param catch Data frame holding binned observed catch data. The data can
 #'   be binned either into length bins or weight bins. In the former case the data
 #'   frame should have columns \code{length} and \code{dl} holding the start of
@@ -447,6 +453,7 @@ catchTabUI <- function() {
 #'   size bins in grams. The data frame also needs to have the columns
 #'   \code{species} (the name of the species), \code{catch} (the number of
 #'   individuals of a particular species caught in a size bin).
+#' @param ... Not used.
 catchTab <- function(input, output, session, params, logs,
                      catch = NULL, ...) {
 
@@ -988,7 +995,9 @@ simTab <- function(input, output, session, params, logs, ...) {
 #         plotlyOutput("plot_steady")
 #     )
 # }
-#
+# #' Serve tab with stomach data
+# #'
+# #' @inheritParams catchTab
 # #' @param stomach Data frame holding observations of prey items in predator
 # #'   stomachs. The required columns are
 # #'   \itemize{
