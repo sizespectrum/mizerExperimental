@@ -5,22 +5,12 @@
 #'
 #' @param p MizerParams object to tune. If missing, the gadget tries to recover
 #'   information from log files left over from aborted previous runs.
-# #' @param stomach Data frame holding observations of prey items in predator
-# #'   stomachs. The required columns are
-# #'   \itemize{
-# #'   \item \code{species} holding the name of the predator species,
-# #'   \item \code{wpredator} with the weight in grams of the predator,
-# #'   \item \code{wprey} with the weight of the prey item.
-# #'   }
-# #'   In case prey items of the same weight have been aggregated in the data
-# #'   frame then there should be a column \code{Nprey} saying how many prey
-# #'   items have been aggregated in each row.
 #' @param controls A list with the names of the sections of input
 #'   parameters that should be displayed in the sidebar. Each entry in the
 #'   list is a string. For an entry "foo" there needs to be a function
 #'   "fooInputs" that defines the input elements and a function "foo" that
 #'   processes those inputs to change the params object.
-#' @tabs A list with the names of tabs.
+#' @param tabs A list with the names of tabs.
 #' @param ... Other params needed by individual tabs.
 #'
 #' This gadget is meant for tuning a model to steady state. It is not meant for
@@ -111,47 +101,69 @@ tuneParams <- function(p,
     # User interface ----
     ui <- fluidPage(
         shinyjs::useShinyjs(),
+        introjsUI(),
 
         sidebarLayout(
 
             ## Sidebar ####
             sidebarPanel(
-                actionButton("sp_steady", "Steady"),
-                actionButton("undo", "", icon = icon("undo")),
-                actionButton("redo", "", icon = icon("redo")),
-                actionButton("undo_all", "", icon = icon("fast-backward")),
+                introBox(
+                    actionButton("sp_steady", "Steady"),
+                    actionButton("undo", "", icon = icon("undo")),
+                    actionButton("redo", "", icon = icon("redo")),
+                    actionButton("undo_all", "", icon = icon("fast-backward")),
+                    data.step = 5,
+                    data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
+                ),
                 actionButton("done", "Done", icon = icon("check"),
                              onclick = "setTimeout(function(){window.close();},500);"),
+                actionButton("help", "Press for instructions"),
                 tags$br(),
-                uiOutput("sp_sel"),
-                # Add links to input sections
-                lapply(controls, function(section) {
-                    list("->",
-                          tags$a(section, href = paste0("#", section)))
-                }),
-                "->",
-                tags$a("File", href = "#file"),
-                tags$br(),
-                tags$div(id = "params",
-                         uiOutput("sp_params"),
-                         uiOutput("file_management")
-                ),
-                tags$head(tags$style(
-                    type = 'text/css',
-                    '#params { max-height: 60vh; overflow-y: auto; }'
-                )),
+                introBox(uiOutput("sp_sel"),
+                         data.step = 2,
+                         data.position = "right",
+                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."),
+                introBox(
+                    introBox(
+                        # Add links to input sections
+                        lapply(controls, function(section) {
+                            list("->",
+                                 tags$a(section, href = paste0("#", section)))
+                        }),
+                        "->",
+                        tags$a("File", href = "#file"),
+                        data.step = 4,
+                        data.intro = "There are many parameters, organised into sections. To avoid too much scrolling you can click on a link to jump to a section."),
+                    tags$br(),
+                    tags$div(id = "params",
+                             uiOutput("sp_params"),
+                             introBox(
+                                 uiOutput("file_management"),
+                                 data.step = 7,
+                                 data.intro = "At any point you can download the current state of the params object or upload a new params object to work on."
+                             )
+                    ),
+                    tags$head(tags$style(
+                        type = 'text/css',
+                        '#params { max-height: 60vh; overflow-y: auto; }'
+                    )),
+                    data.step = 3,
+                    data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will immediately update."
+                    ),
                 width = 3
             ),  # endsidebarpanel
 
             ## Main panel ####
             mainPanel(
-                uiOutput("tabs")
+                introBox(uiOutput("tabs"),
+                         data.step = 1,
+                         data.intro = "This main panel has tabs that display various aspects of the steady state of the model.")
             )  # end mainpanel
         )  # end sidebarlayout
     )
 
     server <- function(input, output, session) {
-
+        hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
         add_to_logs(logs, p)  # This allows us to get back to the initial state
@@ -223,6 +235,12 @@ tuneParams <- function(p,
                               logs = logs, ...))
         }
 
+        # Help button ----
+        observeEvent(
+            input$help,
+            introjs(session)
+        )
+
         ## Steady ####
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
@@ -237,7 +255,7 @@ tuneParams <- function(p,
             p_old <- params()
             # if the params have not changed, go to the previous one
             if (all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
-                logs$idx <<- logs$idx - 1
+                logs$idx <- logs$idx - 1
                 shinyjs::enable("redo")
                 p_new <- readRDS(logs$files[logs$idx])
                 if (logs$idx == 1) {
@@ -247,14 +265,16 @@ tuneParams <- function(p,
             }
             params(p_new)
             # Trigger an update of sliders
+            rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
         })
         ## Redo ####
         observeEvent(input$redo, {
             if (logs$idx >= length(logs$files)) return()
-            logs$idx <<- logs$idx + 1
+            logs$idx <- logs$idx + 1
             params(readRDS(logs$files[logs$idx]))
             # Trigger an update of sliders
+            rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
             shinyjs::enable("undo")
             shinyjs::enable("undo_all")
@@ -268,6 +288,7 @@ tuneParams <- function(p,
             logs$idx <- 1
             params(readRDS(logs$files[logs$idx]))
             # Trigger an update of sliders
+            rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
         })
 
