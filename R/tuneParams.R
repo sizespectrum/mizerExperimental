@@ -166,7 +166,7 @@ tuneParams <- function(p,
         hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
-        add_to_logs(logs, p)  # This allows us to get back to the initial state
+        tuneParams_add_to_logs(logs, p)  # This allows us to get back to the initial state
         if (logs$idx == length(logs$files)) shinyjs::disable("redo")
         if (logs$idx <= 1) {
             shinyjs::disable("undo")
@@ -243,7 +243,7 @@ tuneParams <- function(p,
         ## Steady ####
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
-            run_steady(params(), params = params,
+            tuneParams_run_steady(params(), params = params,
                        logs = logs, session = session)
         })
 

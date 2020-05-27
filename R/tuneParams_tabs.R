@@ -25,7 +25,7 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 
     ## Scale ####
     observeEvent(input$scale, {
-        run_steady(rescaleAbundance(params(), factor = 2),
+        tuneParams_run_steady(rescaleAbundance(params(), factor = 2),
                    params = params, logs = logs, session = session)
     })
 
@@ -498,7 +498,7 @@ catchTab <- function(input, output, session, params, logs,
 
                 # Update the reactive params object
                 params(p)
-                add_to_logs(logs, p)
+                tuneParams_add_to_logs(logs, p)
             },
             error = function(e) {
                 showModal(modalDialog(
@@ -983,7 +983,7 @@ simTab <- function(input, output, session, params, logs, ...) {
 
     ## Plot run to steady ####
     output$plot_sim <- renderPlotly({
-        sim <- run_steady(params(), return_sim = TRUE,
+        sim <- tuneParams_run_steady(params(), return_sim = TRUE,
                           params = params, logs = logs,
                           session = session)
         plotBiomass(sim)

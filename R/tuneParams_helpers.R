@@ -11,7 +11,8 @@ prepare_params <- function(p) {
     return(p)
 }
 
-update_species <- function(sp, p, params) {
+#' @export
+tuneParams_update_species <- function(sp, p, params) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
     tryCatch({
@@ -72,7 +73,8 @@ update_species <- function(sp, p, params) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-run_steady <- function(p, params, logs, session, return_sim = FALSE) {
+#' @export
+tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
@@ -92,7 +94,7 @@ run_steady <- function(p, params, logs, session, return_sim = FALSE) {
                         progress_bar = progress)
             # Update the reactive params object
             params(p)
-            add_to_logs(logs, p)
+            tuneParams_add_to_logs(logs, p)
         }
     },
     error = function(e) {
@@ -106,8 +108,8 @@ run_steady <- function(p, params, logs, session, return_sim = FALSE) {
     )
 }
 
-
-add_to_logs <- function(logs, p) {
+#' @export
+tuneParams_add_to_logs <- function(logs, p) {
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
     file = paste0(tempdir(), "/mizer_params", time, ".rds")

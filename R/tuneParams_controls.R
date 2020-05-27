@@ -124,7 +124,7 @@ otherControl <- function(input, output, session, params, flags) {
         p@species_params[sp, "z0"]    <- input$z0
         p <- setMetabolicRate(p)
         p <- setExtMort(p)
-        update_species(sp, p, params)
+        tuneParams_update_species(sp, p, params)
     })
 
     observeEvent(
@@ -192,7 +192,7 @@ reproductionControl <- function(input, output, session, params, flags) {
             p@species_params[sp, "m"]     <- input$m
 
             p <- setReproduction(p)
-            update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params)
         },
         ignoreInit = TRUE)
 }
@@ -249,7 +249,7 @@ predationControl <- function(input, output, session, params, flags) {
             p@species_params[sp, "beta"]  <- input$beta
             p@species_params[sp, "sigma"] <- input$sigma
             p <- setPredKernel(p)
-            update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params)
         },
         ignoreInit = TRUE)
 
@@ -276,7 +276,7 @@ predationControl <- function(input, output, session, params, flags) {
             p@species_params[sp, "q"]     <- input$q
             p <- setSearchVolume(p)
             p <- setMaxIntakeRate(p)
-            update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params)
         },
         ignoreInit = TRUE)
 
@@ -432,7 +432,7 @@ fishingControl <- function(input, output, session, params, flags) {
             }
 
             p <- setFishing(p, initial_effort = input$effort)
-            update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params)
         },
         ignoreInit = TRUE)
 }
@@ -473,6 +473,6 @@ interactionControl <- function(input, output, session, params, flags) {
             inter_var <- paste0("inter_", i)
             p@interaction[sp, i] <- input[[inter_var]]
         }
-        update_species(sp, p, params)
+        tuneParams_update_species(sp, p, params)
     })
 }
