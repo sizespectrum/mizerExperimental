@@ -170,7 +170,6 @@ tuneParams <- function(p,
         if (logs$idx == length(logs$files)) shinyjs::disable("redo")
         if (logs$idx <= 1) {
             shinyjs::disable("undo")
-            shinyjs::disable("undo_all")
         }
 
         # The file name will be empty until the user uploads a params file
@@ -260,7 +259,6 @@ tuneParams <- function(p,
                 p_new <- readRDS(logs$files[logs$idx])
                 if (logs$idx == 1) {
                     shinyjs::disable("undo")
-                    shinyjs::disable("undo_all")
                 }
             }
             params(p_new)
@@ -280,11 +278,10 @@ tuneParams <- function(p,
             shinyjs::enable("undo_all")
             if (logs$idx == length(logs$files)) shinyjs::disable("redo")
         })
-        ## Cancel ####
+        ## Undo All ####
         observeEvent(input$undo_all, {
             if (logs$idx > 1) shinyjs::enable("redo")
             shinyjs::disable("undo")
-            shinyjs::disable("undo_all")
             logs$idx <- 1
             params(readRDS(logs$files[logs$idx]))
             # Trigger an update of sliders
