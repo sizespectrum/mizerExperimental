@@ -324,7 +324,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
         no_sp <- length(p@species_params$species)
         if (input$all_growth == "All") {
             gc <- getGrowthCurves(p)[, , drop = FALSE] %>%
-                as.tbl_cube(met_name = "Size") %>%
+                cubelyr::as.tbl_cube(met_name = "Size") %>%
                 as_tibble() %>%
                 mutate(Legend = "Model",
                        Species = factor(Species, p@species_params$species))
