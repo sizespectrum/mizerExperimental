@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 0.1.1.9002
+Version: 0.1.1.9003
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -32,6 +32,7 @@ Suggests:
     vdiffr
 Collate:
     animateSpectra.R
+    compareParams.R
     displayFrames.R
     help.R
     manipulateParams.R

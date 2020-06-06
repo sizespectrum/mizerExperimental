@@ -2,6 +2,7 @@
 
 export(addSpecies)
 export(animateSpectra)
+export(compareParams)
 export(displayFrames)
 export(getBiomassFrame)
 export(getSSBFrame)

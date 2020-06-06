@@ -23,3 +23,6 @@ reference:
   - rescaleSystem
   - updateInitialValues
   - pruneSpecies
+- title: Others
+  contents:
+  - compareParams
