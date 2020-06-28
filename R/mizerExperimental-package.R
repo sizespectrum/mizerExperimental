@@ -1,7 +1,9 @@
 #' mizerExperimental: Extends the mizer package with experimental features
 #'
-#' This is an extension package for the mizer package
-#' (https://sizespectrum.org/mizer/) that contains additional features
+#' @description
+#' This is an extension package for the
+#' [mizer package](https://sizespectrum.org/mizer/)
+#' that contains additional features
 #' contributed by the mizer community. These features can then be further
 #' improved while being used by the community. Once matured, frequently-used
 #' features can be moved to the core mizer package.
@@ -14,7 +16,6 @@
 #' @import mizer methods dplyr ggplot2 assertthat shiny rintrojs
 #' @importFrom stats runif
 #' @rawNamespace import(plotly, except = last_plot)
-#' @docType package
-#' @name mizerExperimental
-#' @aliases mizerExperimental-package
-NULL
+#' @md
+#' @keywords internal
+"_PACKAGE"
