@@ -5,12 +5,10 @@
 #'
 #' @param p MizerParams object to tune. If missing, the gadget tries to recover
 #'   information from log files left over from aborted previous runs.
-#' @param controls A list with the names of the sections of input
-#'   parameters that should be displayed in the sidebar. Each entry in the
-#'   list is a string. For an entry "foo" there needs to be a function
-#'   "fooInputs" that defines the input elements and a function "foo" that
-#'   processes those inputs to change the params object.
-#' @param tabs A list with the names of tabs.
+#' @param controls A list with the names of input parameter control sections
+#'   that should be displayed in the sidebar. See Details.
+#' @param tabs A list with the names of the tabs that should be displayed in
+#'   the main section. See Details
 #' @param ... Other params needed by individual tabs.
 #'
 #' This gadget is meant for tuning a model to steady state. It is not meant for
@@ -38,12 +36,16 @@
 #' as an .rds file via the "Download" button in the "File" section, or to
 #' upload a params object from an .rds file.
 #'
-#' There are currently several restrictions on what the gadget can do:
 #'
-#' The gadget currently assumes that each species is selected by only one gear.
+#' The fishing control currently assumes that each species is selected by only one gear.
 #' It allows the user to change the parameters for that gear. It also enforces
 #' the same effort for all gears. It sets all efforts to that for the first
 #' gear and then allows the user to change that single effort value.
+#'
+#'
+#' For an entry "foo" there needs to be a function "fooInputs" that
+#' defines the input elements and a function "foo" that processes those inputs
+#' to change the params object.
 #'
 #' @return The tuned MizerParams object
 #' @md

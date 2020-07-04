@@ -34,8 +34,8 @@ Collate:
     animateSpectra.R
     compareParams.R
     displayFrames.R
-    help.R
     manipulateParams.R
+    mizerExperimental-package.R
     newSheldonParams.R
     tuneParams.R
     tuneParams_controls.R

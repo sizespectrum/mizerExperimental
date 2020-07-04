@@ -17,13 +17,11 @@ tuneParams(
 \item{p}{MizerParams object to tune. If missing, the gadget tries to recover
 information from log files left over from aborted previous runs.}
 
-\item{controls}{A list with the names of the sections of input
-parameters that should be displayed in the sidebar. Each entry in the
-list is a string. For an entry "foo" there needs to be a function
-"fooInputs" that defines the input elements and a function "foo" that
-processes those inputs to change the params object.}
+\item{controls}{A list with the names of input parameter control sections
+that should be displayed in the sidebar. See Details.}
 
-\item{tabs}{A list with the names of tabs.}
+\item{tabs}{A list with the names of the tabs that should be displayed in
+the main section. See Details}
 
 \item{...}{Other params needed by individual tabs.
 
@@ -52,12 +50,14 @@ At any time the gadget allows the user to download the current params object
 as an .rds file via the "Download" button in the "File" section, or to
 upload a params object from an .rds file.
 
-There are currently several restrictions on what the gadget can do:
-
-The gadget currently assumes that each species is selected by only one gear.
+The fishing control currently assumes that each species is selected by only one gear.
 It allows the user to change the parameters for that gear. It also enforces
 the same effort for all gears. It sets all efforts to that for the first
-gear and then allows the user to change that single effort value.}
+gear and then allows the user to change that single effort value.
+
+For an entry "foo" there needs to be a function "fooInputs" that
+defines the input elements and a function "foo" that processes those inputs
+to change the params object.}
 }
 \value{
 The tuned MizerParams object
