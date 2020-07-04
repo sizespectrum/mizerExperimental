@@ -18,26 +18,26 @@ and we’ll comment on how it can be included in this package.
 
 ## Installation
 
-<!--
-You can install the released version of mizerStarvation from [CRAN](https://CRAN.R-project.org) with: 
-``` r 
-install.packages("mizerStarvation") 
-```
--->
-
-First you need a recent development version of the mizer package
-(version \>= 1.0.1.9001). You can install this from GitHub with
+You can install the development version of mizerExperimental from GitHub
+with
 
 ``` r
-devtools::install_github("sizespectrum/mizer")
+remotes::install_github("sizespectrum/mizerExperimental")
 ```
 
-Then you can install the development version of mizerExperimental from
-GitHub with
+If this gives an error saying “there is no package called `remotes`”
+then you also need to do
 
 ``` r
-devtools::install_github("sizespectrum/mizerExperimental")
+install.packages("remotes")
 ```
+
+before trying again to install `mizerExperimental`.
+
+You may be prompted to update some of your existing packages. The one
+package that you should always update is the `mizer` package, because
+the `mizerExperimental` package will always be designed to work with the
+most recent released version of mizer.
 
 ## Features
 
