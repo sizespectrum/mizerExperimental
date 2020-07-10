@@ -4,7 +4,13 @@
 \alias{addSpecies}
 \title{Add new species}
 \usage{
-addSpecies(params, species_params, interaction)
+addSpecies(
+  params,
+  species_params,
+  gear_params = data.frame(),
+  interaction,
+  initial_effort
+)
 }
 \arguments{
 \item{params}{A mizer params object for the original system.}

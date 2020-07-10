@@ -430,10 +430,13 @@ renameSpecies <- function(params, replace) {
 #' sim <- project(params, t_max=50)
 #' plotBiomass(sim)
 #' }
-addSpecies <- function(params, species_params, interaction) {
+addSpecies <- function(params, species_params, gear_params = data.frame(),
+                       interaction, initial_effort) {
     # check validity of parameters ----
     assert_that(is(params, "MizerParams"),
-                is.data.frame(species_params))
+                is.data.frame(species_params),
+                is.data.frame(gear_params))
+    species_params <- mizer:::validSpeciesParams(species_params)
     if (any(species_params$species %in% params@species_params$species)) {
         stop("You can not add species that are already there.")
     }
@@ -455,7 +458,7 @@ addSpecies <- function(params, species_params, interaction) {
         inter[old_sp, old_sp] <- params@interaction
         inter[new_sp, new_sp] <- interaction
     } else if (all(dim(interaction) != c(no_sp, no_sp))) {
-        stop("interaction matrix has invalid dimensions.")
+        stop("Interaction matrix has invalid dimensions.")
     } else {
         inter <- interaction
     }
@@ -478,6 +481,18 @@ addSpecies <- function(params, species_params, interaction) {
     # to make a larger species_params dataframe.
     combi_species_params <- rbind(params@species_params, species_params,
                                   stringsAsFactors = FALSE)
+
+    # combine gear params ----
+    gear_params <- mizer:::validGearParams(gear_params,
+                                           species_params)
+    # Make sure that all columns exist in both data frames
+    missing <- setdiff(names(params@gear_params), names(gear_params))
+    gear_params[missing] <- NA
+    missing <- setdiff(names(gear_params), names(params@gear_params))
+    params@gear_params[missing] <- NA
+    combi_gear_params <- rbind(params@gear_params, gear_params,
+                               stringsAsFactors = FALSE)
+
     # new params object ----
     # use dataframe and global settings from params to make a new MizerParams
     # object.
@@ -488,8 +503,24 @@ addSpecies <- function(params, species_params, interaction) {
         max_w = max(params@w),
         min_w_pp = min(params@w_full),
         no_w = length(params@w),
-        initial_effort = params@initial_effort
+        gear_params = combi_gear_params,
+        n = params@resource_params$n,
+        r_pp = params@resource_params$r_pp,
+        kappa = params@resource_params$kappa,
+        lambda = params@resource_params$lambda,
+        w_pp_cutoff = params@resource_params$w_pp_cutoff
     )
+    # Copy over old effort
+    p@initial_effort[names(params@initial_effort)] <- params@initial_effort
+    if (!missing(initial_effort)) {
+        if (is.null(names(initial_effort))) {
+            stop("The `initial_effort` must be a named list or vector.")
+        }
+        if (!all(names(initial_effort) %in% dimnames(p@selectivity)$gear)) {
+            stop("The names of the `initial_effort` do not match the names of gears.")
+        }
+        p@initial_effort[names(initial_effort)] <- initial_effort
+    }
     # Use the same resource spectrum as params
     p@initial_n_pp <- params@initial_n_pp
     p@cc_pp <- params@cc_pp

@@ -1,21 +1,5 @@
 library(mizer)
 
-# removeSpecies ----
-test_that("removeSpecies works", {
-    remove <- NS_species_params$species[2:11]
-    reduced <- NS_species_params[!(NS_species_params$species %in% remove), ]
-    params <- MizerParams(NS_species_params, no_w = 20,
-                          max_w = 39900, min_w_pp = 9e-14)
-    p1 <- removeSpecies(params, species = remove)
-    expect_equal(nrow(p1@species_params), nrow(params@species_params) - 10)
-    p2 <- MizerParams(reduced, no_w = 20,
-                      max_w = 39900, min_w_pp = 9e-14)
-    expect_equivalent(p1, p2)
-    sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
-    sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
-    expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
-})
-
 # retuneBackground() reproduces scaling model ----
 test_that("retuneBackground() reproduces scaling model", {
     # This numeric test failed on Solaris and without long doubles. So for now
@@ -52,10 +36,15 @@ test_that("addSpecies works when adding a second identical species", {
     p <- markBackground(p)
     species_params <- p@species_params[5,]
     species_params$species = "new"
-    # Adding species 5 again should lead two copies of the species with the
-    # same combined abundance
+    # Adding species 5 again should lead two copies of the species
     pa <- addSpecies(p, species_params)
-    # TODO: think about what to check now
+    expect_identical(pa@metab[5, ], pa@metab[no_sp+1, ])
+    expect_identical(pa@psi[5, ], pa@psi[no_sp+1, ])
+    expect_identical(pa@ft_pred_kernel_e[5, ], pa@ft_pred_kernel_e[no_sp+1, ])
+
+    # test that we can remove species again
+    pr <- removeSpecies(pa, "new")
+
 })
 test_that("addSpecies does not allow duplicate species", {
     p <- NS_params
@@ -63,6 +52,81 @@ test_that("addSpecies does not allow duplicate species", {
     expect_error(addSpecies(p, species_params),
                  "You can not add species that are already there.")
 })
+test_that("addSpecies handles gear params correctly", {
+    p <- newTraitParams(no_sp = 2)
+    sp <- data.frame(species = c("new1", "new2"),
+                     w_inf = c(10, 100),
+                     k_vb = c(1, 1),
+                     n = 2/3,
+                     p = 2/3)
+    gp <- data.frame(gear = c("gear1", "gear2", "gear1"),
+                     species = c("new1", "new2", "new2"),
+                     sel_func = "knife_edge",
+                     knife_edge_size = c(5, 5, 50))
+
+    pa <- addSpecies(p, sp, gp)
+    effort = c(knife_edge_gear = 0, gear1 = 0, gear2 = 0)
+    expect_identical(pa@initial_effort, effort)
+    expect_identical(nrow(pa@gear_params), 5L)
+
+    effort = c(knife_edge_gear = 1, gear1 = 2, gear2 = 3)
+    pa <- addSpecies(p, sp, gp, initial_effort = effort)
+    expect_identical(pa@initial_effort, effort)
+
+    extra_effort = c(gear1 = 2, gear2 = 3)
+    pa <- addSpecies(p, sp, gp, initial_effort = extra_effort)
+    expect_identical(pa@initial_effort, c(knife_edge_gear = 0, extra_effort))
+
+    effort = 2
+    expect_error(addSpecies(p, sp, gp, initial_effort = effort),
+                 "The `initial_effort` must be a named list or vector")
+
+    effort = c(gear3 = 1)
+    expect_error(addSpecies(p, sp, gp, initial_effort = effort),
+                 "The names of the `initial_effort` do not match the names of gears.")
+})
+test_that("addSpecies handles interaction matrix correctly", {
+    p <- newTraitParams(no_sp = 2)
+    p@interaction <- matrix(1:4/8, ncol = 2)
+    sp <- data.frame(species = c("new1", "new2"),
+                     w_inf = c(10, 100),
+                     k_vb = c(1, 1),
+                     n = 2/3,
+                     p = 2/3)
+
+    interaction = matrix(1:4/4, ncol = 2)
+    ones = matrix(rep(1, 4), ncol = 2)
+    pa <- addSpecies(p, sp, interaction = interaction)
+    expect_equivalent(pa@interaction[3:4, 3:4], interaction)
+    expect_equivalent(pa@interaction[1:2, 3:4], ones)
+    expect_equivalent(pa@interaction[3:4, 1:2], ones)
+    expect_equivalent(pa@interaction[1:2, 1:2], p@interaction)
+
+    interaction = matrix(1:16/16, ncol = 4)
+    pa <- addSpecies(p, sp, interaction = interaction)
+    expect_equivalent(pa@interaction, interaction)
+
+    expect_error(addSpecies(p, sp,
+                            interaction = matrix(1:9, ncol = 3)),
+                 "Interaction matrix has invalid dimensions.")
+})
+
+# removeSpecies ----
+test_that("removeSpecies works", {
+    remove <- NS_species_params$species[2:11]
+    reduced <- NS_species_params[!(NS_species_params$species %in% remove), ]
+    params <- MizerParams(NS_species_params, no_w = 20,
+                          max_w = 39900, min_w_pp = 9e-14)
+    p1 <- removeSpecies(params, species = remove)
+    expect_equal(nrow(p1@species_params), nrow(params@species_params) - 10)
+    p2 <- MizerParams(reduced, no_w = 20,
+                      max_w = 39900, min_w_pp = 9e-14)
+    expect_equivalent(p1, p2)
+    sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
+    sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
+    expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
+})
+
 
 # retuneReproductiveEfficiency ----
 test_that("retuneReproductiveEfficiency works", {
