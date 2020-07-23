@@ -1,51 +1,73 @@
 #' Launch shiny gadget for tuning parameters
 #'
-#' The shiny gadget has sliders for the model parameters and tabs with a
-#' variety of plots to visualise the steady-state
-#'
-#' @param p MizerParams object to tune. If missing, the gadget tries to recover
-#'   information from log files left over from aborted previous runs.
-#' @param controls A list with the names of input parameter control sections
-#'   that should be displayed in the sidebar. See Details.
-#' @param tabs A list with the names of the tabs that should be displayed in
-#'   the main section. See Details
-#' @param ... Other params needed by individual tabs.
+#' The function opens a shiny gadget, an interactive web page. This page has
+#' a side panel with controls for various model parameters and a main panel
+#' with tabs for various diagnostic plots.
 #'
 #' This gadget is meant for tuning a model to steady state. It is not meant for
 #' tuning the dynamics of the model. That should be done in a second step using
 #' functions like `setRmax()` or `changeResource()`.
 #'
-#' The function opens a shiny gadget, an interactive web page. This page has
-#' a side panel with controls for various model parameters and a main panel
-#' with tabs for various diagnostic plots.
+#' There is an "Instructions" button near the top left of the gadget that
+#' gives you a quick overview of the user interface.
 #'
 #' After you click the "Done" button in the side panel, the function will return
 #' the parameter object in the state at that time, with `Rmax` set to `Inf`
 #' and `erepro` set to the value it had after the last run to steady state.
 #'
+#' At any time the gadget allows the user to download the current params object
+#' as an .rds file via the "Download" button in the "File" section, or to
+#' upload a params object from an .rds file.
+#'
+#' # Undo functionality
+#'
 #' The gadget keeps a log of all steady states you create while working with
 #' the gadget. You can go back to the last steady state by hitting the "Undo"
 #' button. You can go back an arbitrary number of states and also go forward
 #' again. There is also a button to go right back to the initial steady state.
+#'
 #' When you leave the gadget by hitting the "Done" button, this log is cleared.
 #' If you stop the gadget from RStudio by hitting the "Stop" button, then the
 #' log is left behind. You can then restart the gadget by calling `tuneParams()`
 #' without a `params` argument and it will re-instate the states from the log.
 #'
-#' At any time the gadget allows the user to download the current params object
-#' as an .rds file via the "Download" button in the "File" section, or to
-#' upload a params object from an .rds file.
+#' The log is stored in the tempdir of your current R session, as given by
+#' `tempdir()`. For each steady state you calculate the params objects is in a
+#' file named according to the pattern
 #'
+#' # Customisation
 #'
-#' The fishing control currently assumes that each species is selected by only one gear.
-#' It allows the user to change the parameters for that gear. It also enforces
-#' the same effort for all gears. It sets all efforts to that for the first
-#' gear and then allows the user to change that single effort value.
+#' You can customise which functionality is included in the app via the
+#' `controls` and `tabs` arguments. You can remove some of the controls and
+#' tabs by providing shorter lists to those arguments. You can also add your
+#' own controls and tabs.
 #'
+#' For an entry "foo" in the `controls` list there needs to be a function
+#' "fooControlUI" that defines the input elements and a function "fooControl"
+#' that processes those inputs to change the params object. You can model your
+#' own control sections on the existing ones that you find in the file
+#' `R/tuneParams_controls.R`.
 #'
-#' For an entry "foo" there needs to be a function "fooInputs" that
-#' defines the input elements and a function "foo" that processes those inputs
-#' to change the params object.
+#' For any entry "foo" in the `tabs` list there needs to be a function
+#' "fooTabUI" that defines the tab layout and a function "fooTab"
+#' that calculates the outputs to be displayed on the tab. You can model your
+#' own tabs on the existing ones that you find in the file
+#' `R/tuneParams_tabs.R`.
+#'
+#' # Limitations
+#'
+#' The fishing control currently assumes that each species is selected by only
+#' one gear. It allows the user to change the parameters for that gear. It also
+#' enforces the same effort for all gears. It sets all efforts to that for the
+#' first gear and then allows the user to change that single effort value.
+#'
+#' @param p MizerParams object to tune. If missing, the gadget tries to recover
+#'   information from log files left over from aborted previous runs.
+#' @param controls A list with the names of input parameter control sections
+#'   that should be displayed in the sidebar. See "Customisation" below.
+#' @param tabs A list with the names of the tabs that should be displayed in
+#'   the main section. See "Customisation" below.
+#' @param ... Other params needed by individual tabs.
 #'
 #' @return The tuned MizerParams object
 #' @md
@@ -117,9 +139,17 @@ tuneParams <- function(p,
                     data.step = 5,
                     data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
                 ),
-                actionButton("done", "Done", icon = icon("check"),
-                             onclick = "setTimeout(function(){window.close();},500);"),
-                actionButton("help", "Press for instructions"),
+                introBox(
+                    actionButton("done", "Done", icon = icon("check"),
+                                 onclick = "setTimeout(function(){window.close();},500);"),
+                    data.step = 8,
+                    data.intro = "When you press this button, the gadget will close and the current params object will be returned. The undo log will be cleared."
+                ),
+                introBox(
+                    actionButton("help", "Instructions"),
+                    data.step = 9,
+                    data.intro = "You can always run this introduction again by clicking here. You can find further information on the tuneParams() documentation page."
+                ),
                 tags$br(),
                 introBox(uiOutput("sp_sel"),
                          data.step = 2,
