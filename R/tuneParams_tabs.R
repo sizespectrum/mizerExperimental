@@ -334,8 +334,9 @@ growthTab <- function(input, output, session, params, logs, ...) {
                 mutate(a = p@species_params[Species, "a"],
                        b = p@species_params[Species, "b"],
                        k_vb = p@species_params[Species, "k_vb"],
-                       t0 = p@species_params[Species, "t0"],
-                       L_inf = (p@species_params[Species, "w_inf"] / a)^(1 / b),
+                       t0 = p@species_params[Species, "t0"]) %>%
+                filter(!is.na(k_vb)) %>%
+                mutate(L_inf = (p@species_params[Species, "w_inf"] / a)^(1 / b),
                        Size = a * (L_inf * (1 - exp(-k_vb * (Age - t0))))^b) %>%
                 select(names(gc))
 
