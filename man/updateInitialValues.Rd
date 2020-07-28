@@ -11,7 +11,7 @@ updateInitialValues(params)
 }
 \value{
 The MizerParams object with updated \code{initial_n} and
-  \code{initial_n_pp} slots.
+\code{initial_n_pp} slots.
 }
 \description{
 Recalculates the steady-state abundances in a fixed background

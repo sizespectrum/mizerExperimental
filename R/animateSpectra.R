@@ -19,8 +19,10 @@
 #' @export
 #' @family plotting functions
 #' @examples
-#' sim <- project(NS_params, t_max = 15, effort = 1)
+#' \dontrun{
+#' sim <- project(NS_params, t_max = 15, effort = 1, progress_bar = FALSE)
 #' animateSpectra(sim)
+#' }
 animateSpectra <- function(sim,
                            species,
                            wlim = c(NA, NA),

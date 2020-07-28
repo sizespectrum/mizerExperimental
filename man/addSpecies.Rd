@@ -40,7 +40,7 @@ efficiencies of the new species are set so as to keep them at that low level.
 \details{
 After adding the new species, the background species are not retuned and the
 system is not run to steady state. You would have to call
-\code{\link{retuneBackground}} and \code{\link{steady}} explicitly.
+\code{\link[=retuneBackground]{retuneBackground()}} and \code{\link[=steady]{steady()}} explicitly.
 }
 \examples{
 \dontrun{
@@ -69,10 +69,10 @@ species_params <- data.frame(
 )
 params <- addSpecies(params, species_params)
 plotSpectra(params)
-sim <- project(params, t_max=50)
+sim <- project(params, t_max=50, progress_bar = FALSE)
 plotBiomass(sim)
 }
 }
 \seealso{
-\code{\link{removeSpecies}}
+\code{\link[=removeSpecies]{removeSpecies()}}
 }

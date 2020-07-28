@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rescale System — rescaleSystem • mizerExperimental</title>
+<title>Changelog • mizerExperimental</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,7 @@
 
 
 
-<meta property="og:title" content="Rescale System — rescaleSystem" />
-<meta property="og:description" content="The abundances in mizer and some rates depend on the size of the area to
-which they refer. So they could be given per square meter or per square
-kilometer or for an entire study area or any other choice of yours. This
-function allows you to change the size by automatically changing the
-abundances and rates accordingly." />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -63,7 +58,7 @@ abundances and rates accordingly." />
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -127,62 +122,26 @@ abundances and rates accordingly." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Rescale System</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/manipulateParams.R'><code>R/manipulateParams.R</code></a></small>
-    <div class="hidden name"><code>rescaleSystem.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>The abundances in mizer and some rates depend on the size of the area to
-which they refer. So they could be given per square meter or per square
-kilometer or for an entire study area or any other choice of yours. This
-function allows you to change the size by automatically changing the
-abundances and rates accordingly.</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>rescaleSystem</span>(<span class='no'>params</span>, <span class='no'>factor</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>params</th>
-      <td><p>A mizer params object</p></td>
-    </tr>
-    <tr>
-      <th>factor</th>
-      <td><p>The factor by which the size is rescaled with respect to which
-the abundances are given.</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>An object of type MizerParams</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If you rescale the system by a factor \(c\) then this function makes the
-following rescalings in the params object:</p><ul>
-<li><p>The initial abundances <code>initial_n</code>, <code>initial_n_pp</code> and
-<code>initial_n_other</code> are rescaled by \(c\).</p></li>
-<li><p>The search volume is rescaled by \(1/c\).</p></li>
-<li><p>The resource carrying capacity is rescaled by \(c\)</p></li>
-<li><p>The maximum reproduction rate \(R_{max}\), if used, is rescaled by
-\(c\).</p></li>
-</ul><p>The effect of this is that the dynamics of the rescaled system are identical
-to those of the unscaled system, in the sense that it does not matter whether
-one first calls <code>rescaleSystem()</code> and then runs a simulation with
-<code>project()</code> or whether one first runs a simulation and then rescales the
-resulting abundances.</p>
-<p>Note that if you use non-standard resource dynamics or other components then you
-may need to rescale additional parameters that appear in those dynamics.</p>
-
+    <div id="mizerexperimental-0119004" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1.9004">
+<a href="#mizerexperimental-0119004" class="anchor"></a>mizerExperimental 0.1.1.9004</h1>
+<ul>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<li>Added <code><a href="../reference/constantEggRDI.html">constantEggRDI()</a></code> to allow keeping egg densities fixed.</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 

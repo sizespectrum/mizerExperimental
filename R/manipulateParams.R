@@ -1,9 +1,8 @@
-
 #' Designate species as background species
 #'
 #' Marks the specified set of species as background species. Background species
 #' are handled differently in some plots and their abundance is automatically
-#' adjusted in \code{\link{addSpecies}} to keep the community close to the
+#' adjusted in [addSpecies()] to keep the community close to the
 #' Sheldon spectrum.
 #'
 #' @param object An object of class \linkS4class{MizerParams} or
@@ -11,12 +10,12 @@
 #' @param species Name or vector of names of the species to be designated as
 #'   background species. By default this is set to all species.
 #'
-#' @return An object of the same class as the \code{object} argument
+#' @return An object of the same class as the `object` argument
 #' @export
 #' @examples
 #' \dontrun{
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
-#' sim <- project(params, effort=1, t_max=20, t_save = 0.2)
+#' sim <- project(params, effort=1, t_max=20, t_save = 0.2, progress_bar = FALSE)
 #' sim <- markBackground(sim, species = c("Sprat", "Sandeel",
 #'                                        "N.pout", "Dab", "Saithe"))
 #' plotSpectra(sim)
@@ -46,7 +45,7 @@ markBackground <- function(object, species) {
 #'
 #' @param params A \linkS4class{MizerParams} object
 #'
-#' @return An object of type \code{MizerParams}
+#' @return An object of type `MizerParams`
 #' @seealso markBackground
 #' @export
 retuneBackground <- function(params) {
@@ -111,7 +110,7 @@ retuneBackground <- function(params) {
 #' @param cutoff Species with an abundance at maturity size that is less than
 #'               cutoff times community abundance will be removed. Default 1e-3.
 #'
-#' @return An object of type \code{MizerParams}
+#' @return An object of type `MizerParams`
 #' @export
 pruneSpecies <- function(params, cutoff = 1e-3) {
     no_sp <- nrow(params@species_params)  # Number of species
@@ -143,6 +142,13 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #'
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
+#' @examples
+#' \dontrun{
+#' params <- NS_params
+#' species_params(params)$species
+#' params <- removeSpecies(params, c("Cod", "Haddock"))
+#' species_params(params)$species
+#' }
 removeSpecies <- function(params, species) {
     no_sp <- length(params@w_min_idx)
     if (is.logical(species)) {
@@ -193,7 +199,7 @@ removeSpecies <- function(params, species) {
 #' then retunes the reproductive efficiencies accordingly.
 #'
 #' Does not run the system to steady state. For that you should call
-#' \code{\link{steady}} explicitly afterwards.
+#' [steady()] explicitly afterwards.
 #'
 #' @param params A mizer params object
 #' @param factor The factor by which the abundance of each species is multiplied.
@@ -242,8 +248,8 @@ rescaleAbundance <- function(params, factor) {
 #' If you rescale the system by a factor \eqn{c} then this function makes the
 #' following rescalings in the params object:
 #' \itemize{
-#' \item The initial abundances \code{initial_n}, \code{initial_n_pp} and
-#'   \code{initial_n_other} are rescaled by \eqn{c}.
+#' \item The initial abundances `initial_n`, `initial_n_pp` and
+#'   `initial_n_other` are rescaled by \eqn{c}.
 #' \item The search volume is rescaled by \eqn{1/c}.
 #' \item The resource carrying capacity is rescaled by \eqn{c}
 #' \item The maximum reproduction rate \eqn{R_{max}}, if used, is rescaled by
@@ -251,8 +257,8 @@ rescaleAbundance <- function(params, factor) {
 #' }
 #' The effect of this is that the dynamics of the rescaled system are identical
 #' to those of the unscaled system, in the sense that it does not matter whether
-#' one first calls \code{rescaleSystem} and then runs a simulation with
-#' \code{project} or whether one first runs a simulation and then rescales the
+#' one first calls [rescaleSystem()] and then runs a simulation with
+#' [project()] or whether one first runs a simulation and then rescales the
 #' resulting abundances.
 #'
 #' Note that if you use non-standard resource dynamics or other components then you
@@ -316,7 +322,7 @@ rescaleSystem <- function(params, factor) {
 #' \dontrun{
 #' replace <- c(Cod = "Kabeljau", Haddock = "Schellfisch")
 #' params <- renameSpecies(NS_params, replace)
-#' params@species_params$species
+#' species_params(params)$species
 #' }
 renameSpecies <- function(params, replace) {
     replace[] <- as.character(replace)
@@ -386,7 +392,7 @@ renameSpecies <- function(params, replace) {
 #'
 #' After adding the new species, the background species are not retuned and the
 #' system is not run to steady state. You would have to call
-#' \code{\link{retuneBackground}} and \code{\link{steady}} explicitly.
+#' [retuneBackground()] and [steady()] explicitly.
 #'
 #' @param params A mizer params object for the original system.
 #' @param species_params The species parameters of the new species we
@@ -398,7 +404,7 @@ renameSpecies <- function(params, replace) {
 #'   involving a new species are set to 1.
 #'
 #' @return An object of type \linkS4class{MizerParams}
-#' @seealso \code{\link{removeSpecies}}
+#' @seealso [removeSpecies()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -427,7 +433,7 @@ renameSpecies <- function(params, replace) {
 #' )
 #' params <- addSpecies(params, species_params)
 #' plotSpectra(params)
-#' sim <- project(params, t_max=50)
+#' sim <- project(params, t_max=50, progress_bar = FALSE)
 #' plotBiomass(sim)
 #' }
 addSpecies <- function(params, species_params, gear_params = data.frame(),
@@ -591,13 +597,13 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
 #'
 #' Recalculates the steady-state abundances in a fixed background
 #' given by the current abundances, keeping the abundances fixed in the
-#' smallest size class for each species. Then readjusts the \code{erepro}
+#' smallest size class for each species. Then readjusts the `erepro`
 #' values.
 #'
 #' @param params A MizerParams object
 #'
-#' @return The MizerParams object with updated \code{initial_n} and
-#'   \code{initial_n_pp} slots.
+#' @return The MizerParams object with updated `initial_n` and
+#'   `initial_n_pp` slots.
 #' @export
 updateInitialValues <- function(params) {
     assert_that(is(params, "MizerParams"))

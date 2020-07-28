@@ -42,8 +42,10 @@ Default is TRUE.}
 Animation of the abundance spectra
 }
 \examples{
-sim <- project(NS_params, t_max = 15, effort = 1)
+\dontrun{
+sim <- project(NS_params, t_max = 15, effort = 1, progress_bar = FALSE)
 animateSpectra(sim)
+}
 }
 \seealso{
 Other plotting functions: 

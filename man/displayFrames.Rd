@@ -37,6 +37,7 @@ The recommended way is to obtain the data frames using one of the supplied
 functions, e.g., \code{\link{getBiomassFrame}}, \code{\link{getSSBFrame}}.
 }
 \examples{
+\dontrun{
 # Set up example MizerParams and MizerSim objects
 params <- suppressMessages(newMultispeciesParams(NS_species_params_gears, inter))
 sim0 <- project(params, effort=0, t_max=20, progress_bar = FALSE)
@@ -45,9 +46,10 @@ sim1 <- project(params, effort=1, t_max=20, progress_bar = FALSE)
 # Display biomass from each simulation next to each other
 displayFrames(getBiomassFrame(sim0), getBiomassFrame(sim1), params)
 }
+}
 \seealso{
 \code{\link{plotting_functions}},
-  \code{\link{getBiomassFrame}}, \code{\link{getSSBFrame}}
+\code{\link{getBiomassFrame}}, \code{\link{getSSBFrame}}
 
 Other frame functions: 
 \code{\link{getBiomassFrame}()},

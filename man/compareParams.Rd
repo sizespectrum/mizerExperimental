@@ -15,10 +15,12 @@ compareParams(params1, params2)
 Compare two MizerParams objects and print out differences
 }
 \examples{
+\dontrun{
 sp1 <- NS_species_params
 params1 <- newMultispeciesParams(sp1)
 sp2 <- sp1
 sp2$w_mat[1] <- 10
 params2 <- newMultispeciesParams(sp2)
 compareParams(params1, params2)
+}
 }

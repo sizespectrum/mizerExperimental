@@ -13,8 +13,8 @@ rescaleAbundance(params, factor)
 This can be specified in two ways:
 \itemize{
 \item A named numeric vector where the name indicates the species and the
-  value gives the factor for that species. Only the named species are
-  affected.
+value gives the factor for that species. Only the named species are
+affected.
 \item  A number that gives the factor for all foreground species.
 }}
 }
@@ -27,5 +27,5 @@ then retunes the reproductive efficiencies accordingly.
 }
 \details{
 Does not run the system to steady state. For that you should call
-\code{\link{steady}} explicitly afterwards.
+\code{\link[=steady]{steady()}} explicitly afterwards.
 }

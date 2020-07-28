@@ -76,7 +76,7 @@ displayFrames." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
       </span>
     </div>
 
@@ -90,6 +90,21 @@ displayFrames." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -185,13 +200,15 @@ all species is plotted as well. Default is FALSE.</p></td>
 <code><a href='getSSBFrame.html'>getSSBFrame</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Set up example MizerParams and MizerSim objects</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+<span class='co'># Set up example MizerParams and MizerSim objects</span>
 <span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressMessages</a></span>(<span class='fu'>newMultispeciesParams</span>(<span class='no'>NS_species_params_gears</span>, <span class='no'>inter</span>))
 <span class='no'>sim0</span> <span class='kw'>&lt;-</span> <span class='fu'>project</span>(<span class='no'>params</span>, <span class='kw'>effort</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='kw'>t_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>sim1</span> <span class='kw'>&lt;-</span> <span class='fu'>project</span>(<span class='no'>params</span>, <span class='kw'>effort</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>t_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># Display biomass from each simulation next to each other</span>
-<span class='fu'><a href='displayFrames.html'>displayFrames</a></span>(<span class='fu'>getBiomassFrame</span>(<span class='no'>sim0</span>), <span class='fu'>getBiomassFrame</span>(<span class='no'>sim1</span>), <span class='no'>params</span>)</div><div class='img'><img src='getBiomassFrame-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='displayFrames.html'>displayFrames</a></span>(<span class='fu'>getBiomassFrame</span>(<span class='no'>sim0</span>), <span class='fu'>getBiomassFrame</span>(<span class='no'>sim1</span>), <span class='no'>params</span>)</div><div class='img'><img src='getBiomassFrame-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -207,7 +224,7 @@ all species is plotted as well. Default is FALSE.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

@@ -22,6 +22,6 @@ Changes the names of species in a MizerParams object
 \dontrun{
 replace <- c(Cod = "Kabeljau", Haddock = "Schellfisch")
 params <- renameSpecies(NS_params, replace)
-params@species_params$species
+species_params(params)$species
 }
 }

@@ -19,13 +19,13 @@ An object of the same class as the \code{object} argument
 \description{
 Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
-adjusted in \code{\link{addSpecies}} to keep the community close to the
+adjusted in \code{\link[=addSpecies]{addSpecies()}} to keep the community close to the
 Sheldon spectrum.
 }
 \examples{
 \dontrun{
 params <- newMultispeciesParams(NS_species_params_gears, inter)
-sim <- project(params, effort=1, t_max=20, t_save = 0.2)
+sim <- project(params, effort=1, t_max=20, t_save = 0.2, progress_bar = FALSE)
 sim <- markBackground(sim, species = c("Sprat", "Sandeel",
                                        "N.pout", "Dab", "Saithe"))
 plotSpectra(sim)
