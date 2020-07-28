@@ -3,6 +3,7 @@
 export(addSpecies)
 export(animateSpectra)
 export(compareParams)
+export(constantEggRDI)
 export(displayFrames)
 export(getBiomassFrame)
 export(getSSBFrame)

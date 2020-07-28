@@ -41,6 +41,10 @@ most recent released version of mizer.
 
 ## Features
 
+  - Functions and a shiny app for interactively tuning parameters.
+
+  - A function for keeping egg densities constant.
+
   - `getYieldVsFcurve()` for calculating and plotting yield curve.
 
   - Animated plot of mizer simulation with `animateSpectra()`
@@ -51,5 +55,3 @@ most recent released version of mizer.
 
   - New wrapper function `newSheldonParams()` that sets up a single
     species in a power-law background.
-
-  - Functions and a shiny app for interactively tuning parameters.

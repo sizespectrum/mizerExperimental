@@ -1,9 +1,10 @@
 destination: docs
 
 reference:
-- title: New model setup functions
+- title: New model functions
   contents:
   - newSheldonParams
+  - constantEggRDI
 - title: New plotting functions
   contents:
   - animateSpectra
