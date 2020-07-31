@@ -132,7 +132,7 @@
     <p>Compare two MizerParams objects and print out differences</p>
     </div>
 
-    <pre class="usage"><span class='fu'>compareParams</span>(<span class='no'>params1</span>, <span class='no'>params2</span>)</pre>
+    <pre class="usage"><span class='fu'>compareParams</span>(<span class='kw'>params1</span>, <span class='kw'>params2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,17 +150,16 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='no'>sp1</span> <span class='kw'>&lt;-</span> <span class='no'>NS_species_params</span>
-<span class='no'>params1</span> <span class='kw'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='no'>sp1</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='no'>sp2</span> <span class='kw'>&lt;-</span> <span class='no'>sp1</span>
-<span class='no'>sp2</span>$<span class='no'>w_mat</span>[<span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fl'>10</span>
-<span class='no'>params2</span> <span class='kw'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='no'>sp2</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='fu'>compareParams</span>(<span class='no'>params1</span>, <span class='no'>params2</span>)</div><div class='output co'>#&gt; [1] "The following species parameters differ: Component “w_mat”: Mean relative difference: 0.2307692, Component “h”: Mean relative difference: 0.08213352, Component “ks”: Mean relative difference: 0.09163879, Component “w_mat25”: Mean relative difference: 0.2307692"
+<span class='kw'>sp1</span> <span class='op'>&lt;-</span> <span class='kw'>NS_species_params</span>
+<span class='kw'>params1</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='kw'>sp1</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='kw'>sp2</span> <span class='op'>&lt;-</span> <span class='kw'>sp1</span>
+<span class='kw'>sp2</span><span class='op'>$</span><span class='kw'>w_mat</span>[<span class='fl'>1</span>] <span class='op'>&lt;-</span> <span class='fl'>10</span>
+<span class='kw'>params2</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='kw'>sp2</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='fu'>compareParams</span>(<span class='kw'>params1</span>, <span class='kw'>params2</span>)</div><div class='output co'>#&gt; [1] "The following species parameters differ: Component “w_mat”: Mean relative difference: 0.2307692, Component “h”: Mean relative difference: 0.08213352, Component “ks”: Mean relative difference: 0.09163879, Component “w_mat25”: Mean relative difference: 0.2307692"
 #&gt; [1] "The maturity slots do not agree: Mean relative difference: 0.07096149"
 #&gt; [1] "The psi slots do not agree: Mean relative difference: 0.2512933"
 #&gt; [1] "The intake_max slots do not agree: Mean relative difference: 0.08213352"
 #&gt; [1] "The metab slots do not agree: Mean relative difference: 0.09163879"
 #&gt; [1] "The gear_params slots do not agree: Component “knife_edge_size”: Mean relative difference: 0.2307692"
-#&gt; [1] "The selectivity slots do not agree: Mean absolute difference: 1"</div><div class='input'># }
-</div></pre>
+#&gt; [1] "The selectivity slots do not agree: Mean absolute difference: 1"</div><div class='input'><span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

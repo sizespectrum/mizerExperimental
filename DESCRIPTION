@@ -11,7 +11,7 @@ Description: This mizer extension package collects contributions from the mizer
 License: GPL-3
 Depends:
     R (>= 3.1),
-    mizer (>= 2.0.2)
+    mizer (>= 2.0.3)
 Imports:
     assertthat,
     cubelyr,

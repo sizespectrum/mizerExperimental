@@ -138,7 +138,7 @@ adjusted in <code><a href='addSpecies.html'>addSpecies()</a></code> to keep the 
 Sheldon spectrum.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>markBackground</span>(<span class='no'>object</span>, <span class='no'>species</span>)</pre>
+    <pre class="usage"><span class='fu'>markBackground</span>(<span class='kw'>object</span>, <span class='kw'>species</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,11 +161,10 @@ background species. By default this is set to all species.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='no'>NS_species_params_gears</span>, <span class='no'>inter</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'>project</span>(<span class='no'>params</span>, <span class='kw'>effort</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>t_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>t_save</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'>markBackground</span>(<span class='no'>sim</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sprat"</span>, <span class='st'>"Sandeel"</span>,
+<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='kw'>NS_species_params_gears</span>, <span class='kw'>inter</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span>(<span class='kw'>params</span>, effort=<span class='fl'>1</span>, t_max=<span class='fl'>20</span>, t_save = <span class='fl'>0.2</span>, progress_bar = <span class='fl'>FALSE</span>)
+<span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>markBackground</span>(<span class='kw'>sim</span>, species = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sprat"</span>, <span class='st'>"Sandeel"</span>,
                                        <span class='st'>"N.pout"</span>, <span class='st'>"Dab"</span>, <span class='st'>"Saithe"</span>))
-<span class='fu'>plotSpectra</span>(<span class='no'>sim</span>)</div><div class='img'><img src='markBackground-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='fu'>plotSpectra</span>(<span class='kw'>sim</span>)</div><div class='img'><img src='markBackground-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

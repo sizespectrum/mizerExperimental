@@ -140,7 +140,7 @@ at the last time step of the simulation, which might not have converged,
 or might oscillate.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getYieldVsFcurve</span>(<span class='no'>params</span>, <span class='no'>ixSpecies</span>, <span class='kw'>nSteps</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>Fmax</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>bPlot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>getYieldVsFcurve</span>(<span class='kw'>params</span>, <span class='kw'>ixSpecies</span>, nSteps = <span class='fl'>10</span>, Fmax = <span class='fl'>3</span>, bPlot = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,8 +177,7 @@ or might oscillate.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='no'>NS_species_params_gears</span>, <span class='no'>inter</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>getYieldVsFcurve</span>(<span class='no'>params</span>,<span class='fl'>11</span>,<span class='kw'>bPlot</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='img'><img src='getYieldVsFcurve-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='kw'>NS_species_params_gears</span>, <span class='kw'>inter</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'>getYieldVsFcurve</span>(<span class='kw'>params</span>,<span class='fl'>11</span>,bPlot=<span class='fl'>TRUE</span>)</div><div class='img'><img src='getYieldVsFcurve-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
