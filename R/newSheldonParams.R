@@ -178,6 +178,7 @@ newSheldonParams <- function(w_inf = 100,
     initial_n[, ] <- 0
     mumu <- mu0 * w^(n - 1)  # Death rate
     params@mu_b[] <- mumu
+    comment(params@mu_b) <- "power-law"
     i_inf <- sum(params@w <= w_inf)  # index of asymptotic size
     idx <- 1:(i_inf - 1)
     idxs <- 1:i_inf
