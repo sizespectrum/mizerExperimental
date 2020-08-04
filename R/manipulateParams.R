@@ -163,34 +163,39 @@ removeSpecies <- function(params, species) {
         }
     }
     keep <- !species
-
-    params@linecolour <- params@linecolour[!(names(params@linecolour) %in%
+    p <- params
+    p@linecolour <- params@linecolour[!(names(params@linecolour) %in%
                                                  params@species_params$species[species])]
-    params@linetype <- params@linetype[!(names(params@linetype) %in%
+    p@linetype <- params@linetype[!(names(params@linetype) %in%
                                              params@species_params$species[species])]
-    params@psi <- params@psi[keep, , drop = FALSE]
-    params@maturity <- params@maturity[keep, , drop = FALSE]
-    params@initial_n <- params@initial_n[keep, , drop = FALSE]
-    params@intake_max <- params@intake_max[keep, , drop = FALSE]
-    params@search_vol <- params@search_vol[keep, , drop = FALSE]
-    params@metab <- params@metab[keep, , drop = FALSE]
+    p@psi <- params@psi[keep, , drop = FALSE]
+    p@maturity <- params@maturity[keep, , drop = FALSE]
+    p@initial_n <- params@initial_n[keep, , drop = FALSE]
+    p@intake_max <- params@intake_max[keep, , drop = FALSE]
+    p@search_vol <- params@search_vol[keep, , drop = FALSE]
+    p@metab <- params@metab[keep, , drop = FALSE]
     if (length(dim(params@ft_pred_kernel_e)) == 2) {
-        params@ft_pred_kernel_e <- params@ft_pred_kernel_e[keep, , drop = FALSE]
+        p@ft_pred_kernel_e <- params@ft_pred_kernel_e[keep, , drop = FALSE]
     }
     if (length(dim(params@ft_pred_kernel_p)) == 2) {
-        params@ft_pred_kernel_p <- params@ft_pred_kernel_p[keep, , drop = FALSE]
+        p@ft_pred_kernel_p <- params@ft_pred_kernel_p[keep, , drop = FALSE]
     }
-    params@ft_mask <- params@ft_mask[keep, , drop = FALSE]
-    params@mu_b <- params@mu_b[keep, , drop = FALSE]
-    params@species_params <- params@species_params[keep, , drop = FALSE]
-    params@interaction <- params@interaction[keep, keep, drop = FALSE]
-    params@selectivity <- params@selectivity[, keep, , drop = FALSE]
-    params@catchability <- params@catchability[, keep, drop = FALSE]
-    params@w_min_idx <- params@w_min_idx[keep]
-    params@A <- params@A[keep]
+    p@ft_mask <- params@ft_mask[keep, , drop = FALSE]
+    p@mu_b <- params@mu_b[keep, , drop = FALSE]
+    p@species_params <- params@species_params[keep, , drop = FALSE]
+    p@interaction <- params@interaction[keep, keep, drop = FALSE]
+    p@selectivity <- params@selectivity[, keep, , drop = FALSE]
+    p@catchability <- params@catchability[, keep, drop = FALSE]
+    p@w_min_idx <- params@w_min_idx[keep]
+    p@A <- params@A[keep]
 
-    validObject(params)
-    return(params)
+    # Preserve comments
+    for (slot in (slotNames(p))) {
+        comment(slot(p, slot)) <- comment(slot(params, slot))
+    }
+
+    validObject(p)
+    return(p)
 }
 
 #' Rescale Abundance
@@ -531,8 +536,11 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     p@rr_pp <- params@rr_pp
     p@resource_dynamics <- params@resource_dynamics
     p@resource_params <- params@resource_params
-    # Preserve comment
+    # Preserve comments
     comment(p) <- comment(params)
+    for (slot in (slotNames(p))) {
+        comment(slot(p, slot)) <- comment(slot(params, slot))
+    }
 
     # initial solution ----
     p@initial_n[old_sp, ] <- params@initial_n
