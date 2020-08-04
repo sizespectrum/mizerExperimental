@@ -338,14 +338,12 @@ renameSpecies <- function(params, replace) {
     names(species) <- NULL
     rownames(params@species_params) <- species
     params@species_params$species <- species
-    params@gear_params$species <- as.character(params@gear_params$species)
-    for (i in 1:nrow(params@gear_params)) {
+    for (i in seq_len(nrow(params@gear_params))) {
         if (params@gear_params$species[[i]] %in% names(replace)) {
             params@gear_params$species[[i]] <-
                 replace[[params@gear_params$species[[i]]]]
         }
     }
-    params@gear_params$species <- as.factor(params@gear_params$species)
     linenames <- names(params@linecolour)
     names(linenames) <- linenames
     linenames[to_replace] <- replace
@@ -370,9 +368,6 @@ renameSpecies <- function(params, replace) {
     dimnames(params@interaction)$prey <- species
     dimnames(params@selectivity)$sp <- species
     dimnames(params@catchability)$sp <- species
-
-    # TODO: need to rename species in gear_params,
-    # then unskip the test for this function
 
     validObject(params)
     return(params)
@@ -442,6 +437,7 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     assert_that(is(params, "MizerParams"),
                 is.data.frame(species_params),
                 is.data.frame(gear_params))
+    gear_params <- mizer:::validGearParams(gear_params, species_params)
     species_params <- mizer:::validSpeciesParams(species_params)
     if (any(species_params$species %in% params@species_params$species)) {
         stop("You can not add species that are already there.")
@@ -489,13 +485,15 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
                                   stringsAsFactors = FALSE)
 
     # combine gear params ----
-    gear_params <- mizer:::validGearParams(gear_params,
-                                           species_params)
     # Make sure that all columns exist in both data frames
-    missing <- setdiff(names(params@gear_params), names(gear_params))
-    gear_params[missing] <- NA
-    missing <- setdiff(names(gear_params), names(params@gear_params))
-    params@gear_params[missing] <- NA
+    if (nrow(gear_params) > 0) {
+        missing <- setdiff(names(params@gear_params), names(gear_params))
+        gear_params[missing] <- NA
+    }
+    if (nrow(params@gear_params) > 0) {
+        missing <- setdiff(names(gear_params), names(params@gear_params))
+        params@gear_params[missing] <- NA
+    }
     combi_gear_params <- rbind(params@gear_params, gear_params,
                                stringsAsFactors = FALSE)
 
