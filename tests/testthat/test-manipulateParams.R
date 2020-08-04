@@ -85,6 +85,7 @@ test_that("addSpecies handles gear params correctly", {
     expect_error(addSpecies(p, sp, gp, initial_effort = effort),
                  "The names of the `initial_effort` do not match the names of gears.")
 })
+
 test_that("addSpecies handles interaction matrix correctly", {
     p <- newTraitParams(no_sp = 2)
     p@interaction <- matrix(1:4/8, ncol = 2)
@@ -125,6 +126,32 @@ test_that("removeSpecies works", {
     sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
     sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
     expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
+})
+test_that("adding and then removing species leaves params unaltered", {
+    params <- NS_params
+    # add comments to test that they will be preserved as well
+    comment(params) <- "test"
+    for (slot in (slotNames(params))) {
+        comment(slot(params, slot)) <- slot
+    }
+    # two arbitrary species
+    sp <- data.frame(species = c("new1", "new2"),
+                     w_inf = c(10, 100),
+                     k_vb = c(1, 1))
+    params2 <- addSpecies(params, sp) %>%
+        removeSpecies(c("new1", "new2"))
+
+    # For now the linecolour and linetype are not preserved
+    # TODO: fix this in the next overhaul of linecolour and linetype code
+    params2@linecolour <- params@linecolour
+    params2@linetype <- params@linetype
+    params2@species_params$linecolour <- NULL
+    params2@species_params$linetype <- NULL
+    # Currently addSpecies still changes RDD
+    # TODO: fix this
+    params2@rates_funcs$RDD <- params@rates_funcs$RDD
+
+    expect_equal(params, params2)
 })
 
 

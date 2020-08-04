@@ -442,8 +442,8 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     assert_that(is(params, "MizerParams"),
                 is.data.frame(species_params),
                 is.data.frame(gear_params))
-    gear_params <- mizer:::validGearParams(gear_params, species_params)
     species_params <- mizer:::validSpeciesParams(species_params)
+    gear_params <- mizer:::validGearParams(gear_params, species_params)
     if (any(species_params$species %in% params@species_params$species)) {
         stop("You can not add species that are already there.")
     }
