@@ -104,6 +104,12 @@
 </pre></div>
 <p>before trying again to install <code>mizerExperimental</code>.</p>
 <p>You may be prompted to update some of your existing packages. The one package that you should always update is the <code>mizer</code> package, because the <code>mizerExperimental</code> package will always be designed to work with the most recent released version of mizer.</p>
+<p>Should you get an error message saying something like: “Error: Failed to install <code>mizerExperimental</code> from GitHub: (converted from warning) …” Then you could try</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span>(<span class="st">"R_REMOTES_NO_ERRORS_FROM_WARNINGS"</span> = <span class="st">"true"</span>)
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"sizespectrum/mizerExperimental"</span>)
+</pre></div>
+<p>This is discussed at <a href="https://github.com/r-lib/remotes/issues/403" class="uri">https://github.com/r-lib/remotes/issues/403</a></p>
 </div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">

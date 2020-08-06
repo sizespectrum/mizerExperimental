@@ -39,6 +39,17 @@ package that you should always update is the `mizer` package, because
 the `mizerExperimental` package will always be designed to work with the
 most recent released version of mizer.
 
+Should you get an error message saying something like: “Error: Failed to
+install `mizerExperimental` from GitHub: (converted from warning) …”
+Then you could try
+
+``` r
+Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")
+remotes::install_github("sizespectrum/mizerExperimental")
+```
+
+This is discussed at <https://github.com/r-lib/remotes/issues/403>
+
 ## Features
 
   - Functions and a shiny app for interactively tuning parameters.
