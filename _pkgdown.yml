@@ -27,3 +27,4 @@ reference:
 - title: Others
   contents:
   - compareParams
+  - customFunction

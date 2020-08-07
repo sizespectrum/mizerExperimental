@@ -71,3 +71,5 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
 
 * New wrapper function `newSheldonParams()` that sets up a single species in a
   power-law background.
+  
+* New function `customFunction()` to allow users to overwrite mizer functions.
