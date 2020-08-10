@@ -26,5 +26,7 @@ reference:
   - pruneSpecies
 - title: Others
   contents:
+  - projectToSteady
+  - distanceRDI
   - compareParams
   - customFunction

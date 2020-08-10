@@ -39,6 +39,7 @@ Collate:
     manipulateParams.R
     mizerExperimental-package.R
     newSheldonParams.R
+    projectToSteady.R
     tuneParams.R
     tuneParams_controls.R
     tuneParams_tabs.R
