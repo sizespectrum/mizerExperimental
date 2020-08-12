@@ -29,7 +29,7 @@ compareParams <- function(params1, params2) {
     sp_diff2 <- setdiff(sp_names1, sp_names2)
     if (length(sp_diff2) > 0) {
         print(paste("params2 has the following additional species parameters:",
-                    toString(sp_diff1)))
+                    toString(sp_diff2)))
     }
     sp_names <- intersect(sp_names1, sp_names2)
 
