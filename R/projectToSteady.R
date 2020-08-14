@@ -31,7 +31,8 @@ distanceRDI <- function(params, current, previous) {
 #' @family distance functions
 #' @export
 distanceLogN <- function(params, current, previous) {
-    sum((log(current$n) - log(previous$n))^2)
+    sel <- current$n > 0 & previous$n > 0
+    sum((log(current$n[sel]) - log(previous$n[sel]))^2)
 }
 
 #' Project to steady state
