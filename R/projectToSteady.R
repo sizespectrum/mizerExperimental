@@ -1,13 +1,37 @@
 #' Measure distance between current and previous state in terms of RDI
 #'
-#' @param current A named list with entries `n`, `n_pp`, `n_other` and
-#'   `rates` describing the current state
-#' @param previous A named list with entries `n`, `n_pp`, `n_other` and
-#'   `rates` describing the previous state
+#' This function can be used in [projectToSteady()] to decide when sufficient
+#' convergence to steady state has been achieved.
+#'
+#' @param current A named list with entries `n`, `n_pp` and `n_other`
+#'   describing the current state
+#' @param previous A named list with entries `n`, `n_pp` and `n_other`
+#'   describing the previous state
 #' @return A number expressing a distance between current and previous state.
+#' @family distance functions
 #' @export
-distanceRDI <- function(current, previous) {
-    max(abs((current$rates$rdi - previous$rates$rdi) / previous$rates$rdi))
+distanceRDI <- function(params, current, previous) {
+    current_rdi <- getRDI(params, n = current$n, n_pp = current$n_pp,
+                          n_other = current$n_other)
+    previous_rdi <- getRDI(params, n = previous$n, n_pp = previous$n_pp,
+                          n_other = previous$n_other)
+    max(abs((current_rdi - previous_rdi) / previous_rdi))
+}
+
+#' Measure mean squared distance between log(N) in current and previous state
+#'
+#' This function can be used in [projectToSteady()] to decide when sufficient
+#' convergence to steady state has been achieved.
+#'
+#' @param current A named list with entries `n`, `n_pp` and `n_other`
+#'   describing the current state
+#' @param previous A named list with entries `n`, `n_pp` and `n_other`
+#'   describing the previous state
+#' @return A number expressing a distance between current and previous state.
+#' @family distance functions
+#' @export
+distanceLogN <- function(params, current, previous) {
+    sum((log(current$n) - log(previous$n))^2)
 }
 
 #' Project to steady state
@@ -21,20 +45,23 @@ distanceRDI <- function(current, previous) {
 #' @param distance_func A function that will be called after every `t_per` years
 #'   with both the previous and the new state and that should return a number
 #'   that in some sense measures the distance between the states. By default
-#'   this uses the function `distanceRDI()` that you can use as a model for your
+#'   this uses the function  that you can use as a model for your
 #'   own distance function.
 #' @param ... Further arguments will be passed on to your distance function.
+#' @seealso [distanceLogN()], [distanceRDI()]
 #' @export
 projectToSteady <- function(params,
                             distance_func = distanceRDI,
                             t_per = 1.5,
                             t_max = 100,
                             dt = 0.1,
-                            tol = 0.1 * dt,
+                            tol = 0.1 * t_per,
                             return_sim = FALSE,
                             progress_bar = TRUE, ...) {
     params <- validParams(params)
-    assert_that(noNA(getRDD(params)))
+    assert_that(noNA(getRDD(params)),
+                t_max >= t_per,
+                tol > 0)
     if ((t_per < dt) || !isTRUE(all.equal((t_per - round(t_per / dt) * dt), 0))) {
         stop("t_per must be a positive multiple of dt")
     }
@@ -49,6 +76,10 @@ projectToSteady <- function(params,
     if (return_sim) {
         # create MizerSim object
         sim <- MizerSim(params, t_dimnames =  t_dimnames)
+        sim@n[1, , ] <- params@initial_n
+        sim@n_pp[1, ] <- params@initial_n_pp
+        sim@n_other[1, ] <- params@initial_n_other
+        sim@effort[1, ] <- params@initial_effort
     }
 
     # get functions
@@ -63,7 +94,7 @@ projectToSteady <- function(params,
                                       n_pp = params@initial_n_pp,
                                       n_other = params@initial_n_other))
 
-    for (i in seq_along(t_dimnames)) {
+    for (i in 2:length(t_dimnames)) {
         # advance shiny progress bar
         if (is(progress_bar, "Progress")) {
             progress_bar$inc(amount = proginc)
@@ -86,12 +117,16 @@ projectToSteady <- function(params,
         # Species with no reproduction are going extinct, so stop.
         extinct <- is.na(current$rates$rdd) | current$rates$rdd <= 1e-20
         if (any(extinct)) {
-            warning(paste(extinct, collapse = ", "), " are going extinct.")
+            warning(paste(params@species_params$species[extinct], collapse = ", "),
+                    " are going extinct.")
             success <- FALSE
+            distance <- NA
             break
         }
 
-        distance <- distance_func(current = current, previous = previous, ...)
+        distance <- distance_func(params,
+                                  current = current,
+                                  previous = previous, ...)
         success <- distance < tol
         if (success == TRUE) {
             break
@@ -100,11 +135,11 @@ projectToSteady <- function(params,
     }
     if (!success) {
         message("Simulation run did not converge after ",
-                i * t_per,
+                (i - 1) * t_per,
                 " years. Value returned by the distance function was: ",
                 distance)
     } else {
-        message("Convergence was achieved in ", i * t_per, " years.")
+        message("Convergence was achieved in ", (i - 1) * t_per, " years.")
     }
 
     params@initial_n[] <- current$n
