@@ -63,12 +63,22 @@ compareParams <- function(params1, params2) {
 
     # size grid ----
     if (length(params1@w) != length(params2@w)) {
-        msg <- "The community size bins differ."
+        msg <- "The number of community size bins is different."
         result <- c(result, msg)
+    } else {
+        if (!isTRUE(all.equal(params1@w, params2@w))) {
+            msg <- "The community size bins differ."
+            result <- c(result, msg)
+        }
     }
     if (length(params1@w_full) != length(params2@w_full)) {
-        msg <- "The resource size bins differ."
+        msg <- "The number of resource size bins is different."
         result <- c(result, msg)
+    } else {
+        if (!isTRUE(all.equal(params1@w_full, params2@w_full))) {
+            msg <- "The resource size bins differ."
+            result <- c(result, msg)
+        }
     }
 
     # other slots ----
