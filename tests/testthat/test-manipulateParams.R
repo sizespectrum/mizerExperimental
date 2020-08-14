@@ -1,6 +1,58 @@
 library(mizer)
 
-# retuneBackground() reproduces scaling model ----
+# markBackground() ----
+test_that("markBackground() works", {
+    params <- markBackground(NS_params, species = "Cod")
+    expect_identical(params@A[[11]], NA_real_)
+    params <- markBackground(NS_params, species = c("Cod", "Dab"))
+    expect_identical(params@A[[5]], NA_real_)
+    sim <- markBackground(project(NS_params, t_max = 0.1))
+    expect_true(all(is.na(sim@params@A)))
+    expect_error(markBackground(1),
+                 "The `object` argument must be of type MizerParams or MizerSim.")
+})
+
+# removeSpecies ----
+test_that("removeSpecies works", {
+    remove <- NS_species_params$species[2:11]
+    reduced <- NS_species_params[!(NS_species_params$species %in% remove), ]
+    params <- MizerParams(NS_species_params, no_w = 20,
+                          max_w = 39900, min_w_pp = 9e-14)
+    p1 <- removeSpecies(params, species = remove)
+    expect_equal(nrow(p1@species_params), nrow(params@species_params) - 10)
+    p2 <- MizerParams(reduced, no_w = 20,
+                      max_w = 39900, min_w_pp = 9e-14)
+    expect_equivalent(p1, p2)
+    sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
+    sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
+    expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
+})
+
+# pruneSpecies() removes low-abundance species ----
+test_that("pruneSpecies() removes low-abundance species", {
+    params <- newTraitParams()
+    p <- params
+    # We multiply one of the species by a factor of 10^-4 and expect
+    # pruneSpecies() to remove it.
+    p@initial_n[5, ] <- p@initial_n[5, ] * 10^-4
+    p <- pruneSpecies(p, 10^-2)
+    expect_is(p, "MizerParams")
+    expect_equal(nrow(params@species_params) - 1, nrow(p@species_params))
+    expect_equal(p@initial_n[5, ], params@initial_n[6, ])
+})
+
+# retuneBackground() ----
+test_that("retuneBackground", {
+    expect_message(retuneBackground(NS_params),
+                   "There are no background species left.")
+})
+
+test_that("retuneBackground() removes Cod", {
+    params <- markBackground(NS_params, species = "Cod")
+    expect_message(params <- retuneBackground(params),
+                   "There are no background species left.")
+})
+
 test_that("retuneBackground() reproduces scaling model", {
     # This numeric test failed on Solaris and without long doubles. So for now
     # skipping it on CRAN
@@ -16,18 +68,6 @@ test_that("retuneBackground() reproduces scaling model", {
     expect_lt(max(abs(initial_n - pr@initial_n)), 2e-11)
 })
 
-# pruneSpecies() removes low-abundance species ----
-test_that("pruneSpecies() removes low-abundance species", {
-    params <- newTraitParams()
-    p <- params
-    # We multiply one of the species by a factor of 10^-3 and expect
-    # pruneSpecies() to remove it.
-    p@initial_n[5, ] <- p@initial_n[5, ] * 10^-4
-    p <- pruneSpecies(p, 10^-2)
-    expect_is(p, "MizerParams")
-    expect_equal(nrow(params@species_params) - 1, nrow(p@species_params))
-    expect_equal(p@initial_n[5, ], params@initial_n[6, ])
-})
 
 # addSpecies ----
 test_that("addSpecies works when adding a second identical species", {
@@ -88,7 +128,7 @@ test_that("addSpecies handles gear params correctly", {
 
 test_that("addSpecies handles interaction matrix correctly", {
     p <- newTraitParams(no_sp = 2)
-    p@interaction <- matrix(1:4/8, ncol = 2)
+    p <- setInteraction(p, interaction = matrix(1:4/8, ncol = 2))
     sp <- data.frame(species = c("new1", "new2"),
                      w_inf = c(10, 100),
                      k_vb = c(1, 1),
@@ -112,21 +152,7 @@ test_that("addSpecies handles interaction matrix correctly", {
                  "Interaction matrix has invalid dimensions.")
 })
 
-# removeSpecies ----
-test_that("removeSpecies works", {
-    remove <- NS_species_params$species[2:11]
-    reduced <- NS_species_params[!(NS_species_params$species %in% remove), ]
-    params <- MizerParams(NS_species_params, no_w = 20,
-                          max_w = 39900, min_w_pp = 9e-14)
-    p1 <- removeSpecies(params, species = remove)
-    expect_equal(nrow(p1@species_params), nrow(params@species_params) - 10)
-    p2 <- MizerParams(reduced, no_w = 20,
-                      max_w = 39900, min_w_pp = 9e-14)
-    expect_equivalent(p1, p2)
-    sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
-    sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
-    expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
-})
+
 test_that("adding and then removing species leaves params unaltered", {
     params <- NS_params
     # add comments to test that they will be preserved as well

@@ -2,7 +2,7 @@
 #'
 #' Marks the specified set of species as background species. Background species
 #' are handled differently in some plots and their abundance is automatically
-#' adjusted in [addSpecies()] to keep the community close to the
+#' adjusted in [retuneBackground()] to keep the community close to the
 #' Sheldon spectrum.
 #'
 #' @param object An object of class \linkS4class{MizerParams} or
@@ -26,11 +26,13 @@ markBackground <- function(object, species) {
             species <- dimnames(object@params@initial_n)$sp
         }
         object@params@A[dimnames(object@params@initial_n)$sp %in% species] <- NA
-    } else {
+    } else if (is(object, "MizerParams")) {
         if (missing(species)) {
             species <- dimnames(object@initial_n)$sp
         }
         object@A[dimnames(object@initial_n)$sp %in% species] <- NA
+    } else {
+        stop("The `object` argument must be of type MizerParams or MizerSim.")
     }
     return(object)
 }
@@ -46,13 +48,14 @@ markBackground <- function(object, species) {
 #' @param params A \linkS4class{MizerParams} object
 #'
 #' @return An object of type `MizerParams`
-#' @seealso markBackground
+#' @seealso [markBackground()]
 #' @export
 retuneBackground <- function(params) {
+    params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
     L <- is.na(params@A)
     if (!any(L)) {
-        message("There are no background species.")
+        message("There are no background species left.")
         return(params)
     }
 
@@ -113,6 +116,7 @@ retuneBackground <- function(params) {
 #' @return An object of type `MizerParams`
 #' @export
 pruneSpecies <- function(params, cutoff = 1e-3) {
+    params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
     # Determine which species need to be removed
     remove <- c()
@@ -126,7 +130,7 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
         }
     }
     # Remove
-    return(removeSpecies(params, remove))
+    removeSpecies(params, remove)
 }
 
 #' Remove species from an ecosystem
@@ -150,6 +154,7 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #' species_params(params)$species
 #' }
 removeSpecies <- function(params, species) {
+    params <- validParams(params)
     no_sp <- length(params@w_min_idx)
     if (is.logical(species)) {
         if (length(species) != no_sp) {
@@ -219,8 +224,8 @@ removeSpecies <- function(params, species) {
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
 rescaleAbundance <- function(params, factor) {
-    assert_that(is(params, "MizerParams"),
-                is.numeric(factor),
+    params <- validParams(params)
+    assert_that(is.numeric(factor),
                 all(factor > 0))
     is_foreground <- !is.na(params@A)
     no_sp <- sum(is_foreground)
@@ -276,8 +281,8 @@ rescaleAbundance <- function(params, factor) {
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
 rescaleSystem <- function(params, factor) {
-    assert_that(is(params, "MizerParams"),
-                is.number(factor),
+    params <- validParams(params)
+    assert_that(is.number(factor),
                 factor > 0)
 
     # Resource replenishment rate
@@ -330,6 +335,7 @@ rescaleSystem <- function(params, factor) {
 #' species_params(params)$species
 #' }
 renameSpecies <- function(params, replace) {
+    params <- validParams(params)
     replace[] <- as.character(replace)
     to_replace <- names(replace)
     species <- as.character(params@species_params$species)
@@ -439,8 +445,8 @@ renameSpecies <- function(params, replace) {
 addSpecies <- function(params, species_params, gear_params = data.frame(),
                        interaction, initial_effort) {
     # check validity of parameters ----
-    assert_that(is(params, "MizerParams"),
-                is.data.frame(species_params),
+    params <- validParams(params)
+    assert_that(is.data.frame(species_params),
                 is.data.frame(gear_params))
     species_params <- mizer:::validSpeciesParams(species_params)
     gear_params <- mizer:::validGearParams(gear_params, species_params)
@@ -612,7 +618,7 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
 #'   `initial_n_pp` slots.
 #' @export
 updateInitialValues <- function(params) {
-    assert_that(is(params, "MizerParams"))
+    params <- validParams(params)
     # Calculate the rates in the current background
     resource_mort <- getResourceMort(params)
     mumu <- getMort(params)
