@@ -185,6 +185,9 @@ removeSpecies <- function(params, species) {
     if (length(dim(params@ft_pred_kernel_p)) == 2) {
         p@ft_pred_kernel_p <- params@ft_pred_kernel_p[keep, , drop = FALSE]
     }
+    if (length(dim(params@pred_kernel)) == 3) {
+        p@pred_kernel <- params@pred_kernel[keep, , , drop = FALSE]
+    }
     p@ft_mask <- params@ft_mask[keep, , drop = FALSE]
     p@mu_b <- params@mu_b[keep, , drop = FALSE]
     p@species_params <- params@species_params[keep, , drop = FALSE]

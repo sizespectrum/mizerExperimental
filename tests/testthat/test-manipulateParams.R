@@ -27,6 +27,18 @@ test_that("removeSpecies works", {
     sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
     expect_identical(sim1@n[2, 2, ], sim2@n[2, 2, ])
 })
+test_that("removeSpecies works with 3d pred kernel", {
+    # It should make no difference whether we first set full pred kernel and
+    # then remove a species, or the other way around.
+    params1 <- NS_params
+    params1 <- setPredKernel(params1, pred_kernel = getPredKernel(params1))
+    params1 <- removeSpecies(params1, "Cod")
+    params2 <- NS_params
+    params2 <- removeSpecies(params2, "Cod")
+    params2 <- setPredKernel(params2, pred_kernel = getPredKernel(params2))
+    expect_identical(params1, params2)
+})
+
 
 # pruneSpecies() removes low-abundance species ----
 test_that("pruneSpecies() removes low-abundance species", {
