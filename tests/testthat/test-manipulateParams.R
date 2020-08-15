@@ -38,6 +38,14 @@ test_that("removeSpecies works with 3d pred kernel", {
     params2 <- setPredKernel(params2, pred_kernel = getPredKernel(params2))
     expect_identical(params1, params2)
 })
+test_that("removeSpecies works correctly on gear_params", {
+    # We'll check that the resulting gear_params lead to the same selectivity
+    # and catchability
+    params <- removeSpecies(NS_params, "Cod")
+    expect_equal(nrow(params@gear_params), 11)
+    params2 <- setFishing(params)
+    expect_identical(params, params)
+})
 
 
 # pruneSpecies() removes low-abundance species ----

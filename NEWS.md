@@ -6,3 +6,4 @@
 * New function `customFunction()` to allow users to overwrite mizer functions.
 * New function `projectToSteady()` to run the full dynamics to steady state.
 * `removeSpecies()` work also with 3d pred kernel.
+* `removeSpecies()` to handles `gear_params` correctly

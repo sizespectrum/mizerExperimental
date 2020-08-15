@@ -169,6 +169,20 @@ removeSpecies <- function(params, species) {
     }
     keep <- !species
     p <- params
+
+    # We don't like factors because we don't want to have to reduce the
+    # number of levels by hand
+    if (is.factor(p@species_params$species)) {
+        p@species_params$species <- as.character(p@species_params$species)
+    }
+    if (is.factor(p@gear_params$species)) {
+        p@gear_params$species <- as.character(p@gear_params$species)
+    }
+    if (is.factor(p@gear_params$gear)) {
+        p@gear_params$gear <- as.character(p@gear_params$gear)
+    }
+
+    # Select only the parts corresponding the species we keep
     p@linecolour <- params@linecolour[!(names(params@linecolour) %in%
                                                  params@species_params$species[species])]
     p@linetype <- params@linetype[!(names(params@linetype) %in%
@@ -190,12 +204,15 @@ removeSpecies <- function(params, species) {
     }
     p@ft_mask <- params@ft_mask[keep, , drop = FALSE]
     p@mu_b <- params@mu_b[keep, , drop = FALSE]
-    p@species_params <- params@species_params[keep, , drop = FALSE]
+    p@species_params <- p@species_params[keep, , drop = FALSE]
     p@interaction <- params@interaction[keep, keep, drop = FALSE]
     p@selectivity <- params@selectivity[, keep, , drop = FALSE]
     p@catchability <- params@catchability[, keep, drop = FALSE]
     p@w_min_idx <- params@w_min_idx[keep]
     p@A <- params@A[keep]
+    p@gear_params <- p@gear_params[p@gear_params$species %in%
+                                            p@species_params$species, ]
+    p@gear_params <- validGearParams(p@gear_params, p@species_params)
 
     # Preserve comments
     for (slot in (slotNames(p))) {
