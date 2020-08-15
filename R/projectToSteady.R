@@ -7,10 +7,11 @@
 #'   describing the current state
 #' @param previous A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the previous state
-#' @return A number expressing a distance between current and previous state.
+#' @return The largest absolute relative change in rdi:
+#'   `max(abs((current_rdi - previous_rdi) / previous_rdi))`
 #' @family distance functions
 #' @export
-distanceRDI <- function(params, current, previous) {
+distanceMaxRelRDI <- function(params, current, previous) {
     current_rdi <- getRDI(params, n = current$n, n_pp = current$n_pp,
                           n_other = current$n_other)
     previous_rdi <- getRDI(params, n = previous$n, n_pp = previous$n_pp,
@@ -18,26 +19,29 @@ distanceRDI <- function(params, current, previous) {
     max(abs((current_rdi - previous_rdi) / previous_rdi))
 }
 
-#' Measure mean squared distance between log(N) in current and previous state
+#' Measure distance between fish abundances current and previous state
 #'
-#' This function can be used in [projectToSteady()] to decide when sufficient
-#' convergence to steady state has been achieved.
+#' Calculates the sum squared difference between log(N) in current and previous
+#' state. This function can be used in [projectToSteady()] to decide when
+#' sufficient convergence to steady state has been achieved.
 #'
 #' @param current A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the current state
 #' @param previous A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the previous state
-#' @return A number expressing a distance between current and previous state.
+#' @return The sum of squares of the difference in the logs of the (nonzero)
+#'   fish abundances n:
+#'   `sum((log(current$n) - log(previous$n))^2)`
 #' @family distance functions
 #' @export
-distanceLogN <- function(params, current, previous) {
+distanceSSLogN <- function(params, current, previous) {
     sel <- current$n > 0 & previous$n > 0
     sum((log(current$n[sel]) - log(previous$n[sel]))^2)
 }
 
 #' Project to steady state
 #'
-#' Run the full dynamics, as in `project()`, but stop once the change has slowed
+#' Run the full dynamics, as in [project()], but stop once the change has slowed
 #' down sufficiently, in the sense that the distance between states at
 #' successive timesteps is less than `tol`. You determine how the distance is
 #' calculated.
@@ -46,13 +50,13 @@ distanceLogN <- function(params, current, previous) {
 #' @param distance_func A function that will be called after every `t_per` years
 #'   with both the previous and the new state and that should return a number
 #'   that in some sense measures the distance between the states. By default
-#'   this uses the function  that you can use as a model for your
+#'   this uses the function [distanceSSLogN()] that you can use as a model for your
 #'   own distance function.
 #' @param ... Further arguments will be passed on to your distance function.
-#' @seealso [distanceLogN()], [distanceRDI()]
+#' @seealso [distanceSSLogN()], [distanceMaxRelRDI()]
 #' @export
 projectToSteady <- function(params,
-                            distance_func = distanceRDI,
+                            distance_func = distanceSSLogN,
                             t_per = 1.5,
                             t_max = 100,
                             dt = 0.1,
@@ -60,8 +64,7 @@ projectToSteady <- function(params,
                             return_sim = FALSE,
                             progress_bar = TRUE, ...) {
     params <- validParams(params)
-    assert_that(noNA(getRDD(params)),
-                t_max >= t_per,
+    assert_that(t_max >= t_per,
                 tol > 0)
     if ((t_per < dt) || !isTRUE(all.equal((t_per - round(t_per / dt) * dt), 0))) {
         stop("t_per must be a positive multiple of dt")
@@ -201,7 +204,7 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
     }
 
     object <- projectToSteady(params,
-                              distance_func = distanceRDI,
+                              distance_func = distanceMaxRelRDI,
                               t_per = t_per,
                               t_max = t_max,
                               dt = dt,

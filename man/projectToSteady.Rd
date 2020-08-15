@@ -6,7 +6,7 @@
 \usage{
 projectToSteady(
   params,
-  distance_func = distanceRDI,
+  distance_func = distanceSSLogN,
   t_per = 1.5,
   t_max = 100,
   dt = 0.1,
@@ -22,7 +22,7 @@ projectToSteady(
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number
 that in some sense measures the distance between the states. By default
-this uses the function  that you can use as a model for your
+this uses the function \code{\link[=distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
 own distance function.}
 
 \item{t_per}{The simulation is broken up into shorter runs of \code{t_per} years,
@@ -47,11 +47,11 @@ shiny app. Default FALSE.}
 \item{...}{Further arguments will be passed on to your distance function.}
 }
 \description{
-Run the full dynamics, as in \code{project()}, but stop once the change has slowed
+Run the full dynamics, as in \code{\link[=project]{project()}}, but stop once the change has slowed
 down sufficiently, in the sense that the distance between states at
 successive timesteps is less than \code{tol}. You determine how the distance is
 calculated.
 }
 \seealso{
-\code{\link[=distanceLogN]{distanceLogN()}}, \code{\link[=distanceRDI]{distanceRDI()}}
+\code{\link[=distanceSSLogN]{distanceSSLogN()}}, \code{\link[=distanceMaxRelRDI]{distanceMaxRelRDI()}}
 }
