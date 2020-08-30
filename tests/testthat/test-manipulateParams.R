@@ -175,6 +175,9 @@ test_that("addSpecies handles interaction matrix correctly", {
 
 test_that("adding and then removing species leaves params unaltered", {
     params <- NS_params
+    # TODO: currently NS_params still has factors in gear_params
+    params@gear_params$species <- as.character(params@gear_params$species)
+    params@gear_params$gear <- as.character(params@gear_params$gear)
     # add comments to test that they will be preserved as well
     comment(params) <- "test"
     for (slot in (slotNames(params))) {
@@ -183,7 +186,8 @@ test_that("adding and then removing species leaves params unaltered", {
     # two arbitrary species
     sp <- data.frame(species = c("new1", "new2"),
                      w_inf = c(10, 100),
-                     k_vb = c(1, 1))
+                     k_vb = c(1, 1),
+                     stringsAsFactors = FALSE)
     params2 <- addSpecies(params, sp) %>%
         removeSpecies(c("new1", "new2"))
 
@@ -196,8 +200,8 @@ test_that("adding and then removing species leaves params unaltered", {
     # Currently addSpecies still changes RDD
     # TODO: fix this
     params2@rates_funcs$RDD <- params@rates_funcs$RDD
-
-    skip("waiting for mizer 2.0.4")
+    # comment on w_min_idx are not preserved
+    comment(params@w_min_idx) <- NULL
     expect_equal(params, params2)
 })
 
