@@ -231,34 +231,3 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
         return(params)
     }
 }
-
-# Only needed until mizer 2.0.4
-getRates <- function(params, n = initialN(params),
-                     n_pp = initialNResource(params),
-                     n_other = initialNOther(params),
-                     effort, t = 0) {
-    params <- validParams(params)
-    if (missing(effort)) {
-        effort <- params@initial_effort
-    }
-
-    r <- get(params@rates_funcs$Rates)(
-        params, n = n, n_pp = n_pp, n_other = n_other,
-        t = t, effort = effort, rates_fns = lapply(params@rates_funcs, get))
-}
-validParams <- function(params) {
-    assert_that(is(params, "MizerParams"))
-    # Check that params has all the slots
-    # Can't use `slotnames(params)` to find out which slots params actually has
-    # because `slotnames()` just looks at the class definition.
-    has_slot <- sapply(slotNames(NS_params),
-                       function(name) .hasSlot(params, name))
-    if (!all(has_slot) ||
-        "interaction_p" %in% names(params@species_params) ||
-        "r_max" %in% names(params@species_params)) {
-        params <- upgradeParams(params)
-        warning("You need to upgrade your MizerParams object with `upgradeParams()`.")
-    }
-    validObject(params)
-    params
-}
