@@ -497,7 +497,7 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     }
 
     # combine species params ----
-
+    
     # Move linecolour and linetype into species_params
     params@species_params$linetype <-
         params@linetype[as.character(params@species_params$species)]
@@ -528,6 +528,42 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     combi_gear_params <- rbind(params@gear_params, gear_params,
                                stringsAsFactors = FALSE)
 
+    # Additional check - if additional w_inf is larger than existing w_infs, update w
+    if (species_params$w_inf > max(params@species_params$w_inf)) {
+        max_w <- max(params@w)
+        min_w <- min(params@w) 
+        no_w = length(params@w)
+        dx <- log10(max_w / min_w) / (no_w - 1)
+        w <- 10^(seq(from = log10(min_w), by = dx, to = log10(species_params$w_inf) + dx - log10(species_params$w_inf) %% dx)) # write new w object (make sure w_inf included)
+        if (w[length(w)] < species_params$w_inf) { # check - if w doesn't cover larger w_inf
+            w = c(w, 10^(log10(w[length(w)]) + dx)) # add extra w bracket the same interval dx above
+        }
+        num_extra_cols = length(w) - length(params@w) # number of extra weight bins added (needed later)
+        
+        params@w = w # write w to params object
+        first_w = which(params@w_full == params@w[1]) # find where w vector begins
+        w_full <- c(params@w_full[1:(first_w-1)], params@w) # make new w_full vector
+        params@w_full = w_full # write w_full to params object
+        params@dw <- (10^dx - 1) * w # write dw to params object
+        params@dw_full <- (10^dx - 1) * w_full # write dw_full to params object
+        
+        # update related slots
+        extra_cols = matrix(0, ncol = num_extra_cols, nrow = no_old_sp) # to append
+        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
+        params@initial_n = cbind(params@initial_n, extra_cols) # supplement zeros to initial_n
+        
+        extra_cols = matrix(1, ncol = num_extra_cols, nrow = no_old_sp) # to append
+        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
+        params@psi = cbind(params@psi, extra_cols) # supplement ones to psi
+        
+        extra_cols = matrix(rep(params@mu_b[, ncol(params@mu_b)],each = num_extra_cols), ncol = num_extra_cols, byrow = TRUE) # to append
+        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
+        params@mu_b = cbind(params@mu_b, extra_cols) # supplement ones to psi
+    }
+    
+    print('Check for larger w_inf done')
+    
+    
     # new params object ----
     # use dataframe and global settings from params to make a new MizerParams
     # object.
