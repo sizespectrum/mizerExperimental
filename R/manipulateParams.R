@@ -547,7 +547,7 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
         params@dw <- (10^dx - 1) * w # write dw to params object
         params@dw_full <- (10^dx - 1) * w_full # write dw_full to params object
         
-        # update related slots
+        # update related slots - should we use the original functions (e.g. get_initial_n) rather than manually entering matrices?
         extra_cols = matrix(0, ncol = num_extra_cols, nrow = no_old_sp) # to append
         colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
         params@initial_n = cbind(params@initial_n, extra_cols) # supplement zeros to initial_n
@@ -558,7 +558,10 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
         
         extra_cols = matrix(rep(params@mu_b[, ncol(params@mu_b)],each = num_extra_cols), ncol = num_extra_cols, byrow = TRUE) # to append
         colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
-        params@mu_b = cbind(params@mu_b, extra_cols) # supplement ones to psi
+        params@mu_b = cbind(params@mu_b, extra_cols) # supplement duplicated last column to mu_b
+        
+        params@cc_pp = params@resource_params$kappa*params@w_full^(-params@resource_params$lambda) # update cc_pp
+        params@rr_pp = params@resource_params$r_pp * params@w_full^(params@resource_params$n - 1) # update rr_pp
     }
     
     print('Check for larger w_inf done')
