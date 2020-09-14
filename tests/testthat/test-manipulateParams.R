@@ -205,6 +205,22 @@ test_that("adding and then removing species leaves params unaltered", {
     expect_equal(params, params2)
 })
 
+test_that("addSpecies works when adding a species with a larger w_inf", {
+    
+    # Set up North Sea parameters
+    params <- newMultispeciesParams(NS_species_params_gears, inter)
+    
+    # Try adding species with bigger w_inf
+    
+    species_params <- data.frame(species = "Blue whale", w_inf = 5e4, w_mat = 1e3, beta = 1000, sigma = 2, k_vb = 0.6, 
+                                 gear = 'Whale hunter')
+    
+    inter = inter[c(1:12, 1), c(1:12, 1)] # use interactions of sprat to be lazy
+    colnames(inter)[13] = 'Blue whale'
+    rownames(inter)[13] = 'Blue whale' # make sure row and column names match the species name
+    p_temp = addSpecies(params, species_params, interaction = inter) # add species - no crash
+    
+})
 
 # retuneReproductiveEfficiency ----
 test_that("retuneReproductiveEfficiency works", {

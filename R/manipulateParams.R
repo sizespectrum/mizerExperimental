@@ -469,6 +469,7 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     assert_that(is.data.frame(species_params),
                 is.data.frame(gear_params))
     species_params <- mizer:::validSpeciesParams(species_params)
+    gear_params_old <- gear_params # save gear_params for later check
     gear_params <- mizer:::validGearParams(gear_params, species_params)
     if (any(species_params$species %in% params@species_params$species)) {
         stop("You can not add species that are already there.")
@@ -495,14 +496,9 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     } else {
         inter <- interaction
     }
+    inter_old = inter[old_sp, old_sp] # keep old interaction matrix in case it is needed
 
     # combine species params ----
-    
-    # Move linecolour and linetype into species_params
-    params@species_params$linetype <-
-        params@linetype[as.character(params@species_params$species)]
-    params@species_params$linecolour <-
-        params@linecolour[as.character(params@species_params$species)]
 
     # Make sure that all columns exist in both data frames
     missing <- setdiff(names(params@species_params), names(species_params))
@@ -547,24 +543,23 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
         params@dw <- (10^dx - 1) * w # write dw to params object
         params@dw_full <- (10^dx - 1) * w_full # write dw_full to params object
         
-        # update related slots - should we use the original functions (e.g. get_initial_n) rather than manually entering matrices?
-        extra_cols = matrix(0, ncol = num_extra_cols, nrow = no_old_sp) # to append
-        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
-        params@initial_n = cbind(params@initial_n, extra_cols) # supplement zeros to initial_n
-        
-        extra_cols = matrix(1, ncol = num_extra_cols, nrow = no_old_sp) # to append
-        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
-        params@psi = cbind(params@psi, extra_cols) # supplement ones to psi
-        
-        extra_cols = matrix(rep(params@mu_b[, ncol(params@mu_b)],each = num_extra_cols), ncol = num_extra_cols, byrow = TRUE) # to append
-        colnames(extra_cols) = as.character(signif(tail(w, num_extra_cols), 3)) # provide column names
-        params@mu_b = cbind(params@mu_b, extra_cols) # supplement duplicated last column to mu_b
-        
-        params@cc_pp = params@resource_params$kappa*params@w_full^(-params@resource_params$lambda) # update cc_pp
-        params@rr_pp = params@resource_params$r_pp * params@w_full^(params@resource_params$n - 1) # update rr_pp
+        # Try using newMultispeciesParams to update slots with longer weight vector
+        params <- newMultispeciesParams(
+            params@species_params,
+            interaction = inter_old,
+            min_w = min(params@w),
+            max_w = max(params@w),
+            min_w_pp = min(params@w_full),
+            no_w = length(params@w),
+            gear_params = gear_params_old,
+            n = params@resource_params$n,
+            r_pp = params@resource_params$r_pp,
+            kappa = params@resource_params$kappa,
+            lambda = params@resource_params$lambda,
+            w_pp_cutoff = params@resource_params$w_pp_cutoff
+        )
+        print('Check for larger w_inf done')
     }
-    
-    print('Check for larger w_inf done')
     
     
     # new params object ----
@@ -584,6 +579,13 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
         lambda = params@resource_params$lambda,
         w_pp_cutoff = params@resource_params$w_pp_cutoff
     )
+    
+    # Move linecolour and linetype into species_params - including new species
+    p@species_params$linetype <-
+        p@linetype[as.character(p@species_params$species)]
+    p@species_params$linecolour <-
+        p@linecolour[as.character(p@species_params$species)]
+    
     # Copy over old effort
     p@initial_effort[names(params@initial_effort)] <- params@initial_effort
     if (!missing(initial_effort)) {
