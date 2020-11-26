@@ -27,31 +27,47 @@ getYieldVsFcurve <- function(params,
                              ixSpecies,
                              nSteps = 10,
                              Fmax=3,
+                             Frange = seq(0, Fmax, length.out = nSteps),
                              bPlot = FALSE) {
-    Frange = seq(0, Fmax, length.out = nSteps)
+    # Check parameters
+    params <- validParams(params)
+    ixSpecies <- as.integer(ixSpecies)
+    assert_that(
+        ixSpecies > 0,
+        ixSpecies <= nrow(params@species_params),
+        is.numeric(Frange))
     # First make a new gear for that specific species
-    gear = gear_params(params)
-    levels(gear$gear) = c(levels(gear$gear), 'tmp')
-    gear[ixSpecies, 'gear'] = 'tmp'
-    gear_params(params) <- gear
+    sp_name <- params@species_params$species[[ixSpecies]]
+    gp <- gear_params(params)
+    gp$gear <- as.character(gp$gear)
+    gps <- gp$species == sp_name
+    gp_extra <- gp[gps, ]
+    if (nrow(gp_extra) > 1) {
+        stop("This function only works in the case where the targt species ",
+             "is selected by a single gear only")
+    }
+    gp_extra$gear <- "tmp"
+    gp_extra$catchability <- 1
+    gp$catchability[gps] <- 0
+    gear_params(params) <- rbind(gp, gp_extra)
     # First run with zero fishing mortality for 150 years
-    s = project(params, t_max=150, c(getInitialEffort(params), tmp=0),
-                progress_bar = FALSE)
-    yield = 0*Frange
+    s <- project(params, t_max = 150, c(getInitialEffort(params), tmp = 0),
+                 progress_bar = FALSE)
+    yield <- 0 * Frange
     # Loop over fishing mortalities:
     for (i in 2:length(Frange)) {
-        efforts = c(getInitialEffort(params), tmp=Frange[i])
-        s = project(params, t_max=40, effort=efforts,
-                    progress_bar = FALSE)
+        efforts <- c(getInitialEffort(params), tmp = Frange[i])
+        s <- project(params, t_max = 40, effort = efforts,
+                     progress_bar = FALSE)
         y = getYield(s)
-        yield[i] = y[ dim(y)[1], ixSpecies ]
+        yield[i] = y[dim(y)[[1]], ixSpecies]
     }
     # Make a plot if requested
     if (bPlot) {
-        plot(Frange, yield, type="b", lwd=3,
-             xlab="Fishing mortality (1/yr)", ylab="Yield",
-             main=species_params(params)$species[ixSpecies])
+        plot(Frange, yield, type = "b", lwd = 3,
+             xlab = "Fishing mortality (1/yr)", ylab = "Yield",
+             main = species_params(params)$species[[ixSpecies]])
     }
 
-    return( list(F = Frange, yield=yield) )
+    return(list(F = Frange, yield = yield))
 }

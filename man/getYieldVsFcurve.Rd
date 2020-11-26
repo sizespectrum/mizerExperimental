@@ -4,7 +4,14 @@
 \alias{getYieldVsFcurve}
 \title{Calculate a yield-vs-F curve for a species.}
 \usage{
-getYieldVsFcurve(params, ixSpecies, nSteps = 10, Fmax = 3, bPlot = FALSE)
+getYieldVsFcurve(
+  params,
+  ixSpecies,
+  nSteps = 10,
+  Fmax = 3,
+  Frange = seq(0, Fmax, length.out = nSteps),
+  bPlot = FALSE
+)
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
@@ -15,9 +22,9 @@ getYieldVsFcurve(params, ixSpecies, nSteps = 10, Fmax = 3, bPlot = FALSE)
 
 \item{Fmax}{The maximum fishing mortality}
 
-\item{bPlot}{Boolean that indicates whether a plot is to be made}
-
 \item{Frange}{The range of fishing mortalities to run over}
+
+\item{bPlot}{Boolean that indicates whether a plot is to be made}
 }
 \value{
 An list with yields and fishing mortalities
