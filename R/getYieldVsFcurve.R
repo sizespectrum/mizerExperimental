@@ -16,6 +16,7 @@
 #' @export
 #' @family summary functions
 #' @concept summary_function
+#' @seealso plotYieldVsF
 #' @md
 #' @examples
 #' \dontrun{
@@ -72,6 +73,7 @@ getYieldVsF <- function(params,
 #' @return A ggplot object
 #' @export
 #' @family plotting functions
+#' @seealso getYieldVsF
 #' @md
 #' @examples
 #' \dontrun{

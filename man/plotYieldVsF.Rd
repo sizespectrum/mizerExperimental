@@ -33,16 +33,15 @@ Calculates the yield of a species for a range of fishing mortalities for
 that species while the fishing mortalities for the other species are held
 fixed.
 }
-\details{
-If
-}
 \examples{
 \dontrun{
 params <- newMultispeciesParams(NS_species_params_gears, inter)
-y <- plotYieldVsFcurve(params, "Cod")
+plotYieldVsFcurve(params, "Cod")
 }
 }
 \seealso{
+getYieldVsF
+
 Other plotting functions: 
 \code{\link{animateSpectra}()},
 \code{\link{displayFrames}()}

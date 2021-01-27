@@ -63,7 +63,7 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
 
 * A function for keeping egg densities constant.
 
-* `getYieldVsFcurve()` for calculating and plotting yield curve.
+* `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting yield curve.
 
 * Animated plot of mizer simulation with `animateSpectra()`
 
