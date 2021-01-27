@@ -6,6 +6,7 @@
 \usage{
 projectToSteady(
   params,
+  effort = params@initial_effort,
   distance_func = distanceSSLogN,
   t_per = 1.5,
   t_max = 100,
@@ -18,6 +19,9 @@ projectToSteady(
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
+
+\item{effort}{The fishing effort to be used throughout the simulation.
+This must be a vector or list with one named entry per fishing gear.}
 
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number

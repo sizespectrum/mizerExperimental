@@ -47,6 +47,8 @@ distanceSSLogN <- function(params, current, previous) {
 #' calculated.
 #'
 #' @inheritParams steady
+#' @param effort The fishing effort to be used throughout the simulation.
+#'   This must be a vector or list with one named entry per fishing gear.
 #' @param distance_func A function that will be called after every `t_per` years
 #'   with both the previous and the new state and that should return a number
 #'   that in some sense measures the distance between the states. By default
@@ -56,6 +58,7 @@ distanceSSLogN <- function(params, current, previous) {
 #' @seealso [distanceSSLogN()], [distanceMaxRelRDI()]
 #' @export
 projectToSteady <- function(params,
+                            effort = params@initial_effort,
                             distance_func = distanceSSLogN,
                             t_per = 1.5,
                             t_max = 100,
@@ -64,6 +67,7 @@ projectToSteady <- function(params,
                             return_sim = FALSE,
                             progress_bar = TRUE, ...) {
     params <- validParams(params)
+    effort <- validEffortVector(effort, params = params)
     assert_that(t_max >= t_per,
                 tol > 0)
     if ((t_per < dt) || !isTRUE(all.equal((t_per - round(t_per / dt) * dt), 0))) {
@@ -152,6 +156,11 @@ projectToSteady <- function(params,
 
     if (return_sim) {
         sim@params <- params
+        sel <- 1:i
+        sim@n <- sim@n[sel, , , drop = FALSE]
+        sim@n_pp <- sim@n_pp[sel, , drop = FALSE]
+        sim@n_other <- sim@n_other[sel, , drop = FALSE]
+        sim@effort <- sim@effort[sel, , drop = FALSE]
         return(sim)
     } else {
         return(params)
