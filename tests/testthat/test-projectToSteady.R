@@ -53,5 +53,7 @@ test_that("steady works", {
     # and works the same when returning sim
     sim <- steady(params, t_per = 2, return_sim = TRUE)
     sim_mizer <- mizer::steady(params, t_per = 2, return_sim = TRUE)
-    expect_identical(sim, sim_mizer)
+    expect_identical(sim@n[1:5, , ], sim_mizer@n[1:5, , ])
+    expect_identical(sim@n_pp[1:5, ], sim_mizer@n_pp[1:5, ])
+    expect_identical(sim@effort[1:5, ], sim_mizer@effort[1:5, ])
 })
