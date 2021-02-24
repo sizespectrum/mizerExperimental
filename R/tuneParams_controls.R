@@ -320,9 +320,9 @@ fishingControlUI <- function(p, sp) {
     }
     l1 <- list(tags$h3(tags$a(id = "fishing"), "Fishing"),
                sliderInput("catchability", "Catchability",
-                           value = sp$catchability,
-                           min = signif(max(0, sp$catchability / 2 - 1), 2),
-                           max = signif(max(sp$catchability * 2, 2), 2),
+                           value = gp$catchability,
+                           min = signif(max(0, gp$catchability / 2 - 1), 2),
+                           max = signif(max(gp$catchability * 2, 2), 2),
                            step = 0.01),
                sliderInput("effort", "Effort",
                            value = effort,
