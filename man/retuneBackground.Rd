@@ -13,6 +13,10 @@ retuneBackground(params)
 An object of type \code{MizerParams}
 }
 \description{
+@description
+`\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Rescales all background species in such a way that the total community
 spectrum is as close to the Sheldon power law as possible. Background
 species that are no longer needed are removed. The reproductive efficiencies

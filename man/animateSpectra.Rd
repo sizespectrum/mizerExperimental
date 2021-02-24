@@ -39,7 +39,7 @@ species in the system is plotted as well. Default is FALSE}
 Default is TRUE.}
 }
 \description{
-Animation of the abundance spectra
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \dontrun{
@@ -49,6 +49,7 @@ animateSpectra(sim)
 }
 \seealso{
 Other plotting functions: 
-\code{\link{displayFrames}()}
+\code{\link{displayFrames}()},
+\code{\link{plotYieldVsF}()}
 }
 \concept{plotting functions}

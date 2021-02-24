@@ -1,9 +1,13 @@
 #' Launch shiny gadget for tuning parameters
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' The function opens a shiny gadget, an interactive web page. This page has
 #' a side panel with controls for various model parameters and a main panel
 #' with tabs for various diagnostic plots.
 #'
+#' @details
 #' This gadget is meant for tuning a model to steady state. It is not meant for
 #' tuning the dynamics of the model. That should be done in a second step using
 #' functions like `setRmax()` or `changeResource()`.

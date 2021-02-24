@@ -20,6 +20,8 @@ rate as calculated by \code{\link[=mizerMort]{mizerMort()}}.}
 \item{...}{Unused}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The new egg production is set to compensate for the loss of individuals from
 the smallest size class through growth and mortality. The result should not
 be modified by density dependence, so this should be used together with

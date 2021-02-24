@@ -1,5 +1,8 @@
 #' Choose egg production to keep egg density constant
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' The new egg production is set to compensate for the loss of individuals from
 #' the smallest size class through growth and mortality. The result should not
 #' be modified by density dependence, so this should be used together with

@@ -1,5 +1,7 @@
 #' Animation of the abundance spectra
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param sim A MizerSim object
 #' @param species Name or vector of names of the species to be plotted. By
 #'   default all species are plotted.

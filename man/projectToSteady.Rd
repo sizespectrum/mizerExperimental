@@ -51,6 +51,8 @@ shiny app. Default FALSE.}
 \item{...}{Further arguments will be passed on to your distance function.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Run the full dynamics, as in \code{\link[=project]{project()}}, but stop once the change has slowed
 down sufficiently, in the sense that the distance between states at
 successive timesteps is less than \code{tol}. You determine how the distance is

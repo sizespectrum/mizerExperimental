@@ -19,6 +19,8 @@ fish abundances n:
 \code{sum((log(current$n) - log(previous$n))^2)}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Calculates the sum squared difference between log(N) in current and previous
 state. This function can be used in \code{\link[=projectToSteady]{projectToSteady()}} to decide when
 sufficient convergence to steady state has been achieved.

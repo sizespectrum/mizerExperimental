@@ -17,6 +17,8 @@ not.}
 An object of type \linkS4class{MizerParams}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function simply removes all entries from the MizerParams object that
 refer to the selected species. It does not recalculate the steady state for
 the remaining species or retune their reproductive efficiency.

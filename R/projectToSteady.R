@@ -1,5 +1,8 @@
 #' Measure distance between current and previous state in terms of RDI
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This function can be used in [projectToSteady()] to decide when sufficient
 #' convergence to steady state has been achieved.
 #'
@@ -21,6 +24,9 @@ distanceMaxRelRDI <- function(params, current, previous) {
 
 #' Measure distance between fish abundances current and previous state
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Calculates the sum squared difference between log(N) in current and previous
 #' state. This function can be used in [projectToSteady()] to decide when
 #' sufficient convergence to steady state has been achieved.
@@ -40,6 +46,9 @@ distanceSSLogN <- function(params, current, previous) {
 }
 
 #' Project to steady state
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Run the full dynamics, as in [project()], but stop once the change has slowed
 #' down sufficiently, in the sense that the distance between states at

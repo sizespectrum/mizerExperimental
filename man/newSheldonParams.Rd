@@ -80,6 +80,8 @@ non-linear stock-recruitment curve.}
 An object of type \code{MizerParams}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This functions creates a \code{MizerParams} object with a single
 species. This species is embedded in a fixed power-law community spectrum
 \deqn{N_c(w) = \kappa w^{-\lambda}}

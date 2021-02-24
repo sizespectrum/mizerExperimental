@@ -1,5 +1,8 @@
 #' Designate species as background species
 #'
+#'  @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Marks the specified set of species as background species. Background species
 #' are handled differently in some plots and their abundance is automatically
 #' adjusted in [retuneBackground()] to keep the community close to the
@@ -39,6 +42,9 @@ markBackground <- function(object, species) {
 
 
 #' Retunes abundance of background species.
+#'
+#'  @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Rescales all background species in such a way that the total community
 #' spectrum is as close to the Sheldon power law as possible. Background
@@ -105,6 +111,9 @@ retuneBackground <- function(params) {
 
 #' Removes species with abundance below a threshold
 #'
+#'  @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This species simply removes the low-abundance species from the params object.
 #' It does not recalculate the steady state for the remaining species or
 #' retune their reproductive efficiencies.
@@ -134,6 +143,9 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 }
 
 #' Remove species from an ecosystem
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' This function simply removes all entries from the MizerParams object that
 #' refer to the selected species. It does not recalculate the steady state for
@@ -228,6 +240,10 @@ removeSpecies <- function(params, species) {
 #' Multiplies the abundances of all or of selected species by given factors and
 #' then retunes the reproductive efficiencies accordingly.
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' @details
 #' Does not run the system to steady state. For that you should call
 #' [steady()] explicitly afterwards.
 #'
@@ -269,12 +285,16 @@ rescaleAbundance <- function(params, factor) {
 
 #' Rescale System
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' The abundances in mizer and some rates depend on the size of the area to
 #' which they refer. So they could be given per square meter or per square
 #' kilometer or for an entire study area or any other choice of yours. This
 #' function allows you to change the size by automatically changing the
 #' abundances and rates accordingly.
 #'
+#' @details
 #' If you rescale the system by a factor \eqn{c} then this function makes the
 #' following rescalings in the params object:
 #' \itemize{
@@ -339,6 +359,9 @@ rescaleSystem <- function(params, factor) {
 }
 
 #' Rename species
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Changes the names of species in a MizerParams object
 #'
@@ -407,6 +430,9 @@ renameSpecies <- function(params, replace) {
 
 #' Add new species
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Takes a \linkS4class{MizerParams} object and adds additional species with
 #' given parameters to the ecosystem. It sets the initial values for these new
 #' species to its steady-state solution in the given initial state of the
@@ -416,6 +442,7 @@ renameSpecies <- function(params, replace) {
 #' species lies at 1/100 of the community power law. The reproductive
 #' efficiencies of the new species are set so as to keep them at that low level.
 #'
+#' @details
 #' After adding the new species, the background species are not retuned and the
 #' system is not run to steady state. You would have to call
 #' [retuneBackground()] and [steady()] explicitly.
@@ -626,6 +653,9 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
 }
 
 #' Update the initial values
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Recalculates the steady-state abundances in a fixed background
 #' given by the current abundances, keeping the abundances fixed in the

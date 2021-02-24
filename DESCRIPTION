@@ -23,7 +23,8 @@ Imports:
     shiny,
     shinyjs,
     tibble,
-    tidyr
+    tidyr,
+    lifecycle
 Suggests:
     pkgdown,
     rmarkdown,
@@ -51,3 +52,4 @@ RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
+RdMacros: lifecycle

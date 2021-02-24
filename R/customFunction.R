@@ -1,10 +1,14 @@
 #' Replace a mizer function with a custom version
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This function allows you to make arbitrary changes to how mizer works by
 #' allowing you to replace any mizer function with your own version. You
 #' should do this only as a last resort, when you find that you can not use
 #' the standard mizer extension mechanism to achieve your goal.
 #'
+#' @details
 #' If the function you need to overwrite is one of the mizer rate functions,
 #' then you should use `setRateFunction()` instead of this function. Similarly
 #' you should use `setResource()` to change the resource dynamics and

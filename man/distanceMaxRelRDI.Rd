@@ -18,6 +18,8 @@ The largest absolute relative change in rdi:
 \code{max(abs((current_rdi - previous_rdi) / previous_rdi))}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function can be used in \code{\link[=projectToSteady]{projectToSteady()}} to decide when sufficient
 convergence to steady state has been achieved.
 }

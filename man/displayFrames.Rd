@@ -23,6 +23,8 @@ displayFrames(f1, f2, params, xlab = NA, ylab = NA, y_ticks = 6)
 ggplot2 object
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Takes two data frames with plotting data and displays them side-by-side,
 using the same axes and legend.
 }

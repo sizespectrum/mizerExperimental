@@ -1,5 +1,8 @@
 #' Set up parameters for a single species in a Sheldon power-law background
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This functions creates a \code{MizerParams} object with a single
 #' species. This species is embedded in a fixed power-law community spectrum
 #' \deqn{N_c(w) = \kappa w^{-\lambda}}
@@ -9,6 +12,7 @@
 #' have the same feeding parameters as the foreground species. The function has
 #' many arguments, all of which have default values.
 #'
+#' @details
 #' In addition to setting up the parameters, this function also sets up an
 #' initial condition that is close to steady state, under the assumption of
 #' no fishing.

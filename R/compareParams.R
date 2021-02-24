@@ -1,5 +1,7 @@
 #' Compare two MizerParams objects and print out differences
 #'
+#'`r lifecycle::badge("experimental")`
+#'
 #' @param params1 First MizerParams object
 #' @param params2 Second MizerParams object
 #' @export

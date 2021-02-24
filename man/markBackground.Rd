@@ -17,6 +17,10 @@ background species. By default this is set to all species.}
 An object of the same class as the \code{object} argument
 }
 \description{
+@description
+`\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
 adjusted in \code{\link[=retuneBackground]{retuneBackground()}} to keep the community close to the

@@ -16,6 +16,8 @@ the abundances are given.}
 An object of type \linkS4class{MizerParams}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The abundances in mizer and some rates depend on the size of the area to
 which they refer. So they could be given per square meter or per square
 kilometer or for an entire study area or any other choice of yours. This

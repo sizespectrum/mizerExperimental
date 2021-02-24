@@ -22,10 +22,12 @@ affected.
 An object of type \linkS4class{MizerParams}
 }
 \description{
-Multiplies the abundances of all or of selected species by given factors and
-then retunes the reproductive efficiencies accordingly.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
+Multiplies the abundances of all or of selected species by given factors and
+then retunes the reproductive efficiencies accordingly.
+
 Does not run the system to steady state. For that you should call
 \code{\link[=steady]{steady()}} explicitly afterwards.
 }

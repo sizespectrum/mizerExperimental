@@ -1,9 +1,13 @@
 
 #' Display frames
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Takes two data frames with plotting data and displays them side-by-side,
 #' using the same axes and legend.
 #'
+#' @details
 #' The two data frames each need to have the same three variables. The first
 #' variable will go on the x-axis, the third on the y-axis with a logarithmic
 #' scale. The second variable should be the species and will be used to group

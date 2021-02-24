@@ -28,6 +28,8 @@ involving a new species are set to 1.}
 An object of type \linkS4class{MizerParams}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Takes a \linkS4class{MizerParams} object and adds additional species with
 given parameters to the ecosystem. It sets the initial values for these new
 species to its steady-state solution in the given initial state of the

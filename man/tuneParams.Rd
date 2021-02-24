@@ -29,6 +29,8 @@ the main section. See "Customisation" below.}
 The tuned MizerParams object
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The function opens a shiny gadget, an interactive web page. This page has
 a side panel with controls for various model parameters and a main panel
 with tabs for various diagnostic plots.
