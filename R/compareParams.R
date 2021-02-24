@@ -38,7 +38,7 @@ compareParams <- function(params1, params2) {
     sp_names <- intersect(sp_names1, sp_names2)
 
     sp_eq <- all.equal(params1@species_params[, sp_names],
-                       params2@species_params[, sp_names])
+                       params2@species_params[, sp_names], scale = 1)
     if (!isTRUE(sp_eq)) {
         msg <- paste("The following species parameters differ:",
                toString(sp_eq))
@@ -54,7 +54,7 @@ compareParams <- function(params1, params2) {
     res1 <- res1[order(names(res1))]
     res2 <- params2@resource_params
     res2 <- res2[order(names(res2))]
-    res_eq <- all.equal(res1, res2)
+    res_eq <- all.equal(res1, res2, scale = 1)
     if (!isTRUE(res_eq)) {
         msg <- paste("The following resource parameters differ:",
                      toString(res_eq))
@@ -66,7 +66,7 @@ compareParams <- function(params1, params2) {
         msg <- "The number of community size bins is different."
         result <- c(result, msg)
     } else {
-        if (!isTRUE(all.equal(params1@w, params2@w))) {
+        if (!isTRUE(all.equal(params1@w, params2@w, scale = 1))) {
             msg <- "The community size bins differ."
             result <- c(result, msg)
         }
@@ -75,7 +75,7 @@ compareParams <- function(params1, params2) {
         msg <- "The number of resource size bins is different."
         result <- c(result, msg)
     } else {
-        if (!isTRUE(all.equal(params1@w_full, params2@w_full))) {
+        if (!isTRUE(all.equal(params1@w_full, params2@w_full, scale = 1))) {
             msg <- "The resource size bins differ."
             result <- c(result, msg)
         }
@@ -86,7 +86,7 @@ compareParams <- function(params1, params2) {
         if (sl %in% c("w", "w_full", "species_params", "resource_params")) {
             next
         }
-        eq <- all.equal(slot(params1, sl), slot(params2, sl))
+        eq <- all.equal(slot(params1, sl), slot(params2, sl), scale = 1)
         if (!isTRUE(eq)) {
             msg <- paste("The", sl, "slots do not agree:",
                          toString(eq))
