@@ -2,7 +2,6 @@
 
 export(addSpecies)
 export(animateSpectra)
-export(compareParams)
 export(constantEggRDI)
 export(customFunction)
 export(displayFrames)

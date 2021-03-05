@@ -33,7 +33,6 @@ Suggests:
     vdiffr
 Collate:
     animateSpectra.R
-    compareParams.R
     constantEggRDI.R
     customFunction.R
     displayFrames.R
