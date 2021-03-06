@@ -2,8 +2,6 @@
 
 export(addSpecies)
 export(animateSpectra)
-export(constantEggRDI)
-export(customFunction)
 export(displayFrames)
 export(getBiomassFrame)
 export(getSSBFrame)

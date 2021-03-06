@@ -55,9 +55,6 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
   - Functions and a shiny app for interactively tuning parameters,
     started with `tuneParams()`.
 
-  - A function `constant_reproduction()` for keeping egg densities
-    constant.
-
   - `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting
     yield curve.
 
@@ -69,6 +66,3 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
 
   - New wrapper function `newSheldonParams()` that sets up a single
     species in a power-law background.
-
-  - New function `customFunction()` to allow users to overwrite mizer
-    functions.

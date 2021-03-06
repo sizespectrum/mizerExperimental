@@ -4,7 +4,6 @@ reference:
 - title: New model functions
   contents:
   - newSheldonParams
-  - constantEggRDI
 - title: New plotting functions
   contents:
   - animateSpectra
@@ -25,6 +24,3 @@ reference:
   - rescaleSystem
   - updateInitialValues
   - pruneSpecies
-- title: Others
-  contents:
-  - customFunction
