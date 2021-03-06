@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -57,6 +57,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -68,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -95,20 +98,17 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the development version of mizerExperimental from GitHub with</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"sizespectrum/mizerExperimental"</span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"sizespectrum/mizerExperimental"</span><span class="op">)</span></code></pre></div>
 <p>If this gives an error saying “there is no package called <code>remotes</code>” then you also need to do</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></code></pre></div>
 <p>before trying again to install <code>mizerExperimental</code>.</p>
 <p>You may be prompted to update some of your existing packages. The one package that you should always update is the <code>mizer</code> package, because the <code>mizerExperimental</code> package will always be designed to work with the most recent released version of mizer.</p>
 <p>Should you get an error message saying something like: “Error: Failed to install <code>mizerExperimental</code> from GitHub: (converted from warning) …” Then you could try</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span>(<span class="st">"R_REMOTES_NO_ERRORS_FROM_WARNINGS"</span> = <span class="st">"true"</span>)
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"sizespectrum/mizerExperimental"</span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"R_REMOTES_NO_ERRORS_FROM_WARNINGS"</span> <span class="op">=</span> <span class="st">"true"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"sizespectrum/mizerExperimental"</span><span class="op">)</span></code></pre></div>
 <p>This is discussed at <a href="https://github.com/r-lib/remotes/issues/403" class="uri">https://github.com/r-lib/remotes/issues/403</a></p>
 </div>
 <div id="features" class="section level2">
@@ -116,8 +116,9 @@
 <a href="#features" class="anchor"></a>Features</h2>
 <ul>
 <li><p>Functions and a shiny app for interactively tuning parameters.</p></li>
+<li><p>New function <code>projectToSteady()</code> to run dynamics until close to steady state.</p></li>
 <li><p>A function for keeping egg densities constant.</p></li>
-<li><p><code><a href="reference/getYieldVsFcurve.html">getYieldVsFcurve()</a></code> for calculating and plotting yield curve.</p></li>
+<li><p><code><a href="reference/getYieldVsF.html">getYieldVsF()</a></code> and <code><a href="reference/plotYieldVsF.html">plotYieldVsF()</a></code> for calculating and plotting yield curve.</p></li>
 <li><p>Animated plot of mizer simulation with <code><a href="reference/animateSpectra.html">animateSpectra()</a></code></p></li>
 <li><p>Showing two plots side-by-side with the same axes and the same legend. This is made possible for some of the plots via the <code><a href="reference/displayFrames.html">displayFrames()</a></code> function.</p></li>
 <li><p>New wrapper function <code><a href="reference/newSheldonParams.html">newSheldonParams()</a></code> that sets up a single species in a power-law background.</p></li>
@@ -159,7 +160,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Launch shiny gadget for tuning parameters — tuneParams" />
-<meta property="og:description" content="The function opens a shiny gadget, an interactive web page. This page has
+<meta property="og:description" content="
+The function opens a shiny gadget, an interactive web page. This page has
 a side panel with controls for various model parameters and a main panel
 with tabs for various diagnostic plots." />
 
@@ -74,7 +75,7 @@ with tabs for various diagnostic plots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -82,7 +83,7 @@ with tabs for various diagnostic plots." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -97,6 +98,9 @@ with tabs for various diagnostic plots." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -108,7 +112,7 @@ with tabs for various diagnostic plots." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -131,19 +135,20 @@ with tabs for various diagnostic plots." />
     </div>
 
     <div class="ref-description">
-    <p>The function opens a shiny gadget, an interactive web page. This page has
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>The function opens a shiny gadget, an interactive web page. This page has
 a side panel with controls for various model parameters and a main panel
 with tabs for various diagnostic plots.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tuneParams</span>(
-  <span class='kw'>p</span>,
-  controls = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"egg"</span>, <span class='st'>"predation"</span>, <span class='st'>"fishing"</span>, <span class='st'>"reproduction"</span>, <span class='st'>"other"</span>,
-    <span class='st'>"interaction"</span>, <span class='st'>"resource"</span>),
-  tabs = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Spectra"</span>, <span class='st'>"Biomass"</span>, <span class='st'>"Growth"</span>, <span class='st'>"Repro"</span>, <span class='st'>"Catch"</span>, <span class='st'>"Rates"</span>, <span class='st'>"Prey"</span>,
-    <span class='st'>"Diet"</span>, <span class='st'>"Death"</span>, <span class='st'>"Resource"</span>, <span class='st'>"Sim"</span>),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>tuneParams</span><span class='op'>(</span>
+  <span class='va'>p</span>,
+  controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"egg"</span>, <span class='st'>"predation"</span>, <span class='st'>"fishing"</span>, <span class='st'>"reproduction"</span>, <span class='st'>"other"</span>,
+    <span class='st'>"interaction"</span>, <span class='st'>"resource"</span><span class='op'>)</span>,
+  tabs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Spectra"</span>, <span class='st'>"Biomass"</span>, <span class='st'>"Growth"</span>, <span class='st'>"Repro"</span>, <span class='st'>"Catch"</span>, <span class='st'>"Rates"</span>, <span class='st'>"Prey"</span>,
+    <span class='st'>"Diet"</span>, <span class='st'>"Death"</span>, <span class='st'>"Resource"</span>, <span class='st'>"Sim"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,7 +241,7 @@ first gear and then allows the user to change that single effort value.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

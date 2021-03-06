@@ -14,64 +14,52 @@ knitr::opts_chunk$set(
 # mizerExperimental
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-This is an extension package for the mizer package
-(https://sizespectrum.org/mizer/) that contains additional features contributed
-by the mizer community. These features can then be further improved while being
-used by the community. Once matured, frequently-used features can be moved to
-the core mizer package.
+This is an extension package for the mizer package (<https://sizespectrum.org/mizer/>) that contains additional features contributed by the mizer community. These features can then be further improved while being used by the community. Once matured, frequently-used features can be moved to the core mizer package.
 
-If you have code for working with mizer that you feel might be useful to other
-mizer users, please describe it in [a new issue on the issue
-tracker](https://github.com/sizespectrum/mizerExperimental/issues/new) and we'll
-comment on how it can be included in this package.
+If you have code for working with mizer that you feel might be useful to other mizer users, please describe it in [a new issue on the issue tracker](https://github.com/sizespectrum/mizerExperimental/issues/new) and we'll comment on how it can be included in this package.
 
 ## Installation
 
-You can install the development version of mizerExperimental from GitHub
-with
+You can install the development version of mizerExperimental from GitHub with
+
 ``` r
 remotes::install_github("sizespectrum/mizerExperimental")
 ```
-If this gives an error saying "there is no package called `remotes`" then you
-also need to do
+
+If this gives an error saying "there is no package called `remotes`" then you also need to do
+
 ``` r
 install.packages("remotes")
 ```
+
 before trying again to install `mizerExperimental`.
 
-You may be prompted to update some of your existing packages. The one package
-that you should always update is the `mizer` package, because the 
-`mizerExperimental` package will always be designed to work with the most
-recent released version of mizer.
+You may be prompted to update some of your existing packages. The one package that you should always update is the `mizer` package, because the `mizerExperimental` package will always be designed to work with the most recent released version of mizer.
 
-Should you get an error message saying something like: "Error: Failed to 
-install `mizerExperimental` from GitHub: (converted from warning) ..."
-Then you could try
+Should you get an error message saying something like: "Error: Failed to install `mizerExperimental` from GitHub: (converted from warning) ..." Then you could try
+
 ``` r
 Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")
 remotes::install_github("sizespectrum/mizerExperimental")
 ```
+
 This is discussed at <https://github.com/r-lib/remotes/issues/403>
 
 ## Features
-  
-* Functions and a shiny app for interactively tuning parameters.
 
-* New function `projectToSteady()` to run dynamics until close to steady state.
+-   Functions and a shiny app for interactively tuning parameters, started with `tuneParams()`.
 
-* A function for keeping egg densities constant.
+-   A function `constant_reproduction()` for keeping egg densities constant.
 
-* `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting yield curve.
+-   `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting yield curve.
 
-* Animated plot of mizer simulation with `animateSpectra()`
+-   Animated plot of mizer simulation with `animateSpectra()`
 
-* Showing two plots side-by-side with the same axes and
-  the same legend. This is made possible for some of the plots via the
-  `displayFrames()` function.
+-   Showing two plots side-by-side with the same axes and the same legend. This is made possible for some of the plots via the `displayFrames()` function.
 
-* New wrapper function `newSheldonParams()` that sets up a single species in a
-  power-law background.
-  
-* New function `customFunction()` to allow users to overwrite mizer functions.
+-   New wrapper function `newSheldonParams()` that sets up a single species in a power-law background.
+
+-   New function `customFunction()` to allow users to overwrite mizer functions.

@@ -40,10 +40,8 @@
 
 
 <meta property="og:title" content="Retunes abundance of background species. — retuneBackground" />
-<meta property="og:description" content="Rescales all background species in such a way that the total community
-spectrum is as close to the Sheldon power law as possible. Background
-species that are no longer needed are removed. The reproductive efficiencies
-of all species are retuned." />
+<meta property="og:description" content="@description
+`" />
 
 
 
@@ -75,7 +73,7 @@ of all species are retuned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -83,7 +81,7 @@ of all species are retuned." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,6 +96,9 @@ of all species are retuned." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -109,7 +110,7 @@ of all species are retuned." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +133,11 @@ of all species are retuned." />
     </div>
 
     <div class="ref-description">
-    <p>Rescales all background species in such a way that the total community
-spectrum is as close to the Sheldon power law as possible. Background
-species that are no longer needed are removed. The reproductive efficiencies
-of all species are retuned.</p>
+    <p>@description
+`<a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
     </div>
 
-    <pre class="usage"><span class='fu'>retuneBackground</span>(<span class='kw'>params</span>)</pre>
+    <pre class="usage"><span class='fu'>retuneBackground</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,9 +151,15 @@ of all species are retuned.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of type <code>MizerParams</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Rescales all background species in such a way that the total community
+spectrum is as close to the Sheldon power law as possible. Background
+species that are no longer needed are removed. The reproductive efficiencies
+of all species are retuned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>markBackground</p></div>
+    <div class='dont-index'><p><code><a href='markBackground.html'>markBackground()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -171,7 +176,7 @@ of all species are retuned.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

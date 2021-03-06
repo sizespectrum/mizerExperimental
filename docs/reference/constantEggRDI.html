@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Choose egg production to keep egg density constant — constantEggRDI" />
-<meta property="og:description" content="The new egg production is set to compensate for the loss of individuals from
+<meta property="og:description" content="
+The new egg production is set to compensate for the loss of individuals from
 the smallest size class through growth and mortality. The result should not
 be modified by density dependence, so this should be used together with
 the noRDD() function, see example." />
@@ -75,7 +76,7 @@ the noRDD() function, see example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -83,7 +84,7 @@ the noRDD() function, see example." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,6 +99,9 @@ the noRDD() function, see example." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -109,7 +113,7 @@ the noRDD() function, see example." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +136,14 @@ the noRDD() function, see example." />
     </div>
 
     <div class="ref-description">
-    <p>The new egg production is set to compensate for the loss of individuals from
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>The new egg production is set to compensate for the loss of individuals from
 the smallest size class through growth and mortality. The result should not
 be modified by density dependence, so this should be used together with
 the <code>noRDD()</code> function, see example.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>constantEggRDI</span>(<span class='kw'>params</span>, <span class='kw'>n</span>, <span class='kw'>e_growth</span>, <span class='kw'>mort</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>constantEggRDI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>n</span>, <span class='va'>e_growth</span>, <span class='va'>mort</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,20 +174,22 @@ rate as calculated by <code>mizerMort()</code>.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># choose an example params object</span>
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='kw'>NS_params</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='va'>NS_params</span>
 <span class='co'># We set the reproduction rate functions</span>
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'>setRateFunction</span>(<span class='kw'>params</span>, <span class='st'>"RDI"</span>, <span class='st'>"constantEggRDI"</span>)
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'>setRateFunction</span>(<span class='kw'>params</span>, <span class='st'>"RDD"</span>, <span class='st'>"noRDD"</span>)
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>setRateFunction</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"RDI"</span>, <span class='st'>"constantEggRDI"</span><span class='op'>)</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>setRateFunction</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"RDD"</span>, <span class='st'>"noRDD"</span><span class='op'>)</span>
 <span class='co'># Now the egg density should stay fixed no matter how we fish</span>
-<span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span>(<span class='kw'>params</span>, effort = <span class='fl'>10</span>, progress_bar = <span class='fl'>FALSE</span>)
+<span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, effort <span class='op'>=</span> <span class='fl'>10</span>, progress_bar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># To check that indeed the egg densities have not changed, we first construct</span>
 <span class='co'># the indices for addressing the egg densities</span>
-<span class='kw'>no_sp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>params</span><span class='op'>@</span>species_params)
-<span class='kw'>idx</span> <span class='op'>&lt;-</span> (<span class='kw'>params</span><span class='op'>@</span>w_min_idx <span class='op'>-</span> <span class='fl'>1</span>) <span class='op'>*</span> <span class='kw'>no_sp</span> <span class='op'>+</span> (<span class='fl'>1</span><span class='op'>:</span><span class='kw'>no_sp</span>)
+<span class='va'>no_sp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>params</span><span class='op'>@</span><span class='va'>species_params</span><span class='op'>)</span>
+<span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='op'>(</span><span class='va'>params</span><span class='op'>@</span><span class='va'>w_min_idx</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>*</span> <span class='va'>no_sp</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>no_sp</span><span class='op'>)</span>
 <span class='co'># Now we can check equality between egg densities at the start and the end</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='fu'>finalN</span>(<span class='kw'>sim</span>)[<span class='kw'>idx</span>], <span class='fu'>initialN</span>(<span class='kw'>params</span>)[<span class='kw'>idx</span>])</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'># }</span></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='fu'>finalN</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span><span class='op'>[</span><span class='va'>idx</span><span class='op'>]</span>, <span class='fu'>initialN</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span><span class='op'>[</span><span class='va'>idx</span><span class='op'>]</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -198,7 +205,7 @@ rate as calculated by <code>mizerMort()</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Replace a mizer function with a custom version — customFunction" />
-<meta property="og:description" content="This function allows you to make arbitrary changes to how mizer works by
+<meta property="og:description" content="
+This function allows you to make arbitrary changes to how mizer works by
 allowing you to replace any mizer function with your own version. You
 should do this only as a last resort, when you find that you can not use
 the standard mizer extension mechanism to achieve your goal." />
@@ -75,7 +76,7 @@ the standard mizer extension mechanism to achieve your goal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -83,7 +84,7 @@ the standard mizer extension mechanism to achieve your goal." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,6 +99,9 @@ the standard mizer extension mechanism to achieve your goal." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -109,7 +113,7 @@ the standard mizer extension mechanism to achieve your goal." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +136,14 @@ the standard mizer extension mechanism to achieve your goal." />
     </div>
 
     <div class="ref-description">
-    <p>This function allows you to make arbitrary changes to how mizer works by
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>This function allows you to make arbitrary changes to how mizer works by
 allowing you to replace any mizer function with your own version. You
 should do this only as a last resort, when you find that you can not use
 the standard mizer extension mechanism to achieve your goal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>customFunction</span>(<span class='kw'>name</span>, <span class='kw'>fun</span>)</pre>
+    <pre class="usage"><span class='fu'>customFunction</span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>fun</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,15 +174,16 @@ code. It does not overwrite the function that is exported by mizer. This
 is clarified when you run the code in the Examples section.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>fake_project</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='st'>"Fake"</span>
-<span class='fu'>customFunction</span>(<span class='st'>"project"</span>, <span class='kw'>fake_project</span>)
-<span class='kw'>mizer</span>::<span class='fu'><a href='https://sizespectrum.org/mizer/reference/project.html'>project</a></span>(<span class='kw'>NS_params</span>) <span class='co'># This will print "Fake"</span>
-<span class='fu'>project</span>(<span class='kw'>NS_params</span>) <span class='co'># This will still use the old project() function</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>fake_project</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='st'>"Fake"</span>
+<span class='fu'>customFunction</span><span class='op'>(</span><span class='st'>"project"</span>, <span class='va'>fake_project</span><span class='op'>)</span>
+<span class='fu'>mizer</span><span class='fu'>::</span><span class='fu'><a href='https://sizespectrum.org/mizer/reference/project.html'>project</a></span><span class='op'>(</span><span class='va'>NS_params</span><span class='op'>)</span> <span class='co'># This will print "Fake"</span>
+<span class='fu'>project</span><span class='op'>(</span><span class='va'>NS_params</span><span class='op'>)</span> <span class='co'># This will still use the old project() function</span>
 <span class='co'># To undo the effect:</span>
-<span class='fu'>customFunction</span>(<span class='st'>"project"</span>, <span class='kw'>project</span>)
-<span class='kw'>mizer</span>::<span class='fu'><a href='https://sizespectrum.org/mizer/reference/project.html'>project</a></span>(<span class='kw'>NS_params</span>) <span class='co'># This will again use the old project()</span>
-}</div></pre>
+<span class='fu'>customFunction</span><span class='op'>(</span><span class='st'>"project"</span>, <span class='va'>project</span><span class='op'>)</span>
+<span class='fu'>mizer</span><span class='fu'>::</span><span class='fu'><a href='https://sizespectrum.org/mizer/reference/project.html'>project</a></span><span class='op'>(</span><span class='va'>NS_params</span><span class='op'>)</span> <span class='co'># This will again use the old project()</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -193,7 +199,7 @@ is clarified when you run the code in the Examples section.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

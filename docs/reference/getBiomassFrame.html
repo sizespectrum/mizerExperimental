@@ -76,7 +76,7 @@ displayFrames." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ displayFrames." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,6 +99,9 @@ displayFrames." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -110,7 +113,7 @@ displayFrames." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -140,15 +143,15 @@ returns a dataframe that can be displayed with
 <code><a href='displayFrames.html'>displayFrames</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getBiomassFrame</span>(
-  <span class='kw'>sim</span>,
-  species = <span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='kw'>sim</span><span class='op'>@</span>n)<span class='op'>$</span><span class='kw'>sp</span>[<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>sim</span><span class='op'>@</span>params<span class='op'>@</span>A)],
-  start_time = <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='kw'>sim</span><span class='op'>@</span>n)[[<span class='fl'>1</span>]][<span class='fl'>1</span>]),
-  end_time = <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='kw'>sim</span><span class='op'>@</span>n)[[<span class='fl'>1</span>]][<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='kw'>sim</span><span class='op'>@</span>n)[<span class='fl'>1</span>]]),
-  ylim = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>NA</span>),
-  total = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>getBiomassFrame</span><span class='op'>(</span>
+  <span class='va'>sim</span>,
+  species <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>@</span><span class='va'>n</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sp</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>@</span><span class='va'>params</span><span class='op'>@</span><span class='va'>A</span><span class='op'>)</span><span class='op'>]</span>,
+  start_time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>@</span><span class='va'>n</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+  end_time <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>@</span><span class='va'>n</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>@</span><span class='va'>n</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>,
+  ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+  total <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,14 +203,16 @@ all species is plotted as well. Default is FALSE.</p></td>
 <code><a href='getSSBFrame.html'>getSSBFrame</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Set up example MizerParams and MizerSim objects</span>
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressMessages</a></span>(<span class='fu'>newMultispeciesParams</span>(<span class='kw'>NS_species_params_gears</span>, <span class='kw'>inter</span>))
-<span class='kw'>sim0</span> <span class='op'>&lt;-</span> <span class='fu'>project</span>(<span class='kw'>params</span>, effort=<span class='fl'>0</span>, t_max=<span class='fl'>20</span>, progress_bar = <span class='fl'>FALSE</span>)
-<span class='kw'>sim1</span> <span class='op'>&lt;-</span> <span class='fu'>project</span>(<span class='kw'>params</span>, effort=<span class='fl'>1</span>, t_max=<span class='fl'>20</span>, progress_bar = <span class='fl'>FALSE</span>)
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressMessages</a></span><span class='op'>(</span><span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>sim0</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, effort<span class='op'>=</span><span class='fl'>0</span>, t_max<span class='op'>=</span><span class='fl'>20</span>, progress_bar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>sim1</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, effort<span class='op'>=</span><span class='fl'>1</span>, t_max<span class='op'>=</span><span class='fl'>20</span>, progress_bar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># Display biomass from each simulation next to each other</span>
-<span class='fu'><a href='displayFrames.html'>displayFrames</a></span>(<span class='fu'>getBiomassFrame</span>(<span class='kw'>sim0</span>), <span class='fu'>getBiomassFrame</span>(<span class='kw'>sim1</span>), <span class='kw'>params</span>)</div><div class='img'><img src='getBiomassFrame-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span></div></pre>
+<span class='fu'><a href='displayFrames.html'>displayFrames</a></span><span class='op'>(</span><span class='fu'>getBiomassFrame</span><span class='op'>(</span><span class='va'>sim0</span><span class='op'>)</span>, <span class='fu'>getBiomassFrame</span><span class='op'>(</span><span class='va'>sim1</span><span class='op'>)</span>, <span class='va'>params</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -223,7 +228,7 @@ all species is plotted as well. Default is FALSE.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

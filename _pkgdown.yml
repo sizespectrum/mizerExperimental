@@ -8,7 +8,8 @@ reference:
 - title: New plotting functions
   contents:
   - animateSpectra
-  - getYieldVsFcurve
+  - getYieldVsF
+  - plotYieldVsF
   - displayFrames
   - getBiomassFrame
   - getSSBFrame
@@ -26,7 +27,4 @@ reference:
   - pruneSpecies
 - title: Others
   contents:
-  - projectToSteady
-  - distanceRDI
-  - compareParams
   - customFunction

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
+    </li>
+    <li>
       <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
@@ -65,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -79,7 +82,7 @@
 
       
 
-      </header><script src="single_species_size-spectrum_dynamics_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="single_species_size-spectrum_dynamics_files/header-attrs-2.7/header-attrs.js"></script><script src="single_species_size-spectrum_dynamics_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Single-species size-spectrum dynamics</h1>
@@ -127,22 +130,19 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <h1 class="hasAnchor">
 <a href="#a-first-example" class="anchor"></a>A first example</h1>
 <p>Let us start by looking at an example. Start RStudio and load the following packages:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/sizespectrum/mizerExperimental">mizerExperimental</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://plotly-r.com">plotly</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sizespectrum/mizerExperimental">mizerExperimental</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com">plotly</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
 <p>If you get error messages saying that a particular package is not available, you will need to install that package. To install the <code>mizerExperimental</code> package you would need to do</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"sizespectrum/mizerExperimental"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"sizespectrum/mizerExperimental"</span><span class="op">)</span></code></pre></div>
 <p>The <a href="https://sizespectrum.org/mizerExperimental"><code>mizerExperimental</code></a> package contains additional mizer functionality that is not yet mature enought to be part of core mizer. Loading the <code>mizerExperimental</code> package automatically also loads the <code>mizer</code> package.</p>
 <p>Mizer collects all the parameters describing a size-spectrum model into one object of class <code>MizerParams</code>. You do not need to set up this object by hand but instead there are several wrapper functions in mizer that create the object for you for various types of models, and also many functions for changing specific parameters in a model. We will use the <code><a href="../reference/newSheldonParams.html">newSheldonParams()</a></code> function to set up a model describing a single fish species living in an ecosystem whose size spectrum is given by a Sheldon power-law.</p>
 <p>The <code><a href="../reference/newSheldonParams.html">newSheldonParams()</a></code> function has many arguments that allow you to specify parameters for the fish species as well as for the community, but all these arguments have default values, so we can simply call the function without specifying those arguments. We will only specify the Sheldon exponent of the background community</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newSheldonParams.html">newSheldonParams</a></span>(lambda = <span class="fl">2.05</span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newSheldonParams.html">newSheldonParams</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fl">2.05</span><span class="op">)</span></code></pre></div>
 <p>The function returns a <code>MizerParams</code> object and we have assigned that to the variable <code>params</code>. We will be explaining more about this model as we go along.</p>
 </div>
 <div id="steady-state-spectrum" class="section level1">
@@ -150,14 +150,12 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#steady-state-spectrum" class="anchor"></a>Steady state spectrum</h1>
 <p>The <code>params</code> object also contains an initial size spectrum that is close to the steady state of the model. The steady state is the state where in each size class the inflow of individuals through growth exactly balances the outflow of individuals through growth and death. If we start close to the steady state then usually if we simulate the size-spectrum dynamics for a while the population will evolve closer and closer to the steady state.</p>
 <p>To get to the steady state we use the <code>steady()</code> function. The result of that function is again a MizerParams object but now with an initial size spectrum that has evolved to be very close to the steady state.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">params</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params</span>)
-</pre></div>
-<pre><code>## Steady state was reached before 1.5 years.</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
+<pre><code>## Convergence was achieved in 1.5 years.</code></pre>
 <p>We can plot the size spectrum with the <code>plotSpectra()</code> function.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu">plotSpectra</span>(<span class="kw">params</span>, power = <span class="fl">0</span>)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p>The <code>power = 0</code> argument to the <code>plotSpectra()</code> function specifies that we want to plot the number density, rather than for example the biomass density.</p>
 <p>The green line represents the number density of the background community, labelled as “Resource” in the plot legend, in which our foreground species finds itself. The green line is a straight line with slope <code>lambda = -2.05</code>. Thus the number density is proportional to <span class="math inline">\(w^{-2.05}\)</span>.</p>
@@ -173,13 +171,11 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <h1 class="hasAnchor">
 <a href="#numbers" class="anchor"></a>Numbers</h1>
 <p>While the <code>plotSpectra()</code> function gives us a plot of the number density, it would be nice if we could get at the actual numbers. The <code>steady()</code> function has stored those numbers as the initial condition in the params object and we can access them with the <code>initialN()</code> function. Let us assign this to a variable <code>n</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">n</span> <span class="op">&lt;-</span> <span class="fu">initialN</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu">initialN</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p>As you can see in the “Environment” pane in RStudio, <code>n</code> is a matrix with 1 row and 251 columns. The one row corresponds to the one species. In a multispecies model there would be one row for each species, holding the number density for that species. The 251 columns are for the number densities in each of the 251 size classes. In fact, <code>n</code> is a named array, i.e., each row and each column has names. These we can extract with the <code><a href="https://rdrr.io/r/base/dimnames.html">dimnames()</a></code> function.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span>(<span class="kw">n</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></code></pre></div>
 <pre><code>## $sp
 ## [1] "1"
 ## 
@@ -221,14 +217,12 @@ width of the size class. So the fish density has units of fish per gram.  -->
 ## [239] "57.5"    "60.3"    "63.1"    "66.1"    "69.2"    "72.4"    "75.9"   
 ## [246] "79.4"    "83.2"    "87.1"    "91.2"    "95.5"    "100"</code></pre>
 <p>The names of the columns are the weight in grams at the start of each size class. Notice how R displays long vectors by breaking them across many lines and starting each line with a number in brackets. That number is the index of the first value in that row. So for example we see that the 151st size bracket starts at 1 gram. The number density in the size class between 1 gram and 1.05 grams is</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">n</span>[<span class="fl">1</span>, <span class="fl">151</span>]
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">151</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 0.0001862372</code></pre>
 <p>It is important to realise that this is not the number of fish in the size class, but the number density. To get the number of fish we have to multiply the number by the width of the size class. Those widths can be obtained with the <code>dw()</code> function. So the number of fish in the 151st size class is</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-(<span class="kw">n</span> <span class="op">*</span> <span class="fu">dw</span>(<span class="kw">params</span>))[<span class="fl">1</span>, <span class="fl">151</span>]
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fu">dw</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">151</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 8.777087e-06</code></pre>
 <p>You may be surprised ny the small number if you interpret it as the number of fish between 1 gram and 1.05 gram in the entire ocean. However it looks more reasonable if it is the average number per square meter of sea. For more of a discussion of this issue of working with numbers per area, numbers per volume or numbers for the entire system see <a href="https://sizespectrum.org/mizer/reference/setParams.html#units-in-mizer" class="uri">https://sizespectrum.org/mizer/reference/setParams.html#units-in-mizer</a></p>
 <div id="exercise-2" class="section level2">
@@ -241,31 +235,26 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <h1 class="hasAnchor">
 <a href="#biomass-spectra" class="anchor"></a>Biomass spectra</h1>
 <p>Without the <code>power</code> argument (or with <code>power = 1</code> which is the default) the <code>plotSpectra()</code> function plots the biomass density as a function of size.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu">plotSpectra</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>Now the green line representing the biomass density of the background has a slope of -1.05.</p>
 <p>The initial slope of the species biomass density is negative, meaning that the biomass density decreases with size. This means that even though the individual fish of course gain biomass as they grow up, there is so much death among the larvae and juvenile fish that the total biomass of any cohort nevertheless decreases as it grows up. We will explain the reason for this later when we discuss predation mortality.</p>
 <p>We can also plot the Sheldon spectrum, i.e., the biomass density as a function of the log weight instead of the weight, by supplying the argument <code>power = 2</code> to <code>plotSpectra()</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu">plotSpectra</span>(<span class="kw">params</span>, power = <span class="fl">2</span>)
-</pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>This now shows an approximately constant biomass density as a function of log size (the slope of the green line is -0.05). The biomass density of the species as a function of log size initially increases. So if binned in logarithmically-sized bins the biomass in each bin will initially increase, until it starts decreasing close to the maximum size of the species.</p>
 <p>It may have been a bit confusing that we displayed the same size spectrum in three different ways. But it is important to be aware of this because in the literature you will see all different conventions being used, so if you see a plot of a size spectrum you always need to ask yourself exactly which density is being shown.</p>
 <p>We can obtain the biomass density in a size class from the number density by multiplying the number density by the weight of the individuals in the size class. To obtain these weights, we use the function <code>w()</code> that returns the weights at the start of each size class. Of course using these will lead to a discretisation error because not all fish in the size class have the same weight, but with the small size classes that we use in mizer, the error is not too important. So we calculate</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">biomass_density</span> <span class="op">&lt;-</span> <span class="kw">n</span> <span class="op">*</span> <span class="fu">w</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">biomass_density</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">*</span> <span class="fu">w</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p>The total biomass in each size class we obtain by multiplying the biomass density in each size class by the width of each size class</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">biomass</span> <span class="op">&lt;-</span> <span class="kw">biomass_density</span> <span class="op">*</span> <span class="fu">dw</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="va">biomass_density</span> <span class="op">*</span> <span class="fu">dw</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p>For example the biomass of fish between 1 gram and 1.05 grams is</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="kw">biomass</span>[<span class="fl">151</span>]
-</pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">biomass</span><span class="op">[</span><span class="fl">151</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 8.777087e-06</code></pre>
 <p>Next we will discuss the shape of the species size-spectrum in more detail.</p>
 </div>
@@ -278,44 +267,37 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <p>Finally, the death rate of organisms tends to scale allometrically with a power of <span class="math inline">\(p - 1 = 3/4 - 1 = -1/4\)</span>. The death rate experienced by larger individuals is smaller than that of small individuals. Again this is confirmed by many observations.</p>
 <p>It is a result of the mathematics that if the growth and death rates scale allometrically with exponents <span class="math inline">\(p\)</span> and <span class="math inline">\(1-p\)</span> respectively, for some metabolic exponent <span class="math inline">\(p\)</span>, that the number density at steady state is also a power law, i.e., a straight line on the log-log plot.</p>
 <p>Let us check that in our model the physiological rates are indeed power laws, at least for the small sizes. We can get the growth rate with the <code>getEGrowth()</code> function. We assign the result to a variable that we name <code>growth_rate</code>.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="kw">growth_rate</span> <span class="op">&lt;-</span> <span class="fu">getEGrowth</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">growth_rate</span> <span class="op">&lt;-</span> <span class="fu">getEGrowth</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p>You can again see in the “Environment” pane that this is a matrix with one row for the one species and 251 columns for the 251 size classes. So for example the growth rate at size 1 gram is</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw">growth_rate</span>[<span class="fl">1</span>, <span class="fl">151</span>]
-</pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">growth_rate</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">151</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 8.40452</code></pre>
 <p>(because we had seen that the 151st size class starts at 1 gram). This is the instantaneous per-capita growth rate, measured in grams per year.</p>
 <p>We would like to make a log-log plot of the growth rate against size to check that it gives a straight line. We will use <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> for that purpose. As you saw already yesterday, <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> likes to work with data frames instead of named matrices, so we first convert the matrix into a data frame with the <code>melt()</code> function.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">growth_rate_frame</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="kw">growth_rate</span>)
-</pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">growth_rate_frame</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="va">growth_rate</span><span class="op">)</span></code></pre></div>
 <p>You can see in the “£nvironment” pane that the new variable that we called <code>growth_rate_frame</code> is a data frame with 251 observations of 3 variables. The 251 observations correspond to the 251 size classes. The 3 variables have names</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">growth_rate_frame</span>)
-</pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">growth_rate_frame</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "sp"    "w"     "value"</code></pre>
 <p>They are the species <code>sp</code>, the size <code>w</code>, and the <code>value</code> which contains the growth_rate. This data frame we can pass to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="kw">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">growth_rate_frame</span>) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-         y = <span class="st">"Growth rate [g/year]"</span>)
-<span class="kw">p</span>
-</pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">growth_rate_frame</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+         y <span class="op">=</span> <span class="st">"Growth rate [g/year]"</span><span class="op">)</span>
+<span class="va">p</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 <p>Note how we linked the x axis to the <code>w</code> variable and the y axis to the <code>value</code> variable and specified that both axes should be on a logarithmic scale.</p>
 <p>We see that at least up to a size of a few grams the line is straight. Let’s isolate the growth rate for those smaller sizes</p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="kw">g_small_fish</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">growth_rate_frame</span>, <span class="kw">w</span> <span class="op">&lt;=</span> <span class="fl">10</span>)
-</pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">g_small_fish</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">growth_rate_frame</span>, <span class="va">w</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <p>and fit a linear model</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">g_small_fish</span><span class="op">$</span><span class="kw">value</span>) <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">g_small_fish</span><span class="op">$</span><span class="kw">w</span>))
-</pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">g_small_fish</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">g_small_fish</span><span class="op">$</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = log(g_small_fish$value) ~ log(g_small_fish$w))
@@ -336,22 +318,20 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#slope-of-juvenile-spectrum" class="anchor"></a>Slope of juvenile spectrum</h1>
 <p>We have seen that for juvenile fish the growth rate and the death rate are both power laws with exponents <span class="math inline">\(p=3/4\)</span> and <span class="math inline">\(p-1=-1/4\)</span> respectively. By solving a differential equation we can derive that the juvenile spectrum also follows a power law: <span class="math display">\[N(w) = N_0\ w^{-\mu_0/g_0 - p}\]</span></p>
 <p>I won’t do the maths here with you (and you probably don’t want me to anyway), but we can check this claim numerically. Let’s look at the spectrum up to 10 grams. By now we know how to do this. We first convert the number density matrix <code>n</code> into a dataframe and then filter out all observations that do not have <span class="math inline">\(w\leq 10\)</span>. The resulting data frame we pass to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> and ask it to plot a line on log-log axes.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit">
-<span class="kw">nf</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="kw">n</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">w</span> <span class="op">&lt;=</span> <span class="fl">10</span>)
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nf</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">w</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">nf</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-       y = <span class="st">"Number density [1/g]"</span>)
-</pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">nf</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+       y <span class="op">=</span> <span class="st">"Number density [1/g]"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 <p>That confirms what we had seen earlier, that for fish less than 10 grams the number density is a power law. To determine the exponent of the power law we need the slope of that straight line in the log-log plot, and the easiest way to do that is to fit a linear model to the log variables:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">nf</span><span class="op">$</span><span class="kw">value</span>) <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">nf</span><span class="op">$</span><span class="kw">w</span>))
-</pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">nf</span><span class="op">$</span><span class="va">value</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">nf</span><span class="op">$</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = log(nf$value) ~ log(nf$w))
@@ -360,9 +340,8 @@ width of the size class. So the fish density has units of fish per gram.  -->
 ## (Intercept)    log(nf$w)  
 ##      -8.588       -1.555</code></pre>
 <p>The mathematics claimed that the exponent should be <span class="math inline">\(-\mu_0 / g_0 - p\)</span>. We have already observed that <span class="math inline">\(\mu_0 = 1.909\)</span> and <span class="math inline">\(g_0 = 2.129\)</span> so we get</p>
-<div class="sourceCode" id="cb33"><pre class="downlit">
-<span class="op">-</span><span class="fl">1.909</span> <span class="op">/</span> <span class="fl">2.129</span> <span class="op">-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">4</span>
-</pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">-</span><span class="fl">1.909</span> <span class="op">/</span> <span class="fl">2.129</span> <span class="op">-</span> <span class="fl">3</span><span class="op">/</span><span class="fl">4</span></code></pre></div>
 <pre><code>## [1] -1.646665</code></pre>
 <p>That is not quite the result of the linear model fit, but that is the nature of numerical calculations: one gets discretisation errors and rounding errors.</p>
 </div>
@@ -371,13 +350,12 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#reproduction" class="anchor"></a>Reproduction</h1>
 <p>Now that we understand the shape of the size spectrum for the juvenile fish, let us try to understand the bulge that follows. The increase of abundance that we see at around the maturity size of our species is due to a drop in growth rate at that size. This in turn is due to the fact that the mature fish invests some of its energy income into reproduction.</p>
 <p>Let us look at a plot of the proportion of the available energy that is invested into reproduction as a function of the size</p>
-<div class="sourceCode" id="cb35"><pre class="downlit">
-<span class="kw">psi</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="fu">getMaturityProportion</span>(<span class="kw">params</span>) <span class="op">*</span> <span class="fu">getReproductionProportion</span>(<span class="kw">params</span>))
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">psi</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-       y = <span class="st">"Proportion invested into reproduction"</span>)
-</pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">psi</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="fu">getMaturityProportion</span><span class="op">(</span><span class="va">params</span><span class="op">)</span> <span class="op">*</span> <span class="fu">getReproductionProportion</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">psi</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+       y <span class="op">=</span> <span class="st">"Proportion invested into reproduction"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
 <p>How was this maturity curve specified? You can find the details in the <a href="https://sizespectrum.org/mizer/reference/setReproduction.html#investment">mizer documentation</a>. There are four species parameters involved:</p>
 <ul>
@@ -387,9 +365,8 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <li>an exponent <code>m</code> that determines how the proportion that an individual invests into reproduction scales with its size.</li>
 </ul>
 <p>Such species parameters are contained in a data frame inside the <code>params</code> object that we can access with the <code>species_params()</code> function.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <pre><code>##   species w_min w_inf    w_mat w_min_idx k_vb ks beta sigma z0 alpha    erepro
 ## 1       1 0.001   100 25.11886         1    1  4  100   1.3  0   0.4 0.2036643
 ##   interaction_resource    n    p   q pred_kernel_type       h k    gamma
@@ -397,52 +374,45 @@ width of the size class. So the fish density has units of fish per gram.  -->
 ##    w_mat25 m    R_max constant_reproduction
 ## 1 22.50546 1 1.692216             0.4230541</code></pre>
 <p>As you can see, there are a lot of other species parameters, some of which we will talk about later. For now let’s just select the 4 parameters we are interested in.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit">
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="fu">species_params</span>(<span class="kw">params</span>), <span class="kw">w_mat</span>, <span class="kw">w_mat25</span>, <span class="kw">w_inf</span>, <span class="kw">m</span>)
-</pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="va">w_mat</span>, <span class="va">w_mat25</span>, <span class="va">w_inf</span>, <span class="va">m</span><span class="op">)</span></code></pre></div>
 <pre><code>##      w_mat  w_mat25 w_inf m
 ## 1 25.11886 22.50546   100 1</code></pre>
 <div id="effect-of-change-in-maturity-curve" class="section level2">
 <h2 class="hasAnchor">
 <a href="#effect-of-change-in-maturity-curve" class="anchor"></a>Effect of change in maturity curve</h2>
 <p>Let us investigate what happens when we change the maturity curve. Let’s assume the maturity size is actually 40 grams and the size at which 25% of individuals is mature is 30 grams. Let us change the values in the <code>species_params</code> data frame. But first we make a copy of the params object so that we can keep the old version around unchanged.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit">
-<span class="kw">params_changed_maturity</span> <span class="op">&lt;-</span> <span class="kw">params</span>
-</pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_changed_maturity</span> <span class="op">&lt;-</span> <span class="va">params</span></code></pre></div>
 <p>In this copy we now change the species paramters</p>
-<div class="sourceCode" id="cb41"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params_changed_maturity</span>)<span class="op">$</span><span class="kw">w_mat</span> <span class="op">&lt;-</span> <span class="fl">40</span>
-<span class="fu">species_params</span>(<span class="kw">params_changed_maturity</span>)<span class="op">$</span><span class="kw">w_mat25</span> <span class="op">&lt;-</span> <span class="fl">30</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">params_changed_maturity</span><span class="op">@</span>species_params, <span class="kw">w_mat</span>, <span class="kw">w_mat25</span>, <span class="kw">w_inf</span>, <span class="kw">m</span>)
-</pre></div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span><span class="op">$</span><span class="va">w_mat</span> <span class="op">&lt;-</span> <span class="fl">40</span>
+<span class="fu">species_params</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span><span class="op">$</span><span class="va">w_mat25</span> <span class="op">&lt;-</span> <span class="fl">30</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">@</span><span class="va">species_params</span>, <span class="va">w_mat</span>, <span class="va">w_mat25</span>, <span class="va">w_inf</span>, <span class="va">m</span><span class="op">)</span></code></pre></div>
 <pre><code>##   w_mat w_mat25 w_inf m
 ## 1    40      30   100 1</code></pre>
 <p>Now the maturity curve has changed, which we can verify by plotting it</p>
-<div class="sourceCode" id="cb43"><pre class="downlit">
-<span class="kw">psi_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="fu">getMaturityProportion</span>(<span class="kw">params_changed_maturity</span>) <span class="op">*</span> 
-                               <span class="fu">getReproductionProportion</span>(<span class="kw">params_changed_maturity</span>))
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">psi_changed_maturity</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-       y = <span class="st">"Proportion invested into reproduction"</span>)
-</pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">psi_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="fu">getMaturityProportion</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span> <span class="op">*</span> 
+                               <span class="fu">getReproductionProportion</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">psi_changed_maturity</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+       y <span class="op">=</span> <span class="st">"Proportion invested into reproduction"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
 <p>At this point let’s take a little break and learn how to draw two curves in the same graph. How can we see the old maturity curve and the new maturity curve in the same plot? First we add an extra column to each dataframe describing it</p>
-<div class="sourceCode" id="cb44"><pre class="downlit">
-<span class="kw">psi</span><span class="op">$</span><span class="kw">type</span> <span class="op">=</span> <span class="st">"original"</span>
-<span class="kw">psi_changed_maturity</span><span class="op">$</span><span class="kw">type</span> <span class="op">=</span> <span class="st">"changed"</span>
-</pre></div>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">psi</span><span class="op">$</span><span class="va">type</span> <span class="op">=</span> <span class="st">"original"</span>
+<span class="va">psi_changed_maturity</span><span class="op">$</span><span class="va">type</span> <span class="op">=</span> <span class="st">"changed"</span></code></pre></div>
 <p>Then we bind the two data frames together</p>
-<div class="sourceCode" id="cb45"><pre class="downlit">
-<span class="kw">psi_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">psi</span>, <span class="kw">psi_changed_maturity</span>)
-</pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">psi_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">psi</span>, <span class="va">psi_changed_maturity</span><span class="op">)</span></code></pre></div>
 <p>and send that combined data frame to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code></p>
-<div class="sourceCode" id="cb46"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">psi_combined</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>, colour = <span class="kw">type</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-       y = <span class="st">"Proportion invested into reproduction"</span>)
-</pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">psi_combined</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+       y <span class="op">=</span> <span class="st">"Proportion invested into reproduction"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-33-1.png" width="700"></p>
 <p>This change in the maturity curve of course implies a change in the growth rates.</p>
 </div>
@@ -451,24 +421,22 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#exercise-4" class="anchor"></a>Exercise 4</h2>
 <p>Make a plot showing the growth rates of the original model and of the model with the changed maturity curve.</p>
 <p>Next let us look at how the steady state spectrum has changed. We first need to run the changed model to steady state</p>
-<div class="sourceCode" id="cb47"><pre class="downlit">
-<span class="kw">params_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params_changed_maturity</span>)
-</pre></div>
-<pre><code>## Steady state was reached before 6 years.</code></pre>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span></code></pre></div>
+<pre><code>## Convergence was achieved in 6 years.</code></pre>
 <p>We use the same technique as above to plot the steady-state spectra of both models on top of each other.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit">
-<span class="kw">nf</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="fu">initialN</span>(<span class="kw">params</span>))
-<span class="kw">nf_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">melt</span>(<span class="fu">initialN</span>(<span class="kw">params_changed_maturity</span>))
-<span class="kw">nf</span><span class="op">$</span><span class="kw">type</span> <span class="op">&lt;-</span> <span class="st">"original"</span>
-<span class="kw">nf_changed_maturity</span><span class="op">$</span><span class="kw">type</span> <span class="op">&lt;-</span> <span class="st">"changed"</span>
-<span class="kw">nf_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">nf</span>, <span class="kw">nf_changed_maturity</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">nf_combined</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w</span>, y = <span class="kw">value</span>, colour = <span class="kw">type</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x = <span class="st">"Weight [g]"</span>,
-       y = <span class="st">"Number density [1/g]"</span>)
-</pre></div>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nf</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="fu">initialN</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">)</span>
+<span class="va">nf_changed_maturity</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="fu">initialN</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span><span class="op">)</span>
+<span class="va">nf</span><span class="op">$</span><span class="va">type</span> <span class="op">&lt;-</span> <span class="st">"original"</span>
+<span class="va">nf_changed_maturity</span><span class="op">$</span><span class="va">type</span> <span class="op">&lt;-</span> <span class="st">"changed"</span>
+<span class="va">nf_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">nf</span>, <span class="va">nf_changed_maturity</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">nf_combined</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight [g]"</span>,
+       y <span class="op">=</span> <span class="st">"Number density [1/g]"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-35-1.png" width="700"></p>
 <p>As expected, the bump happens later due to the larger maturity size and it is less pronounced, because the maturity curve is less steep.</p>
 </div>
@@ -477,15 +445,13 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#reproductive-efficiency" class="anchor"></a>Reproductive efficiency</h2>
 <p>So what happens with the energy that is invested into reproduction? It leads to spawning and thus the influx of new individuals at the egg size. This conversion of energy invested into reproduction into egg biomass is inefficient. Firstly much energy is spent on things like migration to spawning grounds, rather than on production of gonadic mass. Secondly, only a small proportion of eggs that are produced are viable and hatch into larvae.</p>
 <p>In order for the population to be at steady state, the reproductive efficiency has to have a particular value. If it were higher, the population would increase, if it was lower, the population would decrease with time. The <code>steady()</code> function has set the reproductive efficiency to just the right value and has stored it in the <code>erepro</code> species parameter.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params</span>)<span class="op">$</span><span class="kw">erepro</span>
-</pre></div>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">erepro</span></code></pre></div>
 <pre><code>## [1] 0.2036643</code></pre>
 <p>The model with the changed maturity curve leads to a different rate of investment into reproduction and thus needs a slightly different reproductive efficiency to remain at steady state:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params_changed_maturity</span>)<span class="op">$</span><span class="kw">erepro</span>
-</pre></div>
-<pre><code>## [1] 0.1915709</code></pre>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params_changed_maturity</span><span class="op">)</span><span class="op">$</span><span class="va">erepro</span></code></pre></div>
+<pre><code>## [1] 0.1915721</code></pre>
 <p>This is the reproductive efficiency at steady state. When the population deviates from the steady state, for example due to a change in fishing, the reproductive efficiency can be set to change according to a Beverton-Holt stock-recruitment curve. We will discuss this again later.</p>
 </div>
 </div>
@@ -494,22 +460,19 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#effect-of-decreased-prey-availability" class="anchor"></a>Effect of decreased prey availability</h1>
 <p>The energy income for a fish comes from predation on its prey. If there is less prey, the fish consumes less and thus its growth rate will decrease. Let us investigate this by artificially removing some prey.</p>
 <p>Below we decrease the community spectrum by a factor of 10 in the size range from 1mg to 10mg. We again create a new parameter object to be able to keep the old one around</p>
-<div class="sourceCode" id="cb54"><pre class="downlit">
-<span class="kw">params_starved</span> <span class="op">&lt;-</span> <span class="kw">params</span>
-<span class="kw">size_range</span> <span class="op">&lt;-</span> <span class="fu">w_full</span>(<span class="kw">params</span>) <span class="op">&gt;</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">3</span> <span class="op">&amp;</span> <span class="fu">w_full</span>(<span class="kw">params</span>) <span class="op">&lt;</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">2</span>
-<span class="fu">initialNResource</span>(<span class="kw">params_starved</span>)[<span class="kw">size_range</span>] <span class="op">&lt;-</span> 
-  <span class="fu">initialNResource</span>(<span class="kw">params</span>)[<span class="kw">size_range</span>] <span class="op">/</span> <span class="fl">10</span>
-<span class="fu">plotSpectra</span>(<span class="kw">params_starved</span>, power = <span class="fl">2</span>)
-</pre></div>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_starved</span> <span class="op">&lt;-</span> <span class="va">params</span>
+<span class="va">size_range</span> <span class="op">&lt;-</span> <span class="fu">w_full</span><span class="op">(</span><span class="va">params</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">3</span> <span class="op">&amp;</span> <span class="fu">w_full</span><span class="op">(</span><span class="va">params</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">2</span>
+<span class="fu">initialNResource</span><span class="op">(</span><span class="va">params_starved</span><span class="op">)</span><span class="op">[</span><span class="va">size_range</span><span class="op">]</span> <span class="op">&lt;-</span> 
+  <span class="fu">initialNResource</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">[</span><span class="va">size_range</span><span class="op">]</span> <span class="op">/</span> <span class="fl">10</span>
+<span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params_starved</span>, power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-38-1.png" width="700"></p>
 <p>That is of course quite a dramatic intervention, and so should allow us to clearly see its effect on the steady-state size distribution of our species.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit">
-<span class="kw">params_starved</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params_starved</span>)
-</pre></div>
-<pre><code>## Steady state was reached before 6 years.</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit">
-<span class="fu">plotSpectra</span>(<span class="kw">params_starved</span>, power = <span class="fl">2</span>)
-</pre></div>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_starved</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params_starved</span><span class="op">)</span></code></pre></div>
+<pre><code>## Convergence was achieved in 6 years.</code></pre>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params_starved</span>, power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-40-1.png" width="700"></p>
 <p>As expected, the lack of food and the resulting slow-down in growth leads to a traffic jam: a peak in the biomass density. This slow-down occurs at a size that is about a factor of 100 larger than the size at which food is reduced. Why this is we will discuss in the next section. But first investigate what happens when the prey abundance is increased instead of decreased.</p>
 <div id="exercise-5" class="section level2">
@@ -541,49 +504,41 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <h2 class="hasAnchor">
 <a href="#the-predation-kernel" class="anchor"></a>The predation kernel</h2>
 <p>Fish will be particularly good at catching prey in a specific range of sizes, smaller than themselves. This is encoded in the size-spectrum model by the predation kernel. Let us take a look at the predation kernel in our model. We can obtain it with the function <code>getPredKernel()</code>.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit">
-<span class="kw">pred_kernel</span> <span class="op">&lt;-</span> <span class="fu">getPredKernel</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pred_kernel</span> <span class="op">&lt;-</span> <span class="fu">getPredKernel</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p>This is a large three-dimensional array (predator species x predator size x prey size). We extract the kernel of a predator of size 10g (using that we remember that this is in size class 201)</p>
-<div class="sourceCode" id="cb59"><pre class="downlit">
-<span class="kw">pred_kernel_10</span> <span class="op">&lt;-</span> <span class="kw">pred_kernel</span>[, <span class="fl">201</span>, , drop = <span class="fl">FALSE</span>]
-</pre></div>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pred_kernel_10</span> <span class="op">&lt;-</span> <span class="va">pred_kernel</span><span class="op">[</span>, <span class="fl">201</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></code></pre></div>
 <p>The <code>drop = FALSE</code> option is there to prevent R from dropping any of the array dimensions. We can now plot this as usual</p>
-<div class="sourceCode" id="cb60"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu">melt</span>(<span class="kw">pred_kernel_10</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w_prey</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu">melt</span><span class="op">(</span><span class="va">pred_kernel_10</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w_prey</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-43-1.png" width="700"></p>
 <p>We see that the predator of size 10g likes to feed on prey that is about a factor 100 smaller than itself, but also feeds on other sizes, just with reduced preference. The preferred predator/prey size ratio is determined by the species parameter <code>beta</code> and the width of the feeding kernel, i.e., how fussy the predator is regarding their prey size, is determined by the species parameter <code>sigma</code>. In our model these have the values</p>
-<div class="sourceCode" id="cb61"><pre class="downlit">
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="fu">species_params</span>(<span class="kw">params</span>), <span class="kw">beta</span>, <span class="kw">sigma</span>)
-</pre></div>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="va">beta</span>, <span class="va">sigma</span><span class="op">)</span></code></pre></div>
 <pre><code>##   beta sigma
 ## 1  100   1.3</code></pre>
 <p>Let us change the preferred predator/prey mass ratio from 100 to 1000. As usual, we first create a copy of the parameter object, then we make the change in that copy.</p>
-<div class="sourceCode" id="cb63"><pre class="downlit">
-<span class="kw">params_pk</span> <span class="op">&lt;-</span> <span class="kw">params</span>
-<span class="fu">species_params</span>(<span class="kw">params_pk</span>)<span class="op">$</span><span class="kw">beta</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-</pre></div>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_pk</span> <span class="op">&lt;-</span> <span class="va">params</span>
+<span class="fu">species_params</span><span class="op">(</span><span class="va">params_pk</span><span class="op">)</span><span class="op">$</span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fl">1000</span></code></pre></div>
 <p>Let’s make a plot to see that the predation kernel has indeed changed.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit">
-<span class="fu">getPredKernel</span>(<span class="kw">params_pk</span>)[, <span class="fl">201</span>, , drop = <span class="fl">FALSE</span>] <span class="op">%&gt;%</span> 
-  <span class="fu">melt</span>() <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">w_prey</span>, y = <span class="kw">value</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">getPredKernel</span><span class="op">(</span><span class="va">params_pk</span><span class="op">)</span><span class="op">[</span>, <span class="fl">201</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">%&gt;%</span> 
+  <span class="fu">melt</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">w_prey</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-46-1.png" width="700"></p>
 <p>If we now again reduce the prey in the size range from 1mg to 10mg as before, we now expect this to produce a peak in the biomass spectrum somewhere between 1g and 10g. Let’s check.</p>
-<div class="sourceCode" id="cb65"><pre class="downlit">
-<span class="fu">initialNResource</span>(<span class="kw">params_pk</span>) <span class="op">&lt;-</span> <span class="fu">initialNResource</span>(<span class="kw">params_starved</span>)
-<span class="kw">params_pk</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params_pk</span>)
-</pre></div>
-<pre><code>## Steady state was reached before 4.5 years.</code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit">
-<span class="fu">plotSpectra</span>(<span class="kw">params_pk</span>, power = <span class="fl">2</span>)
-</pre></div>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">initialNResource</span><span class="op">(</span><span class="va">params_pk</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">initialNResource</span><span class="op">(</span><span class="va">params_starved</span><span class="op">)</span>
+<span class="va">params_pk</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params_pk</span><span class="op">)</span></code></pre></div>
+<pre><code>## Convergence was achieved in 4.5 years.</code></pre>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params_pk</span>, power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-47-1.png" width="700"></p>
 <p>Yes, as expected.</p>
 <p>For details of how <code>beta</code> and <code>sigma</code> parametrise the predation kernel, see <a href="https://sizespectrum.org/mizer/reference/lognormal_pred_kernel.html#details" class="uri">https://sizespectrum.org/mizer/reference/lognormal_pred_kernel.html#details</a>. For information on how to change the predation kernel, see <a href="https://sizespectrum.org/mizer/reference/setPredKernel.html#setting-predation-kernel" class="uri">https://sizespectrum.org/mizer/reference/setPredKernel.html#setting-predation-kernel</a></p>
@@ -599,25 +554,21 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#search-volume" class="anchor"></a>Search volume</h2>
 <p>Next we consider the factor that models the volume of water a filter feeder is able to filter in a certain amount of time, or the volume of water a forage fish is able to patrol in a certain amount of time. This is difficult to model from first principles, although people have tried to argue in terms of swimming speeds of fish. We will simply assume that this search volume rate is also an allometric rate. Let <span class="math inline">\(\gamma(w)\)</span> denote this rate for a predator of size <span class="math inline">\(w\)</span>. The we assume that <span class="math display">\[\gamma(w) = \gamma_0\ w^q\]</span> for some exponent <span class="math inline">\(q\)</span>. We know that a fish needs to consume prey at a rate that scales with its body size to the power <span class="math inline">\(p\)</span>, with <span class="math inline">\(p\)</span> about <span class="math inline">\(3/4\)</span>. We also know that the prey density will be approximately described by the Sheldon power law, i.e., that <span class="math inline">\(N(w) = N_0\ w^{-\lambda}\)</span>. A bit of maths then says that <span class="math display">\[q = 2 - \lambda + n\]</span> This explains the message you got when you created the params object with a certain choice of <span class="math inline">\(\lambda\)</span>: mizer chose the search volume exponent automtically according to this formula. In the real world evolution will have made sure that the fish will have developed a feeding strategy that allows it to cover its metabolic costs, and thus leads to that search volume exponent of <span class="math inline">\(q\)</span>. Clearly filter feeders have taken a very different route to this than forage fish, but the result is the same.</p>
 <p>Let us see what effect changing the coefficient <span class="math inline">\(\gamma_0\)</span> in the search volume rate has. Its current value in our model is</p>
-<div class="sourceCode" id="cb68"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params</span>)<span class="op">$</span><span class="kw">gamma</span>
-</pre></div>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">gamma</span></code></pre></div>
 <pre><code>## [1] 3686.147</code></pre>
 <p>We change that to 2000 and find the new steady state.</p>
-<div class="sourceCode" id="cb70"><pre class="downlit">
-<span class="kw">params_new_gamma</span> <span class="op">&lt;-</span> <span class="kw">params</span>
-<span class="fu">species_params</span>(<span class="kw">params_new_gamma</span>)<span class="op">$</span><span class="kw">gamma</span> <span class="op">&lt;-</span> <span class="fl">2000</span>
-<span class="kw">params_new_gamma</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params_new_gamma</span>)
-</pre></div>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_new_gamma</span> <span class="op">&lt;-</span> <span class="va">params</span>
+<span class="fu">species_params</span><span class="op">(</span><span class="va">params_new_gamma</span><span class="op">)</span><span class="op">$</span><span class="va">gamma</span> <span class="op">&lt;-</span> <span class="fl">2000</span>
+<span class="va">params_new_gamma</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params_new_gamma</span><span class="op">)</span></code></pre></div>
 <p>We can see the effect in the growth curve of our species. In the original model it looks as follows:</p>
-<div class="sourceCode" id="cb71"><pre class="downlit">
-<span class="fu">plotGrowthCurves</span>(<span class="kw">params</span>, species = <span class="st">"1"</span>)
-</pre></div>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotGrowthCurves</span><span class="op">(</span><span class="va">params</span>, species <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-50-1.png" width="700"></p>
 <p>In the modified model it looks like</p>
-<div class="sourceCode" id="cb72"><pre class="downlit">
-<span class="fu">plotGrowthCurves</span>(<span class="kw">params_new_gamma</span>, species = <span class="st">"1"</span>)
-</pre></div>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotGrowthCurves</span><span class="op">(</span><span class="va">params_new_gamma</span>, species <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-51-1.png" width="700"></p>
 </div>
 <div id="exercise-7" class="section level2">
@@ -630,19 +581,16 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <a href="#feeding-level" class="anchor"></a>Feeding level</h2>
 <p>A predator will have a maximum intake rate. It will simply not be able to utilise food at a faster rate than its maximum intake rate. Of course in practice it will not feed at the maximum intake rate because of limited availability of prey. We describe this by the <em>feeding level</em> which is the proportion of its maximum intake rate at which the predator is actually taking in prey.</p>
 <p>In our simple model this feeding level is constant.</p>
-<div class="sourceCode" id="cb73"><pre class="downlit">
-<span class="fu">plotFeedingLevel</span>(<span class="kw">params</span>)
-</pre></div>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotFeedingLevel</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-52-1.png" width="700"></p>
 <p>In the model with the reduced search volume the feeding level will be lower</p>
-<div class="sourceCode" id="cb74"><pre class="downlit">
-<span class="fu">plotFeedingLevel</span>(<span class="kw">params_new_gamma</span>)
-</pre></div>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plotFeedingLevel</span><span class="op">(</span><span class="va">params_new_gamma</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-53-1.png" width="700"></p>
 <p>Our model is taking an allometric form for the maximum intake rate <span class="math inline">\(h(w)\)</span> as a function of predator size <span class="math inline">\(w\)</span>: <span class="math inline">\(h(w) = h\ w^n\)</span>. The current value of the coefficient <span class="math inline">\(h\)</span> is</p>
-<div class="sourceCode" id="cb75"><pre class="downlit">
-<span class="fu">species_params</span>(<span class="kw">params</span>)<span class="op">$</span><span class="kw">h</span>
-</pre></div>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">h</span></code></pre></div>
 <pre><code>## [1] 51.6855</code></pre>
 </div>
 </div>
@@ -664,22 +612,19 @@ width of the size class. So the fish density has units of fish per gram.  -->
 <h2 class="hasAnchor">
 <a href="#fishing-mortality" class="anchor"></a>Fishing mortality</h2>
 <p>The cause of mortality that is most under our control is mortality from fishing. You can see how fishing is set up in mizer at <a href="https://sizespectrum.org/mizer/reference/setFishing.html#setting-fishing" class="uri">https://sizespectrum.org/mizer/reference/setFishing.html#setting-fishing</a>. Here we only look at a simple example: we introduce fishing on our species only for fish above 30 grams. All fish greater than 30 grams will be exposed to the same fishing mortality. We call this kind of fishing selectivity “knife_edge” selectivity. Mizer can deal with more general selectivity curves, like sigmoidal or doubly sigmoidal.</p>
-<div class="sourceCode" id="cb77"><pre class="downlit">
-<span class="kw">params_fishing</span> <span class="op">&lt;-</span> <span class="kw">params</span>
-<span class="fu">species_params</span>(<span class="kw">params_fishing</span>)<span class="op">$</span><span class="kw">sel_func</span> <span class="op">&lt;-</span> <span class="st">"knife_edge"</span>
-<span class="fu">species_params</span>(<span class="kw">params_fishing</span>)<span class="op">$</span><span class="kw">knife_edge_size</span> <span class="op">&lt;-</span> <span class="fl">30</span>
-</pre></div>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_fishing</span> <span class="op">&lt;-</span> <span class="va">params</span>
+<span class="fu">species_params</span><span class="op">(</span><span class="va">params_fishing</span><span class="op">)</span><span class="op">$</span><span class="va">sel_func</span> <span class="op">&lt;-</span> <span class="st">"knife_edge"</span>
+<span class="fu">species_params</span><span class="op">(</span><span class="va">params_fishing</span><span class="op">)</span><span class="op">$</span><span class="va">knife_edge_size</span> <span class="op">&lt;-</span> <span class="fl">30</span></code></pre></div>
 <p>We also need to specify the fishing effort and can then plot the resulting fishing mortality.</p>
-<div class="sourceCode" id="cb78"><pre class="downlit">
-<span class="kw">params_fishing</span> <span class="op">&lt;-</span> <span class="fu">setFishing</span>(<span class="kw">params_fishing</span>, initial_effort = <span class="fl">1</span>)
-<span class="fu">plotFMort</span>(<span class="kw">params_fishing</span>)
-</pre></div>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_fishing</span> <span class="op">&lt;-</span> <span class="fu">setFishing</span><span class="op">(</span><span class="va">params_fishing</span>, initial_effort <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">plotFMort</span><span class="op">(</span><span class="va">params_fishing</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-56-1.png" width="700"></p>
 <p>After having turned on fishing, we need to find the new steady state with <code>steady()</code> and can then plot it.</p>
-<div class="sourceCode" id="cb79"><pre class="downlit">
-<span class="kw">params_fishing</span> <span class="op">&lt;-</span> <span class="fu">steady</span>(<span class="kw">params_fishing</span>)
-<span class="fu">plotSpectra</span>(<span class="kw">params_fishing</span>, power = <span class="fl">2</span>)
-</pre></div>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">params_fishing</span> <span class="op">&lt;-</span> <span class="fu">steady</span><span class="op">(</span><span class="va">params_fishing</span><span class="op">)</span>
+<span class="fu">plotSpectra</span><span class="op">(</span><span class="va">params_fishing</span>, power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="single_species_size-spectrum_dynamics_files/figure-html/unnamed-chunk-57-1.png" width="700"></p>
 </div>
 </div>
@@ -705,7 +650,7 @@ width of the size class. So the fish density has units of fish per gram.  -->
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

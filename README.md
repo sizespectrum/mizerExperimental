@@ -52,12 +52,11 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
 
 ## Features
 
-  - Functions and a shiny app for interactively tuning parameters.
+  - Functions and a shiny app for interactively tuning parameters,
+    started with `tuneParams()`.
 
-  - New function `projectToSteady()` to run dynamics until close to
-    steady state.
-
-  - A function for keeping egg densities constant.
+  - A function `constant_reproduction()` for keeping egg densities
+    constant.
 
   - `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting
     yield curve.
