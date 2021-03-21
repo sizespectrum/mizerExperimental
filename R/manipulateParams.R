@@ -10,8 +10,7 @@
 #'
 #' @param object An object of class \linkS4class{MizerParams} or
 #'   \linkS4class{MizerSim}.
-#' @param species Name or vector of names of the species to be designated as
-#'   background species. By default this is set to all species.
+#' @inheritParams mizer::valid_species_arg
 #'
 #' @return An object of the same class as the `object` argument
 #' @export
@@ -23,16 +22,12 @@
 #'                                        "N.pout", "Dab", "Saithe"))
 #' plotSpectra(sim)
 #' }
-markBackground <- function(object, species) {
+markBackground <- function(object, species = NULL) {
     if (is(object, "MizerSim")) {
-        if (missing(species)) {
-            species <- dimnames(object@params@initial_n)$sp
-        }
+        species <- valid_species_arg(object, species)
         object@params@A[dimnames(object@params@initial_n)$sp %in% species] <- NA
     } else if (is(object, "MizerParams")) {
-        if (missing(species)) {
-            species <- dimnames(object@initial_n)$sp
-        }
+        species <- valid_species_arg(object, species)
         object@A[dimnames(object@initial_n)$sp %in% species] <- NA
     } else {
         stop("The `object` argument must be of type MizerParams or MizerSim.")
@@ -152,9 +147,7 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #' the remaining species or retune their reproductive efficiency.
 #'
 #' @param params A mizer params object for the original system.
-#' @param species A vector of the names of the species to be deleted or a boolean
-#'   vector indicating for each species whether it is to be removed (TRUE) or
-#'   not.
+#' @inheritParams mizer::valid_species_arg
 #'
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
@@ -167,18 +160,8 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #' }
 removeSpecies <- function(params, species) {
     params <- validParams(params)
-    no_sp <- length(params@w_min_idx)
-    if (is.logical(species)) {
-        if (length(species) != no_sp) {
-            stop("The boolean species argument has the wrong length")
-        }
-    } else {
-        species <- dimnames(params@initial_n)$sp %in% species
-        if (length(species) == 0) {
-            warning("The species argument matches none of the species in the params object")
-            return(params)
-        }
-    }
+    species <- valid_species_arg(params, species,
+                                 return.logical = TRUE)
     keep <- !species
     p <- params
 

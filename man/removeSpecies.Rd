@@ -9,9 +9,10 @@ removeSpecies(params, species)
 \arguments{
 \item{params}{A mizer params object for the original system.}
 
-\item{species}{A vector of the names of the species to be deleted or a boolean
-vector indicating for each species whether it is to be removed (TRUE) or
-not.}
+\item{species}{The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a
+numeric vector with the species indices, or a logical vector indicating for
+each species whether it is to be selected (TRUE) or not.}
 }
 \value{
 An object of type \linkS4class{MizerParams}

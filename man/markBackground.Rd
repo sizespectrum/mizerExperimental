@@ -4,14 +4,16 @@
 \alias{markBackground}
 \title{Designate species as background species}
 \usage{
-markBackground(object, species)
+markBackground(object, species = NULL)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerParams} or
 \linkS4class{MizerSim}.}
 
-\item{species}{Name or vector of names of the species to be designated as
-background species. By default this is set to all species.}
+\item{species}{The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a
+numeric vector with the species indices, or a logical vector indicating for
+each species whether it is to be selected (TRUE) or not.}
 }
 \value{
 An object of the same class as the \code{object} argument
