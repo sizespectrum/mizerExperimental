@@ -16,12 +16,12 @@ test_that("markBackground() works", {
 test_that("removeSpecies works", {
     remove <- NS_species_params$species[2:11]
     reduced <- NS_species_params[!(NS_species_params$species %in% remove), ]
-    params <- MizerParams(NS_species_params, no_w = 20,
-                          max_w = 39900, min_w_pp = 9e-14)
+    params <- newMultispeciesParams(NS_species_params, no_w = 20,
+                                    max_w = 39900, min_w_pp = 9e-14)
     p1 <- removeSpecies(params, species = remove)
     expect_equal(nrow(p1@species_params), nrow(params@species_params) - 10)
-    p2 <- MizerParams(reduced, no_w = 20,
-                      max_w = 39900, min_w_pp = 9e-14)
+    p2 <- newMultispeciesParams(reduced, no_w = 20,
+                                max_w = 39900, min_w_pp = 9e-14)
     expect_equivalent(p1, p2)
     sim1 <- project(p1, t_max = 0.4, t_save = 0.4)
     sim2 <- project(p2, t_max = 0.4, t_save = 0.4)
@@ -124,14 +124,11 @@ test_that("addSpecies handles gear params correctly", {
                      sel_func = "knife_edge",
                      knife_edge_size = c(5, 5, 50))
 
+    # If no inital_effort for new gear is provide, it is 0
     pa <- addSpecies(p, sp, gp)
-    effort = c(knife_edge_gear = 0, gear1 = 0, gear2 = 0)
-    expect_identical(pa@initial_effort, effort)
+    expect_identical(pa@initial_effort,
+                     c(knife_edge_gear = 0, gear1 = 0, gear2 = 0))
     expect_identical(nrow(pa@gear_params), 5L)
-
-    effort = c(knife_edge_gear = 1, gear1 = 2, gear2 = 3)
-    pa <- addSpecies(p, sp, gp, initial_effort = effort)
-    expect_identical(pa@initial_effort, effort)
 
     extra_effort = c(gear1 = 2, gear2 = 3)
     pa <- addSpecies(p, sp, gp, initial_effort = extra_effort)
@@ -143,7 +140,7 @@ test_that("addSpecies handles gear params correctly", {
 
     effort = c(gear3 = 1)
     expect_error(addSpecies(p, sp, gp, initial_effort = effort),
-                 "The names of the `initial_effort` do not match the names of gears.")
+                 "The names of the `initial_effort` do not match the names of the new gears.")
 })
 
 test_that("addSpecies handles interaction matrix correctly", {
@@ -178,16 +175,20 @@ test_that("adding and then removing species leaves params unaltered", {
     # TODO: currently NS_params still has factors in gear_params
     params@gear_params$species <- as.character(params@gear_params$species)
     params@gear_params$gear <- as.character(params@gear_params$gear)
-    # add comments to test that they will be preserved as well
-    comment(params) <- "test"
-    for (slot in (slotNames(params))) {
-        comment(slot(params, slot)) <- slot
-    }
     # two arbitrary species
     sp <- data.frame(species = c("new1", "new2"),
                      w_inf = c(10, 100),
                      k_vb = c(1, 1),
                      stringsAsFactors = FALSE)
+    # add comments to test that they will be preserved as well
+    comment(params) <- "test"
+    for (slot in (slotNames(params))) {
+        comment(slot(params, slot)) <- slot
+    }
+    # But no comments in fields that would disable addSpecies
+    comment(params@pred_kernel) <- NULL
+    comment(params@catchability) <- NULL
+    comment(params@selectivity) <- NULL
     params2 <- addSpecies(params, sp) %>%
         removeSpecies(c("new1", "new2"))
 
@@ -197,31 +198,37 @@ test_that("adding and then removing species leaves params unaltered", {
     params2@linetype <- params@linetype
     params2@species_params$linecolour <- NULL
     params2@species_params$linetype <- NULL
-    # Currently addSpecies still changes RDD
-    # TODO: fix this
+    # Previous to mizer2.1.0.9000 addSpecies changed RDD
+    # Once mizer 2.1.1 is released the following line can be deleted
     params2@rates_funcs$RDD <- params@rates_funcs$RDD
     # comment on w_min_idx are not preserved
     comment(params@w_min_idx) <- NULL
     expect_equal(params, params2)
 })
+test_that("addSpecies works when adding a species with a larger w_inf", {
+    sp <- data.frame(species = "Blue whale", w_inf = 5e4,
+                     w_mat = 1e3, beta = 1000, sigma = 2,
+                     k_vb = 0.6, gear = 'Whale hunter')
 
-
-# retuneReproductiveEfficiency ----
-test_that("retuneReproductiveEfficiency works", {
-    p <- newTraitParams(R_factor = Inf)
-    no_sp <- nrow(p@species_params)
-    erepro <- p@species_params$erepro
-    p@species_params$erepro[5] <- 15
-    ps <- retune_erepro(p)
-    expect_equal(ps@species_params$erepro, erepro)
-    # can also select species in various ways
-    ps <- retune_erepro(p, species = p@species_params$species[5])
-    expect_equal(ps@species_params$erepro, erepro)
-    p@species_params$erepro[3] <- 15
-    species <- (1:no_sp) %in% c(3,5)
-    ps <- retune_erepro(p, species = species)
-    expect_equal(ps@species_params$erepro, erepro)
+    p <- addSpecies(NS_params, sp)
+    expect_identical(p@w[1:100], NS_params@w)
+    expect_identical(p@w_full[1:length(NS_params@w_full)], NS_params@w_full)
+    expect_lte(5e4, max(p@w))
 })
+test_that("addSpecies works when adding a species with a smaller w_min", {
+    sp <- data.frame(species = "Blue whale", w_inf = 5e4, w_min = 1e-5,
+                     w_mat = 1e3, beta = 1000, sigma = 2,
+                     k_vb = 0.6, gear = 'Whale hunter')
+
+    p <- addSpecies(NS_params, sp)
+    no_w <- length(NS_params@w)
+    new_no_w <- length(p@w)
+    expect_equal(p@w[28:127], NS_params@w)
+    expect_equal(p@w_full[1:length(NS_params@w_full)], NS_params@w_full)
+    expect_gte(1e-5, min(p@w))
+})
+
+
 
 # renameSpecies ----
 test_that("renameSpecies works", {

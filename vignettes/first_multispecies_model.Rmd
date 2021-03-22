@@ -87,8 +87,7 @@ spreadsheet with the parameters and then read that in with `read_csv()`.
 We can now add Hake to our existing model with the `addSpecies()` function.
 ```{r}
 params <- addSpecies(params_background,
-                     species_params,
-                     initial_effort = c(knife_edge_gear = 1)) %>% 
+                     species_params) %>% 
     steady()
 plotSpectra(params, power = 2, total = TRUE)
 ```

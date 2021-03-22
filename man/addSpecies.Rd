@@ -8,15 +8,22 @@ addSpecies(
   params,
   species_params,
   gear_params = data.frame(),
-  interaction,
-  initial_effort
+  initial_effort,
+  interaction
 )
 }
 \arguments{
 \item{params}{A mizer params object for the original system.}
 
-\item{species_params}{The species parameters of the new species we
-want to add to the system.}
+\item{species_params}{Data frame with the species parameters of the new
+species we want to add to the system.}
+
+\item{gear_params}{Optional data frame with the gear parameters for the new
+species.}
+
+\item{initial_effort}{A named vector with the effort for new fishing gear
+introduced in \code{gear_params}. Only needed if new gear are introduced, not
+if the new species are fished only by existing gear.}
 
 \item{interaction}{Interaction matrix. A square matrix giving either the
 interaction coefficients between all species or only those between the
@@ -40,8 +47,18 @@ species lies at 1/100 of the community power law. The reproductive
 efficiencies of the new species are set so as to keep them at that low level.
 }
 \details{
+The resulting MizerParams object will use the same size grid where possible,
+but if one of the new species needs a larger range of w (either because of
+a new species has an egg size smaller than those of existing species or
+a maximum size larger than those of existing species) then the grid will
+be expanded and all arrays will be enlarged accordingly.
+
+If any of the rate arrays had been set by the user to values other than
+those calculated as default from the species parameters, then these will
+be preserved.
+
 After adding the new species, the background species are not retuned and the
-system is not run to steady state. You would have to call
+system is not run to steady state. If you want this you would have to call
 \code{\link[=retuneBackground]{retuneBackground()}} and \code{\link[=steady]{steady()}} explicitly.
 }
 \examples{

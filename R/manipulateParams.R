@@ -425,21 +425,37 @@ renameSpecies <- function(params, replace) {
 #' species lies at 1/100 of the community power law. The reproductive
 #' efficiencies of the new species are set so as to keep them at that low level.
 #'
-#' @details
-#' After adding the new species, the background species are not retuned and the
-#' system is not run to steady state. You would have to call
-#' [retuneBackground()] and [steady()] explicitly.
-#'
 #' @param params A mizer params object for the original system.
-#' @param species_params The species parameters of the new species we
-#'   want to add to the system.
+#' @param species_params Data frame with the species parameters of the new
+#'   species we want to add to the system.
 #' @param interaction Interaction matrix. A square matrix giving either the
 #'   interaction coefficients between all species or only those between the
 #'   new species. In the latter case all interaction between an old and a new
 #'   species are set to 1. If this argument is missing, all interactions
 #'   involving a new species are set to 1.
+#' @param gear_params Optional data frame with the gear parameters for the new
+#'   species.
+#' @param initial_effort A named vector with the effort for new fishing gear
+#'   introduced in `gear_params`. Only needed if new gear are introduced, not
+#'   if the new species are fished only by existing gear.
 #'
 #' @return An object of type \linkS4class{MizerParams}
+#'
+#' @details
+#' The resulting MizerParams object will use the same size grid where possible,
+#' but if one of the new species needs a larger range of w (either because of
+#' a new species has an egg size smaller than those of existing species or
+#' a maximum size larger than those of existing species) then the grid will
+#' be expanded and all arrays will be enlarged accordingly.
+#'
+#' If any of the rate arrays had been set by the user to values other than
+#' those calculated as default from the species parameters, then these will
+#' be preserved.
+#'
+#' After adding the new species, the background species are not retuned and the
+#' system is not run to steady state. If you want this you would have to call
+#' [retuneBackground()] and [steady()] explicitly.
+#'
 #' @seealso [removeSpecies()]
 #' @export
 #' @examples
@@ -472,17 +488,30 @@ renameSpecies <- function(params, replace) {
 #' sim <- project(params, t_max=50, progress_bar = FALSE)
 #' plotBiomass(sim)
 #' }
-addSpecies <- function(params, species_params, gear_params = data.frame(),
-                       interaction, initial_effort) {
+addSpecies <- function(params, species_params,
+                       gear_params = data.frame(), initial_effort,
+                       interaction) {
     # check validity of parameters ----
     params <- validParams(params)
-    assert_that(is.data.frame(species_params),
-                is.data.frame(gear_params))
     species_params <- mizer:::validSpeciesParams(species_params)
     gear_params <- mizer:::validGearParams(gear_params, species_params)
     if (any(species_params$species %in% params@species_params$species)) {
         stop("You can not add species that are already there.")
     }
+    if (!is.null(comment(params@pred_kernel))) {
+        stop("addSpecies() can not add species to a MizerParams object that ",
+             "has its predation kernel protected by a comment.")
+    }
+    if (!is.null(comment(params@selectivity))) {
+        stop("addSpecies() can not add species to a MizerParams object that ",
+             "has its selectivity array protected by a comment.")
+    }
+    if (!is.null(comment(params@catchability))) {
+        stop("addSpecies() can not add species to a MizerParams object that ",
+             "has its catchability array protected by a comment.")
+    }
+
+    # set interaction
     no_old_sp <- nrow(params@species_params)
     old_sp <- 1:no_old_sp
     no_new_sp <- nrow(species_params)
@@ -526,6 +555,9 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
                                   stringsAsFactors = FALSE)
 
     # combine gear params ----
+    if (!all(gear_params$species %in% species_params$species)) {
+        stop("gear_params should only set gear parameters for new species.")
+    }
     # Make sure that all columns exist in both data frames
     if (nrow(gear_params) > 0) {
         missing <- setdiff(names(params@gear_params), names(gear_params))
@@ -538,16 +570,50 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
     combi_gear_params <- rbind(params@gear_params, gear_params,
                                stringsAsFactors = FALSE)
 
+    # expand grid ----
+    # in case the new species need a bigger range of w
+    # We need to make sure that the new grid that newMultispeciesParams()
+    # will create contains the old grid as a subgrid.
+    no_w = length(params@w)
+    no_w_full = length(params@w_full)
+    max_w <- max(params@w)
+    min_w <- min(params@w)
+    new_max_w <- max_w
+    new_min_w <- min_w
+    new_no_w <- no_w
+    extra_no_w <- 0  # extra bins added for smaller egg size
+    if (max(species_params$w_inf) > max(params@w)) {
+        new_max_w <- max(species_params$w_inf)
+        dx <- log10(max_w / min_w) / (no_w - 1)
+        new_no_w <- ceiling(log10(new_max_w / min_w) / dx) + 1
+        new_max_w <- min_w * 10^(dx * (new_no_w - 1))
+    }
+    if (min(species_params$w_min) < min(params@w)) {
+        new_min_w <- min(species_params$w_min)
+        if (new_min_w < min(params@w_full)) {
+            stop("The smallest egg size is too small.")
+        }
+        # We need to set the smallest egg size to a size on the existing grid
+        # so that the new grid will be compatible
+        sel_min <- combi_species_params$w_min == new_min_w
+        new_min_w <- max(params@w_full[params@w_full <= new_min_w])
+        combi_species_params$w_min[sel_min] <- new_min_w
+
+        extra_no_w <- sum(params@w_full >= new_min_w) - no_w
+        new_no_w <- new_no_w + extra_no_w
+    }
+
     # new params object ----
     # use dataframe and global settings from params to make a new MizerParams
     # object.
     p <- newMultispeciesParams(
         combi_species_params,
         interaction = inter,
-        min_w = min(params@w),
-        max_w = max(params@w),
-        min_w_pp = min(params@w_full),
-        no_w = length(params@w),
+        max_w = new_max_w,
+        # for min_w_pp we choose something that will then be rounded down
+        # to the existing smallest size when emptyParams() creates the new grid
+        min_w_pp = (params@w_full[[1]] + params@w_full[[2]]) / 2,
+        no_w = new_no_w,
         gear_params = combi_gear_params,
         n = params@resource_params$n,
         r_pp = params@resource_params$r_pp,
@@ -555,39 +621,57 @@ addSpecies <- function(params, species_params, gear_params = data.frame(),
         lambda = params@resource_params$lambda,
         w_pp_cutoff = params@resource_params$w_pp_cutoff
     )
-    # Copy over old effort
+
+    # Set effort ----
+    new_gear <- setdiff(unique(gear_params$gear),
+                        unique(params@gear_params$gear))
     p@initial_effort[names(params@initial_effort)] <- params@initial_effort
     if (!missing(initial_effort)) {
         if (is.null(names(initial_effort))) {
             stop("The `initial_effort` must be a named list or vector.")
         }
-        if (!all(names(initial_effort) %in% dimnames(p@selectivity)$gear)) {
-            stop("The names of the `initial_effort` do not match the names of gears.")
+        if (!all(names(initial_effort) %in% new_gear)) {
+            stop("The names of the `initial_effort` do not match the names of the new gears.")
         }
         p@initial_effort[names(initial_effort)] <- initial_effort
     }
-    # Use the same resource spectrum as params
-    p@initial_n_pp <- params@initial_n_pp
-    p@cc_pp <- params@cc_pp
-    p@rr_pp <- params@rr_pp
+
+    # Keep resource spectrum ----
+    p@initial_n_pp[1:no_w_full] <- params@initial_n_pp
+    p@cc_pp[1:no_w_full] <- params@cc_pp
+    p@rr_pp[1:no_w_full] <- params@rr_pp
     p@resource_dynamics <- params@resource_dynamics
     p@resource_params <- params@resource_params
-    # Preserve comments
+
+    # Preserve comments ----
     comment(p) <- comment(params)
     for (slot in (slotNames(p))) {
         comment(slot(p, slot)) <- comment(slot(params, slot))
     }
 
-    # initial solution ----
-    p@initial_n[old_sp, ] <- params@initial_n
+    # Copy old data ----
+    # selector for old w bins inside new w
+    old_w <- (extra_no_w + 1):(extra_no_w + no_w)
     p@A[old_sp] <- params@A
-    # Use the same psi and mu_b as before for old species
-    p@psi[old_sp, ] <- params@psi
+    p@psi[old_sp, old_w] <- params@psi
+    p@maturity[old_sp, old_w] <- params@maturity
     p@sc <- params@sc
-    p@mu_b[old_sp, ] <- params@mu_b
-    # we assume same background death for all species
-    p@mu_b[new_sp, ] <- rep(params@mu_b[1, ], each = no_new_sp)
+    p@mu_b[old_sp, old_w] <- params@mu_b
+    p@intake_max[old_sp, old_w] <- params@intake_max
+    p@search_vol[old_sp, old_w] <- params@search_vol
+    p@metab[old_sp, old_w] <- params@metab
 
+    p@other_dynamics <- params@other_dynamics
+    p@other_encounter <- params@other_encounter
+    p@other_mort <- params@other_mort
+    p@other_params <- params@other_params
+    p@rates_funcs <- params@rates_funcs
+
+    # we assume same background death for all species
+    # p@mu_b[new_sp, ] <- rep(params@mu_b[1, ], each = no_new_sp)
+
+    # initial solution ----
+    p@initial_n[old_sp, old_w] <- params@initial_n
     # Turn off self-interaction among the new species, so we can determine the
     # growth rates, and death rates induced upon them by the pre-existing species
     p@interaction[new_sp, new_sp] <- 0
