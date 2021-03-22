@@ -80,7 +80,7 @@ efficiencies of the new species are set so as to keep them at that low level." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -155,8 +155,8 @@ efficiencies of the new species are set so as to keep them at that low level.</p
   <span class='va'>params</span>,
   <span class='va'>species_params</span>,
   gear_params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
-  <span class='va'>interaction</span>,
-  <span class='va'>initial_effort</span>
+  <span class='va'>initial_effort</span>,
+  <span class='va'>interaction</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -168,8 +168,19 @@ efficiencies of the new species are set so as to keep them at that low level.</p
     </tr>
     <tr>
       <th>species_params</th>
-      <td><p>The species parameters of the new species we
-want to add to the system.</p></td>
+      <td><p>Data frame with the species parameters of the new
+species we want to add to the system.</p></td>
+    </tr>
+    <tr>
+      <th>gear_params</th>
+      <td><p>Optional data frame with the gear parameters for the new
+species.</p></td>
+    </tr>
+    <tr>
+      <th>initial_effort</th>
+      <td><p>A named vector with the effort for new fishing gear
+introduced in <code>gear_params</code>. Only needed if new gear are introduced, not
+if the new species are fished only by existing gear.</p></td>
     </tr>
     <tr>
       <th>interaction</th>
@@ -186,8 +197,16 @@ involving a new species are set to 1.</p></td>
     <p>An object of type MizerParams</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>After adding the new species, the background species are not retuned and the
-system is not run to steady state. You would have to call
+    <p>The resulting MizerParams object will use the same size grid where possible,
+but if one of the new species needs a larger range of w (either because of
+a new species has an egg size smaller than those of existing species or
+a maximum size larger than those of existing species) then the grid will
+be expanded and all arrays will be enlarged accordingly.</p>
+<p>If any of the rate arrays had been set by the user to values other than
+those calculated as default from the species parameters, then these will
+be preserved.</p>
+<p>After adding the new species, the background species are not retuned and the
+system is not run to steady state. If you want this you would have to call
 <code><a href='retuneBackground.html'>retuneBackground()</a></code> and <code>steady()</code> explicitly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

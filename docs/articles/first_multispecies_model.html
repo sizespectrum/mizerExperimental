@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -147,8 +147,7 @@
 <p>We can now add Hake to our existing model with the <code><a href="../reference/addSpecies.html">addSpecies()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/addSpecies.html">addSpecies</a></span><span class="op">(</span><span class="va">params_background</span>,
-                     <span class="va">species_params</span>,
-                     initial_effort <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>knife_edge_gear <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+                     <span class="va">species_params</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu">steady</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Note: No h provided for some species, so using f0 and k_vb to calculate it.</code></pre>
 <pre><code>## Note: Because you have n != p, the default value is not very good.</code></pre>
