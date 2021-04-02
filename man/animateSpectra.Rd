@@ -6,7 +6,8 @@
 \usage{
 animateSpectra(
   sim,
-  species,
+  species = NULL,
+  time_range,
   wlim = c(NA, NA),
   ylim = c(NA, NA),
   power = 1,
@@ -19,6 +20,10 @@ animateSpectra(
 
 \item{species}{Name or vector of names of the species to be plotted. By
 default all species are plotted.}
+
+\item{time_range}{The time range to animate over. Either a vector of values
+or a vector of min and max time. Default is the entire time range of the
+simulation.}
 
 \item{wlim}{A numeric vector of length two providing lower and upper limits
 for the w axis. Use NA to refer to the existing minimum or maximum.}

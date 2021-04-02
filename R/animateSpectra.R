@@ -5,6 +5,9 @@
 #' @param sim A MizerSim object
 #' @param species Name or vector of names of the species to be plotted. By
 #'   default all species are plotted.
+#' @param time_range The time range to animate over. Either a vector of values
+#'   or a vector of min and max time. Default is the entire time range of the
+#'   simulation.
 #' @param wlim A numeric vector of length two providing lower and upper limits
 #'   for the w axis. Use NA to refer to the existing minimum or maximum.
 #' @param ylim A numeric vector of length two providing lower and upper limits
@@ -26,31 +29,26 @@
 #' animateSpectra(sim)
 #' }
 animateSpectra <- function(sim,
-                           species,
+                           species = NULL,
+                           time_range,
                            wlim = c(NA, NA),
                            ylim = c(NA, NA),
                            power = 1,
                            total = FALSE,
                            resource = TRUE) {
 
-    # Select species ----
-    if (missing(species)) {
-        # Set species to list of all non-background species
-        species <- dimnames(sim@params@initial_n)$sp[!is.na(sim@params@A)]
+    species <- valid_species_arg(sim, species)
+    if (missing(time_range)) {
+        time_range  <- as.numeric(dimnames(sim@n)$time)
     }
-    species <- as.character(species)
-    invalid_species <-
-        !(species %in% as.character(dimnames(sim@n)$sp))
-    if (any(invalid_species)) {
-        warning(paste("The following species do not exist in the model and are ignored:",
-                      species[invalid_species]))
-    }
-    nf <- mizer::melt(sim@n[, as.character(dimnames(sim@n)$sp) %in% species,
+    time_elements <- get_time_elements(sim, time_range)
+    nf <- mizer::melt(sim@n[time_elements,
+                            as.character(dimnames(sim@n)$sp) %in% species,
                                , drop = FALSE])
 
     # Add resource ----
     if (resource) {
-        nf_pp <- melt(sim@n_pp)
+        nf_pp <- melt(sim@n_pp[time_elements, , drop = FALSE])
         nf_pp$sp <- "Resource"
         nf <- rbind(nf, nf_pp)
     }
@@ -62,10 +60,19 @@ animateSpectra <- function(sim,
         total_n <- sim@n_pp
         total_n[, fish_idx] <- total_n[, fish_idx] +
             rowSums(aperm(sim@n, c(1, 3, 2)), dims = 2)
-        nf_total <- melt(total_n)
+        nf_total <- melt(total_n[time_elements, , drop = FALSE])
         nf_total$sp <- "Total"
         nf <- rbind(nf, nf_total)
     }
+
+    # Deal with power argument ----
+    if (power %in% c(0, 1, 2)) {
+        y_label <- c("Number density [1/g]", "Biomass density",
+                     "Biomass density [g]")[power + 1]
+    } else {
+        y_label <- paste0("Number density * w^", power)
+    }
+    nf <- mutate(nf, value = value * w^power)
 
     # Impose limits ----
     if (is.na(wlim[1])) wlim[1] <- min(sim@params@w) / 100
@@ -77,15 +84,6 @@ animateSpectra <- function(sim,
                value <= ylim[2],
                w >= wlim[1],
                w <= wlim[2])
-
-    # Deal with power argument ----
-    if (power %in% c(0, 1, 2)) {
-        y_label <- c("Number density [1/g]", "Biomass density",
-                     "Biomass density [g]")[power + 1]
-    } else {
-        y_label <- paste0("Number density * w^", power)
-    }
-    nf <- mutate(nf, value = value * w^power)
 
     nf %>%
         plot_ly() %>%

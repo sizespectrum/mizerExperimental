@@ -137,7 +137,8 @@
 
     <pre class="usage"><span class='fu'>animateSpectra</span><span class='op'>(</span>
   <span class='va'>sim</span>,
-  <span class='va'>species</span>,
+  species <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>time_range</span>,
   wlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
   ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
   power <span class='op'>=</span> <span class='fl'>1</span>,
@@ -156,6 +157,12 @@
       <th>species</th>
       <td><p>Name or vector of names of the species to be plotted. By
 default all species are plotted.</p></td>
+    </tr>
+    <tr>
+      <th>time_range</th>
+      <td><p>The time range to animate over. Either a vector of values
+or a vector of min and max time. Default is the entire time range of the
+simulation.</p></td>
     </tr>
     <tr>
       <th>wlim</th>
