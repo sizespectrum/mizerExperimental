@@ -81,7 +81,7 @@ getYieldVsF <- function(params,
 #' @examples
 #' \dontrun{
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
-#' plotYieldVsFcurve(params, "Cod")
+#' plotYieldVsF(params, "Cod")
 #' }
 plotYieldVsF <- function(params,
                          species,

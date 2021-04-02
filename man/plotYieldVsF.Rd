@@ -38,7 +38,7 @@ fixed.
 \examples{
 \dontrun{
 params <- newMultispeciesParams(NS_species_params_gears, inter)
-plotYieldVsFcurve(params, "Cod")
+plotYieldVsF(params, "Cod")
 }
 }
 \seealso{
