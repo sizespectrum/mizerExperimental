@@ -1,6 +1,6 @@
 #' Designate species as background species
 #'
-#'  @description
+#' @description
 #' `r lifecycle::badge("experimental")`
 #'
 #' Marks the specified set of species as background species. Background species
@@ -375,6 +375,7 @@ renameSpecies <- function(params, replace) {
     names(species) <- NULL
     rownames(params@species_params) <- species
     params@species_params$species <- species
+    params@gear_params$species <- as.character(params@gear_params$species)
     for (i in seq_len(nrow(params@gear_params))) {
         if (params@gear_params$species[[i]] %in% names(replace)) {
             params@gear_params$species[[i]] <-
