@@ -656,7 +656,7 @@ addSpecies <- function(params, species_params,
     p@A[old_sp] <- params@A
     p@psi[old_sp, old_w] <- params@psi
     p@maturity[old_sp, old_w] <- params@maturity
-    p@sc <- params@sc
+    p@sc[old_w] <- params@sc
     p@mu_b[old_sp, old_w] <- params@mu_b
     p@intake_max[old_sp, old_w] <- params@intake_max
     p@search_vol[old_sp, old_w] <- params@search_vol
