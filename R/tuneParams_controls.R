@@ -314,7 +314,7 @@ fishingControlUI <- function(p, sp) {
             title = "Invalid gear specification",
             HTML(paste0("Currently you can only use models where each ",
                         "species is caught by only one gear. In this model ",
-                        input$sp, " is caught by ", nrow(gp), " gears.")),
+                        sp$species, " is caught by ", nrow(gp), " gears.")),
             easyClose = TRUE
         ))
     }
