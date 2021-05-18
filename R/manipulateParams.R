@@ -583,13 +583,13 @@ addSpecies <- function(params, species_params,
     new_min_w <- min_w
     new_no_w <- no_w
     extra_no_w <- 0  # extra bins added for smaller egg size
-    if (max(species_params$w_inf) > max(params@w)) {
+    if (max(species_params$w_inf) > max(params@w) + .Machine$double.eps) {
         new_max_w <- max(species_params$w_inf)
         dx <- log10(max_w / min_w) / (no_w - 1)
         new_no_w <- ceiling(log10(new_max_w / min_w) / dx) + 1
         new_max_w <- min_w * 10^(dx * (new_no_w - 1))
     }
-    if (min(species_params$w_min) < min(params@w)) {
+    if (min(species_params$w_min) < min(params@w) - .Machine$double.eps) {
         new_min_w <- min(species_params$w_min)
         if (new_min_w < min(params@w_full)) {
             stop("The smallest egg size is too small.")
