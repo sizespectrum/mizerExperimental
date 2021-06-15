@@ -1,11 +1,11 @@
 eggControlUI <- function(p, sp) {
     n0 <- p@initial_n[sp$species, p@w_min_idx[sp$species]]
     tagList(
-        tags$h3(tags$a(id = "egg"), "Egg density"),
+        tags$h3(tags$a(id = "egg"), "Abundance"),
         sliderInput("n0", "Egg density",
                     value = n0,
                     min = signif(n0 / 10, 3),
-                    max = signif(n0 * 10, 3),
+                    max = signif(n0 * 2, 3),
                     step = n0 / 50))
 }
 
@@ -20,7 +20,7 @@ eggControl <- function(input, output, session, params, flags) {
         }
         updateSliderInput(session, "n0",
                           min = signif(n0 / 10, 3),
-                          max = signif(n0 * 10, 3))
+                          max = signif(n0 * 2, 3))
         # rescale abundance to new egg density
         p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
             p@initial_n[sp, p@w_min_idx[sp]]
