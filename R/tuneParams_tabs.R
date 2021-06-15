@@ -43,6 +43,7 @@ biomassTabUI <- function() {
     tagList(
         actionButton("biomass_help", "Press for instructions"),
         actionButton("tune_egg", "Tune egg density"),
+        actionButton("rescale", "Rescale model"),
         plotlyOutput("plotTotalBiomass"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
@@ -50,7 +51,8 @@ biomassTabUI <- function() {
     )
 }
 
-biomassTab <- function(input, output, session, params, logs, ...) {
+biomassTab <- function(input, output, session,
+                       params, logs, trigger_update, ...) {
     # Help button ----
     help_steps <- data.frame(
         element = c(NA),
@@ -213,6 +215,28 @@ biomassTab <- function(input, output, session, params, logs, ...) {
                 geom_hline(yintercept = target, color = "green")
         }
         pl
+    })
+
+    # Rescale model ----
+    # to make biomass of current species agree with observation
+    observeEvent(input$rescale, {
+        p <- params()
+        sp <- which.max(p@species_params$species == input$sp)
+        if ("biomass_observed" %in% names(p@species_params) &&
+            !is.na(p@species_params$biomass_observed[[sp]]) &&
+            p@species_params$biomass_observed[[sp]] > 0) {
+            cutoff <- p@species_params$cutoff_size[[sp]]
+            if (is.null(cutoff) || is.na(cutoff)) {
+                cutoff <- p@species_params$w_mat[[sp]] / 20
+            }
+            biomass_observed <- p@species_params$biomass_observed[[sp]]
+            biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
+            scale_by <- biomass_observed / biomass_model
+            p <- rescaleSystem(p, factor = scale_by)
+            params(p)
+            # Trigger an update of sliders
+            trigger_update(runif(1))
+        }
     })
 
     # Tune egg density ----

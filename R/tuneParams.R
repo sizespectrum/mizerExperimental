@@ -265,7 +265,8 @@ tuneParams <- function(p,
                               output = output,
                               session = session,
                               params = params,
-                              logs = logs, ...))
+                              logs = logs,
+                              trigger_update = trigger_update, ...))
         }
 
         # Help button ----
