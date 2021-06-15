@@ -64,7 +64,8 @@ resourceControl <- function(input, output, session, params, flags) {
                          r_pp = 10^input$log_r_pp,
                          w_pp_cutoff = input$w_pp_cutoff,
                          n = input$n_resource)
-        #TODO: update initial resource
+        mu <- getResourceMort(p)
+        p@initial_n_pp <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
         params(p)
     })
 }
