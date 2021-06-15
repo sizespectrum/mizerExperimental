@@ -252,7 +252,10 @@ tuneParams <- function(p,
         ## UI for tabs ####
         output$tabs <- renderUI({
             tablist <- lapply(tabs, function(tab) {
-                tabPanel(tab, do.call(paste0(tolower(tab), "TabUI"), list()))
+                tab_content <- div(
+                    style = "max-height: 90vh; overflow-y: auto; overflow-x: hidden;",
+                    do.call(paste0(tolower(tab), "TabUI"), list()))
+                tabPanel(tab, tab_content)
             })
             args <- c(id = "mainTabs", type = "tabs", tablist)
             do.call(tabsetPanel, args)
