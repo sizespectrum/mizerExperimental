@@ -628,25 +628,38 @@ catchTab <- function(input, output, session, params, logs,
     # Total catch by species ----
     output$plotTotalCatch <- renderPlotly({
         p <- params()
-        if (is.null(p@species_params$catch_observed)) {
-            p@species_params$catch_observed <- 0
-        }
+        no_sp <- length(p@species_params$species)
+        observed <- p@species_params$catch_observed
+        if (is.null(observed)) observed <- 0
+
         biomass <- sweep(p@initial_n, 2, p@w * p@dw, "*")
-        total <- rowSums(biomass * getFMort(p))
+        catch_model <- rowSums(biomass * getFMort(p))
+
+        # selector for foreground species
+        foreground <- !is.na(p@A)
+        foreground_indices <- (1:no_sp)[foreground]
+        catch_model <- catch_model[foreground_indices]
+        observed <- observed[foreground_indices]
+
+        # Make sure species ordering is preserved in the plot
+        species <- factor(p@species_params$species[foreground],
+                          levels = p@species_params$species[foreground])
+
         df <- rbind(
-            data.frame(Species = p@species_params$species[],
-                       Type = "Model",
-                       Catch = total[]),
-            data.frame(Species = p@species_params$species[],
+            data.frame(Species = species,
                        Type = "Observed",
-                       Catch = p@species_params$catch_observed[])
+                       Catch = observed),
+            data.frame(Species = species,
+                       Type = "Model",
+                       Catch = catch_model)
         )
         ggplot(df) +
             geom_col(aes(x = Species, y = Catch, fill = Type),
                      position = "dodge") +
             theme_grey(base_size = 12) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-            labs(x = "", y = "Catch [megatonnes]") +
+            scale_y_continuous(name = "Catch [megatonnes]", trans = "log10",
+                               breaks = log_breaks()) +
             scale_fill_manual(values = c("Model" = "blue",
                                          "Observed" = "red"))
     })
