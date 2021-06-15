@@ -324,7 +324,7 @@ rescaleSystem <- function(params, factor) {
     }
 
     # Search volume
-    params <- setSearchVolume(params, search_vol = params@search_vol / factor)
+    params@search_vol = params@search_vol / factor
     if ("gamma" %in% names(params@species_params)) {
         params@species_params$gamma <- params@species_params$gamma / factor
     }
