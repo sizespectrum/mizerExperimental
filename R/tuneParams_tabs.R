@@ -452,13 +452,13 @@ reproTab <- function(input, output, session, params, logs, ...) {
 catchTabUI <- function() {
     tagList(
         actionButton("tune_catch", "Tune catchability"),
+        plotlyOutput("plotTotalCatch"),
         uiOutput("catch_sel"),
         textOutput("catch_total"),
         plotlyOutput("plotCatchDist"),
         radioButtons("catch_x", "Show size in:",
                      choices = c("Weight", "Length"),
-                     selected = "Length", inline = TRUE),
-        plotlyOutput("plotTotalCatch")
+                     selected = "Length", inline = TRUE)
     )
 }
 
@@ -957,12 +957,12 @@ deathTab <- function(input, output, session, params, logs, ...) {
 
 resourceTabUI <- function() {
     tagList(
-        plotOutput("plot_resource", width = "84%"),
         plotlyOutput("plot_resource_pred"),
         radioButtons("resource_death_prop", "Show",
                      choices = c("Proportion", "Rate"),
                      selected = "Proportion",
-                     inline = TRUE)
+                     inline = TRUE),
+        plotOutput("plot_resource", width = "84%")
     )
 }
 
