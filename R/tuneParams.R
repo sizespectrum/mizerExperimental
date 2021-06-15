@@ -136,6 +136,13 @@ tuneParams <- function(p,
             ## Sidebar ####
             sidebarPanel(
                 introBox(
+                    actionButton("help", "Instructions"),
+                    actionButton("done", "Done", icon = icon("check"),
+                                 onclick = "setTimeout(function(){window.close();},500);"),
+                    data.step = 8,
+                    data.intro = "When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
+                ),
+                introBox(
                     actionButton("sp_steady", "Steady"),
                     actionButton("undo", "", icon = icon("undo")),
                     actionButton("redo", "", icon = icon("redo")),
@@ -143,22 +150,12 @@ tuneParams <- function(p,
                     data.step = 5,
                     data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
                 ),
-                introBox(
-                    actionButton("done", "Done", icon = icon("check"),
-                                 onclick = "setTimeout(function(){window.close();},500);"),
-                    data.step = 8,
-                    data.intro = "When you press this button, the gadget will close and the current params object will be returned. The undo log will be cleared."
-                ),
-                introBox(
-                    actionButton("help", "Instructions"),
-                    data.step = 9,
-                    data.intro = "You can always run this introduction again by clicking here. You can find further information on the tuneParams() documentation page."
-                ),
                 tags$br(),
                 introBox(uiOutput("sp_sel"),
                          data.step = 2,
                          data.position = "right",
-                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."),
+                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."
+                ),
                 introBox(
                     introBox(
                         # Add links to input sections
@@ -185,7 +182,7 @@ tuneParams <- function(p,
                     )),
                     data.step = 3,
                     data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will immediately update."
-                    ),
+                ),
                 width = 3
             ),  # endsidebarpanel
 
@@ -193,7 +190,8 @@ tuneParams <- function(p,
             mainPanel(
                 introBox(uiOutput("tabs"),
                          data.step = 1,
-                         data.intro = "This main panel has tabs that display various aspects of the steady state of the model.")
+                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. Many of the tabs also have 'Instructions' buttons with explanations for those tabs."
+                )
             )  # end mainpanel
         )  # end sidebarlayout
     )
@@ -219,7 +217,7 @@ tuneParams <- function(p,
         output$sp_sel <- renderUI({
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
-            selectInput("sp", "Species:", species)
+            selectInput("sp", "Species to tune:", species)
         })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
