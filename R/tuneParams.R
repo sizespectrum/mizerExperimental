@@ -37,7 +37,7 @@
 #'
 #' The log is stored in the tempdir of your current R session, as given by
 #' `tempdir()`. For each steady state you calculate the params objects is in a
-#' file named according to the pattern
+#' file named according to the date and time when it was created.
 #'
 #' # Customisation
 #'
