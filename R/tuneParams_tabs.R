@@ -47,7 +47,7 @@ biomassTabUI <- function() {
         plotlyOutput("plotTotalBiomass"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
-        plotlyOutput("plotBiomassDist")
+        # plotlyOutput("plotBiomassDist")
     )
 }
 
@@ -234,6 +234,7 @@ biomassTab <- function(input, output, session,
             scale_by <- biomass_observed / biomass_model
             p <- rescaleSystem(p, factor = scale_by)
             params(p)
+            tuneParams_add_to_logs(logs, p)
             # Trigger an update of sliders
             trigger_update(runif(1))
         }
