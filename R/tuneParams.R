@@ -89,11 +89,11 @@ tuneParams <- function(p,
                                    "Growth",
                                    "Repro",
                                    "Catch",
-                                   "Rates",
-                                   "Prey",
                                    "Diet",
                                    "Death",
                                    "Resource",
+                                   "Rates",
+                                   "Prey",
                                    "Sim"),
                        ...) {
     # Define some local variables to avoid "no visible bindings for global
