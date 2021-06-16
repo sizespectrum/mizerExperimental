@@ -256,8 +256,6 @@ biomassTab <- function(input, output, session,
             total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
             n0 <- input$n0 *
                 p@species_params$biomass_observed[[sp]] / total
-            print(total)
-            print(p@species_params$biomass_observed[[sp]])
             # rescale abundance to new egg density
             p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
                 p@initial_n[sp, p@w_min_idx[[sp]]]
