@@ -671,7 +671,7 @@ catchTab <- function(input, output, session, params, logs,
         df <- rbind(
             data.frame(Species = species,
                        Type = "Observed",
-                       Catch = observed),
+                       Catch = observed[foreground]),
             data.frame(Species = species,
                        Type = "Model",
                        Catch = catch_model)
@@ -682,9 +682,7 @@ catchTab <- function(input, output, session, params, logs,
             theme_grey(base_size = 12) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
             scale_y_continuous(name = "Catch [megatonnes]", trans = "log10",
-                               breaks = log_breaks()) +
-            scale_fill_manual(values = c("Model" = "blue",
-                                         "Observed" = "red"))
+                               breaks = log_breaks())
     })
 
     # Input field for observed catch ----
