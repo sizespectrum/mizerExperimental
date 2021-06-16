@@ -347,7 +347,7 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(gp$l50 / 4, 2),
+                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
                         step = 0.1)))
     } else if (gp$sel_func == "double_sigmoid_length") {
         l1 <- c(l1, list(
@@ -359,7 +359,7 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(gp$l50 / 4, 2),
+                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
                         step = 0.1),
             sliderInput("l50_right", "L50 right",
                         value = gp$l50_right,
@@ -369,7 +369,8 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff_right", "L50-L25 right",
                         value = gp$l25_right - gp$l50_right,
                         min = 0.1,
-                        max = signif(gp$l50_right / 4, 2),
+                        max = signif(max(gp$l50_right / 4,
+                                         (gp$l25_right - gp$l50_right)*1.1), 2),
                         step = 0.1)
         ))
     }
