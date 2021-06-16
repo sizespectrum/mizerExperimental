@@ -8,8 +8,8 @@ tuneParams(
   p,
   controls = list("egg", "predation", "fishing", "reproduction", "other",
     "interaction", "resource"),
-  tabs = list("Spectra", "Biomass", "Growth", "Repro", "Catch", "Rates", "Prey",
-    "Diet", "Death", "Resource", "Sim"),
+  tabs = list("Spectra", "Biomass", "Catch", "Growth", "Repro", "Diet", "Death",
+    "Resource", "Rates", "Prey", "Sim"),
   ...
 )
 }
@@ -64,7 +64,7 @@ without a \code{params} argument and it will re-instate the states from the log.
 
 The log is stored in the tempdir of your current R session, as given by
 \code{tempdir()}. For each steady state you calculate the params objects is in a
-file named according to the pattern
+file named according to the date and time when it was created.
 }
 
 \section{Customisation}{
