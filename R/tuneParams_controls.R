@@ -391,8 +391,8 @@ fishingControl <- function(input, output, session, params, flags) {
                 flags$sp_old_fishing <- sp
                 return()
             }
-            gear_idx <- which(p@gear_params$species == sp)
-            if (length(gear_idx) != 1) {
+            gp_idx <- which(p@gear_params$species == sp)
+            if (length(gp_idx) != 1) {
                 showModal(modalDialog(
                     title = "Invalid gear specification",
                     HTML(paste0("Currently you can only use models where each ",
@@ -403,30 +403,30 @@ fishingControl <- function(input, output, session, params, flags) {
 
             # Update slider min/max so that they are a fixed proportion of the
             # parameter value
+            p@gear_params[gp_idx, "catchability"]  <- input$catchability
             updateSliderInput(session, "catchability",
                               min = signif(max(input$catchability / 2 - 1, 0), 2),
                               max = signif(max(input$catchability * 2, 2), 2))
-            p@gear_params[gear_idx, "catchability"]  <- input$catchability
             updateSliderInput(session, "effort",
                               max = signif((input$effort + 1) * 1.5, 2))
 
-            if (p@gear_params[gear_idx, "sel_func"] == "knife_edge") {
+            if (p@gear_params[gp_idx, "sel_func"] == "knife_edge") {
                 updateSliderInput(session, "knife_edge_size",
                                   max = signif(input$knife_edge_size * 2, 2))
-                p@gear_params[gear_idx, "knife_edge_size"]   <- input$knife_edge_size
+                p@gear_params[gp_idx, "knife_edge_size"]   <- input$knife_edge_size
             }
-            if (p@gear_params[gear_idx, "sel_func"] == "sigmoid_length" ||
-                p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
+            if (p@gear_params[gp_idx, "sel_func"] == "sigmoid_length" ||
+                p@gear_params[gp_idx, "sel_func"] == "double_sigmoid_length") {
                 updateSliderInput(session, "l50",
                                   max = signif(input$l50 * 2, 2))
                 updateSliderInput(session, "ldiff",
                                   max = signif(input$l50 / 10, 2))
-                p@gear_params[gear_idx, "l50"]   <- input$l50
-                p@gear_params[gear_idx, "l25"]   <- input$l50 - input$ldiff
+                p@gear_params[gp_idx, "l50"]   <- input$l50
+                p@gear_params[gp_idx, "l25"]   <- input$l50 - input$ldiff
             }
-            if (p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
-                p@gear_params[gear_idx, "l50_right"]   <- input$l50_right
-                p@gear_params[gear_idx, "l25_right"]   <- input$l50_right + input$ldiff_right
+            if (p@gear_params[gp_idx, "sel_func"] == "double_sigmoid_length") {
+                p@gear_params[gp_idx, "l50_right"]   <- input$l50_right
+                p@gear_params[gp_idx, "l25_right"]   <- input$l50_right + input$ldiff_right
                 updateSliderInput(session, "l50_right",
                                   max = signif(input$l50_right * 2, 2))
                 updateSliderInput(session, "ldiff_right",
