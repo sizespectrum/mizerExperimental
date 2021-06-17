@@ -6,7 +6,20 @@ spectraTabUI <- function() {
                      selected = "Logarithmic", inline = TRUE),
         actionButton("scale", "Scale by 2x"),
         actionButton("retune_background",
-                     "Retune background")
+                     "Retune background"),
+        h1("Size spectra"),
+        p("This tab shows the biomass size spectra of the individual fish species and",
+          "of the resource, as well as the total size spectrum (in black)."),
+        p("This plot, as well as those on other tabs, is interactive in various",
+          "ways. For example you can remove individual spectra from the plot by",
+          "clicking on their name in the legend. Hovering over the lines pops",
+          "up extra information."),
+        p("With the 'Binning' radio buttons you can choose whether to show",
+          "the spectra corresponding to using logarithmically sized bins or",
+          "bins of constant size. This will only change the slopes by 1."),
+        p("You can ignore the 'Scale by 2x' and 'Retune background' buttons",
+          "unless you follow a particular model creation method that is",
+          "explained elsewhere.")
     )
 }
 
@@ -41,13 +54,40 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 
 biomassTabUI <- function() {
     tagList(
-        actionButton("biomass_help", "Press for instructions"),
-        actionButton("tune_egg", "Tune egg density"),
+        # actionButton("biomass_help", "Press for instructions"),
         actionButton("rescale", "Rescale model"),
+        actionButton("tune_egg", "Tune egg density"),
         plotlyOutput("plotTotalBiomass"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
         # plotlyOutput("plotBiomassDist")
+        h1("Biomass and Abundance"),
+        p("This panel compares the biomass and abundance of the model to",
+          "the observed values, where available. It also provides tools for",
+          "changing the model biomass and abundance."),
+        p("The 'Rescale model' button rescales the entire model so that the",
+          "biomass for the selected species agrees perfectly with the observed",
+          "value."),
+        p("The 'Tune egg density' button attempts to move the entire size",
+          "spectrum for the selected species up or down to give the observed",
+          "biomass value. It does that by multiplying the egg density by the",
+          "ratio of observed biomass to model biomass. After that adjustment",
+          "you should hit the 'Steady' button to allow for multispecies",
+          "effects, after which the biomass will be a bit off again. You can",
+          "repeat this process if you like to get even closer to the observed",
+          "biomass."),
+        p("The values for the observed biomass is taken from the",
+          "'biomass_observed' column in the species parameter data frame and",
+          "the values for the observed abundance are taken from the",
+          "'abundance_observed' column. If these are missing or need changing",
+          "then you can enter values by hand using the input fields below the",
+          "plots."),
+        p("Usually the observed values are only for individuals above a lower",
+          "cutoff size. This cutoff size is recorded in the 'cutoff_size'",
+          "column of the species parameter data frame. Again you can enter",
+          "these also manually using the input field below the plots. For",
+          "example if you have observed values for the spawning stock biomass,",
+          "then you would set the cutoff size to the maturity size.")
     )
 }
 
@@ -457,7 +497,17 @@ catchTabUI <- function() {
         plotlyOutput("plotCatchDist"),
         radioButtons("catch_x", "Show size in:",
                      choices = c("Weight", "Length"),
-                     selected = "Length", inline = TRUE)
+                     selected = "Length", inline = TRUE),
+        h1("Total catch and size distribution of catch"),
+        p("The upper plot compares the total catch for each species in the",
+          "model to the observed total catch, if available. The lower plot",
+          "shows the size distribution of the catch and again compares that",
+          "to the observed size distribution, if available."),
+        p("The total observed catch is taken from the 'catch_observed'",
+          "column of the species parameter data frame. But if this is missing",
+          "or needs to be changed you can do this with the input field below",
+          "the upper plot. Note that this value is in megatonnes rather than",
+          "in grams.")
     )
 }
 

@@ -190,7 +190,7 @@ tuneParams <- function(p,
             mainPanel(
                 introBox(uiOutput("tabs"),
                          data.step = 1,
-                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. Many of the tabs also have 'Instructions' buttons with explanations for those tabs."
+                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. At the bottom of each tab you find text explanations for that tab. You may need to scroll down in the tab to see them."
                 )
             )  # end mainpanel
         )  # end sidebarlayout
