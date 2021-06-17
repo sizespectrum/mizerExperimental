@@ -497,43 +497,29 @@ catchTab <- function(input, output, session, params, logs,
     # then runs the system to steady state.
     observeEvent(input$tune_catch, {
         p <- isolate(params())
-        sp <- which.max(p@species_params$species == isolate(input$sp))
+        sp <- isolate(input$sp)
+        sp_idx <- which.max(p@species_params$species == sp)
+        gp_idx <- which(p@gear_params$species == sp)
+        if (length(gp_idx) != 1) {
+            showModal(modalDialog(
+                title = "Invalid gear specification",
+                HTML(paste0("Currently you can only use models where each ",
+                            "species is caught by only one gear")),
+                easyClose = TRUE
+            ))
+        }
         if ("catch_observed" %in% names(p@species_params) &&
-            !is.na(p@species_params$catch_observed[sp]) &&
-            p@species_params$catch_observed[sp] > 0) {
-            total <- sum(p@initial_n[sp, ] * p@w * p@dw *
-                             getFMort(p)[sp, ])
-            p@species_params$catchability[sp] <-
-                p@species_params$catchability[sp] *
-                p@species_params$catch_observed[sp] / total
+            !is.na(p@species_params$catch_observed[sp_idx]) &&
+            p@species_params$catch_observed[sp_idx] > 0) {
+            total <- sum(p@initial_n[sp_idx, ] * p@w * p@dw *
+                             getFMort(p)[sp_idx, ])
+            catchability <-
+                p@gear_params$catchability[gp_idx] *
+                p@species_params$catch_observed[sp_idx] / total
             updateSliderInput(session, "catchability",
-                              value = p@species_params$catchability[sp],
-                              min = signif(max(0, p@species_params$catchability[sp] / 2 - 1), 2),
-                              max = signif(max(p@species_params$catchability[sp] * 2, 2), 2))
-            p <- setFishing(p)
-            tryCatch({
-                # Create a Progress object
-                progress <- shiny::Progress$new(session)
-                on.exit(progress$close())
-
-                # Run to steady state
-                p <- steady(p, t_max = 100, tol = 1e-2,
-                            progress_bar = progress)
-
-                # Update the reactive params object
-                params(p)
-                tuneParams_add_to_logs(logs, p)
-            },
-            error = function(e) {
-                showModal(modalDialog(
-                    title = "Invalid parameters",
-                    HTML(paste0("These parameter do not lead to an acceptable steady state.",
-                                "Please choose other values.<br>",
-                                "The error message was:<br>", e)),
-                    easyClose = TRUE
-                ))}
-            )
-            params(p)
+                              value = catchability)
+            # The above update of the slider will also trigger update of
+            # the params object and the plot
         }
     })
 
