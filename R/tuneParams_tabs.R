@@ -490,7 +490,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
 
 catchTabUI <- function() {
     tagList(
-        actionButton("tune_catch", "Tune catchability"),
+        # actionButton("tune_catch", "Tune catchability"),
         plotlyOutput("plotTotalCatch"),
         uiOutput("catch_sel"),
         textOutput("catch_total"),
