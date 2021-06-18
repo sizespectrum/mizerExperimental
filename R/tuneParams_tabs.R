@@ -311,7 +311,7 @@ biomassTab <- function(input, output, session,
 growthTabUI <- function() {
     tagList(
         splitLayout(
-            actionButton("growth_help", "Press for instructions"),
+            # actionButton("growth_help", "Press for instructions"),
             radioButtons("all_growth", "Show:",
                          choices = c("All", "Selected species"),
                          selected = "All", inline = TRUE)
@@ -320,7 +320,16 @@ growthTabUI <- function() {
                    click = "growth_click"),
         textOutput("info"),
         uiOutput("k_vb_sel"),
-        plotlyOutput("plot_feeding_level")
+        plotlyOutput("plot_feeding_level"),
+        h1("Growth"),
+        h2("Growth curves"),
+        p("The upper plot shows growth curves: the size of an individual plotted against its age. Each growth curve plot shows the mizer growth curve in red and the von Bertalanffy growth curve in blue. The 'Show:' radio buttons let you choose to view the growth curves for all species at once or only that for the selected species. When viewing all growth curves you can double click on one of the graphs to select that species."),
+        p("The von Bertalanffy growth curve is determined by the von Bertalanffy parameters 'w_inf', 'k_vb' and 't0' as well as the length-weight relationship parameters 'a' and 'b' in the species parameter data frame. You can change these manually using the input fields below the single-species growth curve plot. The mizer growth curves in contrast are determined by the energy available for growth from feeding, after metabolic cost and investment into reproduction are taken into account."),
+        h2("Feeding level"),
+        p("In the lower plot the thick lines shows the feeding level, which reflects the degree of satiation. At feeding level 1 an individual is totally satiated and does not feed any more, so is insensitive to changes in prey availability. The thin lines show the critical feeding level, which is the feeding level below which an individual can no longer meet its metabolic cost and starves. The actual feeding level should lie in between these two extremes."),
+        h3("How to tune growth curves and feeding level"),
+        p("The growth rate is strongly influenced by the predation rate coefficient 'gamma' and the maximum feeding rate parameter 'h'. Increasing 'gamma' will increase growth and increase feeding level. Increasing 'h' will also increase growth but decrease feeding level. So in practice you will change both to obtain the desired growth while maintaining an appropriate feeding level."),
+        p("The growth rate is also influenced by losses to basic metabolism (parameters 'ks' and 'p') and activity (parameter 'k') and investment into", a("reproduction", href = "#reproduction"), ". For example changing the exponent 'm' that determines how investment into reproduction scales with size will affect the growth rate of large individuals.")
     )
 }
 
@@ -499,15 +508,15 @@ catchTabUI <- function() {
                      choices = c("Weight", "Length"),
                      selected = "Length", inline = TRUE),
         h1("Total catch and size distribution of catch"),
-        p("The upper plot compares the total catch for each species in the",
-          "model to the observed total catch, if available. The lower plot",
-          "shows the size distribution of the catch and again compares that",
-          "to the observed size distribution, if available."),
-        p("The total observed catch is taken from the 'catch_observed'",
-          "column of the species parameter data frame. But if this is missing",
-          "or needs to be changed you can do this with the input field below",
-          "the upper plot. Note that this value is in megatonnes rather than",
-          "in grams.")
+        h2("Total catch"),
+        p("The upper plot compares the total yearly catch in megatonnes for each species in the model to the observed total catch, if available."),
+        p("The total observed catch is taken from the 'catch_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in megatonnes rather than in grams."),
+        h3("How to tune total catch"),
+        p("To bring the total catch of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
+        h2("Size distribution of catch"),
+        p("The lower plot shows the size distribution of the catch and again compares that to the observed size distribution, if available."),
+        h3("How to tune size distribution"),
+        p("To change the size distribution of catches you either need to change the size spectrum (for example by changing the mortality on large fish) or you need to adjust the ", a("fishing", href = "#fishing"), " selectivity curve by changing the 'L50' and 'L25' parameters.")
     )
 }
 
