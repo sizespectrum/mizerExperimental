@@ -491,13 +491,19 @@ reproTab <- function(input, output, session, params, logs, ...) {
             ggplot(df, aes(x = Size, y = value)) +
                 geom_line(color = "blue") +
                 geom_vline(xintercept = p@species_params[sp, "w_mat"],
-                           linetype = "dotted") +
-                theme_grey(base_size = 12) +
-                labs(x = "Size [g]", y = "Proportion of energy for reproduction")  +
+                           linetype = "dashed") +
                 geom_text(aes(x = p@species_params[sp, "w_mat"],
                               y = max(value * 0.8),
-                              label = "\nMaturity"),
-                          angle = 90)
+                              label = "\nw_mat"),
+                          angle = 90) +
+                geom_vline(xintercept = p@species_params[sp, "w_mat25"],
+                           linetype = "dotted") +
+                geom_text(aes(x = p@species_params[sp, "w_mat25"],
+                              y = max(value * 0.6),
+                              label = "\nw_mat25"),
+                          angle = 90) +
+                theme_grey(base_size = 12) +
+                labs(x = "Size [g]", y = "Proportion of energy for reproduction")
     })
 }
 
