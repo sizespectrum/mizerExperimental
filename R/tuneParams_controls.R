@@ -162,8 +162,8 @@ reproductionControlUI <- function(p, sp) {
                     min = signif(sp$w_inf / 2, 2),
                     max = signif(sp$w_inf * 1.5, 2)),
         sliderInput("m", "m", value = sp$m,
-                    min = 0,
-                    max = 2,
+                    min = sp$n,
+                    max = sp$n * 2,
                     step = 0.01)
     )
 }
