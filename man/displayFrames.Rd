@@ -58,7 +58,6 @@ Other frame functions:
 \code{\link{getSSBFrame}()}
 
 Other plotting functions: 
-\code{\link{animateSpectra}()},
 \code{\link{plotYieldVsF}()}
 }
 \concept{frame functions}

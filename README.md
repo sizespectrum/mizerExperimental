@@ -58,11 +58,6 @@ This is discussed at <https://github.com/r-lib/remotes/issues/403>
   - `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting
     yield curve.
 
-  - Animated plot of mizer simulation with `animateSpectra()`
-
   - Showing two plots side-by-side with the same axes and the same
     legend. This is made possible for some of the plots via the
     `displayFrames()` function.
-
-  - New wrapper function `newSheldonParams()` that sets up a single
-    species in a power-law background.
