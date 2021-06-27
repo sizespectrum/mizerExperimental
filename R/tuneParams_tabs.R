@@ -140,6 +140,7 @@ biomassTab <- function(input, output, session,
                        Type = "Model",
                        Biomass = biomass_model)
         )
+        df <- df[df$Biomass > 0, ]
         ggplot(df) +
             geom_col(aes(x = Species, y = Biomass, fill = Type),
                      position = "dodge") +
@@ -178,6 +179,7 @@ biomassTab <- function(input, output, session,
                        Type = "Model",
                        Abundance = abundance_model)
         )
+        df <- df[df$Abundance > 0, ]
         ggplot(df) +
             geom_col(aes(x = Species, y = Abundance, fill = Type),
                      position = "dodge") +
@@ -242,6 +244,7 @@ biomassTab <- function(input, output, session,
         min_w <- p@species_params[sp, "w_min"]
         sel <- p@w >= min_w & p@w <= max_w
         df <- data.frame(Size = p@w[sel], Biomass = biomass[sel])
+        df <- df[df$Biomass > 0, ]
         pl <- ggplot(df, aes(x = Size, y = Biomass)) +
             geom_line(color = "blue") + scale_x_log10() +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
@@ -731,6 +734,7 @@ catchTab <- function(input, output, session, params, logs,
                        Type = "Model",
                        Catch = catch_model)
         )
+        df <- df[df$Catch > 0, ]
         ggplot(df) +
             geom_col(aes(x = Species, y = Catch, fill = Type),
                      position = "dodge") +
