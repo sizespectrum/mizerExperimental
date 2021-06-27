@@ -1,3 +1,9 @@
+# Hackiness to get past the 'no visible binding ... ' warning
+utils::globalVariables(
+    c("Abundance", "Age", "Biomass", "Catch", "Cause", "Kernel",
+      "L_inf", "Legend", "Numbers", "Predator", "Size", "Species",
+      "Type", "erepro", "value", "w_mat"))
+
 spectraTabUI <- function() {
     tagList(
         plotlyOutput("plotSpectra"),
@@ -467,33 +473,31 @@ reproTab <- function(input, output, session, params, logs, ...) {
         p <- params()
         df <- data.frame(Species = factor(p@species_params$species[],
                                           levels = p@species_params$species),
-                         erepro = p@species_params$erepro[])
-        ggplot(df, aes(x = Species, y = erepro)) +
+                         value = p@species_params$erepro[])
+        ggplot(df, aes(x = Species, y = value)) +
             geom_col() + geom_hline(yintercept = 1, color = "red") +
-            scale_y_log10() +
+            scale_y_log10(name = "Reproductive success") +
             theme_grey(base_size = 12) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     })
 
     # Plot psi ----
     output$plot_psi <- renderPlotly({
-        if (!input$all_growth == "All") {
             p <- params()
             sp <- which.max(p@species_params$species == input$sp)
             w_min <- p@species_params$w_inf[sp] / 50
             sel <- p@w >= w_min & p@w <= p@species_params$w_inf[sp]
-            df <- data.frame(Size = p@w[sel], psi = p@psi[sp, sel])
-            ggplot(df, aes(x = Size, y = psi)) +
+            df <- data.frame(Size = p@w[sel], value = p@psi[sp, sel])
+            ggplot(df, aes(x = Size, y = value)) +
                 geom_line(color = "blue") +
                 geom_vline(xintercept = p@species_params[sp, "w_mat"],
                            linetype = "dotted") +
                 theme_grey(base_size = 12) +
                 labs(x = "Size [g]", y = "Proportion of energy for reproduction")  +
                 geom_text(aes(x = p@species_params[sp, "w_mat"],
-                              y = max(psi * 0.8),
+                              y = max(value * 0.8),
                               label = "\nMaturity"),
                           angle = 90)
-        }
     })
 }
 
@@ -917,9 +921,9 @@ preyTab <- function(input, output, session, params, logs, ...) {
                              Kernel = phix,
                              Biomass = br,
                              Numbers = pr) %>%
-            tidyr::gather(Type, y, Kernel, Biomass, Numbers)
+            tidyr::gather(Type, value, Kernel, Biomass, Numbers)
         ggplot(df) +
-            geom_line(aes(w, y, color = Type)) +
+            geom_line(aes(w, value, color = Type)) +
             labs(x = "Weight [g]", y = "Density") +
             geom_point(aes(x = wp, y = 0), size = 4, colour = "blue") +
             scale_x_log10()
@@ -1015,11 +1019,11 @@ resourceTab <- function(input, output, session, params, logs, ...) {
         p <- params()
         select <- (p@cc_pp > 0)
         plot_dat <- data.frame(
-            x = p@w_full[select],
-            y = p@initial_n_pp[select] / p@cc_pp[select]
+            Size = p@w_full[select],
+            value = p@initial_n_pp[select] / p@cc_pp[select]
         )
         ggplot(plot_dat) +
-            geom_line(aes(x, y)) +
+            geom_line(aes(Size, value)) +
             scale_x_log10("Resource size [g]") +
             ylab("Proportion of carrying capacity") +
             theme_grey(base_size = 16)
