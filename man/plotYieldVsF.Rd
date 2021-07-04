@@ -45,7 +45,6 @@ plotYieldVsF(params, "Cod")
 getYieldVsF
 
 Other plotting functions: 
-\code{\link{animateSpectra}()},
 \code{\link{displayFrames}()}
 }
 \concept{plotting functions}
