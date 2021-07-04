@@ -27,13 +27,8 @@ tuneParams_update_species <- function(sp, p, params) {
         w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
         idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
         if (any(gg[idx] == 0)) {
-            weight <- p@w[which.max(gg[idx] == 0)]
-            showModal(modalDialog(
-                title = "Zero growth rate",
-                paste0("With these parameter values the ", sp,
-                       " does not have enough food to cover its metabolic cost"),
-                easyClose = TRUE
-            ))
+            stop("With these parameter values the ", sp,
+                 " does not have enough food to cover its metabolic cost")
         }
         n0 <- p@initial_n[sp, p@w_min_idx[sp]]
         p@initial_n[sp, ] <- 0
