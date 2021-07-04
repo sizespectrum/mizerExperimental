@@ -1,26 +1,23 @@
 destination: docs
 
 reference:
-- title: New model functions
+- title: Handling density dependence
   contents:
-  - newSheldonParams
+  - setBevertonHolt
+- title: Interactively tuning a multispecies model
+  contents:
+  - tuneParams
+  - markBackground
+  - retuneBackground
+  - rescaleSystem
+  - rescaleAbundance
+  - updateInitialValues
+  - pruneSpecies
 - title: New plotting functions
   contents:
-  - animateSpectra
   - getYieldVsF
   - plotYieldVsF
   - displayFrames
   - getBiomassFrame
   - getSSBFrame
-- title: Interactively tuning a multispecies model
-  contents:
-  - tuneParams
-  - markBackground
-  - addSpecies
-  - removeSpecies
-  - renameSpecies
-  - retuneBackground
-  - rescaleAbundance
-  - rescaleSystem
-  - updateInitialValues
-  - pruneSpecies
+
