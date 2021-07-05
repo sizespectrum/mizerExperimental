@@ -83,9 +83,12 @@ through that point. This parameter can be \code{erepro} or \code{R_max}. Instead
 ratio between the density-dependent reproduction rate \eqn{R_{dd}}{R_dd} and
 the maximal reproduction rate  \eqn{R_{max}}{R_max}.
 
-The parameter you provide can be either a vector, with one value for each
-species, or a single value that is then used for all species. The
-values for \code{R_max} must be larger than \eqn{R_{dd}}{R_dd} and can range
+The parameter you provide can be either a vector with one value for each
+species, or a named vector where the names determine which species are
+affected, or a single unnamed value that is then used for all species. Any
+species for which the given value is \code{NA} will remain unaffected.
+
+The values for \code{R_max} must be larger than \eqn{R_{dd}}{R_dd} and can range
 up to \code{Inf}. The values for the \code{reproduction_level} must be positive and
 less than 1. The values for \code{erepro} must be large enough to allow the
 required reproduction rate. If a smaller value is requested a warning is
@@ -99,4 +102,21 @@ will be less sensitive to a change in the energy invested into reproduction
 and hence less sensitive to changes in the spawning stock biomass or its
 energy income. As a result the species will also be less sensitive to
 fishing, leading to a higher F_MSY.
+}
+\examples{
+params <- NS_params
+species_params(params)$erepro
+# Attempting to set the same erepro for all species
+params <- setBevertonHolt(params, erepro = 0.1)
+t(species_params(params)[, c("erepro", "R_max")])
+# Setting erepro for some species
+params <- setBevertonHolt(params, erepro = c("Gurnard" = 0.6, "Plaice" = 0.95))
+t(species_params(params)[, c("erepro", "R_max")])
+# Setting R_max
+R_max <- 1e17 * species_params(params)$w_inf^-1
+params <- setBevertonHolt(NS_params, R_max = R_max)
+t(species_params(params)[, c("erepro", "R_max")])
+# Setting reproduction_level
+params <- setBevertonHolt(params, reproduction_level = 0.3)
+t(species_params(params)[, c("erepro", "R_max")])
 }

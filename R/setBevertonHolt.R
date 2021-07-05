@@ -89,9 +89,12 @@
 #' ratio between the density-dependent reproduction rate \eqn{R_{dd}}{R_dd} and
 #' the maximal reproduction rate  \eqn{R_{max}}{R_max}.
 #'
-#' The parameter you provide can be either a vector, with one value for each
-#' species, or a single value that is then used for all species. The
-#' values for `R_max` must be larger than \eqn{R_{dd}}{R_dd} and can range
+#' The parameter you provide can be either a vector with one value for each
+#' species, or a named vector where the names determine which species are
+#' affected, or a single unnamed value that is then used for all species. Any
+#' species for which the given value is `NA` will remain unaffected.
+#'
+#' The values for `R_max` must be larger than \eqn{R_{dd}}{R_dd} and can range
 #' up to `Inf`. The values for the `reproduction_level` must be positive and
 #' less than 1. The values for `erepro` must be large enough to allow the
 #' required reproduction rate. If a smaller value is requested a warning is
@@ -116,6 +119,22 @@
 #'   `reproduction_level = 1 / R_factor` instead.
 #'
 #' @return A MizerParams object
+#' @examples
+#' params <- NS_params
+#' species_params(params)$erepro
+#' # Attempting to set the same erepro for all species
+#' params <- setBevertonHolt(params, erepro = 0.1)
+#' t(species_params(params)[, c("erepro", "R_max")])
+#' # Setting erepro for some species
+#' params <- setBevertonHolt(params, erepro = c("Gurnard" = 0.6, "Plaice" = 0.95))
+#' t(species_params(params)[, c("erepro", "R_max")])
+#' # Setting R_max
+#' R_max <- 1e17 * species_params(params)$w_inf^-1
+#' params <- setBevertonHolt(NS_params, R_max = R_max)
+#' t(species_params(params)[, c("erepro", "R_max")])
+#' # Setting reproduction_level
+#' params <- setBevertonHolt(params, reproduction_level = 0.3)
+#' t(species_params(params)[, c("erepro", "R_max")])
 #' @export
 setBevertonHolt <- function(params, erepro, R_max, reproduction_level,
                             R_factor) {
@@ -126,86 +145,93 @@ setBevertonHolt <- function(params, erepro, R_max, reproduction_level,
         hasArg("R_factor") != 1) {
         stop("You should only provide `params` and one other argument.")
     }
+    # No matter which argument is given, I want to manipulate the values
+    if (hasArg("erepro")) values <- erepro
+    if (hasArg("R_max")) values <- R_max
+    if (hasArg("reproduction_level")) values <- reproduction_level
+    if (hasArg("R_factor")) values <- R_factor
 
-    rdd <- getRDD(params)
-    rdi <- getRDI(params)
-    if (any(rdi == 0)) {
+    if (length(values) == 1 && is.null(names(values))) {
+        values <- rep(values, no_sp)
+    }
+    if (length(values) != no_sp && is.null(names(values))) {
+        stop("You need to supply a vector of length ", no_sp,
+             " or a single number or a named vector.")
+    }
+    if (is.null(names(values))) {
+        names(values) <- params@species_params$species
+    }
+    values <- values[!is.na(values)]
+    if (length(values) == 0) return(params) # Nothing to do
+    if (!all(is.numeric(values))) {
+        stop("You provided invalid non-numeric values.")
+    }
+    # select the species that are affected
+    species <- valid_species_arg(params, names(values))
+    sp_idx <- match(species, params@species_params$species)
+
+    rdd <- getRDD(params)[species]
+    rdi <- getRDI(params)[species]
+    if (any(rdi == 0)) { # This should never happen, but did happen in the past.
         stop("Some species have no reproduction.")
     }
     params@rates_funcs$RDD <- "BevertonHoltRDD"
 
-    # Calculate required rdd
-    mumu <- getMort(params)
-    gg <- getEGrowth(params)
-    rdd_new <- getRequiredRDD(params)
+    rdd_new <- getRequiredRDD(params)[species]
 
     if (!missing(erepro)) {
-        if (length(erepro) != 1 && length(erepro) != no_sp) {
-            stop("`erepro` needs to be a vector of length ", no_sp,
-                 " or a single number.")
-        }
-        rdi_new <- rdi * erepro / params@species_params$erepro
+        erepro_new <- values
+        erepro_old <- params@species_params$erepro[sp_idx]
+        rdi_new <- rdi * erepro_new / erepro_old
         wrong <- rdi_new < rdd_new
         if (any(wrong)) {
             warning("For the following species the requested `erepro` ",
                    "was too small and has been increased to the smallest ",
                    "possible value: ",
-                   paste(params@species_params$species[wrong], collapse = ", "))
+                   paste(species[wrong], collapse = ", "))
             rdi_new[wrong] <- rdd_new[wrong]
-            erepro[wrong] <- (params@species_params$erepro * rdi_new / rdi)[wrong]
+            erepro_new[wrong] <- (erepro_old * rdi_new / rdi)[wrong]
         }
         r_max_new <- rdi_new * rdd_new / (rdi_new - rdd_new)
         r_max_new[is.nan(r_max_new)] <- Inf
-        params@species_params$erepro <- erepro
-        params@species_params$R_max <- r_max_new
+        params@species_params$erepro[sp_idx] <- erepro_new
+        params@species_params$R_max[sp_idx] <- r_max_new
         return(params)
     }
 
     # We now know that we are setting R_max, which however can have been
     # specified in different ways.
     if (!missing(reproduction_level)) {
-        if (length(reproduction_level) != 1 && length(reproduction_level) != no_sp) {
-            stop("`reproduction_level` needs to be a vector of length ", no_sp,
-                 " or a single number.")
-        }
-        if (!all(reproduction_level > 0 & reproduction_level < 1)) {
+        if (!all(values > 0 & values < 1)) {
             stop("The reproduction level must be a number strictly between 0 and 1.")
         }
-        r_max_new <- rdd_new / reproduction_level
+        r_max_new <- rdd_new / values
     }
     if (!missing(R_factor)) {
-        if (length(R_factor) != 1 && length(R_factor) != no_sp) {
-            stop("`R_factor` needs to be a vector of length ", no_sp,
-                 " or a single number.")
-        }
-        if (!all(R_factor > 1)) {
+        if (!all(values > 1)) {
             stop("The R_factor must be greater than 1.")
         }
-        r_max_new <- rdd_new * R_factor
+        r_max_new <- rdd_new * values
     }
     if (!missing(R_max)) {
-        if (length(R_max) != 1 && length(R_max) != no_sp) {
-            stop("`R_max` needs to be a vector of length ", no_sp,
-                 " or a single number.")
-        }
-        wrong <- R_max < rdd_new
+        wrong <- values < rdd_new
         if (any(wrong)) {
-            stop("For the following species the `R_max` you have provided is
-                 too small: ",
-                 paste(params@species_params$species[wrong], collapse = ", "))
+            stop("For the following species the `R_max` you have provided is ",
+                 "too small: ",
+                 paste(species[wrong], collapse = ", "))
         }
-        r_max_new <- R_max
+        r_max_new <- values
     }
 
     rdi_new <- rdd_new / (1 - rdd_new / r_max_new)
-    params@species_params$R_max <- r_max_new
-    params@species_params$erepro <- params@species_params$erepro *
-        rdi_new / rdi
-    wrong <- params@species_params$erepro > 1
+    params@species_params$R_max[sp_idx] <- r_max_new
+    params@species_params$erepro[sp_idx] <-
+        params@species_params$erepro[sp_idx] * rdi_new / rdi
+    wrong <- params@species_params$erepro[sp_idx] > 1
     if (any(wrong)) {
         warning("The following species require an unrealistic reproductive ",
                 "efficiency greater than 1: ",
-                paste(params@species_params$species[wrong], collapse = ", "))
+                paste(species[wrong], collapse = ", "))
     }
 
     return(params)
