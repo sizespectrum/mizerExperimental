@@ -41,13 +41,17 @@
 
 <meta property="og:title" content="Set Beverton-Holt density dependence — setBevertonHolt" />
 <meta property="og:description" content="Takes a MizerParams object params with arbitrary density dependence and
-returns a MizerParams object with Beverton-Holt density-dependence. There is
-a one-parameter family of Beverton-Holt reproduction curves that have the
-property that, for the initial size spectrum for each species, the energy
-invested into reproduction leads to the reproduction rate that is required to
-maintain the given egg abundance. By specifying one of the parameters
-erepro, R_max or reproduction_level you pick the desired reproduction
-curve. More details of these parameters are provided below." />
+returns a MizerParams object with Beverton-Holt density-dependence with your
+chosen reproductive efficiency or your chosen maximal reproduction rate.
+If you have tuned your params object to describe a particular steady state,
+then setting the Beverton-Holt density dependence with this function will
+leave you with the exact same steady state, because it only allows you to
+choose among those Beverton-Holt reproduction curves that have the property
+that the energy invested into reproduction by the mature individuals leads to
+the reproduction rate that is required to maintain the given egg abundance.
+By specifying one of the parameters erepro, R_max or reproduction_level
+you pick the desired reproduction curve. More details of these parameters are
+provided below." />
 
 
 
@@ -88,7 +92,7 @@ curve. More details of these parameters are provided below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -143,13 +147,17 @@ curve. More details of these parameters are provided below." />
 
     <div class="ref-description">
     <p>Takes a MizerParams object <code>params</code> with arbitrary density dependence and
-returns a MizerParams object with Beverton-Holt density-dependence. There is
-a one-parameter family of Beverton-Holt reproduction curves that have the
-property that, for the initial size spectrum for each species, the energy
-invested into reproduction leads to the reproduction rate that is required to
-maintain the given egg abundance. By specifying one of the parameters
-<code>erepro</code>, <code>R_max</code> or <code>reproduction_level</code> you pick the desired reproduction
-curve. More details of these parameters are provided below.</p>
+returns a MizerParams object with Beverton-Holt density-dependence with your
+chosen reproductive efficiency or your chosen maximal reproduction rate.
+If you have tuned your <code>params</code> object to describe a particular steady state,
+then setting the Beverton-Holt density dependence with this function will
+leave you with the exact same steady state, because it only allows you to
+choose among those Beverton-Holt reproduction curves that have the property
+that the energy invested into reproduction by the mature individuals leads to
+the reproduction rate that is required to maintain the given egg abundance.
+By specifying one of the parameters <code>erepro</code>, <code>R_max</code> or <code>reproduction_level</code>
+you pick the desired reproduction curve. More details of these parameters are
+provided below.</p>
     </div>
 
     <pre class="usage"><span class='fu'>setBevertonHolt</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>erepro</span>, <span class='va'>R_max</span>, <span class='va'>reproduction_level</span>, <span class='va'>R_factor</span><span class='op'>)</span></pre>
@@ -177,8 +185,8 @@ See details.</p></td>
     </tr>
     <tr>
       <th>R_factor</th>
-      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a> Use <code>reproduction_level</code>
-instead, with <code>R_factor = 1 / reproduction_level</code>.</p></td>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a> Use
+<code>reproduction_level = 1 / R_factor</code> instead.</p></td>
     </tr>
     </table>
 
@@ -192,45 +200,52 @@ invested into reproduction and the number of eggs hatched is determined
 by two parameters: the reproductive efficiency <code>erepro</code> and the maximum
 reproduction rate <code>R_max</code>.</p>
 <p>If no maximum is imposed on the reproduction rate
-(\(R_{max} = \inf\)) then the resulting density-independent
+(\(R_{max} = \infty\)) then the resulting density-independent
 reproduction rate \(R_{di}\) is proportional
 to the total rate \(E_R\) at which energy is invested into reproduction,
-$$R_{di} = \frac{\text{erepro}}{2 w_{min}} E_R$$
+$$R_{di} = \frac{\text{erepro}}{2 w_{min}} E_R,$$
 where the proportionality factor is given by the reproductive efficiency
 <code>erepro</code> divided by the egg size <code>w_min</code> to convert energy to egg number and
-by a factor of 2 to account for the two sexes.</p>
+divided by 2 to account for the two sexes.</p>
 <p>Imposing a finite maximum reproduction rate \(R_{max}\) leads to a
-non-linear relationship between energy invested and eggs hatchted. This
+non-linear relationship between energy invested and eggs hatched. This
 density-dependent reproduction rate \(R_{dd}\) is given as
 $$R_{dd} = R_{di}
-\frac{R_{max}}{R_{di} + R_{max}}$$</p>
+\frac{R_{max}}{R_{di} + R_{max}}.$$</p>
 <p>(All quantities in the above equations are species-specific but we dropped
 the species index for simplicity.)</p>
 <p>The following plot illustrates the Beverton-Holt density dependence in the
-reproduction rate for two different choices of parameters.<img src='figures/Beverton-Holt-plot-1.png' alt='' /></p>
+reproduction rate for two different choices of parameters.
+<img src='figures/Beverton-Holt-plot-1.png' alt='' /></p>
 <p>This plot shows that a given energy \(E_R\) invested into reproduction can
 lead to the same reproduction rate \(R_{dd}\) with different choices
-of the parameters <code>R_max</code> and <code>erepro</code>. A higher <code>R_max</code> coupled with a lower
-<code>erepro</code> can give the same value as a lower <code>R_max</code> coupled with a higher
-<code>erepro</code>.</p>
-<p>We denote the ratio between the density-dependent reproduction rate
-\(R_{dd}\) and the maximal reproduction rate  \(R_{max}\)
-the <code>reproduction_level</code>.</p>
+of the parameters <code>R_max</code> and <code>erepro</code>. <code>R_max</code> determines the asymptote of
+the curve and <code>erepro</code> its initial slope. A higher <code>R_max</code> coupled with a
+lower <code>erepro</code> (black curves) can give the same value as a lower <code>R_max</code>
+coupled with a higher <code>erepro</code> (blue curves).</p>
 <p>For the given initial state in the MizerParams object <code>params</code> one can
 calculate the energy \(E_R\) that is invested into reproduction by the
-mature individuals. One can also calculate the reproduction rate
-\(R_{dd}\) that is required to keep the egg abundance constant. This
-determines the location of the black dot in the above graph. You then only
-need one parameter to select one from the family of Beverton-Holt
-curves going through that point. This parameter can be <code>erepro</code>, <code>R_max</code> or
-the <code>reproduction_level</code>.</p>
+mature individuals and the reproduction rate \(R_{dd}\) that is
+required to keep the egg abundance constant. These two values determine the
+location of the black dot in the above graph. You then only need one
+parameter to select one curve from the family of Beverton-Holt curves going
+through that point. This parameter can be <code>erepro</code> or <code>R_max</code>. Instead of
+<code>R_max</code> you can alternatively specify the <code>reproduction_level</code> which is the
+ratio between the density-dependent reproduction rate \(R_{dd}\) and
+the maximal reproduction rate  \(R_{max}\).</p>
 <p>The parameter you provide can be either a vector, with one value for each
 species, or a single value that is then used for all species. The
 values for <code>R_max</code> must be larger than \(R_{dd}\) and can range
 up to <code>Inf</code>. The values for the <code>reproduction_level</code> must be positive and
 less than 1. The values for <code>erepro</code> must be large enough to allow the
-required reproducion rate. They should also be smaller than 1 to be
+required reproduction rate. They should also be smaller than 1 to be
 physiologically sensible, but this is not enforced by the function.</p>
+<p>As can be seen in the graph above, choosing a lower value for <code>R_max</code> or a
+higher value for <code>erepro</code> means that near the steady state the reproduction
+will be less sensitive to a change in the energy invested into reproduction
+and hence less sensitive to changes in the spawning stock biomass or its
+energy income. As a result the species will also be less sensitive to
+fishing, leading to a higher F_MSY.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

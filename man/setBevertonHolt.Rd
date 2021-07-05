@@ -17,21 +17,25 @@ setBevertonHolt(params, erepro, R_max, reproduction_level, R_factor)
 reproduction rate the actual reproduction takes place in the initial state.
 See details.}
 
-\item{R_factor}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{reproduction_level}
-instead, with \code{R_factor = 1 / reproduction_level}.}
+\item{R_factor}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use
+\code{reproduction_level = 1 / R_factor} instead.}
 }
 \value{
 A MizerParams object
 }
 \description{
 Takes a MizerParams object \code{params} with arbitrary density dependence and
-returns a MizerParams object with Beverton-Holt density-dependence. There is
-a one-parameter family of Beverton-Holt reproduction curves that have the
-property that, for the initial size spectrum for each species, the energy
-invested into reproduction leads to the reproduction rate that is required to
-maintain the given egg abundance. By specifying one of the parameters
-\code{erepro}, \code{R_max} or \code{reproduction_level} you pick the desired reproduction
-curve. More details of these parameters are provided below.
+returns a MizerParams object with Beverton-Holt density-dependence with your
+chosen reproductive efficiency or your chosen maximal reproduction rate.
+If you have tuned your \code{params} object to describe a particular steady state,
+then setting the Beverton-Holt density dependence with this function will
+leave you with the exact same steady state, because it only allows you to
+choose among those Beverton-Holt reproduction curves that have the property
+that the energy invested into reproduction by the mature individuals leads to
+the reproduction rate that is required to maintain the given egg abundance.
+By specifying one of the parameters \code{erepro}, \code{R_max} or \code{reproduction_level}
+you pick the desired reproduction curve. More details of these parameters are
+provided below.
 }
 \details{
 With Beverton-Holt density dependence the relation between the energy
@@ -46,10 +50,10 @@ to the total rate \eqn{E_R} at which energy is invested into reproduction,
 \deqn{R_{di} = \frac{\text{erepro}}{2 w_{min}} E_R,}{R_di = (erepro/(2 w_min)) E_R,}
 where the proportionality factor is given by the reproductive efficiency
 \code{erepro} divided by the egg size \code{w_min} to convert energy to egg number and
-by a factor of 2 to account for the two sexes.
+divided by 2 to account for the two sexes.
 
 Imposing a finite maximum reproduction rate \eqn{R_{max}}{R_max} leads to a
-non-linear relationship between energy invested and eggs hatchted. This
+non-linear relationship between energy invested and eggs hatched. This
 density-dependent reproduction rate \eqn{R_{dd}}{R_dd} is given as
 \deqn{R_{dd} = R_{di}
 \frac{R_{max}}{R_{di} + R_{max}}.}{R_dd = R_di R_max/(R_di + R_max).}
@@ -63,28 +67,34 @@ reproduction rate for two different choices of parameters.
 
 This plot shows that a given energy \eqn{E_R} invested into reproduction can
 lead to the same reproduction rate \eqn{R_{dd}}{R_dd} with different choices
-of the parameters \code{R_max} and \code{erepro}. A higher \code{R_max} coupled with a lower
-\code{erepro} can give the same value as a lower \code{R_max} coupled with a higher
-\code{erepro}.
-
-We denote the ratio between the density-dependent reproduction rate
-\eqn{R_{dd}}{R_dd} and the maximal reproduction rate  \eqn{R_{max}}{R_max}
-the \code{reproduction_level}.
+of the parameters \code{R_max} and \code{erepro}. \code{R_max} determines the asymptote of
+the curve and \code{erepro} its initial slope. A higher \code{R_max} coupled with a
+lower \code{erepro} (black curves) can give the same value as a lower \code{R_max}
+coupled with a higher \code{erepro} (blue curves).
 
 For the given initial state in the MizerParams object \code{params} one can
 calculate the energy \eqn{E_R} that is invested into reproduction by the
-mature individuals. One can also calculate the reproduction rate
-\eqn{R_{dd}}{R_dd} that is required to keep the egg abundance constant. This
-determines the location of the black dot in the above graph. You then only
-need one parameter to select one from the family of Beverton-Holt
-curves going through that point. This parameter can be \code{erepro}, \code{R_max} or
-the \code{reproduction_level}.
+mature individuals and the reproduction rate \eqn{R_{dd}}{R_dd} that is
+required to keep the egg abundance constant. These two values determine the
+location of the black dot in the above graph. You then only need one
+parameter to select one curve from the family of Beverton-Holt curves going
+through that point. This parameter can be \code{erepro} or \code{R_max}. Instead of
+\code{R_max} you can alternatively specify the \code{reproduction_level} which is the
+ratio between the density-dependent reproduction rate \eqn{R_{dd}}{R_dd} and
+the maximal reproduction rate  \eqn{R_{max}}{R_max}.
 
 The parameter you provide can be either a vector, with one value for each
 species, or a single value that is then used for all species. The
 values for \code{R_max} must be larger than \eqn{R_{dd}}{R_dd} and can range
 up to \code{Inf}. The values for the \code{reproduction_level} must be positive and
 less than 1. The values for \code{erepro} must be large enough to allow the
-required reproducion rate. They should also be smaller than 1 to be
+required reproduction rate. They should also be smaller than 1 to be
 physiologically sensible, but this is not enforced by the function.
+
+As can be seen in the graph above, choosing a lower value for \code{R_max} or a
+higher value for \code{erepro} means that near the steady state the reproduction
+will be less sensitive to a change in the energy invested into reproduction
+and hence less sensitive to changes in the spawning stock biomass or its
+energy income. As a result the species will also be less sensitive to
+fishing, leading to a higher F_MSY.
 }
