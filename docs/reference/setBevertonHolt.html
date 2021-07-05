@@ -238,8 +238,10 @@ species, or a single value that is then used for all species. The
 values for <code>R_max</code> must be larger than \(R_{dd}\) and can range
 up to <code>Inf</code>. The values for the <code>reproduction_level</code> must be positive and
 less than 1. The values for <code>erepro</code> must be large enough to allow the
-required reproduction rate. They should also be smaller than 1 to be
-physiologically sensible, but this is not enforced by the function.</p>
+required reproduction rate. If a smaller value is requested a warning is
+issued and the value is increased to the smallest possible value. The values
+for <code>erepro</code> should also be smaller than 1 to be physiologically sensible,
+but this is not enforced by the function.</p>
 <p>As can be seen in the graph above, choosing a lower value for <code>R_max</code> or a
 higher value for <code>erepro</code> means that near the steady state the reproduction
 will be less sensitive to a change in the energy invested into reproduction

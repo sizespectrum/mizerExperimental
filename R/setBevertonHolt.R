@@ -94,8 +94,10 @@
 #' values for `R_max` must be larger than \eqn{R_{dd}}{R_dd} and can range
 #' up to `Inf`. The values for the `reproduction_level` must be positive and
 #' less than 1. The values for `erepro` must be large enough to allow the
-#' required reproduction rate. They should also be smaller than 1 to be
-#' physiologically sensible, but this is not enforced by the function.
+#' required reproduction rate. If a smaller value is requested a warning is
+#' issued and the value is increased to the smallest possible value. The values
+#' for `erepro` should also be smaller than 1 to be physiologically sensible,
+#' but this is not enforced by the function.
 #'
 #' As can be seen in the graph above, choosing a lower value for `R_max` or a
 #' higher value for `erepro` means that near the steady state the reproduction
@@ -145,8 +147,12 @@ setBevertonHolt <- function(params, erepro, R_max, reproduction_level,
         rdi_new <- rdi * erepro / params@species_params$erepro
         wrong <- rdi_new < rdd_new
         if (any(wrong)) {
-            stop("For the following species the `erepro` you have provided",
-                 "is too small: ", params@species_params$species[wrong])
+            warning("For the following species the requested `erepro` ",
+                   "was too small and has been increased to the smallest ",
+                   "possible value: ",
+                   paste(params@species_params$species[wrong], collapse = ", "))
+            rdi_new[wrong] <- rdd_new[wrong]
+            erepro[wrong] <- (params@species_params$erepro * rdi_new / rdi)[wrong]
         }
         r_max_new <- rdi_new * rdd_new / (rdi_new - rdd_new)
         r_max_new[is.nan(r_max_new)] <- Inf
@@ -185,7 +191,8 @@ setBevertonHolt <- function(params, erepro, R_max, reproduction_level,
         wrong <- R_max < rdd_new
         if (any(wrong)) {
             stop("For the following species the `R_max` you have provided is
-                 too small: ", params@species_params$species[wrong])
+                 too small: ",
+                 paste(params@species_params$species[wrong], collapse = ", "))
         }
         r_max_new <- R_max
     }
@@ -198,7 +205,7 @@ setBevertonHolt <- function(params, erepro, R_max, reproduction_level,
     if (any(wrong)) {
         warning("The following species require an unrealistic reproductive ",
                 "efficiency greater than 1: ",
-                params@species_params$species[wrong])
+                paste(params@species_params$species[wrong], collapse = ", "))
     }
 
     return(params)
