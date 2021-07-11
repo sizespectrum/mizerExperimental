@@ -41,6 +41,7 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     setBevertonHolt.R
+    validSim.R
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

@@ -20,4 +20,7 @@ reference:
   - displayFrames
   - getBiomassFrame
   - getSSBFrame
+- title: Others
+  contents:
+  - validSim
 
