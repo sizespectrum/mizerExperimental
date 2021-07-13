@@ -522,8 +522,8 @@ catchTabUI <- function() {
                      selected = "Length", inline = TRUE),
         h1("Total catch and size distribution of catch"),
         h2("Total catch"),
-        p("The upper plot compares the total yearly catch in megatonnes for each species in the model to the observed total catch, if available."),
-        p("The total observed catch is taken from the 'catch_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in megatonnes rather than in grams."),
+        p("The upper plot compares the total yearly catch for each species in the model to the observed total catch, if available."),
+        p("The total observed catch is taken from the 'catch_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in grams/year."),
         h3("How to tune total catch"),
         p("To bring the total catch of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
         h2("Size distribution of catch"),
@@ -740,7 +740,7 @@ catchTab <- function(input, output, session, params, logs,
                      position = "dodge") +
             theme_grey(base_size = 12) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-            scale_y_continuous(name = "Catch [megatonnes]", trans = "log10",
+            scale_y_continuous(name = "Catch [g/year]", trans = "log10",
                                breaks = log_breaks())
     })
 
@@ -749,7 +749,7 @@ catchTab <- function(input, output, session, params, logs,
         p <- isolate(params())
         sp <- input$sp
         numericInput("catch_observed",
-                     paste0("Observed total catch for ", sp, " (megatonnes)"),
+                     paste0("Observed total catch for ", sp, " [g/year]"),
                      value = p@species_params[sp, "catch_observed"])
     })
 
