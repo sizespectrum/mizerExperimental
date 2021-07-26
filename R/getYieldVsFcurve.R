@@ -33,9 +33,13 @@ getYieldVsF <- function(params,
                         F_range = seq(0, F_max, length.out = no_steps)) {
     # Check parameters
     params <- validParams(params)
+    species <- valid_species_arg(params, species)
+    if (length(species) > 1) {
+        stop("You can only make this plot for one species at a time.")
+    }
     idx_species <- which(params@species_params$species == species)
     if (length(idx_species) != 1) {
-        stop("Invalid species name")
+        stop("Invalid species specification")
     }
     assert_that(is.numeric(F_range))
     # First make a new gear for that specific species
@@ -45,7 +49,7 @@ getYieldVsF <- function(params,
     gps <- gp$species == sp_name
     gp_extra <- gp[gps, ]
     if (nrow(gp_extra) > 1) {
-        stop("This function only works in the case where the targt species ",
+        stop("This function only works in the case where the target species ",
              "is selected by a single gear only")
     }
     gp_extra$gear <- "tmp"
