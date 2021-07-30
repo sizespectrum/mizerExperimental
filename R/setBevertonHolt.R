@@ -259,3 +259,31 @@ getRequiredRDD <- function(params) {
     }
     rdd_new
 }
+
+#' Get reproduction level
+#'
+#' The reproduction level is the ratio between the density-dependent
+#' reproduction rate and the maximal reproduction rate.
+#'
+#' @param params A MizerParams object
+#'
+#' @return A named vector with the reproduction level for each species.
+#' @export
+#' @examples
+#' getReproductionLevel(NS_params)
+#'
+#' # The reproduction level can be changed without changing the steady state:
+#' params <- setBevertonHolt(NS_params, reproduction_level = 0.9)
+#' getReproductionLevel(params)
+#'
+#' # The result is the ratio of RDD and R_max
+#' identical(getRDD(params) / species_params(params)$R_max,
+#'           getReproductionLevel(params))
+getReproductionLevel <- function(params) {
+    assert_that(is(params, "MizerParams"))
+    if (params@rates_funcs$RDD != "BevertonHoltRDD") {
+        stop("This function should only be used if the reproduction function ",
+             "is Beverton-Holt.")
+    }
+    getRDD(params) / params@species_params$R_max
+}

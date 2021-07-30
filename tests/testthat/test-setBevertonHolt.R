@@ -72,6 +72,7 @@ test_that("setBevertonHolt sets reproduction_level correctly", {
     expect_equal(getRDD(params), params@species_params$R_max * 0.4,
                  check.attributes = FALSE)
     expect_equal(getRequiredRDD(params), getRDD(params))
+    expect_equal(getReproductionLevel(params)[[1]], 0.4)
 })
 
 test_that("setBevertonHolt sets R_factor correctly", {

@@ -4,6 +4,7 @@ reference:
 - title: Handling density dependence
   contents:
   - setBevertonHolt
+  - getReproductionLevel
 - title: Interactively tuning a multispecies model
   contents:
   - tuneParams

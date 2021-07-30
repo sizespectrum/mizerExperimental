@@ -2,6 +2,7 @@
 
 export(displayFrames)
 export(getBiomassFrame)
+export(getReproductionLevel)
 export(getSSBFrame)
 export(getYieldVsF)
 export(markBackground)
