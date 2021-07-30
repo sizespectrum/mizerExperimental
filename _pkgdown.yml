@@ -18,9 +18,6 @@ reference:
   contents:
   - getYieldVsF
   - plotYieldVsF
-  - displayFrames
-  - getBiomassFrame
-  - getSSBFrame
 - title: Others
   contents:
   - validSim
