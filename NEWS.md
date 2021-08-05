@@ -1,3 +1,12 @@
+* Graduated the updated `setBevertonHolt()` and the new `getReproductionLevel()`
+  to mizer package.
+* Removed `dislayFrames()`, `getBiomassFrame()` and `getSSBFrame()` because
+  these are superseeded by the new `plotDataFrame()` in mizer.
+* First stab at a `validSim()` function that will be useful when simulations
+  produce non-finite values.
+* Much polishing of `tuneParams()` and some added documentation.
+* Improvements to argument checks in `getYieldVsF()`
+
 # mizerExperimental 2.2.0
 
 The version number will now always be that of the latest mizer package that
