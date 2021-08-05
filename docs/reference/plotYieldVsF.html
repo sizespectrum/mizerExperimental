@@ -48,6 +48,8 @@ fixed." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -59,9 +61,15 @@ fixed." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,19 +83,13 @@ fixed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -99,9 +101,6 @@ fixed." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
-    </li>
-    <li>
-      <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
     </li>
   </ul>
 </li>
@@ -141,13 +140,13 @@ that species while the fishing mortalities for the other species are held
 fixed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotYieldVsF</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>plotYieldVsF</span><span class='op'>(</span>
   <span class='va'>params</span>,
   <span class='va'>species</span>,
   no_steps <span class='op'>=</span> <span class='fl'>10</span>,
   F_max <span class='op'>=</span> <span class='fl'>3</span>,
   F_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>F_max</span>, length.out <span class='op'>=</span> <span class='va'>no_steps</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +171,7 @@ fixed.</p>
       <th>F_range</th>
       <td><p>A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
-<code><a href='https://rdrr.io/r/base/seq.html'>seq(from = 0, to = F_max, length.out = no_steps)</a></code>.</p></td>
+<code>seq(from = 0, to = F_max, length.out = no_steps)</code>.</p></td>
     </tr>
     </table>
 
@@ -181,17 +180,14 @@ yield. If missing, it is set to
     <p>A ggplot object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>getYieldVsF</p>
-<p>Other plotting functions: 
-<code><a href='animateSpectra.html'>animateSpectra</a>()</code>,
-<code><a href='displayFrames.html'>displayFrames</a>()</code></p></div>
+    <div class='dont-index'><p>getYieldVsF</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 46.5 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 21 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 12 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 9 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 7.5 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 6 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 6 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 6 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 4.5 years.</span></div><div class='output co'>#&gt; <span class='message'>Convergence was achieved in 4.5 years.</span></div><div class='img'><img src='plotYieldVsF-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -203,11 +199,11 @@ yield. If missing, it is set to
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gustav Delius.</p>
+  <p><p>Developed by Gustav Delius.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.</p></p>
 </div>
 
       </footer>
@@ -215,6 +211,8 @@ yield. If missing, it is set to
 
   
 
+
+  
 
   </body>
 </html>

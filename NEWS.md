@@ -1,10 +1,14 @@
+# mizerExperimental 2.2.1
+
+* Much polishing of `tuneParams()` and some added documentation.
+* First stab at a `validSim()` function that will be useful when simulations
+  produce non-finite values.
 * Graduated the updated `setBevertonHolt()` and the new `getReproductionLevel()`
   to mizer package.
 * Removed `dislayFrames()`, `getBiomassFrame()` and `getSSBFrame()` because
   these are superseeded by the new `plotDataFrame()` in mizer.
-* First stab at a `validSim()` function that will be useful when simulations
-  produce non-finite values.
-* Much polishing of `tuneParams()` and some added documentation.
+* Removed the vignette explaining size-spectrum dynamics in single-species 
+  example because this has graduated to mizer.
 * Improvements to argument checks in `getYieldVsF()`
 
 # mizerExperimental 2.2.0

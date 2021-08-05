@@ -2,7 +2,6 @@
 # mizerExperimental
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 This is an extension package for the mizer package
@@ -49,15 +48,3 @@ remotes::install_github("sizespectrum/mizerExperimental")
 ```
 
 This is discussed at <https://github.com/r-lib/remotes/issues/403>
-
-## Features
-
-  - Functions and a shiny app for interactively tuning parameters,
-    started with `tuneParams()`.
-
-  - `getYieldVsF()` and `plotYieldVsF()` for calculating and plotting
-    yield curve.
-
-  - Showing two plots side-by-side with the same axes and the same
-    legend. This is made possible for some of the plots via the
-    `displayFrames()` function.

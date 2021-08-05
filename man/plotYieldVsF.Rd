@@ -43,8 +43,5 @@ plotYieldVsF(params, "Cod")
 }
 \seealso{
 getYieldVsF
-
-Other plotting functions: 
-\code{\link{displayFrames}()}
 }
 \concept{plotting functions}
