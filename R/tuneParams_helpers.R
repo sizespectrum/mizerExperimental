@@ -5,10 +5,7 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
-    rdi <- getRDI(p)
-    rdd <- getRDD(p)
-    p@species_params$erepro <- p@species_params$erepro * rdd / rdi
-    p@species_params$R_max <- Inf
+    p <- setBevertonHolt(p, reproduction_level = 0)
     return(p)
 }
 
@@ -42,15 +39,7 @@ tuneParams_update_species <- function(sp, p, params) {
             stop("Candidate steady state holds non-numeric values")
         }
 
-        # Retune the value of erepro so that we get the correct level of
-        # reproduction
-        i <- which(p@species_params$species == sp)
-        rdd <- getRDD(p)[i]
-        gg0 <- gg[p@w_min_idx[i]]
-        mumu0 <- mumu[p@w_min_idx[i]]
-        DW <- p@dw[p@w_min_idx[i]]
-        p@species_params$erepro[i] <- p@species_params$erepro[i] *
-            n0 * (gg0 + DW * mumu0) / rdd
+        p <- setBevertonHolt(p, reproduction_level = 0)
 
         # Update the reactive params object
         params(p)
