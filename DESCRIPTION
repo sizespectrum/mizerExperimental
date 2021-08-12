@@ -40,6 +40,8 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     validSim.R
+    steady.R
+    setBevertonHolt.R
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
