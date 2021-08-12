@@ -101,7 +101,7 @@ retuneBackground <- function(params) {
         params@initial_n <- params@initial_n * A2
     }
 
-    return(retune_erepro(params))
+    return(setBevertonHolt(params, reproduction_level = 1/4))
 }
 
 #' Removes species with abundance below a threshold
@@ -183,7 +183,7 @@ rescaleAbundance <- function(params, factor) {
     params@initial_n[to_rescale, ] <-
         params@initial_n[to_rescale, ] * factor
 
-    return(retune_erepro(params))
+    return(setBevertonHolt(params, reproduction_level = 1/4))
 }
 
 #' Rescale System

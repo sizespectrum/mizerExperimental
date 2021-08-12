@@ -35,8 +35,10 @@ test_that("retuneBackground", {
 
 test_that("retuneBackground() removes Cod", {
     params <- markBackground(NS_params, species = "Cod")
-    expect_message(params <- retuneBackground(params),
+    expect_warning(
+        expect_message(params <- retuneBackground(params),
                    "There are no background species left.")
+    )
 })
 
 test_that("retuneBackground() reproduces scaling model", {
@@ -57,11 +59,11 @@ test_that("retuneBackground() reproduces scaling model", {
 
 # rescaleAbundance ----
 test_that("rescaleAbundance works", {
-    p <- retune_erepro(NS_params)
+    expect_warning(p <- setBevertonHolt(NS_params, reproduction_level = 1/4))
     factor <- c(Cod = 2, Haddock = 3)
-    p2 <- rescaleAbundance(NS_params, factor)
+    expect_warning(p2 <- rescaleAbundance(NS_params, factor))
     expect_identical(p@initial_n["Cod"] * 2, p2@initial_n["Cod"])
-    expect_equal(p, rescaleAbundance(p2, 1/factor))
+    expect_equal(p, expect_warning(rescaleAbundance(p2, 1/factor)))
 })
 test_that("rescaleAbundance throws correct error",{
     expect_error(rescaleAbundance(NS_params, c(2, 3)))
