@@ -9,6 +9,19 @@ prepare_params <- function(p) {
     return(p)
 }
 
+finalise_params <- function(p) {
+    if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, reproduction_level =
+                                 p@species_params$tuneParams_old_repro_level)
+        p@species_params$tuneParams_old_repro_level <- NULL
+    }
+    if ("tuneParams_old_R_max" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, R_max =  p@species_params$tuneParams_old_R_max)
+        p@species_params$tuneParams_old_R_max <- NULL
+    }
+    p
+}
+
 #' @export
 tuneParams_update_species <- function(sp, p, params) {
     # wrap the code in trycatch so that when there is a problem we can
@@ -154,6 +167,6 @@ fileManagement <- function(input, output, session, params, logs) {
     output$params <- downloadHandler(
         filename = "params.rds",
         content = function(file) {
-            saveRDS(params(), file = file)
+            saveRDS(finalise_params(params()), file = file)
         })
 }

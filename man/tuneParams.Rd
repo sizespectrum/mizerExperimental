@@ -10,6 +10,7 @@ tuneParams(
     "interaction", "resource"),
   tabs = list("Spectra", "Biomass", "Catch", "Growth", "Repro", "Diet", "Death",
     "Resource", "Rates", "Prey", "Sim"),
+  preserve = c("reproduction_level", "R_max"),
   ...
 )
 }
@@ -22,6 +23,10 @@ that should be displayed in the sidebar. See "Customisation" below.}
 
 \item{tabs}{A list with the names of the tabs that should be displayed in
 the main section. See "Customisation" below.}
+
+\item{preserve}{Specifies whether the \code{reproduction_level} should be
+preserved or the maximum reproduction rate \code{R_max}. See \code{\link[=setBevertonHolt]{setBevertonHolt()}}
+for an explanation of the \code{reproduction_level}.}
 
 \item{...}{Other params needed by individual tabs.}
 }

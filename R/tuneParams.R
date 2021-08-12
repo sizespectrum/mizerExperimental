@@ -71,6 +71,9 @@
 #'   that should be displayed in the sidebar. See "Customisation" below.
 #' @param tabs A list with the names of the tabs that should be displayed in
 #'   the main section. See "Customisation" below.
+#' @param preserve Specifies whether the `reproduction_level` should be
+#'   preserved or the maximum reproduction rate `R_max`. See [setBevertonHolt()]
+#'   for an explanation of the `reproduction_level`.
 #' @param ... Other params needed by individual tabs.
 #'
 #' @return The tuned MizerParams object
@@ -95,12 +98,23 @@ tuneParams <- function(p,
                                    "Rates",
                                    "Prey",
                                    "Sim"),
-                       ...) {
+                       preserve = c("reproduction_level", "R_max"), ...) {
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
+    
+    # Add the info that should be preserved to the species_params for later
+    # recall
+    preserve <- match.arg(preserve)
+    if (preserve == "reproduction_level") {
+        p@species_params$tuneParams_old_repro_level <-
+            getReproductionLevel(p)
+    }
+    if (preserve == "R_max") {
+        p@species_params$tuneParams_old_R_max <- p@species_params$R_max
+    }
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -332,7 +346,7 @@ tuneParams <- function(p,
         # return with the latest params object
         observeEvent(input$done, {
             file.remove(logs$files)
-            stopApp(params())
+            stopApp(finalise_params(params()))
         })
 
     } #the server
