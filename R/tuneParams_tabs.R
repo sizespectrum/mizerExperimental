@@ -321,6 +321,35 @@ biomassTab <- function(input, output, session,
                               max = signif(n0 * 10, 3))
         }
     })
+    observeEvent(input$tune_egg_all, {
+      # I just copied and pasted the code form above into a loop.
+      # I am sure this could be improved.
+      p <- params()
+      sp_sel <- which.max(p@species_params$species == input$sp)
+      for (sp in seq_along(p@species_params$species)) {
+        if ("biomass_observed" %in% names(p@species_params) &&
+            !is.na(p@species_params$biomass_observed[[sp]]) &&
+            p@species_params$biomass_observed[[sp]] > 0) {
+          cutoff <- p@species_params$cutoff_size[[sp]]
+          if (is.null(cutoff) || is.na(cutoff)) {
+            cutoff <- p@species_params$w_mat[[sp]] / 20
+          }
+          total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
+          n0_old <- p@initial_n[sp, p@w_min_idx[[sp]]]
+          n0 <- n0_old * p@species_params$biomass_observed[[sp]] / total
+          # rescale abundance to new egg density
+          p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 / n0_old
+          
+          if (sp == sp_sel) {
+            updateSliderInput(session, "n0",
+                              value = n0,
+                              min = signif(n0 / 10, 3),
+                              max = signif(n0 * 10, 3))
+          }
+        }
+      }
+      params(p)
+    })
 }
 
 growthTabUI <- function() {
