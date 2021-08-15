@@ -404,33 +404,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
         p <- params()
         no_sp <- length(p@species_params$species)
         if (input$all_growth == "All") {
-            gc <- getGrowthCurves(p)[, , drop = FALSE] %>%
-                cubelyr::as.tbl_cube(met_name = "Size") %>%
-                as_tibble() %>%
-                mutate(Legend = "Model",
-                       Species = factor(Species, p@species_params$species))
-
-            vb <- gc %>%
-                mutate(Legend = "von Bertalanffy") %>%
-                mutate(a = p@species_params[Species, "a"],
-                       b = p@species_params[Species, "b"],
-                       k_vb = p@species_params[Species, "k_vb"],
-                       t0 = p@species_params[Species, "t0"]) %>%
-                filter(!is.na(k_vb)) %>%
-                mutate(L_inf = (p@species_params[Species, "w_inf"] / a)^(1 / b),
-                       Size = a * (L_inf * (1 - exp(-k_vb * (Age - t0))))^b) %>%
-                select(names(gc))
-
-            ggplot(bind_rows(gc, vb)) +
-                geom_line(aes(x = Age, y = Size, colour = Legend)) +
-                scale_x_continuous(name = "Age [years]") +
-                scale_y_continuous(name = "Size [g]") +
-                geom_hline(aes(yintercept = w_mat),
-                           data = tibble(Species = p@species_params$species[],
-                                         w_mat = p@species_params$w_mat[]),
-                           linetype = "dashed",
-                           colour = "grey") +
-                facet_wrap(~Species, scales = "free_y")
+            plotGrowthCurves(p, species_panel = TRUE)
         } else {
             plotGrowthCurves(p, species = input$sp) +
                 theme_grey(base_size = 12)
