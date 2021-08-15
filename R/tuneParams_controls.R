@@ -447,7 +447,7 @@ interactionControlUI <- function(p, sp) {
                     min = 0,
                     max = 1,
                     step = 0.05))
-    for (i in p@species_params$species) {
+    for (i in p@species_params$species[!is.na(p@A)]) {
         inter_var <- paste0("inter_", i)
         l1 <- c(l1, list(
             sliderInput(inter_var, i,
