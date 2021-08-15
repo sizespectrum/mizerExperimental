@@ -304,7 +304,8 @@ tuneParams <- function(p,
             p_new <- readRDS(logs$files[logs$idx])
             p_old <- params()
             # if the params have not changed, go to the previous one
-            if (all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
+            if ((nrow(p_old@species_params) == nrow(p_new@species_params)) &&
+                all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
                 logs$idx <- logs$idx - 1
                 shinyjs::enable("redo")
                 p_new <- readRDS(logs$files[logs$idx])
