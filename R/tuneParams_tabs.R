@@ -11,12 +11,12 @@ spectraTabUI <- function() {
                      choices = c("Logarithmic", "Constant"),
                      selected = "Logarithmic", inline = TRUE),
         div(style = "display:inline-block;vertical-align:middle; width: 150px;",
-            sliderInput("scale_by", "Scale foreground by:",
+            sliderInput("scale_frgrd_by", "Scale foreground by:",
                     value = 2,
                     min = 0.4,
                     max = 2,
                     step = 0.1)),
-        actionButton("scale", "Scale"),
+        actionButton("scale_frgrd", "Scale"),
         actionButton("retune_background",
                      "Retune background"),
         h1("Size spectra"),
@@ -49,8 +49,9 @@ spectraTab <- function(input, output, session, params, logs, ...) {
     })
 
     ## Scale ####
-    observeEvent(input$scale, {
-        tuneParams_run_steady(rescaleAbundance(params(), factor = 2),
+    observeEvent(input$scale_frgrd, {
+        tuneParams_run_steady(rescaleAbundance(params(), 
+                                               factor = input$scale_frgrd_by),
                    params = params, logs = logs, session = session)
     })
 
@@ -67,9 +68,14 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 biomassTabUI <- function() {
     tagList(
         # actionButton("biomass_help", "Press for instructions"),
-        actionButton("rescale", "Rescale model"),
-        actionButton("tune_egg", "Tune egg density"),
-        plotlyOutput("plotTotalBiomass"),
+      div(style = "display:inline-block;vertical-align:middle; width: 150px;",
+        sliderInput("scale_system_by", "Scale",
+                    value = 0, min = 0,  max = 17, step = 0.1)),
+      actionButton("scale_system", "Scale"),
+        actionButton("tune_egg", "Tune species"),
+        actionButton("tune_egg_all", "Tune all"),
+        plotOutput("plotTotalBiomass",
+                   click = "biomass_click"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
         # plotlyOutput("plotBiomassDist")
@@ -77,10 +83,10 @@ biomassTabUI <- function() {
         p("This panel compares the biomass and abundance of the model to",
           "the observed values, where available. It also provides tools for",
           "changing the model biomass and abundance."),
-        p("The 'Rescale model' button rescales the entire model so that the",
+        p("The 'Set scale' button rescales the entire model so that the",
           "biomass for the selected species agrees perfectly with the observed",
           "value."),
-        p("The 'Tune egg density' button attempts to move the entire size",
+        p("The 'Tune species' button attempts to move the entire size",
           "spectrum for the selected species up or down to give the observed",
           "biomass value. It does that by multiplying the egg density by the",
           "ratio of observed biomass to model biomass. After that adjustment",
@@ -88,6 +94,8 @@ biomassTabUI <- function() {
           "effects, after which the biomass will be a bit off again. You can",
           "repeat this process if you like to get even closer to the observed",
           "biomass."),
+        p("The 'Tune all' button does the same as the `Tune species` button",
+          "but for all species at once."),
         p("The values for the observed biomass is taken from the",
           "'biomass_observed' column in the species parameter data frame and",
           "the values for the observed abundance are taken from the",
@@ -116,9 +124,20 @@ biomassTab <- function(input, output, session,
             steps = help_steps)
         )
     )
+    
+    # Click ----
+    observeEvent(input$biomass_click, {
+      if (is.null(input$biomass_click$x)) return()
+      lvls <- input$biomass_click$domain$discrete_limits$x
+      sp <- lvls[round(input$biomass_click$x)]
+      if (sp != input$sp) {
+        updateSelectInput(session, "sp",
+                          selected = sp)
+      }
+    })
 
     # Plot total biomass ----
-    output$plotTotalBiomass <- renderPlotly({
+    output$plotTotalBiomass <- renderPlot({
         p <- params()
         no_sp <- length(p@species_params$species)
         cutoff <- p@species_params$cutoff_size
@@ -140,13 +159,19 @@ biomassTab <- function(input, output, session,
                           levels = p@species_params$species[foreground])
         df <- rbind(
             data.frame(Species = species,
-                       Type = "Observed",
+                       Type = "Observed Biomass [g]",
                        Biomass = observed[foreground]),
             data.frame(Species = species,
-                       Type = "Model",
-                       Biomass = biomass_model)
+                       Type = "Model Biomass [g]",
+                       Biomass = biomass_model),
+            data.frame(Species = species,
+                       Type = "Ratio Observed / Model",
+                       Biomass = observed[foreground] / biomass_model)
         )
-        df <- df[df$Biomass > 0, ]
+        # Get rid of "Observed" and "Ratio" entries for species without 
+        # observations (where we have set observed = 0)
+        df <- df[df$Biomass > 0, ] 
+        
         ggplot(df) +
             geom_col(aes(x = Species, y = Biomass, fill = Type),
                      position = "dodge") +
@@ -273,6 +298,14 @@ biomassTab <- function(input, output, session,
     })
 
     # Rescale model ----
+    observeEvent(input$scale_system, {
+        p <- rescaleSystem(params(), factor = 10^input$scale_system_by)
+        params(p)
+        tuneParams_add_to_logs(logs, p)
+        # Trigger an update of sliders
+        trigger_update(runif(1))
+    })
+    
     # to make biomass of current species agree with observation
     observeEvent(input$rescale, {
         p <- params()
@@ -361,6 +394,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
         )
     )
 
+    # Click ----
     observeEvent(input$growth_click, {
         if (input$growth_click$panelvar1 != input$sp) {
             updateSelectInput(session, "sp",
