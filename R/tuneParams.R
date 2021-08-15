@@ -104,17 +104,6 @@ tuneParams <- function(p,
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
-    
-    # Add the info that should be preserved to the species_params for later
-    # recall
-    preserve <- match.arg(preserve)
-    if (preserve == "reproduction_level") {
-        p@species_params$tuneParams_old_repro_level <-
-            getReproductionLevel(p)
-    }
-    if (preserve == "R_max") {
-        p@species_params$tuneParams_old_R_max <- p@species_params$R_max
-    }
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -136,7 +125,17 @@ tuneParams <- function(p,
         }
         p <- readRDS(logs$files[logs$idx])
     } else {
-        validObject(p)
+        validObject(p)    
+        # Add the info that should be preserved to the species_params for later
+        # recall
+        preserve <- match.arg(preserve)
+        if (preserve == "reproduction_level") {
+            p@species_params$tuneParams_old_repro_level <-
+                getReproductionLevel(p)
+        }
+        if (preserve == "R_max") {
+            p@species_params$tuneParams_old_R_max <- p@species_params$R_max
+        }
         p <- prepare_params(p)
     }
 
