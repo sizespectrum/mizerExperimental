@@ -704,7 +704,7 @@ catchTab <- function(input, output, session, params, logs,
         df <- rbind(
             data.frame(Species = species,
                        Type = "Observed",
-                       Catch = observed[foreground]),
+                       Catch = observed),
             data.frame(Species = species,
                        Type = "Model",
                        Catch = catch_model)
