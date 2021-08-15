@@ -68,14 +68,13 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 biomassTabUI <- function() {
     tagList(
         # actionButton("biomass_help", "Press for instructions"),
-      div(style = "display:inline-block;vertical-align:middle; width: 150px;",
-        sliderInput("scale_system_by", "Scale",
-                    value = 0, min = 0,  max = 17, step = 0.1)),
-      actionButton("scale_system", "Scale"),
-        actionButton("tune_egg", "Tune species"),
-        actionButton("tune_egg_all", "Tune all"),
         plotOutput("plotTotalBiomass",
-                   click = "biomass_click"),
+                   click = "biomass_click",
+                   dblclick = "tune_egg"),
+        div(style = "display:inline-block;vertical-align:middle; width: 150px;",
+            sliderInput("scale_system_by", "Scale",
+                        value = 0, min = 0,  max = 17, step = 0.1)),
+        actionButton("scale_system", "Scale"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
         # plotlyOutput("plotBiomassDist")
@@ -332,27 +331,24 @@ biomassTab <- function(input, output, session,
     # The "Tune egg density" button calculates the ratio of observed and
     # model biomass and then multiplies the egg density by that ratio.
     observeEvent(input$tune_egg, {
+        if (is.null(input$tune_egg$x)) return()
+        lvls <- input$tune_egg$domain$discrete_limits$x
+        sp <- lvls[round(input$tune_egg$x)]
         p <- params()
-        sp <- which.max(p@species_params$species == input$sp)
+        sp_idx <- which.max(p@species_params$species == sp)
         if ("biomass_observed" %in% names(p@species_params) &&
-                !is.na(p@species_params$biomass_observed[[sp]]) &&
-                p@species_params$biomass_observed[[sp]] > 0) {
-            cutoff <- p@species_params$cutoff_size[[sp]]
+                !is.na(p@species_params$biomass_observed[[sp_idx]]) &&
+                p@species_params$biomass_observed[[sp_idx]] > 0) {
+            cutoff <- p@species_params$cutoff_size[[sp_idx]]
             if (is.null(cutoff) || is.na(cutoff)) {
-                cutoff <- p@species_params$w_mat[[sp]] / 20
+                cutoff <- p@species_params$w_mat[[sp_idx]] / 20
             }
-            total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
-            n0 <- input$n0 *
-                p@species_params$biomass_observed[[sp]] / total
-            # rescale abundance to new egg density
-            p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
-                p@initial_n[sp, p@w_min_idx[[sp]]]
-
-            updateSliderInput(session, "n0",
-                              value = n0,
-                              min = signif(n0 / 10, 3),
-                              max = signif(n0 * 10, 3))
+            total <- sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff])
+            factor <- p@species_params$biomass_observed[[sp_idx]] / total
+            p@initial_n[sp_idx, ] <- p@initial_n[sp_idx, ] * factor
         }
+        params(p)
+        updateSelectInput(session, "sp", selected = sp)
     })
 }
 
