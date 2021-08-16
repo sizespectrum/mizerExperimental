@@ -446,7 +446,7 @@ interactionControlUI <- function(p, sp) {
                     value = sp$interaction_resource,
                     min = 0,
                     max = 1,
-                    step = 0.05))
+                    step = 0.001))
     for (i in p@species_params$species[!is.na(p@A)]) {
         inter_var <- paste0("inter_", i)
         l1 <- c(l1, list(
@@ -454,7 +454,7 @@ interactionControlUI <- function(p, sp) {
                         value = p@interaction[sp$species, i],
                         min = 0,
                         max = 1,
-                        step = 0.05)
+                        step = 0.001)
         ))
     }
     l1
