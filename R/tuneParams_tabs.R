@@ -11,14 +11,15 @@ spectraTabUI <- function() {
                      choices = c("Logarithmic", "Constant"),
                      selected = "Logarithmic", inline = TRUE),
         div(style = "display:inline-block;vertical-align:middle; width: 300px;",
-            sliderInput("scale_frgrd_by", "Scale foreground by:",
+            sliderInput("scale_frgrd_by", "Scale background down by a factor of:",
                     value = 2,
-                    min = -1,
-                    max = 1,
+                    min = 0.2,
+                    max = 5,
                     step = 0.05)),
         actionButton("scale_frgrd", "Scale"),
-        actionButton("retune_background",
-                     "Retune background"),
+        span(actionButton("retune_background",
+                          "Retune background"),
+             style = "float: right;"),
         h1("Size spectra"),
         p("This tab shows the biomass size spectra of the individual fish species and",
           "of the resource, as well as the total size spectrum (in black)."),
@@ -51,8 +52,8 @@ spectraTab <- function(input, output, session, params, logs, ...) {
     ## Scale ####
     observeEvent(input$scale_frgrd, {
         p <- params() %>%
-            rescaleAbundance(factor = 10^input$scale_frgrd_by) %>%
-            rescaleSystem(factor = 10^(-input$scale_frgrd_by))
+            rescaleAbundance(factor = input$scale_frgrd_by) %>%
+            rescaleSystem(factor = 1 / input$scale_frgrd_by)
         tuneParams_run_steady(p, params = params, 
                               logs = logs, session = session)
     })
@@ -73,10 +74,8 @@ biomassTabUI <- function() {
         plotOutput("plotTotalBiomass",
                    click = "biomass_click",
                    dblclick = "tune_egg"),
-        div(style = "display:inline-block;vertical-align:middle; width: 150px;",
-            sliderInput("scale_system_by", "Scale",
-                        value = 0, min = 0,  max = 17, step = 0.1)),
-        actionButton("scale_system", "Scale"),
+        actionButton("scale_system", "Calibrate scale"),
+        actionButton("tune_egg_all", "Adjust all"),
         plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
         # plotlyOutput("plotBiomassDist")
@@ -298,7 +297,26 @@ biomassTab <- function(input, output, session,
 
     # Rescale model ----
     observeEvent(input$scale_system, {
-        p <- rescaleSystem(params(), factor = 10^input$scale_system_by)
+        # Rescale so that the model matches the total observed biomass
+        p <- params() 
+        if ((!("biomass_observed" %in% names(p@species_params))) ||
+              all(is.na(p@species_params$biomass_observed))) {
+            return()
+        }
+        cutoff <- p@species_params$cutoff_size
+        # When no cutoff known, set it to maturity weight / 20
+        if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
+        cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
+        observed <- p@species_params$biomass_observed
+        observed_total <- sum(observed, na.rm = TRUE)
+        sp_observed <- which(!is.na(observed))
+        model_total <- 0
+        for (sp_idx in sp_observed) {
+          model_total <- 
+            model_total + 
+            sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff[[sp_idx]]])
+        }
+        p <- rescaleSystem(p, factor = observed_total / model_total)
         params(p)
         tuneParams_add_to_logs(logs, p)
         # Trigger an update of sliders
