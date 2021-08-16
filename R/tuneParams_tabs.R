@@ -127,6 +127,7 @@ biomassTab <- function(input, output, session,
     )
     
     # Click ----
+    # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$biomass_click, {
       if (is.null(input$biomass_click$x)) return()
       lvls <- input$biomass_click$domain$discrete_limits$x
@@ -390,6 +391,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
     )
 
     # Click ----
+    # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$growth_click, {
         if (input$growth_click$panelvar1 != input$sp) {
             updateSelectInput(session, "sp",
