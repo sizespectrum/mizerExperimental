@@ -381,7 +381,15 @@ biomassTab <- function(input, output, session,
             p@initial_n[sp_idx, ] <- p@initial_n[sp_idx, ] * factor
         }
         params(p)
-        updateSelectInput(session, "sp", selected = sp)
+        if (sp == input$sp) {
+            n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+            updateSliderInput(session, "n0",
+                              value = n0,
+                              min = signif(n0 / 10, 3),
+                              max = signif(n0 * 10, 3))
+        } else {
+            updateSelectInput(session, "sp", selected = sp)
+        }
     })
     observeEvent(input$tune_egg_all, {
       # I just copied and pasted the code form above into a loop.
