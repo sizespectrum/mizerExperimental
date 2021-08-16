@@ -7,9 +7,9 @@ utils::globalVariables(
 spectraTabUI <- function() {
     tagList(
         plotlyOutput("plotSpectra"),
-        radioButtons("binning", "Binning:",
-                     choices = c("Logarithmic", "Constant"),
-                     selected = "Logarithmic", inline = TRUE),
+        # radioButtons("binning", "Binning:",
+        #              choices = c("Logarithmic", "Constant"),
+        #              selected = "Logarithmic", inline = TRUE),
         div(style = "display:inline-block;vertical-align:middle; width: 300px;",
             sliderInput("scale_frgrd_by", "Scale background down by a factor of:",
                     value = 2,
@@ -24,15 +24,31 @@ spectraTabUI <- function() {
         p("This tab shows the biomass size spectra of the individual fish species and",
           "of the resource, as well as the total size spectrum (in black)."),
         p("This plot, as well as those on other tabs, is interactive in various",
-          "ways. For example you can remove individual spectra from the plot by",
+          "ways. For example you can remove individual species from the plot by",
           "clicking on their name in the legend. Hovering over the lines pops",
-          "up extra information."),
-        p("With the 'Binning' radio buttons you can choose whether to show",
-          "the spectra corresponding to using logarithmically sized bins or",
-          "bins of constant size. This will only change the slopes by 1."),
-        p("You can ignore the 'Scale by 2x' and 'Retune background' buttons",
-          "unless you follow a particular model creation method that is",
-          "explained elsewhere.")
+          "up extra information. You can zoom into a portion of the plot by",
+          "dragging a rectangle with the mouse while holding the left mouse",
+          "button down."),
+        # p("With the 'Binning' radio buttons you can choose whether to show",
+        #   "the spectra corresponding to using logarithmically sized bins or",
+        #   "bins of constant size. This will only change the slopes by 1."),
+        p("You can scale down the background in which the fish find themselves",
+          "(the resource and any background species that your model may",
+          "contain). This allows you to line up your community spectrum with",
+          "the background spectrum. Choose the factor by which to scale and",
+          "then hit the 'Scale' button. If you rescale by too large a factor",
+          "the system may have difficulties finding the steady state.",
+          "If that happens, just hit the Undo button and choose a smaller ",
+          "factor."),
+        p("Remember that after any adjustment you make in this app, you need",
+          "to hit the 'Steady' button before you will see the full ",
+          "multi-species consequences of the change."),
+        p("If your model contains background species, whose biomass is not",
+          "known, the 'Retune background' button will adjust their biomasses",
+          "in such a way that the total spectrum aligns well with the",
+          "resource spectrum. Background species that are no longer needed",
+          "because forground species have taken their place in the community",
+          "spectrum are automatically removed.")
     )
 }
 
@@ -40,11 +56,11 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 
     ## Plot spectra ####
     output$plotSpectra <- renderPlotly({
-        if (input$binning == "Logarithmic") {
+        # if (input$binning == "Logarithmic") {
             power <- 2
-        } else {
-            power <- 1
-        }
+        # } else {
+        #     power <- 1
+        # }
         plotSpectra(params(), power = power, highlight = input$sp, total = TRUE) +
             theme_grey(base_size = 12)
     })
