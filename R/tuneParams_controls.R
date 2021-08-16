@@ -467,7 +467,7 @@ interactionControl <- function(input, output, session, params, flags) {
         sp <- isolate(input$sp)
         # The following req()a are required, otherwise changes in the sliders
         # do not trigger. I am not sure why.
-        for (i in p@species_params$species) {
+        for (i in p@species_params$species[!is.na(p@A)]) {
             inter_var <- paste0("inter_", i)
             req(input[[inter_var]])
         }
@@ -477,7 +477,7 @@ interactionControl <- function(input, output, session, params, flags) {
         }
         p@species_params[sp, "interaction_resource"] <-
             input$interaction_resource
-        for (i in p@species_params$species) {
+        for (i in p@species_params$species[!is.na(p@A)]) {
             inter_var <- paste0("inter_", i)
             p@interaction[sp, i] <- input[[inter_var]]
         }
