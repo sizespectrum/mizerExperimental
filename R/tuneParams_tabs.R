@@ -70,8 +70,7 @@ spectraTab <- function(input, output, session, params, logs, ...) {
         p <- params() %>%
             rescaleAbundance(factor = input$scale_frgrd_by) %>%
             rescaleSystem(factor = 1 / input$scale_frgrd_by)
-        tuneParams_run_steady(p, params = params, 
-                              logs = logs, session = session)
+        params(p)
     })
 
     ## Retune background ####
