@@ -164,18 +164,15 @@ biomassTab <- function(input, output, session,
                        Biomass = observed[foreground]),
             data.frame(Species = species,
                        Type = "Model Biomass [g]",
-                       Biomass = biomass_model),
-            data.frame(Species = species,
-                       Type = "Ratio Observed / Model",
-                       Biomass = observed[foreground] / biomass_model)
+                       Biomass = biomass_model)
         )
-        # Get rid of "Observed" and "Ratio" entries for species without 
+        # Get rid of "Observed" entries for species without 
         # observations (where we have set observed = 0)
         df <- df[df$Biomass > 0, ] 
         
         ggplot(df) +
-            geom_col(aes(x = Species, y = Biomass, fill = Type),
-                     position = "dodge") +
+            geom_point(aes(x = Species, y = Biomass, colour = Type),
+                       size = 8, alpha = 0.5) +
             scale_y_continuous(name = "Biomass [g]", trans = "log10",
                                breaks = log_breaks()) +
             theme_grey(base_size = 12) +
