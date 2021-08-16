@@ -257,6 +257,9 @@ rescaleSystem <- function(params, factor) {
     initialN(params) <- params@initial_n * factor
     initialNResource(params) <- params@initial_n_pp * factor
     initialNOther(params) = initial_n_other
+    
+    # community
+    params@sc <- params@sc * factor
 
     return(params)
 }
