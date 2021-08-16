@@ -50,9 +50,11 @@ spectraTab <- function(input, output, session, params, logs, ...) {
 
     ## Scale ####
     observeEvent(input$scale_frgrd, {
-        tuneParams_run_steady(rescaleAbundance(params(), 
-                                               factor = input$scale_frgrd_by),
-                   params = params, logs = logs, session = session)
+        p <- params() %>%
+            rescaleAbundance(factor = 10^input$scale_frgrd_by) %>%
+            rescaleSystem(factor = 10^(-input$scale_frgrd_by))
+        tuneParams_run_steady(p, params = params, 
+                              logs = logs, session = session)
     })
 
     ## Retune background ####
