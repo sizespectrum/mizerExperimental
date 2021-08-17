@@ -78,6 +78,7 @@
 #'
 #' @return The tuned MizerParams object
 #' @md
+#' @import shinyBS 
 #' @export
 tuneParams <- function(p,
                        controls = list("egg",
@@ -155,9 +156,11 @@ tuneParams <- function(p,
             ## Sidebar ####
             sidebarPanel(
                 introBox(
-                    actionButton("help", "Instructions"),
-                    actionButton("done", "Done", icon = icon("check"),
+                    tipify(actionButton("help", "Instructions"),
+                           title = "Start the introductory instructions"),
+                    tipify(actionButton("done", "Done", icon = icon("check"),
                                  onclick = "setTimeout(function(){window.close();},500);"),
+                           title = "Return the current params objects to R"),
                     data.step = 8,
                     data.intro = "When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),

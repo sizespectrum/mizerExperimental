@@ -8,26 +8,31 @@ spectraTabUI <- function(params, ...) {
     p <- isolate(params())
     has_bio <- ("biomass_observed" %in% names(p@species_params)) &&
       !all(is.na(p@species_params$biomass_observed))
-    tl <- tagList(
-        plotlyOutput("plotSpectra"),
-        # radioButtons("binning", "Binning:",
-        #              choices = c("Logarithmic", "Constant"),
-        #              selected = "Logarithmic", inline = TRUE),
-        div(style = "display:inline-block;vertical-align:middle; width: 300px;",
-            sliderInput("scale_frgrd_by", "Scale background down by a factor of:",
-                    value = 2,
-                    min = 0.2,
-                    max = 5,
-                    step = 0.05)),
-        actionButton("scale_frgrd", "Scale background"))
+    tl <- tagList(plotlyOutput("plotSpectra"))
     if (has_bio) {
         tl <- tagList(tl,
-        actionButton("scale_system", "Calibrate scale"),
-        actionButton("tune_egg_all", "Adjust biomasses"))
+        popify(actionButton("scale_system", "Calibrate"),
+               title = "Calibrate model",
+               content = "Rescales the entire model so that the total of all observed biomasses agrees with the total of the model biomasses for the same species."),
+        popify(actionButton("tune_egg_all", "Match"),
+               title = "Match biomasses",
+               content = "Moves the entire size spectrum for each species up or down to give the observed biomass value. It does that by multiplying the egg density by the ratio of observed biomass to model biomass. After that adjustment you should run to steady state by hitting the Steady button, after which the biomass will be a bit off again. You can repeat this process if you like to get ever closer to the observed biomass."))
     }
+    tl <- tagList(tl,
+        div(style = "display:inline-block;vertical-align:middle; width: 300px;",
+            popify(sliderInput("scale_frgrd_by", 
+                               "Scale background down by a factor of:",
+                               value = 2, min = 0.5, max = 2, step = 0.05),
+                   title = "Scaling the background",
+                   content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Choose the factor by which to scale and then hit the Go button. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
+        popify(actionButton("scale_frgrd", "Go"),
+               title = "Perform scaling of background",
+               content = "The scaling factor is specified by the slider."))
     if (anyNA(p@A)) {
         tl <- tagList(tl, 
-        actionButton("retune_background", "Retune background"))
+        popify(actionButton("retune_background", "Adj bs"),
+             title = "Adjust background species",
+             content = "Adjust the biomasses of the background species in such a way that the total spectrum aligns well with the resource spectrum. Background species that are no longer needed because forground species have taken their place in the community spectrum are automatically removed."))
     }
     if (has_bio) {
         tl <- tagList(tl,
@@ -38,34 +43,16 @@ spectraTabUI <- function(params, ...) {
     }
     tl <- tagList(tl,
         h1("Size spectra"),
-        p("This tab shows the biomass size spectra of the individual fish species and",
-          "of the resource, as well as the total size spectrum (in black)."),
+        p("This tab shows the biomass size spectra of the individual fish species and of the resource, as well as the total size spectrum (in black)."),
         p("This plot, as well as those on other tabs, is interactive in various",
           "ways. For example you can remove individual species from the plot by",
           "clicking on their name in the legend. Hovering over the lines pops",
           "up extra information. You can zoom into a portion of the plot by",
           "dragging a rectangle with the mouse while holding the left mouse",
           "button down."),
-        # p("With the 'Binning' radio buttons you can choose whether to show",
-        #   "the spectra corresponding to using logarithmically sized bins or",
-        #   "bins of constant size. This will only change the slopes by 1."),
-        p("You can scale down the background in which the fish find themselves",
-          "(the resource and any background species that your model may",
-          "contain). This allows you to line up your community spectrum with",
-          "the background spectrum. Choose the factor by which to scale and",
-          "then hit the 'Scale' button. If you rescale by too large a factor",
-          "the system may have difficulties finding the steady state.",
-          "If that happens, just hit the Undo button and choose a smaller ",
-          "factor."),
         p("Remember that after any adjustment you make in this app, you need",
           "to hit the 'Steady' button before you will see the full ",
           "multi-species consequences of the change."),
-        p("If your model contains background species, whose biomass is not",
-          "known, the 'Retune background' button will adjust their biomasses",
-          "in such a way that the total spectrum aligns well with the",
-          "resource spectrum. Background species that are no longer needed",
-          "because forground species have taken their place in the community",
-          "spectrum are automatically removed.")
     )
 }
 
@@ -137,10 +124,10 @@ spectraTab <- function(input, output, session,
                         levels = p@species_params$species[foreground])
       df <- rbind(
         data.frame(Species = species,
-                   Type = "Observed Biomass [g]",
+                   Type = "Observation",
                    Biomass = observed[foreground]),
         data.frame(Species = species,
-                   Type = "Model Biomass [g]",
+                   Type = "Model",
                    Biomass = biomass_model)
       )
       # Get rid of "Observed" entries for species without 
