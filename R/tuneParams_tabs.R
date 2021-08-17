@@ -971,8 +971,8 @@ ratesTab <- function(input, output, session, params, logs, ...) {
 
 preyTabUI <- function(...) {
     tagList(
-        uiOutput("pred_size_slider"),
-        plotlyOutput("plot_prey")
+        plotlyOutput("plot_prey"),
+        uiOutput("pred_size_slider")
     )
 }
 
@@ -982,10 +982,10 @@ preyTab <- function(input, output, session, params, logs, ...) {
     output$pred_size_slider <- renderUI({
         p <- isolate(params())
         sp <- which.max(p@species_params$species == input$sp)
-        sliderInput("pred_size", "log predator size",
-                    value = signif(log(p@species_params$w_mat[sp]), 2),
-                    min = signif(log(p@species_params$w_min[sp]), 2),
-                    max = signif(log(p@species_params$w_inf[sp]), 2),
+        sliderInput("pred_size", "log_10 predator size",
+                    value = signif(log10(p@species_params$w_mat[sp]), 2),
+                    min = signif(log10(p@species_params$w_min[sp]), 2),
+                    max = signif(log10(p@species_params$w_inf[sp]), 2),
                     step = 0.2,
                     width = "80%",
                     animate = animationOptions(loop = TRUE))
@@ -997,8 +997,7 @@ preyTab <- function(input, output, session, params, logs, ...) {
         sp <- which.max(p@species_params$species == input$sp)
         x <- log(p@w_full)
         dx <- x[2] - x[1]
-        xp <- req(input$pred_size)
-        wp <- exp(xp)
+        wp <- 10^req(input$pred_size)
         wp_idx <- sum(p@w <= wp)
         # Calculate total community abundance
         # Todo: take interaction matrix into account
