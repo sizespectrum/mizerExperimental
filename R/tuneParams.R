@@ -273,7 +273,8 @@ tuneParams <- function(p,
             tablist <- lapply(tabs, function(tab) {
                 tab_content <- div(
                     style = "max-height: 90vh; overflow-y: auto; overflow-x: hidden;",
-                    do.call(paste0(tolower(tab), "TabUI"), list()))
+                    do.call(paste0(tolower(tab), "TabUI"), 
+                            list(params = params)))
                 tabPanel(tab, tab_content)
             })
             args <- c(id = "mainTabs", type = "tabs", tablist)

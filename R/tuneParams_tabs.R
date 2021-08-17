@@ -4,8 +4,9 @@ utils::globalVariables(
       "L_inf", "Legend", "Numbers", "Predator", "Size", "Species",
       "Type", "erepro", "value", "w_mat"))
 
-spectraTabUI <- function() {
-    tagList(
+spectraTabUI <- function(params, ...) {
+    p <- isolate(params())
+    tl <- tagList(
         plotlyOutput("plotSpectra"),
         # radioButtons("binning", "Binning:",
         #              choices = c("Logarithmic", "Constant"),
@@ -16,10 +17,13 @@ spectraTabUI <- function() {
                     min = 0.2,
                     max = 5,
                     step = 0.05)),
-        actionButton("scale_frgrd", "Scale"),
-        span(actionButton("retune_background",
-                          "Retune background"),
-             style = "float: right;"),
+        actionButton("scale_frgrd", "Scale"))
+    if (anyNA(p@A)) {
+        tl <- tagList(tl, span(actionButton("retune_background",
+                                            "Retune background"),
+                               style = "float: right;"))
+    }
+    tl <- tagList(tl,
         h1("Size spectra"),
         p("This tab shows the biomass size spectra of the individual fish species and",
           "of the resource, as well as the total size spectrum (in black)."),
@@ -83,7 +87,7 @@ spectraTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-biomassTabUI <- function() {
+biomassTabUI <- function(...) {
     tagList(
         # actionButton("biomass_help", "Press for instructions"),
         plotOutput("plotTotalBiomass",
@@ -422,7 +426,7 @@ biomassTab <- function(input, output, session,
     })
 }
 
-growthTabUI <- function() {
+growthTabUI <- function(...) {
     tagList(
         splitLayout(
             # actionButton("growth_help", "Press for instructions"),
@@ -532,7 +536,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-reproTabUI <- function() {
+reproTabUI <- function(...) {
     tagList(
         actionButton("repro_help", "Press for instructions"),
         plotlyOutput("plot_erepro"),
@@ -592,7 +596,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-catchTabUI <- function() {
+catchTabUI <- function(...) {
     tagList(
         # actionButton("tune_catch", "Tune catchability"),
         plotlyOutput("plotTotalCatch"),
@@ -855,7 +859,7 @@ catchTab <- function(input, output, session, params, logs,
     })
 }
 
-ratesTabUI <- function() {
+ratesTabUI <- function(...) {
     tagList(
         radioButtons("axis", "x-axis scale:",
                      choices = c("Logarithmic", "Normal"),
@@ -963,7 +967,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-preyTabUI <- function() {
+preyTabUI <- function(...) {
     tagList(
         uiOutput("pred_size_slider"),
         plotlyOutput("plot_prey")
@@ -1022,7 +1026,7 @@ preyTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-dietTabUI <- function() {
+dietTabUI <- function(...) {
     tagList(
         plotlyOutput("plot_diet")
     )
@@ -1037,7 +1041,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-deathTabUI <- function() {
+deathTabUI <- function(...) {
     tagList(
         radioButtons("death_prop", "Show",
                      choices = c("Proportion", "Rate"),
@@ -1093,7 +1097,7 @@ deathTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-resourceTabUI <- function() {
+resourceTabUI <- function(...) {
     tagList(
         plotlyOutput("plot_resource_pred"),
         radioButtons("resource_death_prop", "Show",
@@ -1149,7 +1153,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
     })
 }
 
-simTabUI <- function() {
+simTabUI <- function(...) {
     tagList(
         plotlyOutput("plot_sim")
     )
