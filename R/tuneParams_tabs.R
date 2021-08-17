@@ -32,7 +32,10 @@ spectraTabUI <- function(params, ...) {
         tl <- tagList(tl, 
         popify(actionButton("retune_background", "Adj bs"),
              title = "Adjust background species",
-             content = "Adjust the biomasses of the background species in such a way that the total spectrum aligns well with the resource spectrum. Background species that are no longer needed because forground species have taken their place in the community spectrum are automatically removed."))
+             content = "Adjust the biomasses of the background species in such a way that the total spectrum aligns well with the resource spectrum. Background species that are no longer needed because forground species have taken their place in the community spectrum are automatically removed."),
+        popify(actionButton("remove_background", "Rem bs"),
+               title = "Remove background species",
+               content = "Remove all background species."))
     }
     if (has_bio) {
         tl <- tagList(tl,
@@ -87,6 +90,20 @@ spectraTab <- function(input, output, session,
             shinyjs::disable("retune_background")
         }
         params(p)
+    })
+    
+    ## Remove background ####
+    observeEvent(input$remove_background, {
+      p <- params()
+      p <- removeSpecies(p, is.na(p@A))
+      # For now we won't disable the button because of a bug in shinyBS
+      # whereby the tooltip stays forever on disabled buttons.
+      # if (!anyNA(p@A)) {
+      #   removeTooltip(session, "remove_background")
+      #   shinyjs::disable("remove_background")
+      #   shinyjs::disable("retune_background")
+      # }
+      params(p)
     })
     
     # Click ----
