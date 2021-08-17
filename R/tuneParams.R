@@ -67,10 +67,11 @@
 #'
 #' @param p MizerParams object to tune. If missing, the gadget tries to recover
 #'   information from log files left over from aborted previous runs.
-#' @param controls A list with the names of input parameter control sections
-#'   that should be displayed in the sidebar. See "Customisation" below.
-#' @param tabs A list with the names of the tabs that should be displayed in
-#'   the main section. See "Customisation" below.
+#' @param controls A character vector of names of input parameter control
+#'   sections that should be displayed in the sidebar. See "Customisation"
+#'   below.
+#' @param tabs A character vector of names of the tabs that should be displayed
+#'   in the main section. See "Customisation" below.
 #' @param preserve Specifies whether the `reproduction_level` should be
 #'   preserved or the maximum reproduction rate `R_max`. See [setBevertonHolt()]
 #'   for an explanation of the `reproduction_level`.
@@ -80,24 +81,22 @@
 #' @md
 #' @export
 tuneParams <- function(p,
-                       controls = list("egg",
-                                       "predation",
-                                       "fishing",
-                                       "reproduction",
-                                       "other",
-                                       "interaction",
-                                       "resource"),
-                       tabs = list("Spectra",
-                                   "Biomass",
-                                   "Catch",
-                                   "Growth",
-                                   "Repro",
-                                   "Diet",
-                                   "Death",
-                                   "Resource",
-                                   "Rates",
-                                   "Prey",
-                                   "Sim"),
+                       controls = c("egg",
+                                   "predation",
+                                   "fishing",
+                                   "reproduction",
+                                   "other",
+                                   "interaction",
+                                   "resource"),
+                       tabs = c("Spectra",
+                                "Growth",
+                                "Repro",
+                                "Catch",
+                                "Diet",
+                                "Death",
+                                "Resource",
+                                "Rates",
+                                "Sim"),
                        preserve = c("reproduction_level", "R_max"), ...) {
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
