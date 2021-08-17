@@ -260,7 +260,7 @@ tuneParams <- function(p,
 
         # Serve controls ####
         for (section in controls) {
-            fun <- paste0(section, "Control")
+            fun <- paste0(tolower(section), "Control")
             do.call(fun, list(input = input,
                               output = output,
                               session = session,
