@@ -86,9 +86,12 @@ spectraTab <- function(input, output, session,
     ## Retune background ####
     observeEvent(input$retune_background, {
         p <- retuneBackground(params())
-        if (!anyNA(p@A)) {
-            shinyjs::disable("retune_background")
-        }
+        # For now we won't disable the button because of a bug in shinyBS
+        # whereby the tooltip stays forever on disabled buttons.
+        # if (!anyNA(p@A)) {
+        #     shinyjs::disable("retune_background")
+        #     removeTooltip(session, "retune_background")
+        # }
         params(p)
     })
     

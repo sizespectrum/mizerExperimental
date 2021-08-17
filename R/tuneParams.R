@@ -166,6 +166,8 @@ tuneParams <- function(p,
                 ),
                 introBox(
                     actionButton("sp_steady", "Steady"),
+                    # We should not put a tooltip on the Undo or Redo buttons
+                    # because they get stuck when the button gets disabled
                     actionButton("undo", "", icon = icon("undo")),
                     actionButton("redo", "", icon = icon("redo")),
                     actionButton("undo_all", "", icon = icon("fast-backward")),
