@@ -80,6 +80,7 @@
 #'
 #' @return The tuned MizerParams object
 #' @md
+#' @import shinyBS 
 #' @export
 tuneParams <- function(p,
                        controls = c("egg",
@@ -155,14 +156,18 @@ tuneParams <- function(p,
             ## Sidebar ####
             sidebarPanel(
                 introBox(
-                    actionButton("help", "Instructions"),
-                    actionButton("done", "Done", icon = icon("check"),
+                    tipify(actionButton("help", "Instructions"),
+                           title = "Start the introductory instructions"),
+                    tipify(actionButton("done", "Done", icon = icon("check"),
                                  onclick = "setTimeout(function(){window.close();},500);"),
+                           title = "Return the current params objects to R"),
                     data.step = 8,
                     data.intro = "When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
                     actionButton("sp_steady", "Steady"),
+                    # We should not put a tooltip on the Undo or Redo buttons
+                    # because they get stuck when the button gets disabled
                     actionButton("undo", "", icon = icon("undo")),
                     actionButton("redo", "", icon = icon("redo")),
                     actionButton("undo_all", "", icon = icon("fast-backward")),
