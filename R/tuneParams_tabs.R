@@ -6,6 +6,8 @@ utils::globalVariables(
 
 spectraTabUI <- function(params, ...) {
     p <- isolate(params())
+    has_bio <- ("biomass_observed" %in% names(p@species_params)) &&
+      !all(is.na(p@species_params$biomass_observed))
     tl <- tagList(
         plotlyOutput("plotSpectra"),
         # radioButtons("binning", "Binning:",
@@ -17,11 +19,22 @@ spectraTabUI <- function(params, ...) {
                     min = 0.2,
                     max = 5,
                     step = 0.05)),
-        actionButton("scale_frgrd", "Scale"))
+        actionButton("scale_frgrd", "Scale background"))
+    if (has_bio) {
+        tl <- tagList(tl,
+        actionButton("scale_system", "Calibrate scale"),
+        actionButton("tune_egg_all", "Adjust biomasses"))
+    }
     if (anyNA(p@A)) {
-        tl <- tagList(tl, span(actionButton("retune_background",
-                                            "Retune background"),
-                               style = "float: right;"))
+        tl <- tagList(tl, 
+        actionButton("retune_background", "Retune background"))
+    }
+    if (has_bio) {
+        tl <- tagList(tl,
+        plotOutput("plotTotalBiomass",
+                   click = "biomass_click",
+                   dblclick = "tune_egg"),
+        uiOutput("biomass_sel"))
     }
     tl <- tagList(tl,
         h1("Size spectra"),
@@ -56,7 +69,8 @@ spectraTabUI <- function(params, ...) {
     )
 }
 
-spectraTab <- function(input, output, session, params, logs, ...) {
+spectraTab <- function(input, output, session,
+                       params, logs, trigger_update, ...) {
 
     ## Plot spectra ####
     output$plotSpectra <- renderPlotly({
@@ -86,6 +100,206 @@ spectraTab <- function(input, output, session, params, logs, ...) {
             shinyjs::disable("retune_background")
         }
         params(p)
+    })
+    
+    # Click ----
+    # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
+    observeEvent(input$biomass_click, {
+      if (is.null(input$biomass_click$x)) return()
+      lvls <- input$biomass_click$domain$discrete_limits$x
+      sp <- lvls[round(input$biomass_click$x)]
+      if (sp != input$sp) {
+        updateSelectInput(session, "sp",
+                          selected = sp)
+      }
+    })
+    
+    # Plot total biomass ----
+    output$plotTotalBiomass <- renderPlot({
+      p <- params()
+      no_sp <- length(p@species_params$species)
+      cutoff <- p@species_params$cutoff_size
+      # When no cutoff known, set it to maturity weight / 20
+      if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
+      cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
+      observed <- p@species_params$biomass_observed
+      if (is.null(observed)) observed <- 0
+      
+      # selector for foreground species
+      foreground <- !is.na(p@A)
+      foreground_indices <- (1:no_sp)[foreground]
+      biomass_model <- foreground_indices  # create vector of right length
+      for (i in seq_along(foreground_indices)) {
+        sp <- foreground_indices[i]
+        biomass_model[i] <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff[[sp]]])
+      }
+      species <- factor(p@species_params$species[foreground],
+                        levels = p@species_params$species[foreground])
+      df <- rbind(
+        data.frame(Species = species,
+                   Type = "Observed Biomass [g]",
+                   Biomass = observed[foreground]),
+        data.frame(Species = species,
+                   Type = "Model Biomass [g]",
+                   Biomass = biomass_model)
+      )
+      # Get rid of "Observed" entries for species without 
+      # observations (where we have set observed = 0)
+      df <- df[df$Biomass > 0, ] 
+      
+      ggplot(df) +
+        geom_point(aes(x = Species, y = Biomass, colour = Type),
+                   size = 8, alpha = 0.5) +
+        scale_y_continuous(name = "Biomass [g]", trans = "log10",
+                           breaks = log_breaks()) +
+        theme_grey(base_size = 18) +
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+    })
+    
+    
+    # Biomass selector ----
+    output$biomass_sel <- renderUI({
+      sp <- input$sp
+      p <- isolate(params())
+      species_params <- p@species_params[sp, ]
+      if (is.null(species_params$biomass_observed) ||
+          is.na(species_params$biomass_observed)) {
+        species_params$biomass_observed <- 0
+      }
+      if (is.null(species_params$cutoff_size) ||
+          is.na(species_params$cutoff_size)) {
+        species_params$cutoff_size <- 0
+      }
+      list(
+        div(style = "display:inline-block",
+            numericInput("biomass_observed",
+                         paste0("Observed biomass for ", sp),
+                         value = species_params$biomass_observed)),
+        div(style = "display:inline-block",
+            numericInput("cutoff_size", "Lower cutoff",
+                         value = species_params$cutoff_size))
+      )
+    })
+    
+    # Adjust biomass observed ----
+    observe({
+      p <- isolate(params())
+      p@species_params[isolate(input$sp), "biomass_observed"] <-
+        req(input$biomass_observed)
+      p@species_params[isolate(input$sp), "cutoff_size"] <-
+        req(input$cutoff_size)
+      params(p)
+    })
+    
+    # Rescale model ----
+    observeEvent(input$scale_system, {
+      # Rescale so that the model matches the total observed biomass
+      p <- params() 
+      if ((!("biomass_observed" %in% names(p@species_params))) ||
+          all(is.na(p@species_params$biomass_observed))) {
+        return()
+      }
+      cutoff <- p@species_params$cutoff_size
+      # When no cutoff known, set it to maturity weight / 20
+      if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
+      cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
+      observed <- p@species_params$biomass_observed
+      observed_total <- sum(observed, na.rm = TRUE)
+      sp_observed <- which(!is.na(observed))
+      model_total <- 0
+      for (sp_idx in sp_observed) {
+        model_total <- 
+          model_total + 
+          sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff[[sp_idx]]])
+      }
+      p <- rescaleSystem(p, factor = observed_total / model_total)
+      params(p)
+      tuneParams_add_to_logs(logs, p)
+      # Trigger an update of sliders
+      trigger_update(runif(1))
+    })
+    
+    # to make biomass of current species agree with observation
+    observeEvent(input$rescale, {
+      p <- params()
+      sp <- which.max(p@species_params$species == input$sp)
+      if ("biomass_observed" %in% names(p@species_params) &&
+          !is.na(p@species_params$biomass_observed[[sp]]) &&
+          p@species_params$biomass_observed[[sp]] > 0) {
+        cutoff <- p@species_params$cutoff_size[[sp]]
+        if (is.null(cutoff) || is.na(cutoff)) {
+          cutoff <- p@species_params$w_mat[[sp]] / 20
+        }
+        biomass_observed <- p@species_params$biomass_observed[[sp]]
+        biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
+        scale_by <- biomass_observed / biomass_model
+        p <- rescaleSystem(p, factor = scale_by)
+        params(p)
+        tuneParams_add_to_logs(logs, p)
+        # Trigger an update of sliders
+        trigger_update(runif(1))
+      }
+    })
+    
+    # Tune egg density ----
+    # The "Tune egg density" button calculates the ratio of observed and
+    # model biomass and then multiplies the egg density by that ratio.
+    observeEvent(input$tune_egg, {
+      if (is.null(input$tune_egg$x)) return()
+      lvls <- input$tune_egg$domain$discrete_limits$x
+      sp <- lvls[round(input$tune_egg$x)]
+      p <- params()
+      sp_idx <- which.max(p@species_params$species == sp)
+      if ("biomass_observed" %in% names(p@species_params) &&
+          !is.na(p@species_params$biomass_observed[[sp_idx]]) &&
+          p@species_params$biomass_observed[[sp_idx]] > 0) {
+        cutoff <- p@species_params$cutoff_size[[sp_idx]]
+        if (is.null(cutoff) || is.na(cutoff)) {
+          cutoff <- p@species_params$w_mat[[sp_idx]] / 20
+        }
+        total <- sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff])
+        factor <- p@species_params$biomass_observed[[sp_idx]] / total
+        p@initial_n[sp_idx, ] <- p@initial_n[sp_idx, ] * factor
+      }
+      params(p)
+      if (sp == input$sp) {
+        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+        updateSliderInput(session, "n0",
+                          value = n0,
+                          min = signif(n0 / 10, 3),
+                          max = signif(n0 * 10, 3))
+      } else {
+        updateSelectInput(session, "sp", selected = sp)
+      }
+    })
+    observeEvent(input$tune_egg_all, {
+      # I just copied and pasted the code form above into a loop.
+      # I am sure this could be improved.
+      p <- params()
+      sp_sel <- which.max(p@species_params$species == input$sp)
+      for (sp in seq_along(p@species_params$species)) {
+        if ("biomass_observed" %in% names(p@species_params) &&
+            !is.na(p@species_params$biomass_observed[[sp]]) &&
+            p@species_params$biomass_observed[[sp]] > 0) {
+          cutoff <- p@species_params$cutoff_size[[sp]]
+          if (is.null(cutoff) || is.na(cutoff)) {
+            cutoff <- p@species_params$w_mat[[sp]] / 20
+          }
+          total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
+          n0_old <- p@initial_n[sp, p@w_min_idx[[sp]]]
+          n0 <- n0_old * p@species_params$biomass_observed[[sp]] / total
+          # rescale abundance to new egg density
+          p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 / n0_old
+          
+          if (sp == sp_sel) {
+            updateSliderInput(session, "n0",
+                              value = n0,
+                              min = signif(n0 / 10, 3),
+                              max = signif(n0 * 10, 3))
+          }
+        }
+      }
+      params(p)
     })
 }
 
@@ -193,14 +407,14 @@ biomassTab <- function(input, output, session,
                        size = 8, alpha = 0.5) +
             scale_y_continuous(name = "Biomass [g]", trans = "log10",
                                breaks = log_breaks()) +
-            theme_grey(base_size = 12) +
+            theme_grey(base_size = 18) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     })
 
 
     # Biomass selector ----
     output$biomass_sel <- renderUI({
-        sp <- input$sp
+        sp <- req(input$sp)
         p <- isolate(params())
         species_params <- p@species_params[sp, ]
         if (is.null(species_params$biomass_observed) ||
@@ -222,7 +436,7 @@ biomassTab <- function(input, output, session,
         )
     })
 
-    ## Adjust biomass observed ####
+    # Adjust biomass observed ####
     observe({
         p <- isolate(params())
         p@species_params[isolate(input$sp), "biomass_observed"] <-
