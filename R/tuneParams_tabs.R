@@ -1,6 +1,6 @@
 # Hackiness to get past the 'no visible binding ... ' warning
 utils::globalVariables(
-    c("Abundance", "Age", "Biomass", "Catch", "Cause", "Kernel",
+    c("Age", "Biomass", "Catch", "Cause", "Kernel",
       "L_inf", "Legend", "Numbers", "Predator", "Size", "Species",
       "Type", "erepro", "value", "w_mat"))
 
@@ -97,13 +97,11 @@ biomassTabUI <- function(...) {
                    dblclick = "tune_egg"),
         actionButton("scale_system", "Calibrate scale"),
         actionButton("tune_egg_all", "Adjust all"),
-        plotlyOutput("plotTotalAbundance"),
         uiOutput("biomass_sel"),
-        # plotlyOutput("plotBiomassDist")
-        h1("Biomass and Abundance"),
-        p("This panel compares the biomass and abundance of the model to",
+        h1("Biomass"),
+        p("This panel compares the biomass aof the model to",
           "the observed values, where available. It also provides tools for",
-          "changing the model biomass and abundance."),
+          "changing the model biomass."),
         p("The 'Set scale' button rescales the entire model so that the",
           "biomass for the selected species agrees perfectly with the observed",
           "value."),
@@ -118,9 +116,8 @@ biomassTabUI <- function(...) {
         p("The 'Tune all' button does the same as the `Tune species` button",
           "but for all species at once."),
         p("The values for the observed biomass is taken from the",
-          "'biomass_observed' column in the species parameter data frame and",
-          "the values for the observed abundance are taken from the",
-          "'abundance_observed' column. If these are missing or need changing",
+          "'biomass_observed' column in the species parameter data frame.",
+          "If these are missing or need changing",
           "then you can enter values by hand using the input fields below the",
           "plots."),
         p("Usually the observed values are only for individuals above a lower",
@@ -200,44 +197,6 @@ biomassTab <- function(input, output, session,
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     })
 
-    # Plot total abundance ----
-    output$plotTotalAbundance <- renderPlotly({
-        p <- params()
-        no_sp <- length(p@species_params$species)
-        cutoff <- p@species_params$cutoff_size
-        # When no cutoff known, set it to maturity weight / 20
-        if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
-        cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
-        observed <- p@species_params$abundance_observed
-        if (is.null(observed)) observed <- 0
-
-        # selector for foreground species
-        foreground <- !is.na(p@A)
-        foreground_indices <- (1:no_sp)[foreground]
-        abundance_model <- foreground_indices  # create vector of right length
-        for (i in seq_along(foreground_indices)) {
-            sp <- foreground_indices[i]
-            abundance_model[i] <- sum((p@initial_n[sp, ] * p@dw)[p@w >= cutoff[[sp]]])
-        }
-        species <- factor(p@species_params$species[foreground],
-                          levels = p@species_params$species[foreground])
-        df <- rbind(
-            data.frame(Species = species,
-                       Type = "Observed",
-                       Abundance = observed[foreground]),
-            data.frame(Species = species,
-                       Type = "Model",
-                       Abundance = abundance_model)
-        )
-        df <- df[df$Abundance > 0, ]
-        ggplot(df) +
-            geom_col(aes(x = Species, y = Abundance, fill = Type),
-                     position = "dodge") +
-            scale_y_continuous(name = "Abundance", trans = "log10",
-                               breaks = log_breaks()) +
-            theme_grey(base_size = 12) +
-            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
-    })
 
     # Biomass selector ----
     output$biomass_sel <- renderUI({
@@ -247,10 +206,6 @@ biomassTab <- function(input, output, session,
         if (is.null(species_params$biomass_observed) ||
             is.na(species_params$biomass_observed)) {
             species_params$biomass_observed <- 0
-        }
-        if (is.null(species_params$abundance_observed) ||
-            is.na(species_params$abundance_observed)) {
-            species_params$abundance_observed <- 0
         }
         if (is.null(species_params$cutoff_size) ||
             is.na(species_params$cutoff_size)) {
@@ -262,10 +217,6 @@ biomassTab <- function(input, output, session,
                              paste0("Observed biomass for ", sp),
                              value = species_params$biomass_observed)),
             div(style = "display:inline-block",
-                numericInput("abundance_observed",
-                             paste0("Observed abundance for ", sp),
-                             value = species_params$abundance_observed)),
-            div(style = "display:inline-block",
                 numericInput("cutoff_size", "Lower cutoff",
                              value = species_params$cutoff_size))
         )
@@ -276,8 +227,6 @@ biomassTab <- function(input, output, session,
         p <- isolate(params())
         p@species_params[isolate(input$sp), "biomass_observed"] <-
             req(input$biomass_observed)
-        p@species_params[isolate(input$sp), "abundance_observed"] <-
-            req(input$abundance_observed)
         p@species_params[isolate(input$sp), "cutoff_size"] <-
             req(input$cutoff_size)
         params(p)
