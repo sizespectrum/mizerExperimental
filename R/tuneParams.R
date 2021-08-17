@@ -307,7 +307,7 @@ tuneParams <- function(p,
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
             tuneParams_run_steady(params(), params = params,
-                       logs = logs, session = session)
+                       logs = logs, session = session, input = input)
         })
 
         ## Undo ####

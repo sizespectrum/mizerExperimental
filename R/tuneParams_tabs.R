@@ -1330,7 +1330,7 @@ simTab <- function(input, output, session, params, logs, ...) {
     output$plot_sim <- renderPlotly({
         sim <- tuneParams_run_steady(params(), return_sim = TRUE,
                           params = params, logs = logs,
-                          session = session)
+                          session = session, input = input)
         plotlyBiomass(sim)
     })
 }

@@ -72,7 +72,8 @@ tuneParams_update_species <- function(sp, p, params) {
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
 #' @export
-tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) {
+tuneParams_run_steady <- function(p, params, logs, session, input, 
+                                  return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
@@ -87,13 +88,21 @@ tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) 
             return(steady(p, t_max = 100, tol = 1e-2,
                           return_sim = TRUE,
                           progress_bar = progress))
-        } else {
-            p <- steady(p, t_max = 100, tol = 1e-2,
-                        progress_bar = progress)
-            # Update the reactive params object
-            params(p)
-            tuneParams_add_to_logs(logs, p)
         }
+        p <- steady(p, t_max = 100, tol = 1e-2,
+                    progress_bar = progress)
+        
+        # Update the egg slider
+        sp_idx <- which.max(p@species_params$species == isolate(input$sp))
+        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+        updateSliderInput(session, "n0",
+                          value = n0,
+                          min = signif(n0 / 10, 3),
+                          max = signif(n0 * 10, 3))
+        
+        # Update the reactive params object
+        params(p)
+        tuneParams_add_to_logs(logs, p)
     },
     error = function(e) {
         showModal(modalDialog(
