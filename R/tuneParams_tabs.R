@@ -65,8 +65,10 @@ spectraTab <- function(input, output, session, params, logs, ...) {
         # } else {
         #     power <- 1
         # }
-        plotSpectra(params(), power = power, highlight = input$sp, total = TRUE) +
+        plot <- plotSpectra(params(), power = power, highlight = input$sp, 
+                            total = TRUE) +
             theme_grey(base_size = 12)
+        ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
 
     ## Scale ####
@@ -513,7 +515,6 @@ growthTab <- function(input, output, session, params, logs, ...) {
     # Plot growth curves ----
     output$plotGrowthCurve <- renderPlot({
         p <- params()
-        no_sp <- length(p@species_params$species)
         if (input$all_growth == "All") {
             plotGrowthCurves(p, species_panel = TRUE)
         } else {
@@ -525,14 +526,15 @@ growthTab <- function(input, output, session, params, logs, ...) {
     # Plot feeding level ----
     output$plot_feeding_level <- renderPlotly({
         if (input$all_growth == "All") {
-            plotFeedingLevel(params(), highlight = input$sp,
-                             include_critical = TRUE) +
+            plot <- plotFeedingLevel(params(), highlight = input$sp,
+                                     include_critical = TRUE) +
                 theme_grey(base_size = 12)
         } else {
-            plotFeedingLevel(params(), species = input$sp,
-                             include_critical = TRUE) +
+            plot <- plotFeedingLevel(params(), species = input$sp,
+                                     include_critical = TRUE) +
                 theme_grey(base_size = 12)
         }
+      ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
 }
 
@@ -1166,7 +1168,7 @@ simTab <- function(input, output, session, params, logs, ...) {
         sim <- tuneParams_run_steady(params(), return_sim = TRUE,
                           params = params, logs = logs,
                           session = session)
-        plotBiomass(sim)
+        plotlyBiomass(sim)
     })
 }
 
