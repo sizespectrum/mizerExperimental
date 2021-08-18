@@ -165,25 +165,7 @@ spectraTab <- function(input, output, session,
     # Rescale model ----
     observeEvent(input$scale_system, {
       # Rescale so that the model matches the total observed biomass
-      p <- params() 
-      if ((!("biomass_observed" %in% names(p@species_params))) ||
-          all(is.na(p@species_params$biomass_observed))) {
-        return()
-      }
-      cutoff <- p@species_params$cutoff_size
-      # When no cutoff known, set it to maturity weight / 20
-      if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
-      cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
-      observed <- p@species_params$biomass_observed
-      observed_total <- sum(observed, na.rm = TRUE)
-      sp_observed <- which(!is.na(observed))
-      model_total <- 0
-      for (sp_idx in sp_observed) {
-        model_total <- 
-          model_total + 
-          sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff[[sp_idx]]])
-      }
-      p <- rescaleSystem(p, factor = observed_total / model_total)
+      p <- calibrateBiomass(params())
       params(p)
       tuneParams_add_to_logs(logs, p)
       # Trigger an update of sliders
