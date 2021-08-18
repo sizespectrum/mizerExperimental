@@ -1,4 +1,6 @@
 #' Plot the biomass against species
+#' 
+#' @param params A MizerParams object
 #' @export
 plotBiomassVsSpecies <- function(params) {
     no_sp <- length(params@species_params$species)

@@ -6,6 +6,12 @@
 \usage{
 scaleDownBackground(params, factor)
 }
+\arguments{
+\item{params}{A MizerParams object}
+
+\item{factor}{A number giving the factor by which the background abundance
+will be reduced}
+}
 \description{
 Scale background down by a factor
 }

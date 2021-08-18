@@ -323,6 +323,9 @@ updateInitialValues <- function(params) {
 
 #' Scale background down by a factor
 #' 
+#' @param params A MizerParams object
+#' @param factor A number giving the factor by which the background abundance
+#'   will be reduced
 #' @export
 scaleDownBackground <- function(params, factor) {
     scaleAbundance(params, factor = factor) %>%
@@ -331,6 +334,7 @@ scaleDownBackground <- function(params, factor) {
 
 #' Remove all background species
 #' 
+#' @param params A MizerParams object
 #' @export
 removeBackgroundSpecies <- function(params) {
     removeSpecies(params, is.na(params@A))

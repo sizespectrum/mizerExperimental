@@ -6,6 +6,9 @@
 \usage{
 removeBackgroundSpecies(params)
 }
+\arguments{
+\item{params}{A MizerParams object}
+}
 \description{
 Remove all background species
 }

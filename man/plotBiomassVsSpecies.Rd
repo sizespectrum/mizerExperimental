@@ -6,6 +6,9 @@
 \usage{
 plotBiomassVsSpecies(params)
 }
+\arguments{
+\item{params}{A MizerParams object}
+}
 \description{
 Plot the biomass against species
 }
