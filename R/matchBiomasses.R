@@ -30,10 +30,8 @@ matchBiomasses <- function(params, species = NULL) {
         }
         total <- sum((params@initial_n[sp, ] * params@w * params@dw)
                      [params@w >= cutoff])
-        n0_old <- params@initial_n[sp, params@w_min_idx[[sp]]]
-        n0 <- n0_old * params@species_params$biomass_observed[[sp]] / total
-        # rescale abundance to new egg density
-        params@initial_n[sp, ] <- params@initial_n[sp, ] * n0 / n0_old
+        factor <- params@species_params$biomass_observed[[sp]] / total
+        params@initial_n[sp, ] <- params@initial_n[sp, ] * factor
     }
     params
 }
