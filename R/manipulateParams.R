@@ -320,3 +320,18 @@ updateInitialValues <- function(params) {
     }
     return(params)
 }
+
+#' Scale background down by a factor
+#' 
+#' @export
+scaleDownBackground <- function(params, factor) {
+    rescaleAbundance(params, factor = factor) %>%
+        rescaleSystem(factor = 1 / factor)
+}
+
+#' Remove all background species
+#' 
+#' @export
+removeBackgroundSpecies <- function(params) {
+    removeSpecies(params, is.na(params@A))
+}

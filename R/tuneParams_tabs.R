@@ -77,9 +77,7 @@ spectraTab <- function(input, output, session,
 
     ## Scale ####
     observeEvent(input$scale_frgrd, {
-        p <- params() %>%
-            rescaleAbundance(factor = input$scale_frgrd_by) %>%
-            rescaleSystem(factor = 1 / input$scale_frgrd_by)
+        p <- scaleDownBackground(params(), input$scale_frgrd_by)
         params(p)
     })
 
@@ -97,8 +95,7 @@ spectraTab <- function(input, output, session,
     
     ## Remove background ####
     observeEvent(input$remove_background, {
-      p <- params()
-      p <- removeSpecies(p, is.na(p@A))
+      p <- removeBackgroundSpecies(params())
       # For now we won't disable the button because of a bug in shinyBS
       # whereby the tooltip stays forever on disabled buttons.
       # if (!anyNA(p@A)) {
