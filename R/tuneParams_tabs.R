@@ -720,7 +720,9 @@ catchTabUI <- function(...) {
     tagList(
         # actionButton("tune_catch", "Tune catchability"),
         plotlyOutput("plotTotalYield"),
-        uiOutput("yield_sel"),
+        popify(uiOutput("yield_sel"),
+               title = "Input observed yield",
+               content = "Allows you to update the observed yield for this species."),
         textOutput("yield_total"),
         plotlyOutput("plotCatchDist"),
         radioButtons("catch_x", "Show size in:",
@@ -728,10 +730,10 @@ catchTabUI <- function(...) {
                      selected = "Length", inline = TRUE),
         h1("Total yield and size distribution of catch"),
         h2("Total yield"),
-        p("The upper plot compares the total yearly yield for each species in the model to the observed total yield, if available."),
-        p("The total observed yield is taken from the 'yield_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in grams/year."),
-        h3("How to tune total yield"),
-        p("To bring the total yield of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
+        p("The upper plot compares the yearly yield for each species in the model to the observed yield, if available."),
+        p("The observed yield is taken from the 'yield_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in grams/year."),
+        h3("How to tune the yield"),
+        p("To bring the yield of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
         h2("Size distribution of catch"),
         p("The lower plot shows the size distribution of the catch and again compares that to the observed size distribution, if available."),
         h3("How to tune size distribution"),
@@ -975,7 +977,7 @@ catchTab <- function(input, output, session, params, logs,
         sp <- which.max(p@species_params$species == input$sp)
         total <- sum(p@initial_n[sp, ] * p@w * p@dw *
                          getFMort(p)[sp, ])
-        paste("Model yield:", total)
+        paste("Model yield:", total, "g/year")
     })
 }
 

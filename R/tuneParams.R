@@ -105,6 +105,8 @@ tuneParams <- function(p,
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
+    # I am not sure why this is needed, but without it the tooltips won't show.
+    require(shinyBS)
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -214,7 +216,7 @@ tuneParams <- function(p,
             mainPanel(
                 introBox(uiOutput("tabs"),
                          data.step = 1,
-                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. At the bottom of each tab you find text explanations for that tab. You may need to scroll down in the tab to see them."
+                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. At the bottom of each tab you find text explanations for that tab. You may need to scroll down in the tab to see them. Individual components may show tooltips when you hover over them."
                 )
             )  # end mainpanel
         )  # end sidebarlayout

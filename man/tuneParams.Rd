@@ -6,10 +6,10 @@
 \usage{
 tuneParams(
   p,
-  controls = list("egg", "predation", "fishing", "reproduction", "other",
-    "interaction", "resource"),
-  tabs = list("Spectra", "Biomass", "Catch", "Growth", "Repro", "Diet", "Death",
-    "Resource", "Rates", "Prey", "Sim"),
+  controls = c("egg", "predation", "fishing", "reproduction", "other", "interaction",
+    "resource"),
+  tabs = c("Spectra", "Growth", "Repro", "Catch", "Diet", "Death", "Resource", "Rates",
+    "Sim"),
   preserve = c("reproduction_level", "R_max"),
   ...
 )
@@ -18,11 +18,12 @@ tuneParams(
 \item{p}{MizerParams object to tune. If missing, the gadget tries to recover
 information from log files left over from aborted previous runs.}
 
-\item{controls}{A list with the names of input parameter control sections
-that should be displayed in the sidebar. See "Customisation" below.}
+\item{controls}{A character vector of names of input parameter control
+sections that should be displayed in the sidebar. See "Customisation"
+below.}
 
-\item{tabs}{A list with the names of the tabs that should be displayed in
-the main section. See "Customisation" below.}
+\item{tabs}{A character vector of names of the tabs that should be displayed
+in the main section. See "Customisation" below.}
 
 \item{preserve}{Specifies whether the \code{reproduction_level} should be
 preserved or the maximum reproduction rate \code{R_max}. See \code{\link[=setBevertonHolt]{setBevertonHolt()}}
@@ -84,11 +85,12 @@ that processes those inputs to change the params object. You can model your
 own control sections on the existing ones that you find in the file
 \code{R/tuneParams_controls.R}.
 
-For any entry "foo" in the \code{tabs} list there needs to be a function
+For any entry "Foo" or "foo" in the \code{tabs} list there needs to be a function
 "fooTabUI" that defines the tab layout and a function "fooTab"
 that calculates the outputs to be displayed on the tab. You can model your
 own tabs on the existing ones that you find in the file
-\code{R/tuneParams_tabs.R}.
+\code{R/tuneParams_tabs.R}. Whether you choose to capitalise "Foo" or "foo" in
+the \code{tabs} argument determines how it is capitalised on the label of the tab.
 }
 
 \section{Limitations}{
