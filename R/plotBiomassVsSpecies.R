@@ -23,19 +23,24 @@ plotBiomassVsSpecies <- function(params) {
     df <- rbind(
         data.frame(Species = species,
                    Type = "Observation",
-                   Biomass = observed[foreground]),
+                   Biomass = observed[foreground],
+                   other = biomass_model),
         data.frame(Species = species,
                    Type = "Model",
-                   Biomass = biomass_model)
+                   Biomass = biomass_model,
+                   other = observed[foreground])
     )
     # Get rid of "Observed" entries for species without 
     # observations (where we have set observed = 0)
     df <- df[df$Biomass > 0, ] 
     
-    ggplot(df) +
-        geom_point(aes(x = Species, y = Biomass, colour = Type),
-                   size = 8, alpha = 0.5) +
+    ggplot(df, aes(x = Species, y = Biomass)) +
+        geom_point(aes(shape = Type), size = 4) +
+        geom_linerange(aes(ymin = Biomass, ymax = other, colour = Species)) +
         scale_y_continuous(name = "Biomass [g]", trans = "log10",
-                           breaks = log_breaks()) +
+                           breaks = log_breaks()) + 
+        scale_colour_manual(values = getColours(params)) +
+        scale_shape_manual(values = c(Model = 1, Observation = 15)) +
+        guides(colour = "none") +
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 }
