@@ -101,7 +101,7 @@ state.
 First we double the abundance of the foreground species with respect to the
 background species.
 ```{r}
-params <- rescaleAbundance(params, factor = 2) %>% 
+params <- scaleAbundance(params, factor = 2) %>% 
     steady()
 plotSpectra(params, power = 2, total = TRUE)
 ```

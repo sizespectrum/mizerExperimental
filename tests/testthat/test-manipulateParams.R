@@ -27,58 +27,58 @@ test_that("pruneSpecies() removes low-abundance species", {
     expect_equal(p@initial_n[5, ], params@initial_n[6, ])
 })
 
-# retuneBackground() ----
-test_that("retuneBackground", {
-    expect_message(retuneBackground(NS_params),
+# adjustBackgroundSpecies() ----
+test_that("adjustBackgroundSpecies", {
+    expect_message(adjustBackgroundSpecies(NS_params),
                    "There are no background species left.")
 })
 
-test_that("retuneBackground() removes Cod", {
+test_that("adjustBackgroundSpecies() removes Cod", {
     params <- markBackground(NS_params, species = "Cod")
     expect_warning(
-        expect_message(params <- retuneBackground(params),
+        expect_message(params <- adjustBackgroundSpecies(params),
                    "There are no background species left.")
     )
 })
 
-test_that("retuneBackground() reproduces scaling model", {
+test_that("adjustBackgroundSpecies() reproduces scaling model", {
     # This numeric test failed on Solaris and without long doubles. So for now
     # skipping it on CRAN
     skip_on_cran()
     p <- newTraitParams(n = 2/3, lambda = 2 + 3/4 - 2/3) # q = 3/4
     initial_n <- p@initial_n
     # We multiply one of the species by a factor of 5 and expect
-    # retuneBackground() to tune it back down to the original value.
+    # adjustBackgroundSpecies() to tune it back down to the original value.
     p@initial_n[5, ] <- 5 * p@initial_n[5, ]
     pr <- p %>%
         markBackground() %>%
-        retuneBackground()
+        adjustBackgroundSpecies()
     expect_lt(max(abs(initial_n - pr@initial_n)), 2e-11)
 })
 
 
-# rescaleAbundance ----
-test_that("rescaleAbundance works", {
+# scaleAbundance ----
+test_that("scaleAbundance works", {
     expect_warning(p <- setBevertonHolt(NS_params, reproduction_level = 1/4))
     factor <- c(Cod = 2, Haddock = 3)
-    expect_warning(p2 <- rescaleAbundance(NS_params, factor))
+    expect_warning(p2 <- scaleAbundance(NS_params, factor))
     expect_identical(p@initial_n["Cod"] * 2, p2@initial_n["Cod"])
-    expect_equal(p, expect_warning(rescaleAbundance(p2, 1/factor)))
+    expect_equal(p, expect_warning(scaleAbundance(p2, 1/factor)))
 })
-test_that("rescaleAbundance throws correct error",{
-    expect_error(rescaleAbundance(NS_params, c(2, 3)))
-    expect_error(rescaleAbundance(NS_params, "a"))
+test_that("scaleAbundance throws correct error",{
+    expect_error(scaleAbundance(NS_params, c(2, 3)))
+    expect_error(scaleAbundance(NS_params, "a"))
 })
-test_that("rescaleAbundance warns on wrong names", {
-    expect_error(rescaleAbundance(NS_params, c(Kod = 2, Hadok = 3)),
+test_that("scaleAbundance warns on wrong names", {
+    expect_error(scaleAbundance(NS_params, c(Kod = 2, Hadok = 3)),
                  "Kod, Hadok do not exist")
 })
 
-# rescaleSystem ----
-test_that("rescaleSystem does not change dynamics.", {
+# scaleModel ----
+test_that("scaleModel does not change dynamics.", {
     factor <- 10
     sim <- project(NS_params, t_max = 1)
-    params2 <- rescaleSystem(NS_params, factor)
+    params2 <- scaleModel(NS_params, factor)
     sim2 <- project(params2, t_max = 1)
     expect_equal(sim2@n[1, , ], sim@n[1, , ] * factor)
     expect_equal(sim2@n[2, , ], sim@n[2, , ] * factor)

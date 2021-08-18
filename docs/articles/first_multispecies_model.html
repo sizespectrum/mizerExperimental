@@ -156,7 +156,7 @@
 <p>Initially this has added hake with a low abundance, so that there is little effect of the presence of the hake on the background species. We can now slowly increase the abundance of the hake, making sure we always run to steady state.</p>
 <p>First we double the abundance of the foreground species with respect to the background species.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rescaleAbundance.html">rescaleAbundance</a></span><span class="op">(</span><span class="va">params</span>, factor <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scaleAbundance.html">scaleAbundance</a></span><span class="op">(</span><span class="va">params</span>, factor <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
     <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Convergence was achieved in 1.5 years.</code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">

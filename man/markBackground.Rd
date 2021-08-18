@@ -23,7 +23,7 @@ An object of the same class as the \code{object} argument
 
 Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
-adjusted in \code{\link[=retuneBackground]{retuneBackground()}} to keep the community close to the
+adjusted in \code{\link[=adjustBackgroundSpecies]{adjustBackgroundSpecies()}} to keep the community close to the
 Sheldon spectrum.
 }
 \examples{

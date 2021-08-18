@@ -40,13 +40,13 @@
     <loc>/reference/pruneSpecies.html</loc>
   </url>
   <url>
-    <loc>/reference/rescaleAbundance.html</loc>
+    <loc>/reference/scaleAbundance.html</loc>
   </url>
   <url>
-    <loc>/reference/rescaleSystem.html</loc>
+    <loc>/reference/scaleModel.html</loc>
   </url>
   <url>
-    <loc>/reference/retuneBackground.html</loc>
+    <loc>/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
     <loc>/reference/tuneParams.html</loc>

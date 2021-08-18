@@ -41,5 +41,5 @@ calibrateBiomass <- function(params) {
             sum((params@initial_n[sp_idx, ] * params@w * params@dw)
                 [params@w >= cutoff[[sp_idx]]])
     }
-    rescaleSystem(params, factor = observed_total / model_total)
+    scaleModel(params, factor = observed_total / model_total)
 }

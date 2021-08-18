@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rescale System — rescaleSystem • mizerExperimental</title>
+<title>Rescale System — scaleModel • mizerExperimental</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Rescale System — rescaleSystem" />
+<meta property="og:title" content="Rescale System — scaleModel" />
 <meta property="og:description" content="
 The abundances in mizer and some rates depend on the size of the area to
 which they refer. So they could be given per square meter or per square
@@ -132,7 +132,7 @@ abundances and rates accordingly." />
     <div class="page-header">
     <h1>Rescale System</h1>
     <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/manipulateParams.R'><code>R/manipulateParams.R</code></a></small>
-    <div class="hidden name"><code>rescaleSystem.Rd</code></div>
+    <div class="hidden name"><code>scaleModel.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -144,7 +144,7 @@ function allows you to change the size by automatically changing the
 abundances and rates accordingly.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>rescaleSystem</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>factor</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>scaleModel</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>factor</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,7 +175,7 @@ following rescalings in the params object:</p><ul>
 \(c\).</p></li>
 </ul><p>The effect of this is that the dynamics of the rescaled system are identical
 to those of the unscaled system, in the sense that it does not matter whether
-one first calls <code>rescaleSystem()</code> and then runs a simulation with
+one first calls <code>scaleModel()</code> and then runs a simulation with
 <code>project()</code> or whether one first runs a simulation and then rescales the
 resulting abundances.</p>
 <p>Note that if you use non-standard resource dynamics or other components then you

@@ -5,9 +5,9 @@ reference:
   contents:
   - tuneParams
   - markBackground
-  - retuneBackground
-  - rescaleSystem
-  - rescaleAbundance
+  - adjustBackgroundSpecies
+  - scaleModel
+  - scaleAbundance
   - updateInitialValues
   - pruneSpecies
 - title: New plotting functions

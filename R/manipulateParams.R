@@ -5,7 +5,7 @@
 #'
 #' Marks the specified set of species as background species. Background species
 #' are handled differently in some plots and their abundance is automatically
-#' adjusted in [retuneBackground()] to keep the community close to the
+#' adjusted in [adjustBackgroundSpecies()] to keep the community close to the
 #' Sheldon spectrum.
 #'
 #' @param object An object of class \linkS4class{MizerParams} or
@@ -51,7 +51,7 @@ markBackground <- function(object, species = NULL) {
 #' @return An object of type `MizerParams`
 #' @seealso [markBackground()]
 #' @export
-retuneBackground <- function(params) {
+adjustBackgroundSpecies <- function(params) {
     params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
     L <- is.na(params@A)
@@ -92,7 +92,7 @@ retuneBackground <- function(params) {
         params <- removeSpecies(params, species = (A2 <= 0))
         # and try again retuning the remaining retunable species
         if (any(A2 > 0)) {
-            params <- retuneBackground(params)
+            params <- adjustBackgroundSpecies(params)
         } else {
             message("All background species have been removed.")
         }
@@ -162,7 +162,7 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #'
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
-rescaleAbundance <- function(params, factor) {
+scaleAbundance <- function(params, factor) {
     params <- validParams(params)
     assert_that(is.numeric(factor),
                 all(factor > 0))
@@ -210,7 +210,7 @@ rescaleAbundance <- function(params, factor) {
 #' }
 #' The effect of this is that the dynamics of the rescaled system are identical
 #' to those of the unscaled system, in the sense that it does not matter whether
-#' one first calls [rescaleSystem()] and then runs a simulation with
+#' one first calls [scaleModel()] and then runs a simulation with
 #' [project()] or whether one first runs a simulation and then rescales the
 #' resulting abundances.
 #'
@@ -223,7 +223,7 @@ rescaleAbundance <- function(params, factor) {
 #'
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
-rescaleSystem <- function(params, factor) {
+scaleModel <- function(params, factor) {
     params <- validParams(params)
     assert_that(is.number(factor),
                 factor > 0)
@@ -325,8 +325,8 @@ updateInitialValues <- function(params) {
 #' 
 #' @export
 scaleDownBackground <- function(params, factor) {
-    rescaleAbundance(params, factor = factor) %>%
-        rescaleSystem(factor = 1 / factor)
+    scaleAbundance(params, factor = factor) %>%
+        scaleModel(factor = 1 / factor)
 }
 
 #' Remove all background species

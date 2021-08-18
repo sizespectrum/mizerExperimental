@@ -83,7 +83,7 @@ spectraTab <- function(input, output, session,
 
     ## Retune background ####
     observeEvent(input$retune_background, {
-        p <- retuneBackground(params())
+        p <- adjustBackgroundSpecies(params())
         # For now we won't disable the button because of a bug in shinyBS
         # whereby the tooltip stays forever on disabled buttons.
         # if (!anyNA(p@A)) {
@@ -183,7 +183,7 @@ spectraTab <- function(input, output, session,
         biomass_observed <- p@species_params$biomass_observed[[sp]]
         biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
         scale_by <- biomass_observed / biomass_model
-        p <- rescaleSystem(p, factor = scale_by)
+        p <- scaleModel(p, factor = scale_by)
         params(p)
         tuneParams_add_to_logs(logs, p)
         # Trigger an update of sliders
@@ -452,7 +452,7 @@ spectraTab <- function(input, output, session,
 #             model_total + 
 #             sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff[[sp_idx]]])
 #         }
-#         p <- rescaleSystem(p, factor = observed_total / model_total)
+#         p <- scaleModel(p, factor = observed_total / model_total)
 #         params(p)
 #         tuneParams_add_to_logs(logs, p)
 #         # Trigger an update of sliders
@@ -473,7 +473,7 @@ spectraTab <- function(input, output, session,
 #             biomass_observed <- p@species_params$biomass_observed[[sp]]
 #             biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
 #             scale_by <- biomass_observed / biomass_model
-#             p <- rescaleSystem(p, factor = scale_by)
+#             p <- scaleModel(p, factor = scale_by)
 #             params(p)
 #             tuneParams_add_to_logs(logs, p)
 #             # Trigger an update of sliders

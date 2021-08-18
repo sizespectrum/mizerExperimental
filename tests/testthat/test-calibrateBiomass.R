@@ -18,5 +18,5 @@ test_that("calibrateBiomass works", {
     params2 <- calibrateBiomass(params)
     expect_equal(params2@initial_n, params@initial_n * 2)
     # We don't need to check other slots because this function uses
-    # `rescaleSystem()` which is unit-tested separately.
+    # `scaleModel()` which is unit-tested separately.
 })
