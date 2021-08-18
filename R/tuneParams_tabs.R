@@ -137,9 +137,9 @@ spectraTab <- function(input, output, session,
           is.na(species_params$biomass_observed)) {
         species_params$biomass_observed <- 0
       }
-      if (is.null(species_params$cutoff_size) ||
-          is.na(species_params$cutoff_size)) {
-        species_params$cutoff_size <- 0
+      if (is.null(species_params$biomass_cutoff) ||
+          is.na(species_params$biomass_cutoff)) {
+        species_params$biomass_cutoff <- 0
       }
       list(
         div(style = "display:inline-block",
@@ -147,8 +147,8 @@ spectraTab <- function(input, output, session,
                          paste0("Observed biomass for ", sp),
                          value = species_params$biomass_observed)),
         div(style = "display:inline-block",
-            numericInput("cutoff_size", "Lower cutoff",
-                         value = species_params$cutoff_size))
+            numericInput("biomass_cutoff", "Lower cutoff",
+                         value = species_params$biomass_cutoff))
       )
     })
     
@@ -157,8 +157,8 @@ spectraTab <- function(input, output, session,
       p <- isolate(params())
       p@species_params[isolate(input$sp), "biomass_observed"] <-
         req(input$biomass_observed)
-      p@species_params[isolate(input$sp), "cutoff_size"] <-
-        req(input$cutoff_size)
+      p@species_params[isolate(input$sp), "biomass_cutoff"] <-
+        req(input$biomass_cutoff)
       params(p)
     })
     
@@ -179,7 +179,7 @@ spectraTab <- function(input, output, session,
       if ("biomass_observed" %in% names(p@species_params) &&
           !is.na(p@species_params$biomass_observed[[sp]]) &&
           p@species_params$biomass_observed[[sp]] > 0) {
-        cutoff <- p@species_params$cutoff_size[[sp]]
+        cutoff <- p@species_params$biomass_cutoff[[sp]]
         if (is.null(cutoff) || is.na(cutoff)) {
           cutoff <- p@species_params$w_mat[[sp]] / 20
         }
@@ -206,7 +206,7 @@ spectraTab <- function(input, output, session,
       if ("biomass_observed" %in% names(p@species_params) &&
           !is.na(p@species_params$biomass_observed[[sp_idx]]) &&
           p@species_params$biomass_observed[[sp_idx]] > 0) {
-        cutoff <- p@species_params$cutoff_size[[sp_idx]]
+        cutoff <- p@species_params$biomass_cutoff[[sp_idx]]
         if (is.null(cutoff) || is.na(cutoff)) {
           cutoff <- p@species_params$w_mat[[sp_idx]] / 20
         }
@@ -234,7 +234,7 @@ spectraTab <- function(input, output, session,
         if ("biomass_observed" %in% names(p@species_params) &&
             !is.na(p@species_params$biomass_observed[[sp]]) &&
             p@species_params$biomass_observed[[sp]] > 0) {
-          cutoff <- p@species_params$cutoff_size[[sp]]
+          cutoff <- p@species_params$biomass_cutoff[[sp]]
           if (is.null(cutoff) || is.na(cutoff)) {
             cutoff <- p@species_params$w_mat[[sp]] / 20
           }
@@ -290,7 +290,7 @@ spectraTab <- function(input, output, session,
 #           "then you can enter values by hand using the input fields below the",
 #           "plots."),
 #         p("Usually the observed values are only for individuals above a lower",
-#           "cutoff size. This cutoff size is recorded in the 'cutoff_size'",
+#           "cutoff size. This cutoff size is recorded in the 'biomass_cutoff'",
 #           "column of the species parameter data frame. Again you can enter",
 #           "these also manually using the input field below the plots. For",
 #           "example if you have observed values for the spawning stock biomass,",
@@ -328,7 +328,7 @@ spectraTab <- function(input, output, session,
 #     output$plotTotalBiomass <- renderPlot({
 #         p <- params()
 #         no_sp <- length(p@species_params$species)
-#         cutoff <- p@species_params$cutoff_size
+#         cutoff <- p@species_params$biomass_cutoff
 #         # When no cutoff known, set it to maturity weight / 20
 #         if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
 #         cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
@@ -376,9 +376,9 @@ spectraTab <- function(input, output, session,
 #             is.na(species_params$biomass_observed)) {
 #             species_params$biomass_observed <- 0
 #         }
-#         if (is.null(species_params$cutoff_size) ||
-#             is.na(species_params$cutoff_size)) {
-#             species_params$cutoff_size <- 0
+#         if (is.null(species_params$biomass_cutoff) ||
+#             is.na(species_params$biomass_cutoff)) {
+#             species_params$biomass_cutoff <- 0
 #         }
 #         list(
 #             div(style = "display:inline-block",
@@ -386,8 +386,8 @@ spectraTab <- function(input, output, session,
 #                              paste0("Observed biomass for ", sp),
 #                              value = species_params$biomass_observed)),
 #             div(style = "display:inline-block",
-#                 numericInput("cutoff_size", "Lower cutoff",
-#                              value = species_params$cutoff_size))
+#                 numericInput("biomass_cutoff", "Lower cutoff",
+#                              value = species_params$biomass_cutoff))
 #         )
 #     })
 # 
@@ -396,14 +396,14 @@ spectraTab <- function(input, output, session,
 #         p <- isolate(params())
 #         p@species_params[isolate(input$sp), "biomass_observed"] <-
 #             req(input$biomass_observed)
-#         p@species_params[isolate(input$sp), "cutoff_size"] <-
-#             req(input$cutoff_size)
+#         p@species_params[isolate(input$sp), "biomass_cutoff"] <-
+#             req(input$biomass_cutoff)
 #         params(p)
 #     })
 # 
 #     # Plot biomass distribution
 #     output$plotBiomassDist <- renderPlotly({
-#         req(input$sp, input$cutoff_size, input$biomass_observed)
+#         req(input$sp, input$biomass_cutoff, input$biomass_observed)
 #         sp <- input$sp
 #         p <- params()
 #         biomass <- cumsum(p@initial_n[sp, ] * p@w * p@dw)
@@ -424,11 +424,11 @@ spectraTab <- function(input, output, session,
 #                           label = "\nMaturity"),
 #                       angle = 90)
 #         if (input$biomass_observed) {
-#             cutoff_idx <- which.max(p@w >= input$cutoff_size)
+#             cutoff_idx <- which.max(p@w >= input$biomass_cutoff)
 #             target <- input$biomass_observed + biomass[[cutoff_idx]]
 #             pl <- pl +
 #                 geom_hline(yintercept = biomass[[cutoff_idx]]) +
-#                 geom_vline(xintercept = input$cutoff_size) +
+#                 geom_vline(xintercept = input$biomass_cutoff) +
 #                 geom_hline(yintercept = target, color = "green")
 #         }
 #         pl
@@ -442,7 +442,7 @@ spectraTab <- function(input, output, session,
 #               all(is.na(p@species_params$biomass_observed))) {
 #             return()
 #         }
-#         cutoff <- p@species_params$cutoff_size
+#         cutoff <- p@species_params$biomass_cutoff
 #         # When no cutoff known, set it to maturity weight / 20
 #         if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
 #         cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
@@ -469,7 +469,7 @@ spectraTab <- function(input, output, session,
 #         if ("biomass_observed" %in% names(p@species_params) &&
 #             !is.na(p@species_params$biomass_observed[[sp]]) &&
 #             p@species_params$biomass_observed[[sp]] > 0) {
-#             cutoff <- p@species_params$cutoff_size[[sp]]
+#             cutoff <- p@species_params$biomass_cutoff[[sp]]
 #             if (is.null(cutoff) || is.na(cutoff)) {
 #                 cutoff <- p@species_params$w_mat[[sp]] / 20
 #             }
@@ -496,7 +496,7 @@ spectraTab <- function(input, output, session,
 #         if ("biomass_observed" %in% names(p@species_params) &&
 #                 !is.na(p@species_params$biomass_observed[[sp_idx]]) &&
 #                 p@species_params$biomass_observed[[sp_idx]] > 0) {
-#             cutoff <- p@species_params$cutoff_size[[sp_idx]]
+#             cutoff <- p@species_params$biomass_cutoff[[sp_idx]]
 #             if (is.null(cutoff) || is.na(cutoff)) {
 #                 cutoff <- p@species_params$w_mat[[sp_idx]] / 20
 #             }
@@ -524,7 +524,7 @@ spectraTab <- function(input, output, session,
 #         if ("biomass_observed" %in% names(p@species_params) &&
 #             !is.na(p@species_params$biomass_observed[[sp]]) &&
 #             p@species_params$biomass_observed[[sp]] > 0) {
-#           cutoff <- p@species_params$cutoff_size[[sp]]
+#           cutoff <- p@species_params$biomass_cutoff[[sp]]
 #           if (is.null(cutoff) || is.na(cutoff)) {
 #             cutoff <- p@species_params$w_mat[[sp]] / 20
 #           }
