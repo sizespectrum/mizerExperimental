@@ -1,6 +1,6 @@
 # Hackiness to get past the 'no visible binding ... ' warning
 utils::globalVariables(
-    c("Age", "Biomass", "Catch", "Cause", "Kernel",
+    c("Age", "Biomass", "Yield", "Cause", "Kernel",
       "L_inf", "Legend", "Numbers", "Predator", "Size", "Species",
       "Type", "erepro", "value", "w_mat"))
 
@@ -737,19 +737,19 @@ reproTab <- function(input, output, session, params, logs, ...) {
 catchTabUI <- function(...) {
     tagList(
         # actionButton("tune_catch", "Tune catchability"),
-        plotlyOutput("plotTotalCatch"),
-        uiOutput("catch_sel"),
-        textOutput("catch_total"),
+        plotlyOutput("plotTotalYield"),
+        uiOutput("yield_sel"),
+        textOutput("yield_total"),
         plotlyOutput("plotCatchDist"),
         radioButtons("catch_x", "Show size in:",
                      choices = c("Weight", "Length"),
                      selected = "Length", inline = TRUE),
-        h1("Total catch and size distribution of catch"),
-        h2("Total catch"),
-        p("The upper plot compares the total yearly catch for each species in the model to the observed total catch, if available."),
-        p("The total observed catch is taken from the 'catch_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in grams/year."),
-        h3("How to tune total catch"),
-        p("To bring the total catch of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
+        h1("Total yield and size distribution of catch"),
+        h2("Total yield"),
+        p("The upper plot compares the total yearly yield for each species in the model to the observed total yield, if available."),
+        p("The total observed yield is taken from the 'yield_observed' column of the species parameter data frame. But if this is missing or needs to be changed you can do this with the input field below the upper plot. Note that this value is in grams/year."),
+        h3("How to tune total yield"),
+        p("To bring the total yield of a species in the model in line with the observed value you can either change the abundance of large fish (for example by reducing their mortality from predation or the", a("background mortality", href = "#other"), "or you can change the", a("fishing parameters", href = "#fishing"), "."),
         h2("Size distribution of catch"),
         p("The lower plot shows the size distribution of the catch and again compares that to the observed size distribution, if available."),
         h3("How to tune size distribution"),
@@ -789,7 +789,7 @@ catchTab <- function(input, output, session, params, logs,
 
     # Tune catchability ----
     # The Catch Tune button calculates the ratio of observed and
-    # model catch and then multiplies the catchability by that ratio. It
+    # model yield and then multiplies the catchability by that ratio. It
     # then runs the system to steady state.
     observeEvent(input$tune_catch, {
         p <- isolate(params())
@@ -804,14 +804,14 @@ catchTab <- function(input, output, session, params, logs,
                 easyClose = TRUE
             ))
         }
-        if ("catch_observed" %in% names(p@species_params) &&
-            !is.na(p@species_params$catch_observed[sp_idx]) &&
-            p@species_params$catch_observed[sp_idx] > 0) {
+        if ("yield_observed" %in% names(p@species_params) &&
+            !is.na(p@species_params$yield_observed[sp_idx]) &&
+            p@species_params$yield_observed[sp_idx] > 0) {
             total <- sum(p@initial_n[sp_idx, ] * p@w * p@dw *
                              getFMort(p)[sp_idx, ])
             catchability <-
                 p@gear_params$catchability[gp_idx] *
-                p@species_params$catch_observed[sp_idx] / total
+                p@species_params$yield_observed[sp_idx] / total
             updateSliderInput(session, "catchability",
                               value = catchability)
             # The above update of the slider will also trigger update of
@@ -930,20 +930,20 @@ catchTab <- function(input, output, session, params, logs,
                                            "Abundance" = "grey"))
     })
 
-    # Total catch by species ----
-    output$plotTotalCatch <- renderPlotly({
+    # Total yield by species ----
+    output$plotTotalYield <- renderPlotly({
         p <- params()
         no_sp <- length(p@species_params$species)
-        observed <- p@species_params$catch_observed
+        observed <- p@species_params$yield_observed
         if (is.null(observed)) observed <- 0
 
         biomass <- sweep(p@initial_n, 2, p@w * p@dw, "*")
-        catch_model <- rowSums(biomass * getFMort(p))
+        yield_model <- rowSums(biomass * getFMort(p))
 
         # selector for foreground species
         foreground <- !is.na(p@A)
         foreground_indices <- (1:no_sp)[foreground]
-        catch_model <- catch_model[foreground_indices]
+        yield_model <- yield_model[foreground_indices]
         observed <- observed[foreground_indices]
 
         # Make sure species ordering is preserved in the plot
@@ -953,47 +953,47 @@ catchTab <- function(input, output, session, params, logs,
         df <- rbind(
             data.frame(Species = species,
                        Type = "Observed",
-                       Catch = observed),
+                       Yield = observed),
             data.frame(Species = species,
                        Type = "Model",
-                       Catch = catch_model)
+                       Yield = yield_model)
         )
-        df <- df[df$Catch > 0, ]
+        df <- df[df$Yield > 0, ]
         ggplot(df) +
-            geom_col(aes(x = Species, y = Catch, fill = Type),
+            geom_col(aes(x = Species, y = Yield, fill = Type),
                      position = "dodge") +
             theme_grey(base_size = 12) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-            scale_y_continuous(name = "Catch [g/year]", trans = "log10",
+            scale_y_continuous(name = "Yield [g/year]", trans = "log10",
                                breaks = log_breaks())
     })
 
-    # Input field for observed catch ----
-    output$catch_sel <- renderUI({
+    # Input field for observed yield ----
+    output$yield_sel <- renderUI({
         p <- isolate(params())
         sp <- input$sp
-        numericInput("catch_observed",
-                     paste0("Observed total catch for ", sp, " [g/year]"),
-                     value = p@species_params[sp, "catch_observed"])
+        numericInput("yield_observed",
+                     paste0("Observed total yield for ", sp, " [g/year]"),
+                     value = p@species_params[sp, "yield_observed"])
     })
 
-    # Adjust observed catch ----
+    # Adjust observed yield ----
     observeEvent(
-        input$catch_observed,
+        input$yield_observed,
         {
             p <- params()
-            p@species_params[input$sp, "catch_observed"] <- input$catch_observed
+            p@species_params[input$sp, "yield_observed"] <- input$yield_observed
             params(p)
         },
         ignoreInit = TRUE)
 
-    # Output of model catch ----
-    output$catch_total <- renderText({
+    # Output of model yield ----
+    output$yield_total <- renderText({
         p <- params()
         sp <- which.max(p@species_params$species == input$sp)
         total <- sum(p@initial_n[sp, ] * p@w * p@dw *
                          getFMort(p)[sp, ])
-        paste("Model catch:", total)
+        paste("Model yield:", total)
     })
 }
 
