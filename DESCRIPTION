@@ -35,6 +35,7 @@ Suggests:
 Collate:
     calibrateBiomass.R
     manipulateParams.R
+    matchBiomasses.R
     mizerExperimental-package.R
     plotBiomassVsSpecies.R
     tuneParams.R

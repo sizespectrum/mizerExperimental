@@ -1,7 +1,10 @@
 #' Match biomasses to observations
 #' 
 #' @param params A MizerParams object
-#' @inheritParams valid_species_arg
+#' @param species The species to be affected. Optional. By default all observed
+#'   biomasses will be matched. A vector of species names, or a numeric vector
+#'   with the species indices, or a logical vector indicating for each species
+#'   whether it is to be affected (TRUE) or not.
 #' @return A MizerParams object
 #' @export
 #' @examples 
