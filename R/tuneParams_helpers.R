@@ -22,7 +22,7 @@ finalise_params <- function(p) {
     p
 }
 
-#' @export
+
 tuneParams_update_species <- function(sp, p, params) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
@@ -71,7 +71,6 @@ tuneParams_update_species <- function(sp, p, params) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-#' @export
 tuneParams_run_steady <- function(p, params, logs, session, input, 
                                   return_sim = FALSE) {
 
@@ -115,7 +114,7 @@ tuneParams_run_steady <- function(p, params, logs, session, input,
     )
 }
 
-#' @export
+
 tuneParams_add_to_logs <- function(logs, p) {
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
