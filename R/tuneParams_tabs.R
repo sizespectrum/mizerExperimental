@@ -71,7 +71,7 @@ spectraTab <- function(input, output, session,
         # }
         plot <- plotSpectra(params(), power = power, highlight = input$sp, 
                             total = TRUE) +
-            theme_grey(base_size = 12)
+            theme(text = element_text(size = 12))
         ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
 
@@ -124,7 +124,7 @@ spectraTab <- function(input, output, session,
     # Plot total biomass ----
     output$plotTotalBiomass <- renderPlot({
       plotBiomassVsSpecies(params()) +
-        theme_grey(base_size = 18)
+        theme(text = element_text(size = 18))
     })
     
     
@@ -362,7 +362,7 @@ spectraTab <- function(input, output, session,
 #                        size = 8, alpha = 0.5) +
 #             scale_y_continuous(name = "Biomass [g]", trans = "log10",
 #                                breaks = log_breaks()) +
-#             theme_grey(base_size = 18) +
+#             theme_grey(base_size = 12) +
 #             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 #     })
 # 
@@ -634,10 +634,11 @@ growthTab <- function(input, output, session, params, logs, ...) {
     output$plotGrowthCurve <- renderPlot({
         p <- params()
         if (input$all_growth == "All") {
-            plotGrowthCurves(p, species_panel = TRUE)
+            plotGrowthCurves(p, species_panel = TRUE) +
+            theme(text = element_text(size = 16))
         } else {
             plotGrowthCurves(p, species = input$sp) +
-                theme_grey(base_size = 12)
+            theme(text = element_text(size = 16))
         }
     })
 
@@ -646,11 +647,11 @@ growthTab <- function(input, output, session, params, logs, ...) {
         if (input$all_growth == "All") {
             plot <- plotFeedingLevel(params(), highlight = input$sp,
                                      include_critical = TRUE) +
-                theme_grey(base_size = 12)
+              theme(text = element_text(size = 12))
         } else {
             plot <- plotFeedingLevel(params(), species = input$sp,
                                      include_critical = TRUE) +
-                theme_grey(base_size = 12)
+              theme(text = element_text(size = 12))
         }
       ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
@@ -686,7 +687,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
         ggplot(df, aes(x = Species, y = value)) +
             geom_col() + geom_hline(yintercept = 1, color = "red") +
             scale_y_log10(name = "Reproductive success") +
-            theme_grey(base_size = 12) +
+            theme(text = element_text(size = 12)) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     })
 
@@ -711,7 +712,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
                               y = max(value * 0.6),
                               label = "\nw_mat25"),
                           angle = 90) +
-                theme_grey(base_size = 12) +
+                theme(text = element_text(size = 12)) +
                 labs(x = "Size [g]", y = "Proportion of energy for reproduction")
     })
 }
@@ -908,7 +909,7 @@ catchTab <- function(input, output, session, params, logs,
         }
         pl +
             geom_vline(xintercept = mat, linetype = "dotted")  +
-            theme_grey(base_size = 12) +
+            theme(text = element_text(size = 12)) +
             scale_colour_manual(values = c("Model catch" = "blue",
                                            "Observed catch" = "red",
                                            "Abundance" = "grey"))
@@ -946,7 +947,7 @@ catchTab <- function(input, output, session, params, logs,
         ggplot(df) +
             geom_col(aes(x = Species, y = Yield, fill = Type),
                      position = "dodge") +
-            theme_grey(base_size = 12) +
+            theme(text = element_text(size = 12)) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
             scale_y_continuous(name = "Yield [g/year]", trans = "log10",
                                breaks = log_breaks())
@@ -1025,7 +1026,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                        linetype = "dotted") +
             geom_vline(xintercept = p@species_params[sp, "w_inf"],
                        linetype = "dotted") +
-            theme_grey(base_size = 12) +
+            theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [g/year]")  +
             geom_text(aes(x = p@species_params[sp, "w_mat"],
                           y = max(value * 0.2),
@@ -1072,7 +1073,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                        linetype = "dotted") +
             geom_vline(xintercept = p@species_params[sp, "w_inf"],
                        linetype = "dotted") +
-            theme_grey(base_size = 12) +
+            theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [1/year]")  +
             geom_text(aes(x = p@species_params[sp, "w_mat"],
                           y = max(value * 0.2),
@@ -1235,7 +1236,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
             geom_line(aes(Size, value)) +
             scale_x_log10("Resource size [g]") +
             ylab("Proportion of carrying capacity") +
-            theme_grey(base_size = 16)
+            theme(text = element_text(size = 12))
     })
 
     # Plot resource predators ----
@@ -1262,7 +1263,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
             scale_x_log10("Resource size [g]") +
             ylab(ylab) +
             scale_fill_manual(values = p@linecolour) +
-            theme_grey(base_size = 12)
+            theme(text = element_text(size = 12))
     })
 }
 
