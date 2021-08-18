@@ -1,3 +1,5 @@
+#' Plot the biomass against species
+#' @export
 plotBiomassVsSpecies <- function(params) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$cutoff_size

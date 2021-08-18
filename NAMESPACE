@@ -3,6 +3,7 @@
 export(calibrateBiomass)
 export(getYieldVsF)
 export(markBackground)
+export(plotBiomassVsSpecies)
 export(plotYieldVsF)
 export(pruneSpecies)
 export(rescaleAbundance)
