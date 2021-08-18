@@ -123,44 +123,8 @@ spectraTab <- function(input, output, session,
     
     # Plot total biomass ----
     output$plotTotalBiomass <- renderPlot({
-      p <- params()
-      no_sp <- length(p@species_params$species)
-      cutoff <- p@species_params$cutoff_size
-      # When no cutoff known, set it to maturity weight / 20
-      if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
-      cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
-      observed <- p@species_params$biomass_observed
-      if (is.null(observed)) observed <- 0
-      
-      # selector for foreground species
-      foreground <- !is.na(p@A)
-      foreground_indices <- (1:no_sp)[foreground]
-      biomass_model <- foreground_indices  # create vector of right length
-      for (i in seq_along(foreground_indices)) {
-        sp <- foreground_indices[i]
-        biomass_model[i] <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff[[sp]]])
-      }
-      species <- factor(p@species_params$species[foreground],
-                        levels = p@species_params$species[foreground])
-      df <- rbind(
-        data.frame(Species = species,
-                   Type = "Observation",
-                   Biomass = observed[foreground]),
-        data.frame(Species = species,
-                   Type = "Model",
-                   Biomass = biomass_model)
-      )
-      # Get rid of "Observed" entries for species without 
-      # observations (where we have set observed = 0)
-      df <- df[df$Biomass > 0, ] 
-      
-      ggplot(df) +
-        geom_point(aes(x = Species, y = Biomass, colour = Type),
-                   size = 8, alpha = 0.5) +
-        scale_y_continuous(name = "Biomass [g]", trans = "log10",
-                           breaks = log_breaks()) +
-        theme_grey(base_size = 18) +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+      plotBiomassVsSpecies(params()) +
+        theme_grey(base_size = 18)
     })
     
     
