@@ -139,7 +139,7 @@
 #' params <- setBevertonHolt(params, reproduction_level = 0.3)
 #' t(species_params(params)[, c("erepro", "R_max")])
 #' @export
-setBevertonHolt <- function(params, R_factor = deprecated(), erepro, 
+setBevertonHolt <- function(params, R_factor = lifecycle::deprecated(), erepro, 
                             R_max, reproduction_level) {
     assert_that(is(params, "MizerParams"))
     no_sp <- nrow(params@species_params)

@@ -6,7 +6,7 @@
 \usage{
 setBevertonHolt(
   params,
-  R_factor = deprecated(),
+  R_factor = lifecycle::deprecated(),
   erepro,
   R_max,
   reproduction_level
