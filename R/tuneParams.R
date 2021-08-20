@@ -106,7 +106,7 @@ tuneParams <- function(p,
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
     # I am not sure why this is needed, but without it the tooltips won't show.
-    requireNamespace("shinyBS")
+    require("shinyBS")
 
     # Flags to skip certain observers ----
     flags <- new.env()
