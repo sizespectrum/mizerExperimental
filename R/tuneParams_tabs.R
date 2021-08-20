@@ -545,14 +545,14 @@ spectraTab <- function(input, output, session,
 
 growthTabUI <- function(...) {
     tagList(
-        splitLayout(
-            # actionButton("growth_help", "Press for instructions"),
-            radioButtons("all_growth", "Show:",
-                         choices = c("All", "Selected species"),
-                         selected = "All", inline = TRUE)
-        ),
+        popify(radioButtons("all_growth", "Show:",
+                            choices = c("All", "Selected species"),
+                            selected = "All", inline = TRUE),
+               title = "Switch views",
+               content = "Select whether to view growth curves for all species or just for the selected species. You can also toggle this by double-clicking on the plot. Single-clicking on the plot changes the selected species without changing the view."),
         plotOutput("plotGrowthCurve",
-                   click = "growth_click"),
+                   click = "growth_click",
+                   dblclick = "growth_dblclick"),
         textOutput("info"),
         plotlyOutput("plot_feeding_level"),
         uiOutput("k_vb_sel"),
@@ -584,12 +584,28 @@ growthTab <- function(input, output, session, params, logs, ...) {
     # Click ----
     # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$growth_click, {
-        if (input$growth_click$panelvar1 != input$sp) {
+        if (!is.null(input$growth_click$panelvar1) &&
+            input$growth_click$panelvar1 != input$sp) {
             updateSelectInput(session, "sp",
                               selected = input$growth_click$panelvar1)
-            updateRadioButtons(session, "all_growth",
-                               selected = "Selected species")
         }
+    })
+    # Double Click ----
+    # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
+    observeEvent(input$growth_dblclick, {
+      if (!is.null(input$growth_dblclick$panelvar1) &&
+          input$growth_dblclick$panelvar1 != input$sp) {
+        updateSelectInput(session, "sp",
+                          selected = input$growth_dblclick$panelvar1)
+      }
+      # Toggle between "All" and "Selected species"
+      if (input$all_growth == "All") {
+        updateRadioButtons(session, "all_growth",
+                           selected = "Selected species")
+      } else {
+        updateRadioButtons(session, "all_growth",
+                           selected = "All")
+      }
     })
 
     # von Bertalanffy parameters ----
