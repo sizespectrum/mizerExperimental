@@ -1,11 +1,11 @@
 eggControlUI <- function(p, sp) {
     n0 <- p@initial_n[sp$species, p@w_min_idx[sp$species]]
     tagList(
-        tags$h3(tags$a(id = "egg"), "Egg density"),
+        tags$h3(tags$a(id = "egg"), "Abundance"),
         sliderInput("n0", "Egg density",
                     value = n0,
                     min = signif(n0 / 10, 3),
-                    max = signif(n0 * 10, 3),
+                    max = signif(n0 * 2, 3),
                     step = n0 / 50))
 }
 
@@ -20,7 +20,7 @@ eggControl <- function(input, output, session, params, flags) {
         }
         updateSliderInput(session, "n0",
                           min = signif(n0 / 10, 3),
-                          max = signif(n0 * 10, 3))
+                          max = signif(n0 * 2, 3))
         # rescale abundance to new egg density
         p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
             p@initial_n[sp, p@w_min_idx[sp]]
@@ -35,10 +35,10 @@ resourceControlUI <- function(p, sp) {
 
     tagList(
         tags$h3(tags$a(id = "resource"), "Resource"),
-        numericInput("lambda", "Sheldon exponent lambda",
+        numericInput("lambda", "Sheldon exponent 'lambda'",
                      value = p@resource_params$lambda,
                      min = 1.9, max = 2.2, step = 0.005),
-        numericInput("kappa", "Resource coefficient kappa",
+        numericInput("kappa", "Resource coefficient 'kappa'",
                      value = p@resource_params$kappa),
         sliderInput("log_r_pp", "log10 Resource replenishment rate",
                     value = log_r_pp, min = -1, max = 4, step = 0.05),
@@ -64,7 +64,8 @@ resourceControl <- function(input, output, session, params, flags) {
                          r_pp = 10^input$log_r_pp,
                          w_pp_cutoff = input$w_pp_cutoff,
                          n = input$n_resource)
-        #TODO: update initial resource
+        mu <- getResourceMort(p)
+        p@initial_n_pp <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
         params(p)
     })
 }
@@ -72,25 +73,25 @@ resourceControl <- function(input, output, session, params, flags) {
 otherControlUI <- function(p, sp) {
     tagList(
         tags$h3(tags$a(id = "other"), "Other"),
-        sliderInput("ks", "Coefficient of standard metabolism ks",
+        sliderInput("ks", "Coefficient of standard metabolism 'ks'",
                     value = sp$ks,
                     min = signif(sp$ks / 2, 2),
                     max = signif((sp$ks + 0.1) * 1.5, 2),
                     step = 0.05),
-        numericInput("p", "Exponent of metabolism",
+        numericInput("p", "Exponent of metabolism 'p'",
                      value = sp$p,
                      min = 0.6, max = 0.8, step = 0.005),
-        sliderInput("k", "Coefficient of activity k",
+        sliderInput("k", "Coefficient of activity 'k'",
                     value = sp$k,
                     min = signif(sp$k / 2, 2),
                     max = signif((sp$k + 0.1) * 1.5, 2),
                     step = 0.01),
-        sliderInput("z0", "Mortality",
+        sliderInput("z0", "External mortality 'z0'",
                     value = sp$z0,
                     min = signif(sp$z0 / 2, 2),
                     max = signif((sp$z0 + 0.1) * 1.5, 2),
                     step = 0.05),
-        sliderInput("alpha", "Assimilation efficiency alpha",
+        sliderInput("alpha", "Assimilation efficiency 'alpha'",
                     value = sp$alpha,
                     min = 0,
                     max = 1)
@@ -161,8 +162,8 @@ reproductionControlUI <- function(p, sp) {
                     min = signif(sp$w_inf / 2, 2),
                     max = signif(sp$w_inf * 1.5, 2)),
         sliderInput("m", "m", value = sp$m,
-                    min = 0,
-                    max = 2,
+                    min = sp$n,
+                    max = sp$n * 2,
                     step = 0.01)
     )
 }
@@ -200,26 +201,26 @@ reproductionControl <- function(input, output, session, params, flags) {
 predationControlUI <- function(p, sp) {
     tagList(
         tags$h3(tags$a(id = "predation"), "Predation"),
-        sliderInput("gamma", "Predation rate coefficient gamma",
+        sliderInput("gamma", "Predation rate coefficient 'gamma'",
                     value = sp$gamma,
                     min = signif(sp$gamma / 2, 3),
                     max = signif(sp$gamma * 1.5, 3),
                     step = sp$gamma / 50, ticks = FALSE),
-        sliderInput("h", "max feeding rate h",
+        sliderInput("h", "max feeding rate 'h'",
                     value = sp$h,
                     min = signif(sp$h / 2, 2),
                     max = signif(sp$h * 1.5, 2)),
-        numericInput("q", "Exponent of search volume",
+        numericInput("q", "Exponent of search volume 'q'",
                      value = sp$q,
                      min = 0.6, max = 0.8, step = 0.005),
-        numericInput("n", "Exponent of max feeding rate",
+        numericInput("n", "Exponent of max feeding rate 'n'",
                      value = sp$n,
                      min = 0.6, max = 0.8, step = 0.005),
-        sliderInput("beta", "Preferred predator-prey mass ratio beta",
+        sliderInput("beta", "Preferred predator-prey mass ratio 'beta'",
                     value = sp$beta,
                     min = signif(sp$beta / 2, 2),
                     max = signif(sp$beta * 1.5, 2)),
-        sliderInput("sigma", "Width of size selection function sigma",
+        sliderInput("sigma", "Width of size selection function 'sigma'",
                     value = sp$sigma,
                     min = signif(sp$sigma / 2, 2),
                     max = signif(sp$sigma * 1.5, 2),
@@ -314,15 +315,15 @@ fishingControlUI <- function(p, sp) {
             title = "Invalid gear specification",
             HTML(paste0("Currently you can only use models where each ",
                         "species is caught by only one gear. In this model ",
-                        input$sp, " is caught by ", nrow(gp), " gears.")),
+                        sp$species, " is caught by ", nrow(gp), " gears.")),
             easyClose = TRUE
         ))
     }
     l1 <- list(tags$h3(tags$a(id = "fishing"), "Fishing"),
                sliderInput("catchability", "Catchability",
-                           value = sp$catchability,
-                           min = signif(max(0, sp$catchability / 2 - 1), 2),
-                           max = signif(max(sp$catchability * 2, 2), 2),
+                           value = gp$catchability,
+                           min = signif(max(0, gp$catchability / 2 - 1), 2),
+                           max = signif(max(gp$catchability * 2, 2), 2),
                            step = 0.01),
                sliderInput("effort", "Effort",
                            value = effort,
@@ -346,7 +347,7 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(gp$l50 / 4, 2),
+                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
                         step = 0.1)))
     } else if (gp$sel_func == "double_sigmoid_length") {
         l1 <- c(l1, list(
@@ -358,7 +359,7 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(gp$l50 / 4, 2),
+                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
                         step = 0.1),
             sliderInput("l50_right", "L50 right",
                         value = gp$l50_right,
@@ -368,7 +369,8 @@ fishingControlUI <- function(p, sp) {
             sliderInput("ldiff_right", "L50-L25 right",
                         value = gp$l25_right - gp$l50_right,
                         min = 0.1,
-                        max = signif(gp$l50_right / 4, 2),
+                        max = signif(max(gp$l50_right / 4,
+                                         (gp$l25_right - gp$l50_right)*1.1), 2),
                         step = 0.1)
         ))
     }
@@ -389,8 +391,8 @@ fishingControl <- function(input, output, session, params, flags) {
                 flags$sp_old_fishing <- sp
                 return()
             }
-            gear_idx <- which(p@gear_params$species == sp)
-            if (length(gear_idx) != 1) {
+            gp_idx <- which(p@gear_params$species == sp)
+            if (length(gp_idx) != 1) {
                 showModal(modalDialog(
                     title = "Invalid gear specification",
                     HTML(paste0("Currently you can only use models where each ",
@@ -401,30 +403,30 @@ fishingControl <- function(input, output, session, params, flags) {
 
             # Update slider min/max so that they are a fixed proportion of the
             # parameter value
+            p@gear_params[gp_idx, "catchability"]  <- input$catchability
             updateSliderInput(session, "catchability",
                               min = signif(max(input$catchability / 2 - 1, 0), 2),
                               max = signif(max(input$catchability * 2, 2), 2))
-            p@gear_params[gear_idx, "catchability"]  <- input$catchability
             updateSliderInput(session, "effort",
                               max = signif((input$effort + 1) * 1.5, 2))
 
-            if (p@gear_params[gear_idx, "sel_func"] == "knife_edge") {
+            if (p@gear_params[gp_idx, "sel_func"] == "knife_edge") {
                 updateSliderInput(session, "knife_edge_size",
                                   max = signif(input$knife_edge_size * 2, 2))
-                p@gear_params[gear_idx, "knife_edge_size"]   <- input$knife_edge_size
+                p@gear_params[gp_idx, "knife_edge_size"]   <- input$knife_edge_size
             }
-            if (p@gear_params[gear_idx, "sel_func"] == "sigmoid_length" ||
-                p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
+            if (p@gear_params[gp_idx, "sel_func"] == "sigmoid_length" ||
+                p@gear_params[gp_idx, "sel_func"] == "double_sigmoid_length") {
                 updateSliderInput(session, "l50",
                                   max = signif(input$l50 * 2, 2))
                 updateSliderInput(session, "ldiff",
                                   max = signif(input$l50 / 10, 2))
-                p@gear_params[gear_idx, "l50"]   <- input$l50
-                p@gear_params[gear_idx, "l25"]   <- input$l50 - input$ldiff
+                p@gear_params[gp_idx, "l50"]   <- input$l50
+                p@gear_params[gp_idx, "l25"]   <- input$l50 - input$ldiff
             }
-            if (p@gear_params[gear_idx, "sel_func"] == "double_sigmoid_length") {
-                p@gear_params[gear_idx, "l50_right"]   <- input$l50_right
-                p@gear_params[gear_idx, "l25_right"]   <- input$l50_right + input$ldiff_right
+            if (p@gear_params[gp_idx, "sel_func"] == "double_sigmoid_length") {
+                p@gear_params[gp_idx, "l50_right"]   <- input$l50_right
+                p@gear_params[gp_idx, "l25_right"]   <- input$l50_right + input$ldiff_right
                 updateSliderInput(session, "l50_right",
                                   max = signif(input$l50_right * 2, 2))
                 updateSliderInput(session, "ldiff_right",
@@ -444,15 +446,15 @@ interactionControlUI <- function(p, sp) {
                     value = sp$interaction_resource,
                     min = 0,
                     max = 1,
-                    step = 0.05))
-    for (i in p@species_params$species) {
+                    step = 0.001))
+    for (i in p@species_params$species[!is.na(p@A)]) {
         inter_var <- paste0("inter_", i)
         l1 <- c(l1, list(
             sliderInput(inter_var, i,
                         value = p@interaction[sp$species, i],
                         min = 0,
                         max = 1,
-                        step = 0.05)
+                        step = 0.001)
         ))
     }
     l1
@@ -463,13 +465,19 @@ interactionControl <- function(input, output, session, params, flags) {
         req(input$interaction_resource)
         p <- isolate(params())
         sp <- isolate(input$sp)
+        # The following req()a are required, otherwise changes in the sliders
+        # do not trigger. I am not sure why.
+        for (i in p@species_params$species[!is.na(p@A)]) {
+            inter_var <- paste0("inter_", i)
+            req(input[[inter_var]])
+        }
         if (!identical(sp, flags$sp_old_inter)) {
             flags$sp_old_inter <- sp
             return()
         }
         p@species_params[sp, "interaction_resource"] <-
             input$interaction_resource
-        for (i in p@species_params$species) {
+        for (i in p@species_params$species[!is.na(p@A)]) {
             inter_var <- paste0("inter_", i)
             p@interaction[sp, i] <- input[[inter_var]]
         }

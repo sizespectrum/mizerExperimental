@@ -5,14 +5,24 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
-    rdi <- getRDI(p)
-    rdd <- getRDD(p)
-    p@species_params$erepro <- p@species_params$erepro * rdd / rdi
-    p@species_params$R_max <- Inf
+    p <- setBevertonHolt(p, reproduction_level = 0)
     return(p)
 }
 
-#' @export
+finalise_params <- function(p) {
+    if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, reproduction_level =
+                                 p@species_params$tuneParams_old_repro_level)
+        p@species_params$tuneParams_old_repro_level <- NULL
+    }
+    if ("tuneParams_old_R_max" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, R_max =  p@species_params$tuneParams_old_R_max)
+        p@species_params$tuneParams_old_R_max <- NULL
+    }
+    p
+}
+
+
 tuneParams_update_species <- function(sp, p, params) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
@@ -27,13 +37,8 @@ tuneParams_update_species <- function(sp, p, params) {
         w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
         idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
         if (any(gg[idx] == 0)) {
-            weight <- p@w[which.max(gg[idx] == 0)]
-            showModal(modalDialog(
-                title = "Zero growth rate",
-                paste0("With these parameter values the ", sp,
-                       " does not have enough food to cover its metabolic cost"),
-                easyClose = TRUE
-            ))
+            stop("With these parameter values the ", sp,
+                 " does not have enough food to cover its metabolic cost")
         }
         n0 <- p@initial_n[sp, p@w_min_idx[sp]]
         p@initial_n[sp, ] <- 0
@@ -47,15 +52,7 @@ tuneParams_update_species <- function(sp, p, params) {
             stop("Candidate steady state holds non-numeric values")
         }
 
-        # Retune the value of erepro so that we get the correct level of
-        # reproduction
-        i <- which(p@species_params$species == sp)
-        rdd <- getRDD(p)[i]
-        gg0 <- gg[p@w_min_idx[i]]
-        mumu0 <- mumu[p@w_min_idx[i]]
-        DW <- p@dw[p@w_min_idx[i]]
-        p@species_params$erepro[i] <- p@species_params$erepro[i] *
-            n0 * (gg0 + DW * mumu0) / rdd
+        p <- setBevertonHolt(p, reproduction_level = 0)
 
         # Update the reactive params object
         params(p)
@@ -74,8 +71,8 @@ tuneParams_update_species <- function(sp, p, params) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-#' @export
-tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) {
+tuneParams_run_steady <- function(p, params, logs, session, input, 
+                                  return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
@@ -90,13 +87,21 @@ tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) 
             return(steady(p, t_max = 100, tol = 1e-2,
                           return_sim = TRUE,
                           progress_bar = progress))
-        } else {
-            p <- steady(p, t_max = 100, tol = 1e-2,
-                        progress_bar = progress)
-            # Update the reactive params object
-            params(p)
-            tuneParams_add_to_logs(logs, p)
         }
+        p <- steady(p, t_max = 100, tol = 1e-2,
+                    progress_bar = progress)
+        
+        # Update the egg slider
+        sp_idx <- which.max(p@species_params$species == isolate(input$sp))
+        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+        updateSliderInput(session, "n0",
+                          value = n0,
+                          min = signif(n0 / 10, 3),
+                          max = signif(n0 * 10, 3))
+        
+        # Update the reactive params object
+        params(p)
+        tuneParams_add_to_logs(logs, p)
     },
     error = function(e) {
         showModal(modalDialog(
@@ -109,7 +114,7 @@ tuneParams_run_steady <- function(p, params, logs, session, return_sim = FALSE) 
     )
 }
 
-#' @export
+
 tuneParams_add_to_logs <- function(logs, p) {
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
@@ -170,6 +175,6 @@ fileManagement <- function(input, output, session, params, logs) {
     output$params <- downloadHandler(
         filename = "params.rds",
         content = function(file) {
-            saveRDS(params(), file = file)
+            saveRDS(finalise_params(params()), file = file)
         })
 }

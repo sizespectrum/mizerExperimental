@@ -1,9 +1,13 @@
 #' Launch shiny gadget for tuning parameters
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' The function opens a shiny gadget, an interactive web page. This page has
 #' a side panel with controls for various model parameters and a main panel
 #' with tabs for various diagnostic plots.
 #'
+#' @details
 #' This gadget is meant for tuning a model to steady state. It is not meant for
 #' tuning the dynamics of the model. That should be done in a second step using
 #' functions like `setRmax()` or `changeResource()`.
@@ -33,7 +37,7 @@
 #'
 #' The log is stored in the tempdir of your current R session, as given by
 #' `tempdir()`. For each steady state you calculate the params objects is in a
-#' file named according to the pattern
+#' file named according to the date and time when it was created.
 #'
 #' # Customisation
 #'
@@ -48,11 +52,12 @@
 #' own control sections on the existing ones that you find in the file
 #' `R/tuneParams_controls.R`.
 #'
-#' For any entry "foo" in the `tabs` list there needs to be a function
+#' For any entry "Foo" or "foo" in the `tabs` list there needs to be a function
 #' "fooTabUI" that defines the tab layout and a function "fooTab"
 #' that calculates the outputs to be displayed on the tab. You can model your
 #' own tabs on the existing ones that you find in the file
-#' `R/tuneParams_tabs.R`.
+#' `R/tuneParams_tabs.R`. Whether you choose to capitalise "Foo" or "foo" in
+#' the `tabs` argument determines how it is capitalised on the label of the tab.
 #'
 #' # Limitations
 #'
@@ -63,40 +68,45 @@
 #'
 #' @param p MizerParams object to tune. If missing, the gadget tries to recover
 #'   information from log files left over from aborted previous runs.
-#' @param controls A list with the names of input parameter control sections
-#'   that should be displayed in the sidebar. See "Customisation" below.
-#' @param tabs A list with the names of the tabs that should be displayed in
-#'   the main section. See "Customisation" below.
+#' @param controls A character vector of names of input parameter control
+#'   sections that should be displayed in the sidebar. See "Customisation"
+#'   below.
+#' @param tabs A character vector of names of the tabs that should be displayed
+#'   in the main section. See "Customisation" below.
+#' @param preserve Specifies whether the `reproduction_level` should be
+#'   preserved or the maximum reproduction rate `R_max`. See [setBevertonHolt()]
+#'   for an explanation of the `reproduction_level`.
 #' @param ... Other params needed by individual tabs.
 #'
 #' @return The tuned MizerParams object
 #' @md
+#' @import shinyBS 
 #' @export
 tuneParams <- function(p,
-                       controls = list("egg",
-                                       "predation",
-                                       "fishing",
-                                       "reproduction",
-                                       "other",
-                                       "interaction",
-                                       "resource"),
-                       tabs = list("Spectra",
-                                   "Biomass",
-                                   "Growth",
-                                   "Repro",
-                                   "Catch",
-                                   "Rates",
-                                   "Prey",
-                                   "Diet",
-                                   "Death",
-                                   "Resource",
-                                   "Sim"),
-                       ...) {
+                       controls = c("egg",
+                                   "predation",
+                                   "fishing",
+                                   "reproduction",
+                                   "other",
+                                   "interaction",
+                                   "resource"),
+                       tabs = c("Spectra",
+                                "Growth",
+                                "Repro",
+                                "Catch",
+                                "Diet",
+                                "Death",
+                                "Resource",
+                                "Rates",
+                                "Sim"),
+                       preserve = c("reproduction_level", "R_max"), ...) {
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
+    # I am not sure why this is needed, but without it the tooltips won't show.
+    require("shinyBS")
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -118,7 +128,17 @@ tuneParams <- function(p,
         }
         p <- readRDS(logs$files[logs$idx])
     } else {
-        validObject(p)
+        validObject(p)    
+        # Add the info that should be preserved to the species_params for later
+        # recall
+        preserve <- match.arg(preserve)
+        if (preserve == "reproduction_level") {
+            p@species_params$tuneParams_old_repro_level <-
+                getReproductionLevel(p)
+        }
+        if (preserve == "R_max") {
+            p@species_params$tuneParams_old_R_max <- p@species_params$R_max
+        }
         p <- prepare_params(p)
     }
 
@@ -126,35 +146,42 @@ tuneParams <- function(p,
     ui <- fluidPage(
         shinyjs::useShinyjs(),
         introjsUI(),
+        tags$script(HTML("$(function(){ 
+          $(document).keydown(function(e) {
+          if (e.which == 83) {
+            $('#sp_steady').click()
+          }
+        });})")),
 
         sidebarLayout(
 
             ## Sidebar ####
             sidebarPanel(
                 introBox(
+                    tipify(actionButton("help", "Instructions"),
+                           title = "Start the introductory instructions"),
+                    tipify(actionButton("done", "Done", icon = icon("check"),
+                                 onclick = "setTimeout(function(){window.close();},500);"),
+                           title = "Return the current params objects to R"),
+                    data.step = 8,
+                    data.intro = "When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
+                ),
+                introBox(
                     actionButton("sp_steady", "Steady"),
+                    # We should not put a tooltip on the Undo or Redo buttons
+                    # because they get stuck when the button gets disabled
                     actionButton("undo", "", icon = icon("undo")),
                     actionButton("redo", "", icon = icon("redo")),
                     actionButton("undo_all", "", icon = icon("fast-backward")),
                     data.step = 5,
-                    data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
-                ),
-                introBox(
-                    actionButton("done", "Done", icon = icon("check"),
-                                 onclick = "setTimeout(function(){window.close();},500);"),
-                    data.step = 8,
-                    data.intro = "When you press this button, the gadget will close and the current params object will be returned. The undo log will be cleared."
-                ),
-                introBox(
-                    actionButton("help", "Instructions"),
-                    data.step = 9,
-                    data.intro = "You can always run this introduction again by clicking here. You can find further information on the tuneParams() documentation page."
+                    data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button or hit 's' on the keyboard. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
                 ),
                 tags$br(),
                 introBox(uiOutput("sp_sel"),
                          data.step = 2,
                          data.position = "right",
-                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."),
+                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."
+                ),
                 introBox(
                     introBox(
                         # Add links to input sections
@@ -181,7 +208,7 @@ tuneParams <- function(p,
                     )),
                     data.step = 3,
                     data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will immediately update."
-                    ),
+                ),
                 width = 3
             ),  # endsidebarpanel
 
@@ -189,7 +216,8 @@ tuneParams <- function(p,
             mainPanel(
                 introBox(uiOutput("tabs"),
                          data.step = 1,
-                         data.intro = "This main panel has tabs that display various aspects of the steady state of the model.")
+                         data.intro = "This main panel has tabs that display various aspects of the steady state of your model. At the bottom of each tab you find text explanations for that tab. You may need to scroll down in the tab to see them. Individual components may show tooltips when you hover over them."
+                )
             )  # end mainpanel
         )  # end sidebarlayout
     )
@@ -215,7 +243,7 @@ tuneParams <- function(p,
         output$sp_sel <- renderUI({
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
-            selectInput("sp", "Species:", species)
+            selectInput("sp", "Species to tune:", species)
         })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
@@ -239,7 +267,7 @@ tuneParams <- function(p,
 
         # Serve controls ####
         for (section in controls) {
-            fun <- paste0(section, "Control")
+            fun <- paste0(tolower(section), "Control")
             do.call(fun, list(input = input,
                               output = output,
                               session = session,
@@ -250,7 +278,11 @@ tuneParams <- function(p,
         ## UI for tabs ####
         output$tabs <- renderUI({
             tablist <- lapply(tabs, function(tab) {
-                tabPanel(tab, do.call(paste0(tolower(tab), "TabUI"), list()))
+                tab_content <- div(
+                    style = "max-height: 90vh; overflow-y: auto; overflow-x: hidden;",
+                    do.call(paste0(tolower(tab), "TabUI"), 
+                            list(params = params)))
+                tabPanel(tab, tab_content)
             })
             args <- c(id = "mainTabs", type = "tabs", tablist)
             do.call(tabsetPanel, args)
@@ -263,7 +295,8 @@ tuneParams <- function(p,
                               output = output,
                               session = session,
                               params = params,
-                              logs = logs, ...))
+                              logs = logs,
+                              trigger_update = trigger_update, ...))
         }
 
         # Help button ----
@@ -276,7 +309,7 @@ tuneParams <- function(p,
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
             tuneParams_run_steady(params(), params = params,
-                       logs = logs, session = session)
+                       logs = logs, session = session, input = input)
         })
 
         ## Undo ####
@@ -285,7 +318,8 @@ tuneParams <- function(p,
             p_new <- readRDS(logs$files[logs$idx])
             p_old <- params()
             # if the params have not changed, go to the previous one
-            if (all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
+            if ((nrow(p_old@species_params) == nrow(p_new@species_params)) &&
+                all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
                 logs$idx <- logs$idx - 1
                 shinyjs::enable("redo")
                 p_new <- readRDS(logs$files[logs$idx])
@@ -326,7 +360,7 @@ tuneParams <- function(p,
         # return with the latest params object
         observeEvent(input$done, {
             file.remove(logs$files)
-            stopApp(params())
+            stopApp(finalise_params(params()))
         })
 
     } #the server

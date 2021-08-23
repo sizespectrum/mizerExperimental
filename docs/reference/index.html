@@ -44,6 +44,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -55,9 +57,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,19 +79,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -94,7 +96,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
     </li>
   </ul>
 </li>
@@ -105,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,75 +138,6 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-new-model-functions" class="hasAnchor"><a href="#section-new-model-functions" class="anchor"></a>New model functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="newSheldonParams.html">newSheldonParams()</a></code> </p>
-        </td>
-        <td><p>Set up parameters for a single species in a Sheldon power-law background</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="constantEggRDI.html">constantEggRDI()</a></code> </p>
-        </td>
-        <td><p>Choose egg production to keep egg density constant</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-new-plotting-functions" class="hasAnchor"><a href="#section-new-plotting-functions" class="anchor"></a>New plotting functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="animateSpectra.html">animateSpectra()</a></code> </p>
-        </td>
-        <td><p>Animation of the abundance spectra</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getYieldVsFcurve.html">getYieldVsFcurve()</a></code> </p>
-        </td>
-        <td><p>Calculate a yield-vs-F curve for a species.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="displayFrames.html">displayFrames()</a></code> </p>
-        </td>
-        <td><p>Display frames</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBiomassFrame.html">getBiomassFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of biomass of species through time, ready for ggplot2</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getSSBFrame.html">getSSBFrame()</a></code> </p>
-        </td>
-        <td><p>Get data frame of spawning stock biomass of species through time,
-ready for ggplot2</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-interactively-tuning-a-multispecies-model" class="hasAnchor"><a href="#section-interactively-tuning-a-multispecies-model" class="anchor"></a>Interactively tuning a multispecies model</h2>
           <p class="section-desc"></p>
         </th>
@@ -229,39 +162,21 @@ ready for ggplot2</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="addSpecies.html">addSpecies()</a></code> </p>
-        </td>
-        <td><p>Add new species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="removeSpecies.html">removeSpecies()</a></code> </p>
-        </td>
-        <td><p>Remove species from an ecosystem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="renameSpecies.html">renameSpecies()</a></code> </p>
-        </td>
-        <td><p>Rename species</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="retuneBackground.html">retuneBackground()</a></code> </p>
+          <p><code><a href="adjustBackgroundSpecies.html">adjustBackgroundSpecies()</a></code> </p>
         </td>
         <td><p>Retunes abundance of background species.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="rescaleAbundance.html">rescaleAbundance()</a></code> </p>
+          <p><code><a href="scaleModel.html">scaleModel()</a></code> </p>
         </td>
-        <td><p>Rescale Abundance</p></td>
+        <td><p>Rescale System</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="rescaleSystem.html">rescaleSystem()</a></code> </p>
+          <p><code><a href="scaleAbundance.html">scaleAbundance()</a></code> </p>
         </td>
-        <td><p>Rescale System</p></td>
+        <td><p>Rescale Abundance</p></td>
       </tr><tr>
         
         <td>
@@ -278,6 +193,31 @@ ready for ggplot2</p></td>
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-new-plotting-functions" class="hasAnchor"><a href="#section-new-plotting-functions" class="anchor"></a>New plotting functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="getYieldVsF.html">getYieldVsF()</a></code> </p>
+        </td>
+        <td><p>Calculate a yield-vs-F curve</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plotYieldVsF.html">plotYieldVsF()</a></code> </p>
+        </td>
+        <td><p>Plot a yield-vs-F curve</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-others" class="hasAnchor"><a href="#section-others" class="anchor"></a>Others</h2>
           <p class="section-desc"></p>
         </th>
@@ -290,27 +230,9 @@ ready for ggplot2</p></td>
       <tr>
         
         <td>
-          <p><code><a href="projectToSteady.html">projectToSteady()</a></code> </p>
+          <p><code><a href="validSim.html">validSim()</a></code> </p>
         </td>
-        <td><p>Project to steady state</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="distanceRDI.html">distanceRDI()</a></code> </p>
-        </td>
-        <td><p>Measure distance between current and previous state in terms of RDI</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compareParams.html">compareParams()</a></code> </p>
-        </td>
-        <td><p>Compare two MizerParams objects and print out differences</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="customFunction.html">customFunction()</a></code> </p>
-        </td>
-        <td><p>Replace a mizer function with a custom version</p></td>
+        <td><p>Returns a valid simulation by removing non-finite results</p></td>
       </tr>
     </tbody>
     </table>
@@ -326,11 +248,11 @@ ready for ggplot2</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gustav Delius.</p>
+  <p><p>Developed by Gustav Delius.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.</p></p>
 </div>
 
       </footer>
@@ -338,6 +260,8 @@ ready for ggplot2</p></td>
 
   
 
+
+  
 
   </body>
 </html>

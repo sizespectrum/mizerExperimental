@@ -40,10 +40,13 @@
 
 
 <meta property="og:title" content="Designate species as background species — markBackground" />
-<meta property="og:description" content="Marks the specified set of species as background species. Background species
+<meta property="og:description" content="
+Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
-adjusted in addSpecies() to keep the community close to the
+adjusted in adjustBackgroundSpecies() to keep the community close to the
 Sheldon spectrum." />
+
+
 
 
 
@@ -59,9 +62,15 @@ Sheldon spectrum." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,19 +84,13 @@ Sheldon spectrum." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -98,7 +101,7 @@ Sheldon spectrum." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
     </li>
   </ul>
 </li>
@@ -109,7 +112,7 @@ Sheldon spectrum." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +135,14 @@ Sheldon spectrum." />
     </div>
 
     <div class="ref-description">
-    <p>Marks the specified set of species as background species. Background species
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
-adjusted in <code><a href='addSpecies.html'>addSpecies()</a></code> to keep the community close to the
+adjusted in <code><a href='adjustBackgroundSpecies.html'>adjustBackgroundSpecies()</a></code> to keep the community close to the
 Sheldon spectrum.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>markBackground</span>(<span class='kw'>object</span>, <span class='kw'>species</span>)</pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>markBackground</span><span class='op'>(</span><span class='va'>object</span>, species <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,8 +154,10 @@ MizerSim.</p></td>
     </tr>
     <tr>
       <th>species</th>
-      <td><p>Name or vector of names of the species to be designated as
-background species. By default this is set to all species.</p></td>
+      <td><p>The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a
+numeric vector with the species indices, or a logical vector indicating for
+each species whether it is to be selected (TRUE) or not.</p></td>
     </tr>
     </table>
 
@@ -160,11 +166,14 @@ background species. By default this is set to all species.</p></td>
     <p>An object of the same class as the <code>object</code> argument</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span>(<span class='kw'>NS_species_params_gears</span>, <span class='kw'>inter</span>)</div><div class='output co'>#&gt; <span class='message'>Note: No h provided for some species, so using f0 and k_vb to calculate it.</span></div><div class='output co'>#&gt; <span class='message'>Note: Because you have n != p, the default value is not very good.</span></div><div class='output co'>#&gt; <span class='message'>Note: No ks column so calculating from critical feeding level.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using z0 = z0pre * w_inf ^ z0exp for missing z0 values.</span></div><div class='output co'>#&gt; <span class='message'>Note: Using f0, h, lambda, kappa and the predation kernel to calculate gamma.</span></div><div class='input'><span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span>(<span class='kw'>params</span>, effort=<span class='fl'>1</span>, t_max=<span class='fl'>20</span>, t_save = <span class='fl'>0.2</span>, progress_bar = <span class='fl'>FALSE</span>)
-<span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>markBackground</span>(<span class='kw'>sim</span>, species = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sprat"</span>, <span class='st'>"Sandeel"</span>,
-                                       <span class='st'>"N.pout"</span>, <span class='st'>"Dab"</span>, <span class='st'>"Saithe"</span>))
-<span class='fu'>plotSpectra</span>(<span class='kw'>sim</span>)</div><div class='img'><img src='markBackground-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span></div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, effort<span class='op'>=</span><span class='fl'>1</span>, t_max<span class='op'>=</span><span class='fl'>20</span>, t_save <span class='op'>=</span> <span class='fl'>0.2</span>, progress_bar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>markBackground</span><span class='op'>(</span><span class='va'>sim</span>, species <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sprat"</span>, <span class='st'>"Sandeel"</span>,</span>
+<span class='r-in'>                                       <span class='st'>"N.pout"</span>, <span class='st'>"Dab"</span>, <span class='st'>"Saithe"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plotSpectra</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -176,11 +185,11 @@ background species. By default this is set to all species.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gustav Delius.</p>
+  <p><p>Developed by Gustav Delius.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.</p></p>
 </div>
 
       </footer>
@@ -188,6 +197,8 @@ background species. By default this is set to all species.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

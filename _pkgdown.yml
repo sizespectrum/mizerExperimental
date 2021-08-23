@@ -1,32 +1,20 @@
 destination: docs
 
 reference:
-- title: New model functions
-  contents:
-  - newSheldonParams
-  - constantEggRDI
-- title: New plotting functions
-  contents:
-  - animateSpectra
-  - getYieldVsFcurve
-  - displayFrames
-  - getBiomassFrame
-  - getSSBFrame
 - title: Interactively tuning a multispecies model
   contents:
   - tuneParams
   - markBackground
-  - addSpecies
-  - removeSpecies
-  - renameSpecies
-  - retuneBackground
-  - rescaleAbundance
-  - rescaleSystem
+  - adjustBackgroundSpecies
+  - scaleModel
+  - scaleAbundance
   - updateInitialValues
   - pruneSpecies
+- title: New plotting functions
+  contents:
+  - getYieldVsF
+  - plotYieldVsF
 - title: Others
   contents:
-  - projectToSteady
-  - distanceRDI
-  - compareParams
-  - customFunction
+  - validSim
+

@@ -4,22 +4,26 @@
 \alias{markBackground}
 \title{Designate species as background species}
 \usage{
-markBackground(object, species)
+markBackground(object, species = NULL)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerParams} or
 \linkS4class{MizerSim}.}
 
-\item{species}{Name or vector of names of the species to be designated as
-background species. By default this is set to all species.}
+\item{species}{The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a
+numeric vector with the species indices, or a logical vector indicating for
+each species whether it is to be selected (TRUE) or not.}
 }
 \value{
 An object of the same class as the \code{object} argument
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Marks the specified set of species as background species. Background species
 are handled differently in some plots and their abundance is automatically
-adjusted in \code{\link[=retuneBackground]{retuneBackground()}} to keep the community close to the
+adjusted in \code{\link[=adjustBackgroundSpecies]{adjustBackgroundSpecies()}} to keep the community close to the
 Sheldon spectrum.
 }
 \examples{

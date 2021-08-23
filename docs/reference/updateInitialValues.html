@@ -40,10 +40,13 @@
 
 
 <meta property="og:title" content="Update the initial values — updateInitialValues" />
-<meta property="og:description" content="Recalculates the steady-state abundances in a fixed background
+<meta property="og:description" content="
+Recalculates the steady-state abundances in a fixed background
 given by the current abundances, keeping the abundances fixed in the
 smallest size class for each species. Then readjusts the erepro
 values." />
+
+
 
 
 
@@ -59,9 +62,15 @@ values." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,19 +84,13 @@ values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -98,7 +101,7 @@ values." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/single_species_size-spectrum_dynamics.html">Single-species size-spectrum dynamics</a>
+      <a href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
     </li>
   </ul>
 </li>
@@ -109,7 +112,7 @@ values." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +135,14 @@ values." />
     </div>
 
     <div class="ref-description">
-    <p>Recalculates the steady-state abundances in a fixed background
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>Recalculates the steady-state abundances in a fixed background
 given by the current abundances, keeping the abundances fixed in the
 smallest size class for each species. Then readjusts the <code>erepro</code>
 values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>updateInitialValues</span>(<span class='kw'>params</span>)</pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>updateInitialValues</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,11 +169,11 @@ values.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gustav Delius.</p>
+  <p><p>Developed by Gustav Delius.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.</p></p>
 </div>
 
       </footer>
@@ -177,6 +181,8 @@ values.</p>
 
   
 
+
+  
 
   </body>
 </html>

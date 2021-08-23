@@ -16,6 +16,10 @@ cutoff times community abundance will be removed. Default 1e-3.}
 An object of type \code{MizerParams}
 }
 \description{
+@description
+`\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 This species simply removes the low-abundance species from the params object.
 It does not recalculate the steady state for the remaining species or
 retune their reproductive efficiencies.

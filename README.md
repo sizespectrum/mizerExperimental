@@ -2,7 +2,6 @@
 # mizerExperimental
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 This is an extension package for the mizer package
@@ -49,26 +48,3 @@ remotes::install_github("sizespectrum/mizerExperimental")
 ```
 
 This is discussed at <https://github.com/r-lib/remotes/issues/403>
-
-## Features
-
-  - Functions and a shiny app for interactively tuning parameters.
-
-  - New function `projectToSteady()` to run dynamics until close to
-    steady state.
-
-  - A function for keeping egg densities constant.
-
-  - `getYieldVsFcurve()` for calculating and plotting yield curve.
-
-  - Animated plot of mizer simulation with `animateSpectra()`
-
-  - Showing two plots side-by-side with the same axes and the same
-    legend. This is made possible for some of the plots via the
-    `displayFrames()` function.
-
-  - New wrapper function `newSheldonParams()` that sets up a single
-    species in a power-law background.
-
-  - New function `customFunction()` to allow users to overwrite mizer
-    functions.
