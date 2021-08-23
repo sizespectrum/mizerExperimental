@@ -37,6 +37,7 @@ Collate:
     manipulateParams.R
     matchBiomasses.R
     mizerExperimental-package.R
+    plotBiomassObservedVsModel.R
     plotBiomassVsSpecies.R
     tuneParams.R
     tuneParams_controls.R
