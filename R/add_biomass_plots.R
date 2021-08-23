@@ -1,6 +1,6 @@
 ## Functions for plotting simulated vs. observed biomass data
 
-plot_pearson = function(sim, log_scale = T) {
+plotBiomassObservedVsModelPearson = function(sim, log_scale = T) {
   
   if (log_scale == T) {
     dummy = data.frame(sim@params@species_params$species, log10(getBiomass(sim)[nrow(sim@n), ]), log10(sim@params@species_params$biomass_observed))
@@ -30,7 +30,7 @@ plot_pearson = function(sim, log_scale = T) {
   gg # output
 }
 
-plot_fraction = function(sim) {
+plotBiomassObservedVsModelFraction = function(sim) {
   dummy = data.frame(sim@params@species_params$species, getBiomass(sim)[nrow(sim@n), ], sim@params@species_params$biomass_observed) # fraction of sim/data
   names(dummy) = c('species', 'simulation', 'data')
   res <- sum(abs(1 - dummy$simulation/dummy$data))
