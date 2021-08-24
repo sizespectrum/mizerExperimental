@@ -1,3 +1,37 @@
+home:
+  title: Experimental features for mizer
+  description: An extension package for the mizer size-sepectrum modelling package with additional features contributed by the mizer community.
+
+url: https://sizespectrum.org/mizerExperimental
+
+template:
+  params:
+    bootswatch: cerulean
+  opengraph:
+    image:
+      src: man/figures/logo.png
+      alt: "mizerExperimental: New features for mizer"
+    twitter:
+      site: "@mizer_model"
+      card: summary
+
+toc: 
+  depth: 3
+
+navbar:
+  structure:
+    left: [intro, articles, reference, news]
+    right: [blog, twitter, github]
+  components:
+    home: ~
+    blog:
+      text: Blog
+      href: https://blog.mizer.sizespectrum.org
+    twitter:
+       icon: "fab fa-twitter fa-lg"
+       href: https://twitter.com/mizer_model
+
+
 destination: docs
 
 reference:

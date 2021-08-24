@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Launch shiny gadget for tuning parameters — tuneParams • mizerExperimental</title>
+<title>Set initial values to a steady state for the model — steady • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,12 @@
 
 
 
-<meta property="og:title" content="Launch shiny gadget for tuning parameters — tuneParams" />
-<meta property="og:description" content="
-The function opens a shiny gadget, an interactive web page. This page has
-a side panel with controls for various model parameters and a main panel
-with tabs for various diagnostic plots." />
+<meta property="og:title" content="Set initial values to a steady state for the model — steady" />
+<meta property="og:description" content="The steady state is found by running the dynamics while keeping reproduction
+and other components constant until the size spectra no longer change much (or
+until time t_max is reached, if earlier). Then the reproduction parameters
+are set to values that give the level of reproduction observed in that
+steady state." />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -141,46 +142,62 @@ with tabs for various diagnostic plots." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Launch shiny gadget for tuning parameters</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/tuneParams.R'><code>R/tuneParams.R</code></a></small>
-    <div class="hidden name"><code>tuneParams.Rd</code></div>
+    <h1>Set initial values to a steady state for the model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/steady.R'><code>R/steady.R</code></a></small>
+    <div class="hidden name"><code>steady.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>The function opens a shiny gadget, an interactive web page. This page has
-a side panel with controls for various model parameters and a main panel
-with tabs for various diagnostic plots.</p>
+    <p>The steady state is found by running the dynamics while keeping reproduction
+and other components constant until the size spectra no longer change much (or
+until time <code>t_max</code> is reached, if earlier). Then the reproduction parameters
+are set to values that give the level of reproduction observed in that
+steady state.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tuneParams</span><span class='op'>(</span>
-  <span class='va'>p</span>,
-  controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"egg"</span>, <span class='st'>"predation"</span>, <span class='st'>"fishing"</span>, <span class='st'>"reproduction"</span>, <span class='st'>"other"</span>, <span class='st'>"interaction"</span>,
-    <span class='st'>"resource"</span><span class='op'>)</span>,
-  tabs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Spectra"</span>, <span class='st'>"Growth"</span>, <span class='st'>"Repro"</span>, <span class='st'>"Catch"</span>, <span class='st'>"Diet"</span>, <span class='st'>"Death"</span>, <span class='st'>"Resource"</span>, <span class='st'>"Rates"</span>,
-    <span class='st'>"Sim"</span><span class='op'>)</span>,
+    <pre class="usage"><span class='fu'>steady</span><span class='op'>(</span>
+  <span class='va'>params</span>,
+  t_max <span class='op'>=</span> <span class='fl'>100</span>,
+  t_per <span class='op'>=</span> <span class='fl'>1.5</span>,
+  dt <span class='op'>=</span> <span class='fl'>0.1</span>,
+  tol <span class='op'>=</span> <span class='fl'>0.1</span> <span class='op'>*</span> <span class='va'>dt</span>,
+  return_sim <span class='op'>=</span> <span class='cn'>FALSE</span>,
   preserve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"reproduction_level"</span>, <span class='st'>"R_max"</span><span class='op'>)</span>,
-  <span class='va'>...</span>
+  progress_bar <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>p</th>
-      <td><p>MizerParams object to tune. If missing, the gadget tries to recover
-information from log files left over from aborted previous runs.</p></td>
+      <th>params</th>
+      <td><p>A MizerParams object</p></td>
     </tr>
     <tr>
-      <th>controls</th>
-      <td><p>A character vector of names of input parameter control
-sections that should be displayed in the sidebar. See "Customisation"
-below.</p></td>
+      <th>t_max</th>
+      <td><p>The maximum number of years to run the simulation. Default is 100.</p></td>
     </tr>
     <tr>
-      <th>tabs</th>
-      <td><p>A character vector of names of the tabs that should be displayed
-in the main section. See "Customisation" below.</p></td>
+      <th>t_per</th>
+      <td><p>The simulation is broken up into shorter runs of <code>t_per</code> years,
+after each of which we check for convergence. Default value is 1.5. This
+should be chosen as an odd multiple of the timestep <code>dt</code> in order to be
+able to detect period 2 cycles.</p></td>
+    </tr>
+    <tr>
+      <th>dt</th>
+      <td><p>The time step to use in <code>project()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>tol</th>
+      <td><p>The simulation stops when the relative change in the egg
+production RDI over <code>t_per</code> years is less than <code>tol</code> for every species.</p></td>
+    </tr>
+    <tr>
+      <th>return_sim</th>
+      <td><p>If TRUE, the function returns the MizerSim object holding
+the result of the simulation run. If FALSE (default) the function returns
+a MizerParams object with the "initial" slots set to the steady state.</p></td>
     </tr>
     <tr>
       <th>preserve</th>
@@ -189,64 +206,21 @@ preserved or the maximum reproduction rate <code>R_max</code>. See <code><a href
 for an explanation of the <code>reproduction_level</code>.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Other params needed by individual tabs.</p></td>
+      <th>progress_bar</th>
+      <td><p>A shiny progress object to implement a progress bar in a
+shiny app. Default FALSE.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The tuned MizerParams object</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This gadget is meant for tuning a model to steady state. It is not meant for
-tuning the dynamics of the model. That should be done in a second step using
-functions like <code>setRmax()</code> or <code>changeResource()</code>.</p>
-<p>There is an "Instructions" button near the top left of the gadget that
-gives you a quick overview of the user interface.</p>
-<p>After you click the "Done" button in the side panel, the function will return
-the parameter object in the state at that time, with <code>Rmax</code> set to <code>Inf</code>
-and <code>erepro</code> set to the value it had after the last run to steady state.</p>
-<p>At any time the gadget allows the user to download the current params object
-as an .rds file via the "Download" button in the "File" section, or to
-upload a params object from an .rds file.</p>
-    <h2 class="hasAnchor" id="undo-functionality"><a class="anchor" href="#undo-functionality"></a>Undo functionality</h2>
-
-    <p>The gadget keeps a log of all steady states you create while working with
-the gadget. You can go back to the last steady state by hitting the "Undo"
-button. You can go back an arbitrary number of states and also go forward
-again. There is also a button to go right back to the initial steady state.</p>
-<p>When you leave the gadget by hitting the "Done" button, this log is cleared.
-If you stop the gadget from RStudio by hitting the "Stop" button, then the
-log is left behind. You can then restart the gadget by calling <code>tuneParams()</code>
-without a <code>params</code> argument and it will re-instate the states from the log.</p>
-<p>The log is stored in the tempdir of your current R session, as given by
-<code><a href='https://rdrr.io/r/base/tempfile.html'>tempdir()</a></code>. For each steady state you calculate the params objects is in a
-file named according to the date and time when it was created.</p>
-    <h2 class="hasAnchor" id="customisation"><a class="anchor" href="#customisation"></a>Customisation</h2>
-
-    <p>You can customise which functionality is included in the app via the
-<code>controls</code> and <code>tabs</code> arguments. You can remove some of the controls and
-tabs by providing shorter lists to those arguments. You can also add your
-own controls and tabs.</p>
-<p>For an entry "foo" in the <code>controls</code> list there needs to be a function
-"fooControlUI" that defines the input elements and a function "fooControl"
-that processes those inputs to change the params object. You can model your
-own control sections on the existing ones that you find in the file
-<code>R/tuneParams_controls.R</code>.</p>
-<p>For any entry "Foo" or "foo" in the <code>tabs</code> list there needs to be a function
-"fooTabUI" that defines the tab layout and a function "fooTab"
-that calculates the outputs to be displayed on the tab. You can model your
-own tabs on the existing ones that you find in the file
-<code>R/tuneParams_tabs.R</code>. Whether you choose to capitalise "Foo" or "foo" in
-the <code>tabs</code> argument determines how it is capitalised on the label of the tab.</p>
-    <h2 class="hasAnchor" id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h2>
-
-    <p>The fishing control currently assumes that each species is selected by only
-one gear. It allows the user to change the parameters for that gear. It also
-enforces the same effort for all gears. It sets all efforts to that for the
-first gear and then allows the user to change that single effort value.</p>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newTraitParams</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>species_params</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span><span class='op'>$</span><span class='va'>gamma</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>3000</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>steady</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span>
+<span class='fu'>plotSpectra</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

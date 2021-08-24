@@ -8,12 +8,19 @@
 
 <title>Changelog • mizerExperimental</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -40,8 +47,11 @@
 
 
 <meta property="og:title" content="Changelog" />
-
-
+<meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
+<meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:creator" content="@mizer_model" />
+<meta name="twitter:site" content="@mizer_model" />
 
 
 
@@ -57,15 +67,9 @@
 
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,16 +83,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
@@ -101,11 +102,23 @@
   </ul>
 </li>
 <li>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://blog.mizer.sizespectrum.org">Blog</a>
+</li>
+<li>
+  <a href="https://twitter.com/mizer_model">
+    <span class="fab fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="https://github.com/sizespectrum/mizerExperimental/">
     <span class="fab fa-github fa-lg"></span>
      
@@ -130,35 +143,41 @@
 
     <div id="mizerexperimental-221" class="section level1">
 <h1 class="page-header" data-toc-text="2.2.1">
-<a href="#mizerexperimental-221" class="anchor" aria-hidden="true"></a>mizerExperimental 2.2.1</h1>
-<ul><li>Much polishing of <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and some added documentation.</li>
+<a href="#mizerexperimental-221" class="anchor"></a>mizerExperimental 2.2.1</h1>
+<ul>
+<li>Much polishing of <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and some added documentation.</li>
 <li>First stab at a <code><a href="../reference/validSim.html">validSim()</a></code> function that will be useful when simulations produce non-finite values.</li>
-<li>Graduated the updated <code><a href="https://sizespectrum.org/mizer/reference/setBevertonHolt.html" class="external-link">setBevertonHolt()</a></code> and the new <code><a href="https://sizespectrum.org/mizer/reference/getReproductionLevel.html" class="external-link">getReproductionLevel()</a></code> to mizer package.</li>
-<li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code><a href="https://sizespectrum.org/mizer/reference/plotDataFrame.html" class="external-link">plotDataFrame()</a></code> in mizer.</li>
+<li>Graduated the updated <code><a href="../reference/setBevertonHolt.html">setBevertonHolt()</a></code> and the new <code>getReproductionLevel()</code> to mizer package.</li>
+<li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code>plotDataFrame()</code> in mizer.</li>
 <li>Removed the vignette explaining size-spectrum dynamics in single-species example because this has graduated to mizer.</li>
 <li>Improvements to argument checks in <code><a href="../reference/getYieldVsF.html">getYieldVsF()</a></code>
 </li>
-</ul></div>
+</ul>
+</div>
     <div id="mizerexperimental-220" class="section level1">
 <h1 class="page-header" data-toc-text="2.2.0">
-<a href="#mizerexperimental-220" class="anchor" aria-hidden="true"></a>mizerExperimental 2.2.0</h1>
+<a href="#mizerexperimental-220" class="anchor"></a>mizerExperimental 2.2.0</h1>
 <p>The version number will now always be that of the latest mizer package that this version of mizerExperimental requires.</p>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/animateSpectra.html" class="external-link">animateSpectra()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/renameSpecies.html" class="external-link">renameSpecies()</a></code> to mizer package.</li>
+<ul>
+<li>Graduated <code>animateSpectra()</code>, <code>addSpecies()</code>, <code>removeSpecies()</code> and <code>renameSpecies()</code> to mizer package.</li>
 <li>
-<code>newSheldonParams()</code> has graduated to mizer package under the new name <code><a href="https://sizespectrum.org/mizer/reference/newSingleSpeciesParams.html" class="external-link">newSingleSpeciesParams()</a></code>.</li>
+<code>newSheldonParams()</code> has graduated to mizer package under the new name <code>newSingleSpeciesParams()</code>.</li>
 <li>Improvements to <code><a href="../reference/tuneParams.html">tuneParams()</a></code>, but still work in progress.</li>
-</ul></div>
+</ul>
+</div>
     <div id="mizerexperimental-012" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2">
-<a href="#mizerexperimental-012" class="anchor" aria-hidden="true"></a>mizerExperimental 0.1.2</h1>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/projectToSteady.html" class="external-link">projectToSteady()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/constantEggRDI.html" class="external-link">constantEggRDI()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/customFunction.html" class="external-link">customFunction()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/compareParams.html" class="external-link">compareParams()</a></code> to mizer package.</li>
+<a href="#mizerexperimental-012" class="anchor"></a>mizerExperimental 0.1.2</h1>
+<ul>
+<li>Graduated <code>projectToSteady()</code>, <code>constantEggRDI()</code>, <code>customFunction()</code> and <code>compareParams()</code> to mizer package.</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Vignette explaining size-spectrum dynamics in single-species example.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> work also with 3d pred kernel.</li>
+<code>removeSpecies()</code> work also with 3d pred kernel.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> to handles <code>gear_params</code> correctly</li>
-</ul></div>
+<code>removeSpecies()</code> to handles <code>gear_params</code> correctly</li>
+</ul>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -172,11 +191,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Gustav Delius.</p></p>
+  <p>Developed by Gustav Delius.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -184,8 +203,6 @@
 
   
 
-
-  
 
   </body>
 </html>

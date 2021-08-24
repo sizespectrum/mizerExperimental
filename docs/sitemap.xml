@@ -1,60 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/index.html</loc>
   </url>
   <url>
-    <loc>/articles/first_multispecies_model.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/calibrateBiomass.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
   </url>
   <url>
-    <loc>/reference/catchTab.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/matchBiomasses.html</loc>
   </url>
   <url>
-    <loc>/reference/getYieldVsF.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/mizerExperimental-package.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc>
   </url>
   <url>
-    <loc>/reference/markBackground.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc>
   </url>
   <url>
-    <loc>/reference/mizerExperimental-package.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.html</loc>
   </url>
   <url>
-    <loc>/reference/plotYieldVsF.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>/reference/pruneSpecies.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.html</loc>
   </url>
   <url>
-    <loc>/reference/scaleAbundance.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.html</loc>
   </url>
   <url>
-    <loc>/reference/scaleModel.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleModel.html</loc>
   </url>
   <url>
-    <loc>/reference/adjustBackgroundSpecies.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/setBevertonHolt.html</loc>
   </url>
   <url>
-    <loc>/reference/tuneParams.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/steady.html</loc>
   </url>
   <url>
-    <loc>/reference/updateInitialValues.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/tuneParams.html</loc>
   </url>
   <url>
-    <loc>/reference/validSim.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/updateInitialValues.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/validSim.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/articles/first_multispecies_model.html</loc>
   </url>
 </urlset>
