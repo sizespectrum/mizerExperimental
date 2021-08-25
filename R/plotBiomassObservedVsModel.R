@@ -1,5 +1,7 @@
 ## Functions for plotting simulated vs. observed biomass data
 
+#' @importFrom stats cor.test
+#' @importFrom utils data
 #' @export
 plotBiomassObservedVsModel = function(object, fraction = F, log_scale = T, species = NULL) {
   
@@ -58,11 +60,11 @@ plotBiomassObservedVsModel = function(object, fraction = F, log_scale = T, speci
   
   gg = ggplot(data = dummy, aes(x = data, y = simulation, colour = species, label = species)) +
     geom_point(size = 3) +
-    geom_label_repel(box.padding   = 0.35,
-                     point.padding = 0.5,
-                     segment.color = 'grey50', 
-                     show.legend = F,
-                     max.overlaps = Inf) +
+    ggrepel::geom_label_repel(box.padding   = 0.35,
+                              point.padding = 0.5,
+                              segment.color = 'grey50', 
+                              show.legend = F,
+                              max.overlaps = Inf) +
     coord_cartesian(ylim = ylim) +
     labs(x = xlab, y = ylab, title = title, color = "Legend")
   
