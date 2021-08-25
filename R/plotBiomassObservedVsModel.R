@@ -1,22 +1,34 @@
 ## Functions for plotting simulated vs. observed biomass data
 
 #' @export
-plotBiomassObservedVsModel = function(sim, fraction = F, log_scale = T, species = NULL) {
+plotBiomassObservedVsModel = function(object, fraction = F, log_scale = T, species = NULL) {
   
   # preliminary checks
-  assert_that(is(sim, "MizerSim"))
-  species = valid_species_arg(sim, species)
-  row_select = match(species, sim@params@species_params$species) # find rows corresponding to species selected
-  if (!"biomass_observed" %in% names(sim@params@species_params)) {
-    stop(paste0("You have not provided values for the column 'biomass_observed' in ", deparse(substitute(sim))), '@params@species_params.')
-  } else if (!is.numeric(sim@params@species_params$biomass_observed)) {
-    stop(paste0("The column 'biomass_observed' in ", deparse(substitute(sim))), '@params@species_params is not numeric, please fix.')
+  if (is(object, "MizerSim")) {
+    sp_params <- object@params@species_params
+  } else if (is(object, "MizerParams")) {
+    sp_params <- object@species_params
+  } else {
+    stop("You have not provided a valid mizerSim or mizerParams object.")
+  }
+  species = valid_species_arg(object, species)
+  row_select = match(species, sp_params$species) # find rows corresponding to species selected
+  if (!"biomass_observed" %in% names(sp_params)) {
+    stop("You have not provided values for the column 'biomass_observed' in the mizerParams/mizerSim object.")
+  } else if (!is.numeric(sp_params$biomass_observed)) {
+    stop("The column 'biomass_observed' in the mizerParams/mizerSim object is not numeric, please fix.")
   } else { # accept
-    biomass_observed = sim@params@species_params$biomass_observed
+    biomass_observed = sp_params$biomass_observed
   }
   
   # Build dataframe
-  dummy = data.frame(species, getBiomass(sim)[nrow(sim@n), row_select], biomass_observed[row_select]) # fraction of sim/data
+  if (is(object, "MizerSim")) { # for sim object
+    sim_biomass = getBiomass(object)[nrow(object@n), row_select]
+  } else { # for params object
+    sim_biomass <- rowSums(object@initial_n[row_select, ] * object@w * object@dw) # for Gustav to check
+  }
+  
+  dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) # fraction of sim/data
   names(dummy) = c('species', 'simulation', 'data')
   dummy$species = factor(dummy$species, levels = dummy$species[order(dummy$data, decreasing = T)]) # order by decreasing species biomass in data
   xlab = 'predicted biomass' 
@@ -62,4 +74,5 @@ plotBiomassObservedVsModel = function(sim, fraction = F, log_scale = T, species 
   
   gg # output
 }
+
 
