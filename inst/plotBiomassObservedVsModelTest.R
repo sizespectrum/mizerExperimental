@@ -9,6 +9,7 @@ library(mizerExperimental)
 library(tidyverse)
 library(ggrepel)
 library(assertthat)
+library(plotly)
 
 source('plotBiomassObservedVsModel.R') # file with plotting function
 
@@ -31,9 +32,17 @@ ns_sim@params@species_params$biomass_observed = vary_biomass
 plotBiomassObservedVsModel(ns_sim)
 plotBiomassObservedVsModel(ns_sim, log_scale = F)
 plotBiomassObservedVsModel(ns_sim, fraction = T)
+test = plotBiomassObservedVsModel(ns_sim, fraction = T, return_data = T)
 
-# Test it works for specific species
+# test labels and plotly version
+plotBiomassObservedVsModel(ns_sim, labels = F)
+ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
+
+# Test it works for specific species - either naming, numeric vector or a T/F vector
 plotBiomassObservedVsModel(ns_sim, species = c('Herring', 'Cod', 'Saithe', 'N.pout'))
+plotBiomassObservedVsModel(ns_sim, species = c(1, 3, 5, 7, 9, 11))
+plotBiomassObservedVsModel(ns_sim, species = c(T, T, T, T, T, F, F, F, T, T, F, F))
+
 
 # Test if some observed biomasses are NA or 0
 ns_sim2 = ns_sim # copy over sim object
