@@ -28,6 +28,8 @@
 #'   fraction of biomass (TRUE). Default is FALSE.
 #' @param log_scale If using the Pearson coefficient plot, whether to plot on
 #'   the log10 scale (TRUE) or not (FALSE). Default is TRUE.
+#' @param labels Whether to show text labels for each species (TRUE) or not
+#'   (FALSE). Default is TRUE.
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
 #' @return A plot of the simulated biomass by species compared to observed
