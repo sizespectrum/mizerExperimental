@@ -17,6 +17,8 @@
 #' 
 #' @param object An object of class \linkS4class{MizerParams} or \linkS4class{MizerSim}.
 #' @return A plot of the simulated biomass by species compared to observed biomass.
+#' @importFrom stats cor.test
+#' @importFrom utils data
 #' @export
 #' @examples 
 #' ns_params <- newMultispeciesParams(NS_species_params_gears, inter) # the species parameters and interaction matrix
@@ -105,11 +107,11 @@ plotBiomassObservedVsModel = function(object, fraction = F, log_scale = T, speci
   
   gg = ggplot(data = dummy, aes(x = data, y = simulation, colour = species, label = species)) +
     geom_point(size = 3) +
-    geom_label_repel(box.padding   = 0.35,
-                     point.padding = 0.5,
-                     segment.color = 'grey50', 
-                     show.legend = F,
-                     max.overlaps = Inf) +
+    ggrepel::geom_label_repel(box.padding   = 0.35,
+                              point.padding = 0.5,
+                              segment.color = 'grey50', 
+                              show.legend = F,
+                              max.overlaps = Inf) +
     coord_cartesian(ylim = ylim) +
     labs(x = xlab, y = ylab, title = title, color = "Legend")
   

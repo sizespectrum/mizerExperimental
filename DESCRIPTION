@@ -17,6 +17,7 @@ Imports:
     cubelyr,
     dplyr,
     ggplot2,
+    ggrepel,
     methods,
     plotly,
     rintrojs,
