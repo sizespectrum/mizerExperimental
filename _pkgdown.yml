@@ -46,8 +46,7 @@ reference:
   - pruneSpecies
 - title: New plotting functions
   contents:
-  - getYieldVsF
-  - plotYieldVsF
+  - starts_with("plot")
 - title: Others
   contents:
   - validSim
