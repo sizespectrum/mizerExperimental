@@ -28,9 +28,9 @@ calibrateBiomass <- function(params) {
         return(params)
     }
     cutoff <- params@species_params$biomass_cutoff
-    # When no cutoff known, set it to maturity weight / 20
-    if (is.null(cutoff)) cutoff <- params@species_params$w_mat / 20
-    cutoff[is.na(cutoff)] <- params@species_params$w_mat[is.na(cutoff)] / 20
+    # When no cutoff known, set it to 0
+    if (is.null(cutoff)) cutoff <- 0
+    cutoff[is.na(cutoff)] <- 0
     observed <- params@species_params$biomass_observed
     observed_total <- sum(observed, na.rm = TRUE)
     sp_observed <- which(!is.na(observed))

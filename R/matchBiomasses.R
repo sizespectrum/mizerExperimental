@@ -26,7 +26,7 @@ matchBiomasses <- function(params, species = NULL) {
     for (sp in (1:nrow(params@species_params))[species]) {
         cutoff <- params@species_params$biomass_cutoff[[sp]]
         if (is.null(cutoff) || is.na(cutoff)) {
-            cutoff <- params@species_params$w_mat[[sp]] / 20
+            cutoff <- 0
         }
         total <- sum((params@initial_n[sp, ] * params@w * params@dw)
                      [params@w >= cutoff])

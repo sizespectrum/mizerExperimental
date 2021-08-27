@@ -178,7 +178,7 @@ spectraTab <- function(input, output, session,
           p@species_params$biomass_observed[[sp]] > 0) {
         cutoff <- p@species_params$biomass_cutoff[[sp]]
         if (is.null(cutoff) || is.na(cutoff)) {
-          cutoff <- p@species_params$w_mat[[sp]] / 20
+          cutoff <- 0
         }
         biomass_observed <- p@species_params$biomass_observed[[sp]]
         biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
@@ -205,7 +205,7 @@ spectraTab <- function(input, output, session,
           p@species_params$biomass_observed[[sp_idx]] > 0) {
         cutoff <- p@species_params$biomass_cutoff[[sp_idx]]
         if (is.null(cutoff) || is.na(cutoff)) {
-          cutoff <- p@species_params$w_mat[[sp_idx]] / 20
+          cutoff <- 0
         }
         total <- sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff])
         factor <- p@species_params$biomass_observed[[sp_idx]] / total
@@ -233,7 +233,7 @@ spectraTab <- function(input, output, session,
             p@species_params$biomass_observed[[sp]] > 0) {
           cutoff <- p@species_params$biomass_cutoff[[sp]]
           if (is.null(cutoff) || is.na(cutoff)) {
-            cutoff <- p@species_params$w_mat[[sp]] / 20
+            cutoff <- 0
           }
           total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
           n0_old <- p@initial_n[sp, p@w_min_idx[[sp]]]
@@ -326,9 +326,9 @@ spectraTab <- function(input, output, session,
 #         p <- params()
 #         no_sp <- length(p@species_params$species)
 #         cutoff <- p@species_params$biomass_cutoff
-#         # When no cutoff known, set it to maturity weight / 20
-#         if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
-#         cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
+#         # When no cutoff known, set it to 0
+#         if (is.null(cutoff)) cutoff <- 0
+#         cutoff[is.na(cutoff)] <- 0
 #         observed <- p@species_params$biomass_observed
 #         if (is.null(observed)) observed <- 0
 # 
@@ -440,9 +440,9 @@ spectraTab <- function(input, output, session,
 #             return()
 #         }
 #         cutoff <- p@species_params$biomass_cutoff
-#         # When no cutoff known, set it to maturity weight / 20
-#         if (is.null(cutoff)) cutoff <- p@species_params$w_mat / 20
-#         cutoff[is.na(cutoff)] <- p@species_params$w_mat[is.na(cutoff)] / 20
+#         # When no cutoff known, set it to 0
+#         if (is.null(cutoff)) cutoff <- 0
+#         cutoff[is.na(cutoff)] <- 0
 #         observed <- p@species_params$biomass_observed
 #         observed_total <- sum(observed, na.rm = TRUE)
 #         sp_observed <- which(!is.na(observed))
@@ -468,7 +468,7 @@ spectraTab <- function(input, output, session,
 #             p@species_params$biomass_observed[[sp]] > 0) {
 #             cutoff <- p@species_params$biomass_cutoff[[sp]]
 #             if (is.null(cutoff) || is.na(cutoff)) {
-#                 cutoff <- p@species_params$w_mat[[sp]] / 20
+#                 cutoff <- 0
 #             }
 #             biomass_observed <- p@species_params$biomass_observed[[sp]]
 #             biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
@@ -495,7 +495,7 @@ spectraTab <- function(input, output, session,
 #                 p@species_params$biomass_observed[[sp_idx]] > 0) {
 #             cutoff <- p@species_params$biomass_cutoff[[sp_idx]]
 #             if (is.null(cutoff) || is.na(cutoff)) {
-#                 cutoff <- p@species_params$w_mat[[sp_idx]] / 20
+#                 cutoff <- 0
 #             }
 #             total <- sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff])
 #             factor <- p@species_params$biomass_observed[[sp_idx]] / total
@@ -523,7 +523,7 @@ spectraTab <- function(input, output, session,
 #             p@species_params$biomass_observed[[sp]] > 0) {
 #           cutoff <- p@species_params$biomass_cutoff[[sp]]
 #           if (is.null(cutoff) || is.na(cutoff)) {
-#             cutoff <- p@species_params$w_mat[[sp]] / 20
+#             cutoff <- 0
 #           }
 #           total <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
 #           n0_old <- p@initial_n[sp, p@w_min_idx[[sp]]]
