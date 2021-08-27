@@ -132,11 +132,11 @@ plotBiomassObservedVsModel = function(object, species = NULL, fraction = FALSE, 
     scale_colour_manual(values = getColours(params)[species])
   
   if (labels == T)  {
-    gg = gg + geom_label_repel(box.padding   = 0.35,
-                               point.padding = 0.5,
-                               segment.color = 'grey50', 
-                               show.legend = F,
-                               max.overlaps = Inf)
+    gg = gg + ggrepel::geom_label_repel(box.padding   = 0.35,
+                                        point.padding = 0.5,
+                                        segment.color = 'grey50', 
+                                        show.legend = F,
+                                        max.overlaps = Inf)
   }   
   
   if (fraction == F) {
