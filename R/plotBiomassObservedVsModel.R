@@ -1,4 +1,4 @@
-#' Plotting simulated vs. observed biomass data
+#' Plotting observed vs. observed biomass data
 #'
 #' Given a MizerParams object or MizerSIm object `object` for which biomass
 #' observations are available for at least some species via
@@ -8,7 +8,7 @@
 #' For mizerParams objects, the initial biomass of species will be compared to
 #' the observed biomasses - unless the initial biomasses have been carefully
 #' calibrated we would not expect these to be close. For mizerSim objects, the
-#' final biomasses of the species will be compared to the observed biomasses.
+#' final biomasses of species will be compared to the observed biomasses.
 #'
 #' Make sure that, for species which have no observed biomass,
 #' `biomass_observed` for these species are set as 0 or NA.
@@ -24,7 +24,7 @@
 #'   biomasses will be matched. A vector of species names, or a numeric vector
 #'   with the species indices, or a logical vector indicating for each species
 #'   whether it is to be affected (TRUE) or not.
-#' @param fraction Whether to plot the Pearson correlation (FALSE) or the
+#' @param ratio Whether to plot the Pearson correlation (FALSE) or the
 #'   fraction of biomass (TRUE). Default is FALSE.
 #' @param log_scale If using the Pearson coefficient plot, whether to plot on
 #'   the log10 scale (TRUE) or not (FALSE). Default is TRUE.
@@ -32,15 +32,16 @@
 #'   (FALSE). Default is TRUE.
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
-#' @return A plot of the simulated biomass by species compared to observed
-#'   biomass.
+#' @return A plot of the model biomass by species compared to observed
+#'   biomass. The total absolute error is shown, calculated by
+#'   TAE = \sum_i(abs(1-ratio_i))
 #' @return The dataframe which creates the plot. Default is FALSE.
 #' @importFrom stats cor.test
 #' @importFrom utils data
 #' @export
 #' @examples
 #' ns_params <- newMultispeciesParams(NS_species_params_gears, inter) # the species parameters and interaction matrix
-#' ns_sim <- project(ns_params, t_max = 100, progress_bar = FALSE)
+#' ns_sim <- project(ns_params, t_max = 100, progress_bar = FALSE) # run forwards in time
 #' end_biomass <- getBiomass(ns_sim)[nrow(ns_sim@n), ] # biomass at steady state
 #' vary_biomass <- end_biomass*(0.75+0.5*runif(nrow(ns_params@interaction))) # shift biomasses a bit
 #' # Check that works for the params object
@@ -53,8 +54,10 @@
 #' plotBiomassObservedVsModel(ns_sim, fraction = T)
 #' test = plotBiomassObservedVsModel(ns_sim, fraction = T, return_data = T)
 #' 
-plotBiomassObservedVsModel = function(object, species = NULL, fraction = FALSE, log_scale = TRUE, 
+plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log_scale = TRUE, 
                                       return_data = FALSE, labels = TRUE) {
+  
+  # browser() # for checking function
   
   # preliminary checks
   if (is(object, "MizerSim")) {
@@ -94,56 +97,48 @@ plotBiomassObservedVsModel = function(object, species = NULL, fraction = FALSE, 
                                                     [params@w >= cutoff[j]]) # biomass calculation
   
   # Build dataframe
-  dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) # fraction of sim/data
-  names(dummy) = c('species', 'simulation', 'data')
-  dummy$species = factor(dummy$species, levels = dummy$species[order(dummy$data, decreasing = T)]) # order by decreasing species biomass in data
-  xlab = 'predicted biomass' 
-  ylab = 'observed biomass'
-  
-  if (fraction == F & log_scale == T) { # For Pearson only, allow log10 biomasses
-    dummy = dummy %>% mutate(simulation = log10(simulation), data = log10(data))
-    xlab = 'log10(predicted biomass)' # update axis labels
-    ylab = 'log10(observed biomass)'
-  } 
-  
-  # pull out NA biomasses
-  dummy = dummy %>% filter(!is.na(data), data > 0)
+  dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>% # fraction of sim/data
+    rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
+    filter(!is.na(observed), observed > 0) # remove NA and 0 observed biomasses
+
+  dummy = dummy %>% mutate(species = factor(species, levels = dummy$species[order(dummy$observed, decreasing = T)]), # order by decreasing species biomass in data
+           ratio = model/observed) # add ratio of model/observed
   
   # Check that at least one observed biomass exists
-  if (!nrow(dummy) > 0) stop('Error: there are no observed biomasses to compare to simulated biomass, please fix.')
+  if (!nrow(dummy) > 0) stop('Error: there are no observed biomasses to compare to model biomasses, please fix.')
   
-  if (fraction == F) { # for Pearson
-    res <- cor.test(dummy$simulation, dummy$data, method = "pearson") # Pearson's correlation coefficient
-    pc = round(res$estimate, digits = 3) # rounded down to 3 digits
-    title = paste("Pearsons coefficient =", pc)
-    ylim = range(dummy %>% select(simulation, data)) # set y-limit
-  } else { # for fraction
-    res <- sum(abs(1 - dummy$simulation/dummy$data)) # sum of absolute differences
-    pc = round(res, digits = 3) # rounded down to 3 digits
-    dummy$simulation = dummy$simulation/dummy$data # replace simulation biomass with fraction
-    title = paste("Total difference =", pc)
-    ylim = range(dummy$simulation)
+  # Calculate total sum of differences (abs(1-ratio))
+  sad <- round(sum(abs(1 - dummy$ratio)), digits = 3) # sum of absolute differences, rounded down to 3 digits
+  
+  if (ratio == F) {
+    gg = ggplot(data = dummy, aes(x = observed, y = model, colour = species, label = species)) +
+      geom_point(size = 3) +
+      labs(y = 'model biomass') + 
+      coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
+      geom_abline(aes(intercept = 0, slope = 1), colour = 'purple', linetype = "dashed", size = 1.3) # y = x line
+  } else {
+    gg = ggplot(data = dummy, aes(x = observed, y = ratio, colour = species, label = species)) +
+      geom_point(size = 3) +
+      labs(y = 'observed biomass / model biomass') +
+    coord_cartesian(ylim = range(dummy$ratio)) +
+      geom_hline(aes(yintercept = 1), linetype = "dashed", colour = 'purple', size = 1.3)
   }
   
-  gg = ggplot(data = dummy, aes(x = data, y = simulation, colour = species, label = species)) +
-    geom_point(size = 3) +
-    coord_cartesian(ylim = ylim) +
-    labs(x = xlab, y = ylab, title = title, color = "Legend") +
-    scale_colour_manual(values = getColours(params)[species])
+  gg = gg + labs(x = 'observed biomass',
+                 title = paste0("Sum of absolute differences = ", sad), 
+                 color = "Legend") +
+    scale_colour_manual(values = getColours(params)[dummy$species])
+  
+  if (log_scale == T & ratio == F) gg = gg + scale_x_log10() + scale_y_log10()
+  if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
   
   if (labels == T)  {
-    gg = gg + geom_label_repel(box.padding   = 0.35,
+    gg = gg + geom_label_repel(box.padding = 0.35,
                                point.padding = 0.5,
                                segment.color = 'grey50', 
                                show.legend = F,
                                max.overlaps = Inf)
   }   
-  
-  if (fraction == F) {
-    gg = gg + geom_abline(aes(intercept = 0, slope = 1), colour = 'purple', linetype = "dashed", size = 1.3) # y = x line
-  } else {
-    gg = gg + geom_hline(aes(yintercept = 1), linetype = "dashed", colour = 'purple', size = 1.3)
-  }
   
   print(gg) # output
   

@@ -31,8 +31,10 @@ plotBiomassObservedVsModel(ns_params)
 ns_sim@params@species_params$biomass_observed = vary_biomass
 plotBiomassObservedVsModel(ns_sim)
 plotBiomassObservedVsModel(ns_sim, log_scale = F)
-plotBiomassObservedVsModel(ns_sim, fraction = T)
-test = plotBiomassObservedVsModel(ns_sim, fraction = T, return_data = T)
+plotBiomassObservedVsModel(ns_sim, ratio = T)
+plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F)
+plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F, labels = F)
+test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
 
 # test labels and plotly version
 plotBiomassObservedVsModel(ns_sim, labels = F)
@@ -56,7 +58,7 @@ plotBiomassObservedVsModel(ns_sim2)
 
 # Check a sim object works with a cutoff
 ns_sim2 = ns_sim # copy over sim object
-ns_sim2@params@species_params$biomass_cutoff = rep(10, nrow(ns_sim3@params@species_params))
+ns_sim2@params@species_params$biomass_cutoff = rep(10, nrow(ns_sim2@params@species_params))
 plotBiomassObservedVsModel(ns_sim2)
 
 # Do the same for a mizerParams object
