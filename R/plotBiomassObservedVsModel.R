@@ -100,9 +100,9 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log
   dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>% # fraction of sim/data
     rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
     filter(!is.na(observed), observed > 0) # remove NA and 0 observed biomasses
-
+  
   dummy = dummy %>% mutate(species = factor(species, levels = dummy$species[order(dummy$observed, decreasing = T)]), # order by decreasing species biomass in data
-           ratio = model/observed) # add ratio of model/observed
+                           ratio = model/observed) # add ratio of model/observed
   
   # Check that at least one observed biomass exists
   if (!nrow(dummy) > 0) stop('Error: there are no observed biomasses to compare to model biomasses, please fix.')
@@ -120,7 +120,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log
     gg = ggplot(data = dummy, aes(x = observed, y = ratio, colour = species, label = species)) +
       geom_point(size = 3) +
       labs(y = 'observed biomass / model biomass') +
-    coord_cartesian(ylim = range(dummy$ratio)) +
+      coord_cartesian(ylim = range(dummy$ratio)) +
       geom_hline(aes(yintercept = 1), linetype = "dashed", colour = 'purple', size = 1.3)
   }
   
@@ -133,19 +133,11 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log
   if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
   
   if (labels == T)  {
-<<<<<<< HEAD
     gg = gg + geom_label_repel(box.padding = 0.35,
                                point.padding = 0.5,
                                segment.color = 'grey50', 
                                show.legend = F,
                                max.overlaps = Inf)
-=======
-    gg = gg + ggrepel::geom_label_repel(box.padding   = 0.35,
-                                        point.padding = 0.5,
-                                        segment.color = 'grey50', 
-                                        show.legend = F,
-                                        max.overlaps = Inf)
->>>>>>> 6d6348adf0bc4f2db705b0e4a6a0e308bab0889e
   }   
   
   print(gg) # output
