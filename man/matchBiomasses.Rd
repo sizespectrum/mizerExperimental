@@ -27,5 +27,5 @@ species_params(params)$biomass_observed <-
 species_params(params)$biomass_cutoff <- 10
 params <- calibrateBiomass(params)
 params <- matchBiomasses(params)
-plotBiomassVsSpecies(params)
+lotBiomassObservedVsModel(params)
 }

@@ -120,7 +120,7 @@ spectraTab <- function(input, output, session,
     
     # Plot total biomass ----
     output$plotTotalBiomass <- renderPlot({
-      plotBiomassVsSpecies(params()) +
+      plotBiomassObservedVsModel(params()) +
         theme(text = element_text(size = 18))
     })
     

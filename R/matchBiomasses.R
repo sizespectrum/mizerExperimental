@@ -14,7 +14,7 @@
 #' species_params(params)$biomass_cutoff <- 10
 #' params <- calibrateBiomass(params)
 #' params <- matchBiomasses(params)
-#' plotBiomassVsSpecies(params)
+#' lotBiomassObservedVsModel(params)
 matchBiomasses <- function(params, species = NULL) {
     if (!("biomass_observed" %in% names(params@species_params))) {
         return(params)
