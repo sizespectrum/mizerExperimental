@@ -106,6 +106,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         stop('params@species_params$biomass_cutoff is not numeric, ",
                  "please fix.')
     }
+    cutoff[is.na(cutoff)] <- 0
 
     # pull out biomasses from params object
     sim_biomass = rep(0, length(species))
