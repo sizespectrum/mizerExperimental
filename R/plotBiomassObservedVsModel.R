@@ -1,29 +1,32 @@
-#' Plotting observed vs. observed biomass data
+#' Plotting observed vs. model biomass data
 #'
-#' Given a MizerParams object or MizerSIm object `object` for which biomass
-#' observations are available for at least some species via
-#' `species_params(params)$biomass_observed`, this function plots the total
-#' biomass by species against the provided biomass observation values.
+#' If biomass observations are available for at least some species via the
+#' `biomass_observed` column in the species parameter data frame, this function
+#' plots the biomass of each species in the model against the observed
+#' biomasses. When called with a MizerSim object, the plot will use the model
+#' biomasses predicted for the final time step in the simulation.
 #'
-#' For mizerParams objects, the initial biomass of species will be compared to
-#' the observed biomasses - unless the initial biomasses have been carefully
-#' calibrated we would not expect these to be close. For mizerSim objects, the
-#' final biomasses of species will be compared to the observed biomasses.
+#' Before you can use this function you will need to have added a
+#' `biomass_observed` column to your model which gives the observed biomass in
+#' grams.  For species for which you have no observed biomass, you should set
+#' the value in the `biomass_observed` column to 0 or NA.
 #'
-#' Make sure that, for species which have no observed biomass,
-#' `biomass_observed` for these species are set as 0 or NA.
+#' Biomass observations usually only include individuals above a certain size.
+#' This size should be specified in a `biomass_cutoff` column of the species
+#' parameter data frame. If this is missing, it is assumed that all sizes are
+#' included in the observed biomass, i.e., it includes larval biomass.
 #'
-#' Observed biomasses usually only include individuals above a certain size.
-#' This size should either be specified in
-#' `species_params(params)$biomass_cutoff` in grams, or else all sizes are
-#' included.
+#' The total relative error is shown in the caption of the plot, calculated by
+#'   \deqn{TRE = \sum_i|1-\rm{ratio_i}|}{TRE = sum_i |1-ratio_i|} where
+#'   \eqn{\rm{ratio_i}}{ratio_i} is the ratio of model biomass / observed
+#'   biomass for species i.
 #'
 #' @param object An object of class \linkS4class{MizerParams} or
 #'   \linkS4class{MizerSim}.
-#' @param species The species to be affected. Optional. By default all observed
-#'   biomasses will be matched. A vector of species names, or a numeric vector
+#' @param species The species to be included. Optional. By default all observed
+#'   biomasses will be included. A vector of species names, or a numeric vector
 #'   with the species indices, or a logical vector indicating for each species
-#'   whether it is to be affected (TRUE) or not.
+#'   whether it is to be included (TRUE) or not.
 #' @param ratio Whether to plot model biomass vs. observed biomass (FALSE) or
 #'   the ratio of model : observed biomass (TRUE). Default is FALSE.
 #' @param log_scale Whether to plot on the log10 scale (TRUE) or not (FALSE).
@@ -34,10 +37,7 @@
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
 #' @return A ggplot2 object with the plot of model biomass by species compared
-#'   to observed biomass. The total relative error is shown, calculated by
-#'   \eqn{TRE = \sum_i|1-\rm{ratio_i}|}{TRE = sum_i |1-ratio_i|} where
-#'   \eqn{\rm{ratio_i}}{ratio_i} is the ratio of model biomass / observed
-#'   biomass for species i. If `return_data = TRUE`, the data frame used to
+#'   to observed biomass. If `return_data = TRUE`, the data frame used to
 #'   create the plot is returned instead of the plot.
 #' @importFrom stats cor.test
 #' @importFrom utils data
@@ -50,17 +50,20 @@
 #' species_params(params)$biomass_cutoff <- 10
 #' params <- calibrateBiomass(params)
 #'
-#' Plot with default options
+#' # Plot with default options
 #' plotBiomassObservedVsModel(params)
-#' Show the ratio instead
+#'
+#' # Show the ratio instead
 #' plotBiomassObservedVsModel(params, ratio = TRUE)
 #'
 #' # Run a simulation
 #' params <- matchBiomasses(params)
 #' sim <- project(params, t_max = 10)
 #' plotBiomass(sim)
+#'
 #' # Plot the biomass comparison at the final time
 #' plotBiomassObservedVsModel(sim)
+#'
 #' # The same with no log scaling of axes
 #' plotBiomassObservedVsModel(sim, log_scale = FALSE)
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
