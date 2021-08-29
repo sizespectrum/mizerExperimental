@@ -135,11 +135,11 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log
   if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
   
   if (labels == T)  {
-    gg = gg + geom_label_repel(box.padding = 0.35,
-                               point.padding = 0.5,
-                               segment.color = 'grey50', 
-                               show.legend = F,
-                               max.overlaps = Inf)
+    gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
+                                        point.padding = 0.5,
+                                        segment.color = 'grey50', 
+                                        show.legend = F,
+                                        max.overlaps = Inf)
   }   
   
   print(gg) # output
