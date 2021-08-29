@@ -24,16 +24,17 @@
 #'   biomasses will be matched. A vector of species names, or a numeric vector
 #'   with the species indices, or a logical vector indicating for each species
 #'   whether it is to be affected (TRUE) or not.
-#' @param ratio Whether to plot the Pearson correlation (FALSE) or the
-#'   fraction of biomass (TRUE). Default is FALSE.
-#' @param log_scale If using the Pearson coefficient plot, whether to plot on
-#'   the log10 scale (TRUE) or not (FALSE). Default is TRUE.
+#' @param ratio Whether to plot model biomass vs. observed biomass (FALSE) or
+#'   the ratio of model : observed biomass (TRUE). Default is FALSE.
+#' @param log_scale Whether to plot on the log10 scale (TRUE) or not (FALSE).
+#'   For the non-ratio plot this applies for both axes, for the ratio plot only
+#'   the x-axis is on the log10 scale. Default is TRUE.
 #' @param labels Whether to show text labels for each species (TRUE) or not
 #'   (FALSE). Default is TRUE.
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
-#' @return A plot of the model biomass by species compared to observed
-#'   biomass. The total absolute error is shown, calculated by
+#' @return A plot of the model biomass by species compared to observed biomass.
+#'   The total absolute error is shown, calculated by 
 #'   TAE = \sum_i(abs(1-ratio_i))
 #' @return The dataframe which creates the plot. Default is FALSE.
 #' @importFrom stats cor.test
@@ -41,22 +42,23 @@
 #' @export
 #' @examples
 #' ns_params <- newMultispeciesParams(NS_species_params_gears, inter) # the species parameters and interaction matrix
-#' ns_sim <- project(ns_params, t_max = 100, progress_bar = FALSE) # run forwards in time
-#' end_biomass <- getBiomass(ns_sim)[nrow(ns_sim@n), ] # biomass at steady state
-#' vary_biomass <- end_biomass*(0.75+0.5*runif(nrow(ns_params@interaction))) # shift biomasses a bit
-#' # Check that works for the params object
-#' species_params(ns_params)$biomass_observed <- vary_biomass # read into ns_params object
+#' ns_sim = project(ns_params, t_max = 100, progress_bar = F)
+#' end_biomass = getBiomass(ns_sim)[nrow(ns_sim@n), ] # biomass at steady state
+#' vary_biomass = end_biomass*(0.75+0.5*runif(nrow(ns_params@interaction))) # shift biomasses a bit
+#' species_params(ns_params)$biomass_observed = vary_biomass # read into ns_params object
 #' plotBiomassObservedVsModel(ns_params)
-#' # Check that works for the sim object
-#' species_params(ns_sim@params)$biomass_observed <- vary_biomass
+#' species_params(ns_sim@params)$biomass_observed = vary_biomass
 #' plotBiomassObservedVsModel(ns_sim)
 #' plotBiomassObservedVsModel(ns_sim, log_scale = F)
-#' plotBiomassObservedVsModel(ns_sim, fraction = T)
-#' test = plotBiomassObservedVsModel(ns_sim, fraction = T, return_data = T)
-#' 
+#' plotBiomassObservedVsModel(ns_sim, ratio = T)
+#' plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F)
+#' plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F, labels = F)
+#' test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
+#' ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
+
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log_scale = TRUE, 
                                       return_data = FALSE, labels = TRUE) {
-  
+
   # browser() # for checking function
   
   # preliminary checks
