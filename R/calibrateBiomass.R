@@ -27,9 +27,10 @@ calibrateBiomass <- function(params) {
         all(is.na(params@species_params$biomass_observed))) {
         return(params)
     }
+    no_sp <- nrow(params@species_params)
     cutoff <- params@species_params$biomass_cutoff
     # When no cutoff known, set it to 0
-    if (is.null(cutoff)) cutoff <- 0
+    if (is.null(cutoff)) cutoff <- rep(0, no_sp)
     cutoff[is.na(cutoff)] <- 0
     observed <- params@species_params$biomass_observed
     observed_total <- sum(observed, na.rm = TRUE)
