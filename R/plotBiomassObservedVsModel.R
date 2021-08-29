@@ -34,8 +34,8 @@
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
 #' @return A plot of the model biomass by species compared to observed biomass.
-#'   The total absolute error is shown, calculated by 
-#'   TAE = \sum_i(abs(1-ratio_i))
+#'   The total relative error is shown, calculated by
+#'   \eqn{TRE = \sum_i(\abs(1-ratio_i))}{TRE = sum_i(abs(1-ratio_i))}
 #' @return The dataframe which creates the plot. Default is FALSE.
 #' @importFrom stats cor.test
 #' @importFrom utils data
