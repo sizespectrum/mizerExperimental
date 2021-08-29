@@ -127,7 +127,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log
   }
   
   gg = gg + labs(x = 'observed biomass',
-                 title = paste0("Sum of absolute differences = ", sad), 
+                 caption = paste0("Total relative error = ", sad), 
                  color = "Legend") +
     scale_colour_manual(values = getColours(params)[dummy$species])
   
