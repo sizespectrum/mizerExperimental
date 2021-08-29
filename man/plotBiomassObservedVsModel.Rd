@@ -2,6 +2,7 @@
 % Please edit documentation in R/plotBiomassObservedVsModel.R
 \name{plotBiomassObservedVsModel}
 \alias{plotBiomassObservedVsModel}
+\alias{plotlyBiomassObservedVsModel}
 \title{Plotting observed vs. model biomass data}
 \usage{
 plotBiomassObservedVsModel(
@@ -11,6 +12,14 @@ plotBiomassObservedVsModel(
   log_scale = TRUE,
   return_data = FALSE,
   labels = TRUE
+)
+
+plotlyBiomassObservedVsModel(
+  object,
+  species = NULL,
+  ratio = FALSE,
+  log_scale = TRUE,
+  ...
 )
 }
 \arguments{
