@@ -42,19 +42,19 @@
 #' @export
 #' @examples
 #' ns_params <- newMultispeciesParams(NS_species_params_gears, inter) # the species parameters and interaction matrix
-#' ns_sim = project(ns_params, t_max = 100, progress_bar = F)
+#' ns_sim = project(ns_params, t_max = 100, progress_bar = FALSE)
 #' end_biomass = getBiomass(ns_sim)[nrow(ns_sim@n), ] # biomass at steady state
 #' vary_biomass = end_biomass*(0.75+0.5*runif(nrow(ns_params@interaction))) # shift biomasses a bit
 #' species_params(ns_params)$biomass_observed = vary_biomass # read into ns_params object
 #' plotBiomassObservedVsModel(ns_params)
 #' species_params(ns_sim@params)$biomass_observed = vary_biomass
 #' plotBiomassObservedVsModel(ns_sim)
-#' plotBiomassObservedVsModel(ns_sim, log_scale = F)
-#' plotBiomassObservedVsModel(ns_sim, ratio = T)
-#' plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F)
-#' plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F, labels = F)
-#' test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
-#' ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
+#' plotBiomassObservedVsModel(ns_sim, log_scale = FALSE)
+#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE)
+#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE, log_scale = FALSE)
+#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE, log_scale = FALSE, labels = FALSE)
+#' test = plotBiomassObservedVsModel(ns_sim, ratio = TRUE, return_data = TRUE)
+#' ggplotly(plotBiomassObservedVsModel(ns_sim, labels = FALSE))
 
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                                       log_scale = TRUE,
@@ -110,7 +110,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         filter(!is.na(observed), observed > 0)
 
     # order by decreasing species biomass in data, add ratio of model/observed
-    levels <- dummy$species[order(dummy$observed, decreasing = T)]
+    levels <- dummy$species[order(dummy$observed, decreasing = TRUE)]
     dummy = dummy %>% mutate(species = factor(species, levels = levels),
                              ratio = model/observed)
 
@@ -120,10 +120,12 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
              "biomasses, please fix.')
     }
 
+    if (return_data == TRUE) return(dummy)
+
     # Calculate total sum of differences (abs(1-ratio)) rounded to 3 digits
     tre <- round(sum(abs(1 - dummy$ratio)), digits = 3)
 
-    if (ratio == F) {
+    if (ratio == FALSE) {
         gg = ggplot(data = dummy, aes(x = observed, y = model,
                                       colour = species, label = species)) +
             geom_point(size = 3) +
@@ -146,18 +148,17 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                    color = "Legend") +
         scale_colour_manual(values = getColours(params)[dummy$species])
 
-    if (log_scale == T & ratio == F) gg = gg + scale_x_log10() + scale_y_log10()
-    if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
+    if (log_scale == TRUE & ratio == FALSE) gg = gg + scale_x_log10() + scale_y_log10()
+    if (log_scale == TRUE & ratio == TRUE) gg = gg + scale_x_log10()
 
-    if (labels == T)  {
+    if (labels == TRUE)  {
         gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
                                             point.padding = 0.5,
                                             segment.color = 'grey50',
-                                            show.legend = F,
+                                            show.legend = FALSE,
                                             max.overlaps = Inf)
     }
 
     print(gg) # output
 
-    if (return_data == T) return(dummy)
 }
