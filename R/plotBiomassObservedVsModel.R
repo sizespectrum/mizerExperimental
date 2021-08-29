@@ -33,29 +33,36 @@
 #'   (FALSE). Default is TRUE.
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
 #'   not (FALSE). Default is FALSE
-#' @return A plot of the model biomass by species compared to observed biomass.
-#'   The total relative error is shown, calculated by
-#'   \eqn{TRE = \sum_i(\abs(1-ratio_i))}{TRE = sum_i(abs(1-ratio_i))}
-#' @return The dataframe which creates the plot. Default is FALSE.
+#' @return A ggplot2 object with the plot of model biomass by species compared
+#'   to observed biomass. The total relative error is shown, calculated by
+#'   \eqn{TRE = \sum_i|1-\rm{ratio_i}|}{TRE = sum_i |1-ratio_i|} where
+#'   \eqn{\rm{ratio_i}}{ratio_i} is the ratio of model biomass / observed
+#'   biomass for species i. If `return_data = TRUE`, the data frame used to
+#'   create the plot is returned instead of the plot.
 #' @importFrom stats cor.test
 #' @importFrom utils data
 #' @export
 #' @examples
-#' ns_params <- newMultispeciesParams(NS_species_params_gears, inter) # the species parameters and interaction matrix
-#' ns_sim = project(ns_params, t_max = 100, progress_bar = FALSE)
-#' end_biomass = getBiomass(ns_sim)[nrow(ns_sim@n), ] # biomass at steady state
-#' vary_biomass = end_biomass*(0.75+0.5*runif(nrow(ns_params@interaction))) # shift biomasses a bit
-#' species_params(ns_params)$biomass_observed = vary_biomass # read into ns_params object
-#' plotBiomassObservedVsModel(ns_params)
-#' species_params(ns_sim@params)$biomass_observed = vary_biomass
-#' plotBiomassObservedVsModel(ns_sim)
-#' plotBiomassObservedVsModel(ns_sim, log_scale = FALSE)
-#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE)
-#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE, log_scale = FALSE)
-#' plotBiomassObservedVsModel(ns_sim, ratio = TRUE, log_scale = FALSE, labels = FALSE)
-#' test = plotBiomassObservedVsModel(ns_sim, ratio = TRUE, return_data = TRUE)
-#' ggplotly(plotBiomassObservedVsModel(ns_sim, labels = FALSE))
-
+#' # create an example
+#' params <- NS_params
+#' species_params(params)$biomass_observed <-
+#'     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
+#' species_params(params)$biomass_cutoff <- 10
+#' params <- calibrateBiomass(params)
+#'
+#' Plot with default options
+#' plotBiomassObservedVsModel(params)
+#' Show the ratio instead
+#' plotBiomassObservedVsModel(params, ratio = TRUE)
+#'
+#' # Run a simulation
+#' params <- matchBiomasses(params)
+#' sim <- project(params, t_max = 10)
+#' plotBiomass(sim)
+#' # Plot the biomass comparison at the final time
+#' plotBiomassObservedVsModel(sim)
+#' # The same with no log scaling of axes
+#' plotBiomassObservedVsModel(sim, log_scale = FALSE)
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                                       log_scale = TRUE,
                                       return_data = FALSE, labels = TRUE) {
@@ -148,8 +155,12 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                    color = "Legend") +
         scale_colour_manual(values = getColours(params)[dummy$species])
 
-    if (log_scale == TRUE & ratio == FALSE) gg = gg + scale_x_log10() + scale_y_log10()
-    if (log_scale == TRUE & ratio == TRUE) gg = gg + scale_x_log10()
+    if (log_scale == TRUE & ratio == FALSE) {
+        gg = gg + scale_x_log10() + scale_y_log10()
+    }
+    if (log_scale == TRUE & ratio == TRUE) {
+        gg = gg + scale_x_log10()
+    }
 
     if (labels == TRUE)  {
         gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
