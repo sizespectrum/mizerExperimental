@@ -116,9 +116,8 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
         filter(!is.na(observed), observed > 0)
 
-    # order by decreasing species biomass in data, add ratio of model/observed
-    levels <- dummy$species[order(dummy$observed, decreasing = TRUE)]
-    dummy = dummy %>% mutate(species = factor(species, levels = levels),
+    # preserve species order, add ratio of model/observed
+    dummy = dummy %>% mutate(species = factor(species, levels = dummy$species),
                              ratio = model/observed)
 
     # Check that at least one observed biomass exists
