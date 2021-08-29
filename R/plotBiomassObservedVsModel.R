@@ -133,7 +133,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
 
     if (ratio == FALSE) {
         gg = ggplot(data = dummy, aes(x = observed, y = model,
-                                      colour = species, label = species)) +
+                                      colour = species)) +
             geom_point(size = 3) +
             labs(y = 'model biomass') +
             coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
@@ -141,7 +141,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                         linetype = "dashed", size = 1.3) # y = x line
     } else {
         gg = ggplot(data = dummy, aes(x = observed, y = ratio,
-                                      colour = species, label = species)) +
+                                      colour = species)) +
             geom_point(size = 3) +
             labs(y = 'observed biomass / model biomass') +
             coord_cartesian(ylim = range(dummy$ratio)) +
@@ -162,11 +162,13 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     }
 
     if (labels == TRUE)  {
-        gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
-                                            point.padding = 0.5,
-                                            segment.color = 'grey50',
-                                            show.legend = FALSE,
-                                            max.overlaps = Inf)
+        gg = gg + ggrepel::geom_label_repel(
+            aes(label = species),
+            box.padding = 0.35,
+            point.padding = 0.5,
+            segment.color = 'grey50',
+            show.legend = FALSE,
+            max.overlaps = Inf)
     }
     gg
 }
