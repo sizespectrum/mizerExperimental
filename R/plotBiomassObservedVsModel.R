@@ -158,7 +158,5 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                                             show.legend = FALSE,
                                             max.overlaps = Inf)
     }
-
-    print(gg) # output
-
+    gg
 }
