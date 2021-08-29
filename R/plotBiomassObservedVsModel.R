@@ -56,95 +56,108 @@
 #' test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
 #' ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
 
-plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE, log_scale = TRUE, 
+plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
+                                      log_scale = TRUE,
                                       return_data = FALSE, labels = TRUE) {
 
-  # browser() # for checking function
-  
-  # preliminary checks
-  if (is(object, "MizerSim")) {
-    params = object@params # pull out params object
-    n <- finalN(object) # we want final numbers
-  } else if (is(object, "MizerParams")) {
-    params = object # params object is just input
-    n <- initialN(params) # we want initial numbers
-  } else {
-    stop("You have not provided a valid mizerSim or mizerParams object.")
-  }
-  sp_params <- params@species_params # get species_params data frame
-  
-  # Select appropriate species
-  species = valid_species_arg(object, species)
-  row_select = match(species, sp_params$species) # find rows corresponding to species selected
-  if (!"biomass_observed" %in% names(sp_params)) {
-    stop("You have not provided values for the column 'biomass_observed' in the mizerParams/mizerSim object.")
-  } else if (!is.numeric(sp_params$biomass_observed)) {
-    stop("The column 'biomass_observed' in the mizerParams/mizerSim object is not numeric, please fix.")
-  } else { # accept
-    biomass_observed = sp_params$biomass_observed
-  }
-  
-  # Check if cutoff exists
-  cutoff <- sp_params$biomass_cutoff[row_select]
-  # When no cutoff known, set it to 0 for all species (so all sizes are included)
-  if (is.null(cutoff)) { 
-    cutoff = rep(0, length(species))
-  } else { # make sure it's numeric
-    if (!is.numeric(cutoff)) stop('params@species_params$biomass_cutoff is not numeric, please fix.')
-  }
-  
-  # pull out biomasses from simulation / params object
-  sim_biomass = rep(0, length(species))
-  for (j in 1:length(species)) sim_biomass[j] = sum((n[row_select[j], ] * params@w * params@dw)
-                                                    [params@w >= cutoff[j]]) # biomass calculation
-  
-  # Build dataframe
-  dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>% # fraction of sim/data
-    rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
-    filter(!is.na(observed), observed > 0) # remove NA and 0 observed biomasses
-  
-  dummy = dummy %>% mutate(species = factor(species, levels = dummy$species[order(dummy$observed, decreasing = T)]), # order by decreasing species biomass in data
-                           ratio = model/observed) # add ratio of model/observed
-  
-  # Check that at least one observed biomass exists
-  if (!nrow(dummy) > 0) stop('Error: there are no observed biomasses to compare to model biomasses, please fix.')
-  
-  # Calculate total sum of differences (abs(1-ratio))
-  sad <- round(sum(abs(1 - dummy$ratio)), digits = 3) # sum of absolute differences, rounded down to 3 digits
-  
-  if (ratio == F) {
-    gg = ggplot(data = dummy, aes(x = observed, y = model, colour = species, label = species)) +
-      geom_point(size = 3) +
-      labs(y = 'model biomass') + 
-      coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
-      geom_abline(aes(intercept = 0, slope = 1), colour = 'purple', linetype = "dashed", size = 1.3) # y = x line
-  } else {
-    gg = ggplot(data = dummy, aes(x = observed, y = ratio, colour = species, label = species)) +
-      geom_point(size = 3) +
-      labs(y = 'observed biomass / model biomass') +
-      coord_cartesian(ylim = range(dummy$ratio)) +
-      geom_hline(aes(yintercept = 1), linetype = "dashed", colour = 'purple', size = 1.3)
-  }
-  
-  gg = gg + labs(x = 'observed biomass',
-                 caption = paste0("Total relative error = ", sad), 
-                 color = "Legend") +
-    scale_colour_manual(values = getColours(params)[dummy$species])
-  
-  if (log_scale == T & ratio == F) gg = gg + scale_x_log10() + scale_y_log10()
-  if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
-  
-  if (labels == T)  {
-    gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
-                                        point.padding = 0.5,
-                                        segment.color = 'grey50', 
-                                        show.legend = F,
-                                        max.overlaps = Inf)
-  }   
-  
-  print(gg) # output
-  
-  if (return_data == T) return(dummy) 
+    # preliminary checks
+    if (is(object, "MizerSim")) {
+        params = object@params # pull out params object
+        n <- finalN(object) # we want final numbers
+    } else if (is(object, "MizerParams")) {
+        params = object # params object is just input
+        n <- initialN(params) # we want initial numbers
+    } else {
+        stop("You have not provided a valid mizerSim or mizerParams object.")
+    }
+    sp_params <- params@species_params # get species_params data frame
+
+    # Select appropriate species
+    species = valid_species_arg(object, species)
+    # find rows corresponding to species selected
+    row_select = match(species, sp_params$species)
+    if (!"biomass_observed" %in% names(sp_params)) {
+        stop("You have not provided values for the column 'biomass_observed' ",
+             "in the mizerParams/mizerSim object.")
+    } else if (!is.numeric(sp_params$biomass_observed)) {
+        stop("The column 'biomass_observed' in the mizerParams/mizerSim object",
+             " is not numeric, please fix.")
+    } else { # accept
+        biomass_observed = sp_params$biomass_observed
+    }
+
+    # Check if cutoff exists
+    cutoff <- sp_params$biomass_cutoff[row_select]
+    # When no cutoff known, set it to 0 for all species
+    # (so all sizes are included)
+    if (is.null(cutoff)) {
+        cutoff = rep(0, length(species))
+    } else if (!is.numeric(cutoff)) {
+        stop('params@species_params$biomass_cutoff is not numeric, ",
+                 "please fix.')
+    }
+
+    # pull out biomasses from params object
+    sim_biomass = rep(0, length(species))
+    for (j in 1:length(species)) {
+        sim_biomass[j] = sum((n[row_select[j], ] * params@w * params@dw)
+                             [params@w >= cutoff[j]])
+    }
+
+    # Build dataframe
+    dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>%
+        rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
+        filter(!is.na(observed), observed > 0)
+
+    # order by decreasing species biomass in data, add ratio of model/observed
+    levels <- dummy$species[order(dummy$observed, decreasing = T)]
+    dummy = dummy %>% mutate(species = factor(species, levels = levels),
+                             ratio = model/observed)
+
+    # Check that at least one observed biomass exists
+    if (!nrow(dummy) > 0) {
+        stop('Error: there are no observed biomasses to compare to model ",
+             "biomasses, please fix.')
+    }
+
+    # Calculate total sum of differences (abs(1-ratio)) rounded to 3 digits
+    tre <- round(sum(abs(1 - dummy$ratio)), digits = 3)
+
+    if (ratio == F) {
+        gg = ggplot(data = dummy, aes(x = observed, y = model,
+                                      colour = species, label = species)) +
+            geom_point(size = 3) +
+            labs(y = 'model biomass') +
+            coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
+            geom_abline(aes(intercept = 0, slope = 1), colour = 'purple',
+                        linetype = "dashed", size = 1.3) # y = x line
+    } else {
+        gg = ggplot(data = dummy, aes(x = observed, y = ratio,
+                                      colour = species, label = species)) +
+            geom_point(size = 3) +
+            labs(y = 'observed biomass / model biomass') +
+            coord_cartesian(ylim = range(dummy$ratio)) +
+            geom_hline(aes(yintercept = 1), linetype = "dashed",
+                       colour = 'purple', size = 1.3)
+    }
+
+    gg = gg + labs(x = 'observed biomass',
+                   caption = paste0("Total relative error = ", tre),
+                   color = "Legend") +
+        scale_colour_manual(values = getColours(params)[dummy$species])
+
+    if (log_scale == T & ratio == F) gg = gg + scale_x_log10() + scale_y_log10()
+    if (log_scale == T & ratio == T) gg = gg + scale_x_log10()
+
+    if (labels == T)  {
+        gg = gg + ggrepel::geom_label_repel(box.padding = 0.35,
+                                            point.padding = 0.5,
+                                            segment.color = 'grey50',
+                                            show.legend = F,
+                                            max.overlaps = Inf)
+    }
+
+    print(gg) # output
+
+    if (return_data == T) return(dummy)
 }
-
-
