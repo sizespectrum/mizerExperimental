@@ -6,7 +6,6 @@ setwd("C:/Users/dattas/Documents/mizerExperimental/R") # set directory if necess
 library(testthat)
 library(mizerExperimental)
 library(tidyverse)
-local_edition(3)
 
 source('plotBiomassObservedVsModel.R')
 
@@ -27,23 +26,17 @@ expect_equal(dummy$observed, species_params(params)$biomass_observed) # check ob
 params2 = params # copy over
 species_params(params2)$biomass_observed[c(1, 7, 10)] = NA
 dummy = plotBiomassObservedVsModel(params2, return_data = T) # get data frame out
-expect_equal(nrow(dummy), sum(!is.na(species_params(params2)$biomass_observed))) # check that dummy is right size
-expect_equal(dummy$observed, species_params(params2)$biomass_observed[!is.na(species_params(params2)$biomass_observed)]) # check observed_biomasses are equal
+expect_equal(dummy$is_observed, !is.na(species_params(params2)$biomass_observed)) # check that dummy has correct observations
+expect_equal(dummy$observed[dummy$is_observed], species_params(params2)$biomass_observed[!is.na(species_params(params2)$biomass_observed)]) # check observed_biomasses are equal
 
-# Try removing species, check it still checks out
+# # Try removing species, check it still checks out
 sp_select = c(1, 4, 7, 10, 11, 12) # choose some species
 dummy = plotBiomassObservedVsModel(params, species = sp_select, return_data = T) # get reduced data frame out
 expect_equal(nrow(dummy), length(sp_select)) # check that dummy is right size
 expect_equal(dummy$observed, species_params(params)$biomass_observed[sp_select]) # check observed_biomasses are equal
 
 # Finally, look at plot
-expect_snapshot(plotBiomassObservedVsModel(params))
-
 
 })
 
-test_that("I can use the 3rd edition", {
-  local_edition(3)
-  expect_true(TRUE)
-})
 
