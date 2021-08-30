@@ -8,26 +8,24 @@ spectraTabUI <- function(params, ...) {
     p <- isolate(params())
     has_bio <- ("biomass_observed" %in% names(p@species_params)) &&
       !all(is.na(p@species_params$biomass_observed))
-    tl <- tagList(plotlyOutput("plotSpectra"))
-    if (has_bio) {
-        tl <- tagList(tl,
-        popify(actionButton("scale_system", "Calibrate"),
-               title = "Calibrate model",
-               content = "Rescales the entire model so that the total of all observed biomasses agrees with the total of the model biomasses for the same species."),
-        popify(actionButton("tune_egg_all", "Match"),
-               title = "Match biomasses",
-               content = "Moves the entire size spectrum for each species up or down to give the observed biomass value. It does that by multiplying the egg density by the ratio of observed biomass to model biomass. After that adjustment you should run to steady state by hitting the Steady button, after which the biomass will be a bit off again. You can repeat this process if you like to get ever closer to the observed biomass."))
-    }
-    tl <- tagList(tl,
+    tl <- tagList(plotlyOutput("plotSpectra"),
         div(style = "display:inline-block;vertical-align:middle; width: 300px;",
-            popify(sliderInput("scale_frgrd_by", 
+            popify(sliderInput("scale_bkgrd_by", 
                                "Scale background down by a factor of:",
-                               value = 2, min = 0.5, max = 2, step = 0.05),
+                               value = 1, min = 0.5, max = 2, step = 0.1),
                    title = "Scaling the background",
-                   content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Choose the factor by which to scale and then hit the Go button. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
-        popify(actionButton("scale_frgrd", "Go"),
-               title = "Perform scaling of background",
-               content = "The scaling factor is specified by the slider."))
+                   content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Simply click on the factor by which to scale. Afterwards you will want to run to steady state. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
+        )
+    
+    if (has_bio) {
+      tl <- tagList(tl,
+                    popify(actionButton("scale_system", "Calibrate"),
+                           title = "Calibrate model",
+                           content = "Rescales the entire model so that the total of all observed biomasses agrees with the total of the model biomasses for the same species."),
+                    popify(actionButton("tune_egg_all", "Match"),
+                           title = "Match biomasses",
+                           content = "Moves the entire size spectrum for each species up or down to give the observed biomass value. It does that by multiplying the egg density by the ratio of observed biomass to model biomass. After that adjustment you should run to steady state by hitting the Steady button, after which the biomass will be a bit off again. You can repeat this process if you like to get ever closer to the observed biomass."))
+    }
     if (anyNA(p@A)) {
         tl <- tagList(tl, 
         popify(actionButton("retune_background", "Adj bs"),
@@ -76,8 +74,9 @@ spectraTab <- function(input, output, session,
     })
 
     ## Scale ####
-    observeEvent(input$scale_frgrd, {
-        p <- scaleDownBackground(params(), input$scale_frgrd_by)
+    observeEvent(input$scale_bkgrd_by, {
+        p <- scaleDownBackground(params(), input$scale_bkgrd_by)
+        updateSliderInput(session, "scale_bkgrd_by", value = 1)
         params(p)
     })
 
