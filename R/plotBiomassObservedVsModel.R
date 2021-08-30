@@ -68,7 +68,8 @@
 #' plotBiomassObservedVsModel(sim, log_scale = FALSE)
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                                       log_scale = TRUE,
-                                      return_data = FALSE, labels = TRUE) {
+                                      return_data = FALSE, labels = TRUE,
+                                      show_unobserved = FALSE) {
 
     # preliminary checks
     if (is(object, "MizerSim")) {
@@ -118,7 +119,8 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     # Build dataframe
     dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>%
         rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
-        filter(!is.na(observed), observed > 0)
+        mutate(is_observed = !is.na(observed) & observed > 0) %>% 
+        mutate(observed = coalesce(observed, model))
 
     # preserve species order, add ratio of model/observed
     dummy = dummy %>% mutate(species = factor(species, levels = dummy$species),
@@ -134,29 +136,35 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
 
     # Calculate total sum of differences (abs(1-ratio)) rounded to 3 digits
     tre <- round(sum(abs(1 - dummy$ratio)), digits = 3)
+    
+    caption <- paste0("Total relative error = ", tre)
+    if (any(!dummy$is_observed)) {
+        caption <- paste(caption,
+                         "\n Open circles represent species without biomass observation.")
+    }
 
+    gg <- ggplot(data = dummy, aes(x = observed, y = model,
+                                   colour = species, shape = is_observed)) + 
+        labs(x = 'observed biomass', caption = caption) +
+        scale_colour_manual(values = getColours(params)[dummy$species]) +
+        scale_shape_manual(values = c("TRUE" = 19, "FALSE" = 1)) +
+        guides(shape = "none")
+    
     if (ratio == FALSE) {
-        gg = ggplot(data = dummy, aes(x = observed, y = model,
-                                      colour = species)) +
+        gg = gg +
             geom_point(size = 3) +
             labs(y = 'model biomass') +
             coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
             geom_abline(aes(intercept = 0, slope = 1), colour = 'purple',
                         linetype = "dashed", size = 1.3) # y = x line
     } else {
-        gg = ggplot(data = dummy, aes(x = observed, y = ratio,
-                                      colour = species)) +
+        gg = gg +
             geom_point(size = 3) +
             labs(y = 'observed biomass / model biomass') +
             coord_cartesian(ylim = range(dummy$ratio)) +
             geom_hline(aes(yintercept = 1), linetype = "dashed",
                        colour = 'purple', size = 1.3)
     }
-
-    gg = gg + labs(x = 'observed biomass',
-                   caption = paste0("Total relative error = ", tre),
-                   color = "Legend") +
-        scale_colour_manual(values = getColours(params)[dummy$species])
 
     if (log_scale == TRUE & ratio == FALSE) {
         gg = gg + scale_x_log10() + scale_y_log10()
