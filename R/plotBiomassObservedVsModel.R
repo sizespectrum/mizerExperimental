@@ -128,7 +128,8 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     
     # Check that at least one observed biomass exists
     if (sum(dummy$is_observed) == 0) {
-        print("There are no observed biomasses to compare to model, only plotting model biomasses.")
+        cat(paste("There are no observed biomasses to compare to model,", 
+                  "only plotting model biomasses.", sep = "\n"))
     }
     
     if (return_data == TRUE) return(dummy)
