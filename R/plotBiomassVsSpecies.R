@@ -6,10 +6,10 @@ plotBiomassVsSpecies <- function(params) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$biomass_cutoff
     # When no cutoff known, set it to 0
-    if (is.null(cutoff)) cutoff <- 0
+    if (is.null(cutoff)) cutoff <- rep(0, no_sp)
     cutoff[is.na(cutoff)] <- 0
     observed <- params@species_params$biomass_observed
-    if (is.null(observed)) observed <- 0
+    if (is.null(observed)) observed <- rep(NA, no_sp)
     
     # selector for foreground species
     foreground <- !is.na(params@A)
@@ -32,9 +32,8 @@ plotBiomassVsSpecies <- function(params) {
                    Biomass = biomass_model,
                    other = observed[foreground])
     )
-    # Get rid of "Observed" entries for species without 
-    # observations (where we have set observed = 0)
-    df <- df[df$Biomass > 0, ] 
+    # Get rid of unobserved entries
+    df <- df[df$Biomass > 0 & !is.na(df$Biomass), ] 
     
     ggplot(df, aes(x = Species, y = Biomass)) +
         geom_point(aes(shape = Type), size = 4) +
