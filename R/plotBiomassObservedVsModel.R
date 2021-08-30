@@ -69,7 +69,7 @@
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                                       log_scale = TRUE, return_data = FALSE, 
                                       labels = TRUE, show_unobserved = FALSE) {
-
+    
     # preliminary checks
     if (is(object, "MizerSim")) {
         params = object@params # pull out params object
@@ -81,9 +81,11 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         stop("You have not provided a valid mizerSim or mizerParams object.")
     }
     sp_params <- params@species_params # get species_params data frame
-
+    
     # Select appropriate species
     species = valid_species_arg(object, species)
+    if (length(species) == 0) stop("No species selected, please fix.")
+    
     # find rows corresponding to species selected
     row_select = match(species, sp_params$species)
     if (!"biomass_observed" %in% names(sp_params)) {
@@ -95,7 +97,7 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     } else { # accept
         biomass_observed = sp_params$biomass_observed
     }
-
+    
     # Check if cutoff exists
     cutoff <- sp_params$biomass_cutoff[row_select]
     # When no cutoff known, set it to 0 for all species
@@ -107,32 +109,30 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                  "please fix.')
     }
     cutoff[is.na(cutoff)] <- 0
-
+    
     # pull out biomasses from params object
     sim_biomass = rep(0, length(species))
     for (j in 1:length(species)) {
         sim_biomass[j] = sum((n[row_select[j], ] * params@w * params@dw)
                              [params@w >= cutoff[j]])
     }
-
+    
     # Build dataframe
     dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>%
         rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
-        mutate(is_observed = !is.na(observed) & observed > 0) %>% 
-        mutate(observed = case_when(is_observed ~ observed, 
-                                      !is_observed ~ model))
-
-    # preserve species order, add ratio of model/observed
-    dummy = dummy %>% mutate(species = factor(species, levels = dummy$species),
-                             ratio = model/observed)
-
+        mutate(species = factor(species, levels = species),
+               is_observed = !is.na(observed) & observed > 0,
+               observed = case_when(is_observed ~ observed, !is_observed ~ model),
+               ratio = model/observed)
+    
+    
     # Check that at least one observed biomass exists
     if (sum(dummy$is_observed) == 0) {
         print("There are no observed biomasses to compare to model, only plotting model biomasses.")
     }
-
+    
     if (return_data == TRUE) return(dummy)
-
+    
     # Calculate total sum of differences (abs(1-ratio)) rounded to 3 digits
     tre <- round(sum(abs(1 - dummy$ratio)), digits = 3)
     
@@ -141,23 +141,23 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         caption <- paste(caption,
                          "\n Open circles represent species without biomass observation.")
     }
-
+    
     if (ratio == FALSE) {
         gg <- ggplot(data = dummy, aes(x = observed, y = model,
                                        colour = species, shape = is_observed)) + 
+            geom_abline(aes(intercept = 0, slope = 1), colour = 'purple',
+                        linetype = "dashed", size = 1.3) + # y = x line
             geom_point(size = 3) +
             labs(y = 'model biomass') +
-            coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
-            geom_abline(aes(intercept = 0, slope = 1), colour = 'purple',
-                        linetype = "dashed", size = 1.3) # y = x line
+            coord_cartesian(ylim = range(dummy$model, dummy$observed))
     } else {
         gg <- ggplot(data = dummy, aes(x = observed, y = ratio,
                                        colour = species, shape = is_observed)) + 
+            geom_hline(aes(yintercept = 1), linetype = "dashed",
+                       colour = 'purple', size = 1.3) +
             geom_point(size = 3) +
             labs(y = 'model biomass / observed biomass') +
-            coord_cartesian(ylim = range(dummy$ratio)) +
-            geom_hline(aes(yintercept = 1), linetype = "dashed",
-                       colour = 'purple', size = 1.3)
+            coord_cartesian(ylim = range(dummy$ratio))
     }
     
     gg <- gg + labs(x = 'observed biomass', caption = caption) +
@@ -165,14 +165,14 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
         scale_shape_manual(values = c("TRUE" = 19, "FALSE" = 1)) +
         guides(shape = "none")
     
-
+    
     if (log_scale == TRUE & ratio == FALSE) {
         gg = gg + scale_x_log10() + scale_y_log10()
     }
     if (log_scale == TRUE & ratio == TRUE) {
         gg = gg + scale_x_log10()
     }
-
+    
     if (labels == TRUE)  {
         gg = gg + ggrepel::geom_label_repel(
             aes(label = species),

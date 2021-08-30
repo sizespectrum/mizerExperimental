@@ -33,7 +33,7 @@ plotBiomassObservedVsModel(ns_sim)
 plotBiomassObservedVsModel(ns_sim, log_scale = F)
 plotBiomassObservedVsModel(ns_sim, ratio = T)
 plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F)
-plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F, labels = F)
+plotBiomassObservedVsModel(ns_sim, ratio = T, labels = F)
 test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
 
 # test plotly version
@@ -43,7 +43,7 @@ ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
 plotBiomassObservedVsModel(ns_sim, species = c('Herring', 'Cod', 'Saithe', 'N.pout'))
 plotBiomassObservedVsModel(ns_sim, species = c(1, 3, 5, 7, 9, 11))
 plotBiomassObservedVsModel(ns_sim, species = c(T, T, T, T, T, F, F, F, T, T, F, F))
-
+plotBiomassObservedVsModel(ns_sim, species = rep(F, 12))
 
 # Test if some observed biomasses are NA or 0
 ns_sim2 = ns_sim # copy over sim object
