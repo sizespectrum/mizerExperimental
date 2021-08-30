@@ -40,6 +40,7 @@ Collate:
     mizerExperimental-package.R
     plotBiomassObservedVsModel.R
     plotBiomassVsSpecies.R
+    plotYieldVsSpecies.R
     tuneParams.R
     tuneParams_controls.R
     tuneParams_tabs.R
