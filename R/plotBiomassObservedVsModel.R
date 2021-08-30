@@ -189,7 +189,8 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
 #' @rdname plotBiomassObservedVsModel
 #' @export
 plotlyBiomassObservedVsModel <- function(object, species = NULL, ratio = FALSE,
-                                         log_scale = TRUE, ...) {
+                                         log_scale = TRUE, return_data = FALSE, 
+                                         show_unobserved = FALSE, ...) {
     argg <- as.list(environment())
     argg$labels <- FALSE
     ggplotly(do.call("plotBiomassObservedVsModel", argg))

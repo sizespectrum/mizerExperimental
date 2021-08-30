@@ -37,7 +37,7 @@ plotBiomassObservedVsModel(ns_sim, ratio = T, labels = F)
 test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
 
 # test plotly version
-ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
+plotlyBiomassObservedVsModel(ns_sim)
 
 # Test it works for specific species - either naming, numeric vector or a T/F vector
 plotBiomassObservedVsModel(ns_sim, species = c('Herring', 'Cod', 'Saithe', 'N.pout'))
@@ -50,6 +50,7 @@ ns_sim2 = ns_sim # copy over sim object
 ns_sim2@params@species_params$biomass_observed[c(2, 7, 10)] = NA # wipe out some biomasses
 ns_sim2@params@species_params$biomass_observed[c(1, 5)] = 0 # wipe out some biomasses
 plotBiomassObservedVsModel(ns_sim2)
+plotlyBiomassObservedVsModel(ns_sim2)
 
 # Check that plot still works for no biomass_observed values
 ns_sim2@params@species_params$biomass_observed = 0 # set all to zero
