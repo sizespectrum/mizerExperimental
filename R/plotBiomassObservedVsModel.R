@@ -58,7 +58,7 @@
 #'
 #' # Run a simulation
 #' params <- matchBiomasses(params)
-#' sim <- project(params, t_max = 10)
+#' sim <- project(params, t_max = 10, progress_bar = FALSE)
 #' plotBiomass(sim)
 #'
 #' # Plot the biomass comparison at the final time
@@ -67,9 +67,8 @@
 #' # The same with no log scaling of axes
 #' plotBiomassObservedVsModel(sim, log_scale = FALSE)
 plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
-                                      log_scale = TRUE,
-                                      return_data = FALSE, labels = TRUE,
-                                      show_unobserved = FALSE) {
+                                      log_scale = TRUE, return_data = FALSE, 
+                                      labels = TRUE, show_unobserved = FALSE) {
 
     # preliminary checks
     if (is(object, "MizerSim")) {
@@ -120,16 +119,16 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     dummy = data.frame(species, sim_biomass, biomass_observed[row_select]) %>%
         rename('species' = 1, 'model' = 2, 'observed' = 3) %>%
         mutate(is_observed = !is.na(observed) & observed > 0) %>% 
-        mutate(observed = coalesce(observed, model))
+        mutate(observed = case_when(is_observed ~ observed, 
+                                      !is_observed ~ model))
 
     # preserve species order, add ratio of model/observed
     dummy = dummy %>% mutate(species = factor(species, levels = dummy$species),
                              ratio = model/observed)
 
     # Check that at least one observed biomass exists
-    if (!nrow(dummy) > 0) {
-        stop('Error: there are no observed biomasses to compare to model ",
-             "biomasses, please fix.')
+    if (sum(dummy$is_observed) == 0) {
+        print("There are no observed biomasses to compare to model, only plotting model biomasses.")
     }
 
     if (return_data == TRUE) return(dummy)
@@ -143,28 +142,29 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
                          "\n Open circles represent species without biomass observation.")
     }
 
-    gg <- ggplot(data = dummy, aes(x = observed, y = model,
-                                   colour = species, shape = is_observed)) + 
-        labs(x = 'observed biomass', caption = caption) +
-        scale_colour_manual(values = getColours(params)[dummy$species]) +
-        scale_shape_manual(values = c("TRUE" = 19, "FALSE" = 1)) +
-        guides(shape = "none")
-    
     if (ratio == FALSE) {
-        gg = gg +
+        gg <- ggplot(data = dummy, aes(x = observed, y = model,
+                                       colour = species, shape = is_observed)) + 
             geom_point(size = 3) +
             labs(y = 'model biomass') +
             coord_cartesian(ylim = range(dummy$model, dummy$observed)) +
             geom_abline(aes(intercept = 0, slope = 1), colour = 'purple',
                         linetype = "dashed", size = 1.3) # y = x line
     } else {
-        gg = gg +
+        gg <- ggplot(data = dummy, aes(x = observed, y = ratio,
+                                       colour = species, shape = is_observed)) + 
             geom_point(size = 3) +
-            labs(y = 'observed biomass / model biomass') +
+            labs(y = 'model biomass / observed biomass') +
             coord_cartesian(ylim = range(dummy$ratio)) +
             geom_hline(aes(yintercept = 1), linetype = "dashed",
                        colour = 'purple', size = 1.3)
     }
+    
+    gg <- gg + labs(x = 'observed biomass', caption = caption) +
+        scale_colour_manual(values = getColours(params)[dummy$species]) +
+        scale_shape_manual(values = c("TRUE" = 19, "FALSE" = 1)) +
+        guides(shape = "none")
+    
 
     if (log_scale == TRUE & ratio == FALSE) {
         gg = gg + scale_x_log10() + scale_y_log10()

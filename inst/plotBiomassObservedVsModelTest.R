@@ -36,8 +36,7 @@ plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F)
 plotBiomassObservedVsModel(ns_sim, ratio = T, log_scale = F, labels = F)
 test = plotBiomassObservedVsModel(ns_sim, ratio = T, return_data = T)
 
-# test labels and plotly version
-plotBiomassObservedVsModel(ns_sim, labels = F)
+# test plotly version
 ggplotly(plotBiomassObservedVsModel(ns_sim, labels = F))
 
 # Test it works for specific species - either naming, numeric vector or a T/F vector
@@ -52,7 +51,7 @@ ns_sim2@params@species_params$biomass_observed[c(2, 7, 10)] = NA # wipe out some
 ns_sim2@params@species_params$biomass_observed[c(1, 5)] = 0 # wipe out some biomasses
 plotBiomassObservedVsModel(ns_sim2)
 
-# Check that correct error flags for no biomass_observed values
+# Check that plot still works for no biomass_observed values
 ns_sim2@params@species_params$biomass_observed = 0 # set all to zero
 plotBiomassObservedVsModel(ns_sim2)
 
