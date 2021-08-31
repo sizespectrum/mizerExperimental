@@ -1,14 +1,3 @@
-## Get test up and running for plotBiomassObservedVsModel.R
-
-rm(list = ls())
-setwd("C:/Users/dattas/Documents/mizerExperimental/R") # set directory if necessary
-
-library(testthat)
-library(mizerExperimental)
-library(tidyverse)
-
-source('plotBiomassObservedVsModel.R')
-
 test_that("plotBiomassObservedVsModel works", {
 
 # Set up parameters
