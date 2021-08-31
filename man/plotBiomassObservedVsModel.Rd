@@ -11,14 +11,17 @@ plotBiomassObservedVsModel(
   ratio = FALSE,
   log_scale = TRUE,
   return_data = FALSE,
-  labels = TRUE
+  labels = TRUE,
+  show_unobserved = FALSE
 )
 
 plotlyBiomassObservedVsModel(
   object,
   species = NULL,
   ratio = FALSE,
-  log_scale = TRUE
+  log_scale = TRUE,
+  return_data = FALSE,
+  show_unobserved = FALSE
 )
 }
 \arguments{
@@ -38,10 +41,14 @@ For the non-ratio plot this applies for both axes, for the ratio plot only
 the x-axis is on the log10 scale. Default is TRUE.}
 
 \item{return_data}{Whether to return the data frame for the plot (TRUE) or
-not (FALSE). Default is FALSE}
+not (FALSE). Default is FALSE.}
 
 \item{labels}{Whether to show text labels for each species (TRUE) or not
 (FALSE). Default is TRUE.}
+
+\item{show_unobserved}{Whether to include also species for which not
+biomass observation is available. If TRUE, these species will be
+shown as if their observed biomass was equal to the model biomass.}
 }
 \value{
 A ggplot2 object with the plot of model biomass by species compared
@@ -75,19 +82,22 @@ biomass for species i.
 # create an example
 params <- NS_params
 species_params(params)$biomass_observed <-
-    c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
+    c(0.8, 61, 12, 35, 1.6, NA, 10, 7.6, 135, 60, 30, NA)
 species_params(params)$biomass_cutoff <- 10
 params <- calibrateBiomass(params)
 
 # Plot with default options
 plotBiomassObservedVsModel(params)
 
+# Plot including also species without observations
+plotBiomassObservedVsModel(params, show_unobserved = TRUE)
+
 # Show the ratio instead
 plotBiomassObservedVsModel(params, ratio = TRUE)
 
 # Run a simulation
 params <- matchBiomasses(params)
-sim <- project(params, t_max = 10)
+sim <- project(params, t_max = 10, progress_bar = FALSE)
 plotBiomass(sim)
 
 # Plot the biomass comparison at the final time
