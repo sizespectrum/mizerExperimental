@@ -181,7 +181,8 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
             point.padding = 0.5,
             segment.color = 'grey50',
             show.legend = FALSE,
-            max.overlaps = Inf)
+            max.overlaps = Inf,
+            seed = 42)
     }
     gg
 }
