@@ -34,8 +34,11 @@
 #'   the x-axis is on the log10 scale. Default is TRUE.
 #' @param labels Whether to show text labels for each species (TRUE) or not
 #'   (FALSE). Default is TRUE.
+#' @param show_unobserved Whether to include also species for which not
+#'   biomass observation is available. If TRUE, these species will be 
+#'   shown as if their observed biomass was equal to the model biomass.
 #' @param return_data Whether to return the data frame for the plot (TRUE) or
-#'   not (FALSE). Default is FALSE
+#'   not (FALSE). Default is FALSE.
 #' @return A ggplot2 object with the plot of model biomass by species compared
 #'   to observed biomass. If `return_data = TRUE`, the data frame used to
 #'   create the plot is returned instead of the plot.
@@ -46,12 +49,15 @@
 #' # create an example
 #' params <- NS_params
 #' species_params(params)$biomass_observed <-
-#'     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
+#'     c(0.8, 61, 12, 35, 1.6, NA, 10, 7.6, 135, 60, 30, NA)
 #' species_params(params)$biomass_cutoff <- 10
 #' params <- calibrateBiomass(params)
 #'
 #' # Plot with default options
 #' plotBiomassObservedVsModel(params)
+#' 
+#' # Plot including also species without observations
+#' plotBiomassObservedVsModel(params, show_unobserved = TRUE)
 #'
 #' # Show the ratio instead
 #' plotBiomassObservedVsModel(params, ratio = TRUE)
@@ -130,6 +136,10 @@ plotBiomassObservedVsModel = function(object, species = NULL, ratio = FALSE,
     if (sum(dummy$is_observed) == 0) {
         cat(paste("There are no observed biomasses to compare to model,", 
                   "only plotting model biomasses.", sep = "\n"))
+    }
+    
+    if (!show_unobserved) {
+        dummy <- filter(dummy, is_observed)
     }
     
     if (return_data == TRUE) return(dummy)

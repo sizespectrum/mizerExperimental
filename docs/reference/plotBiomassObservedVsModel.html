@@ -169,7 +169,8 @@ biomasses predicted for the final time step in the simulation.</p>
   ratio <span class='op'>=</span> <span class='cn'>FALSE</span>,
   log_scale <span class='op'>=</span> <span class='cn'>TRUE</span>,
   return_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  labels <span class='op'>=</span> <span class='cn'>TRUE</span>
+  labels <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  show_unobserved <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
 
 <span class='fu'>plotlyBiomassObservedVsModel</span><span class='op'>(</span>
@@ -177,6 +178,8 @@ biomasses predicted for the final time step in the simulation.</p>
   species <span class='op'>=</span> <span class='cn'>NULL</span>,
   ratio <span class='op'>=</span> <span class='cn'>FALSE</span>,
   log_scale <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  return_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  show_unobserved <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></code></pre></div>
 
@@ -209,12 +212,18 @@ the x-axis is on the log10 scale. Default is TRUE.</p></td>
     <tr>
       <th>return_data</th>
       <td><p>Whether to return the data frame for the plot (TRUE) or
-not (FALSE). Default is FALSE</p></td>
+not (FALSE). Default is FALSE.</p></td>
     </tr>
     <tr>
       <th>labels</th>
       <td><p>Whether to show text labels for each species (TRUE) or not
 (FALSE). Default is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>show_unobserved</th>
+      <td><p>Whether to include also species for which not
+biomass observation is available. If TRUE, these species will be
+shown as if their observed biomass was equal to the model biomass.</p></td>
     </tr>
     </table>
 
@@ -242,7 +251,7 @@ biomass for species i.</p>
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># create an example</span></span>
 <span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='va'>NS_params</span></span>
 <span class='r-in'><span class='fu'>species_params</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span><span class='op'>$</span><span class='va'>biomass_observed</span> <span class='op'>&lt;-</span></span>
-<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='fl'>61</span>, <span class='fl'>12</span>, <span class='fl'>35</span>, <span class='fl'>1.6</span>, <span class='fl'>20</span>, <span class='fl'>10</span>, <span class='fl'>7.6</span>, <span class='fl'>135</span>, <span class='fl'>60</span>, <span class='fl'>30</span>, <span class='fl'>78</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.8</span>, <span class='fl'>61</span>, <span class='fl'>12</span>, <span class='fl'>35</span>, <span class='fl'>1.6</span>, <span class='cn'>NA</span>, <span class='fl'>10</span>, <span class='fl'>7.6</span>, <span class='fl'>135</span>, <span class='fl'>60</span>, <span class='fl'>30</span>, <span class='cn'>NA</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>species_params</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span><span class='op'>$</span><span class='va'>biomass_cutoff</span> <span class='op'>&lt;-</span> <span class='fl'>10</span></span>
 <span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calibrateBiomass.html'>calibrateBiomass</a></span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></span>
 <span class='r-in'></span>
@@ -250,23 +259,27 @@ biomass for species i.</p>
 <span class='r-in'><span class='fu'>plotBiomassObservedVsModel</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></span>
 <span class='r-plt'><img src='plotBiomassObservedVsModel-1.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'># Plot including also species without observations</span></span>
+<span class='r-in'><span class='fu'>plotBiomassObservedVsModel</span><span class='op'>(</span><span class='va'>params</span>, show_unobserved <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='plotBiomassObservedVsModel-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
 <span class='r-in'><span class='co'># Show the ratio instead</span></span>
 <span class='r-in'><span class='fu'>plotBiomassObservedVsModel</span><span class='op'>(</span><span class='va'>params</span>, ratio <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='plotBiomassObservedVsModel-2.png' alt='' width='700' height='433' /></span>
+<span class='r-plt'><img src='plotBiomassObservedVsModel-3.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Run a simulation</span></span>
 <span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchBiomasses.html'>matchBiomasses</a></span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, t_max <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>project</span><span class='op'>(</span><span class='va'>params</span>, t_max <span class='op'>=</span> <span class='fl'>10</span>, progress_bar <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>plotBiomass</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='plotBiomassObservedVsModel-3.png' alt='' width='700' height='433' /></span>
+<span class='r-plt'><img src='plotBiomassObservedVsModel-4.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Plot the biomass comparison at the final time</span></span>
 <span class='r-in'><span class='fu'>plotBiomassObservedVsModel</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='plotBiomassObservedVsModel-4.png' alt='' width='700' height='433' /></span>
+<span class='r-plt'><img src='plotBiomassObservedVsModel-5.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># The same with no log scaling of axes</span></span>
 <span class='r-in'><span class='fu'>plotBiomassObservedVsModel</span><span class='op'>(</span><span class='va'>sim</span>, log_scale <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='plotBiomassObservedVsModel-5.png' alt='' width='700' height='433' /></span>
+<span class='r-plt'><img src='plotBiomassObservedVsModel-6.png' alt='' width='700' height='433' /></span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
