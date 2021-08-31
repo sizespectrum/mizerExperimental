@@ -18,8 +18,7 @@ plotlyBiomassObservedVsModel(
   object,
   species = NULL,
   ratio = FALSE,
-  log_scale = TRUE,
-  ...
+  log_scale = TRUE
 )
 }
 \arguments{
