@@ -10,7 +10,7 @@ tuneParams(
     "resource"),
   tabs = c("Spectra", "Growth", "Repro", "Catch", "Diet", "Death", "Resource", "Rates",
     "Sim"),
-  preserve = c("reproduction_level", "R_max"),
+  preserve = c("erepro", "reproduction_level", "R_max"),
   ...
 )
 }
@@ -26,8 +26,9 @@ below.}
 in the main section. See "Customisation" below.}
 
 \item{preserve}{Specifies whether the \code{reproduction_level} should be
-preserved or the maximum reproduction rate \code{R_max}. See \code{\link[=setBevertonHolt]{setBevertonHolt()}}
-for an explanation of the \code{reproduction_level}.}
+preserved or the maximum reproduction rate \code{R_max} or the reproductive
+efficiency \code{erepro} (Default). See \code{\link[=setBevertonHolt]{setBevertonHolt()}} for an explanation
+of the \code{reproduction_level}.}
 
 \item{...}{Other params needed by individual tabs.}
 }

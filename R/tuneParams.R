@@ -74,8 +74,9 @@
 #' @param tabs A character vector of names of the tabs that should be displayed
 #'   in the main section. See "Customisation" below.
 #' @param preserve Specifies whether the `reproduction_level` should be
-#'   preserved or the maximum reproduction rate `R_max`. See [setBevertonHolt()]
-#'   for an explanation of the `reproduction_level`.
+#'   preserved or the maximum reproduction rate `R_max` or the reproductive
+#'   efficiency `erepro` (Default). See [setBevertonHolt()] for an explanation
+#'   of the `reproduction_level`.
 #' @param ... Other params needed by individual tabs.
 #'
 #' @return The tuned MizerParams object
@@ -99,7 +100,7 @@ tuneParams <- function(p,
                                 "Resource",
                                 "Rates",
                                 "Sim"),
-                       preserve = c("reproduction_level", "R_max"), ...) {
+                       preserve = c("erepro", "reproduction_level", "R_max"), ...) {
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
@@ -138,6 +139,8 @@ tuneParams <- function(p,
         }
         if (preserve == "R_max") {
             p@species_params$tuneParams_old_R_max <- p@species_params$R_max
+        } else {
+            p@species_params$tuneParams_old_erepro <- p@species_params$erepro
         }
         p <- prepare_params(p)
     }

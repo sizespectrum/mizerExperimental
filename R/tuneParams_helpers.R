@@ -19,6 +19,10 @@ finalise_params <- function(p) {
         p <- setBevertonHolt(p, R_max =  p@species_params$tuneParams_old_R_max)
         p@species_params$tuneParams_old_R_max <- NULL
     }
+    if ("tuneParams_old_erepro" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, erepro =  p@species_params$tuneParams_old_erepro)
+        p@species_params$tuneParams_old_erepro <- NULL
+    }
     p
 }
 
