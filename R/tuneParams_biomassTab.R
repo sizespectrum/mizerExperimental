@@ -48,13 +48,7 @@ biomassTabUI <- function(params, ...) {
     
     # plot Spectra ----
     tl <- tagList(tl,
-                  plotlyOutput("plotSpectra"),
-                  div(style = "display:inline-block;vertical-align:middle; width: 300px;",
-                      popify(sliderInput("scale_bkgrd_by", 
-                                         "Scale background down by a factor of:",
-                                         value = 1, min = 0.5, max = 2, step = 0.1),
-                             title = "Scaling the background",
-                             content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Simply click on the factor by which to scale. Afterwards you will want to run to steady state. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
+                  plotlyOutput("plotSpectra")
     )
     # Explain spectra ----
     tl <- tagList(tl,
@@ -92,13 +86,6 @@ biomassTab <- function(input, output, session,
                             total = TRUE) +
             theme(text = element_text(size = 12))
         ggplotly(plot, tooltip = c("Species", "w", "value"))
-    })
-    
-    ## Scale ####
-    observeEvent(input$scale_bkgrd_by, {
-        p <- scaleDownBackground(params(), input$scale_bkgrd_by)
-        updateSliderInput(session, "scale_bkgrd_by", value = 1)
-        params(p)
     })
     
     ## Retune background ####
