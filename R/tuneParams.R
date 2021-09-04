@@ -373,3 +373,13 @@ tuneParams <- function(p,
 
     runGadget(ui, server, viewer = browserViewer())
 }
+
+#' Tune Growth
+#' 
+#' @export
+tuneGrowth <- function(params, match = c("biomass", "yield", "none")) {
+    match <- match.arg(match)
+    tuneParams(params, controls = c("growth"), 
+               tabs = c("Growth", "Biomass"), 
+               match = match)
+}
