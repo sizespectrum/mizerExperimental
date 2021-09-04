@@ -1,3 +1,16 @@
+#' Biomass tab for tuning gadget
+#' 
+#' The Biomass tab shows:
+#' * A plot of total biomass for each species, compared to
+#' observed biomasses when available, using [plotBiomossObservedVsModel()].
+#' * Buttons "Calibrate" and "Match" that trigger a call to 
+#' [calibrateBiomass()] or [matchBiomasses()] respectively.
+#' * A plot of the biomass density spectra as a function of log size,
+#' using [plotSpectra()].
+#'
+#' @rdname biomassTab
+#' @param params .
+#' @param ... .
 biomassTabUI <- function(params, ...) {
     p <- isolate(params())
     tl <- tagList()
@@ -59,6 +72,12 @@ biomassTabUI <- function(params, ...) {
     )
 }
 
+#' @rdname biomassTab
+#' @param input .
+#' @param output .
+#' @param session .
+#' @param logs .
+#' @param trigger_update .
 biomassTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
     
