@@ -50,6 +50,7 @@ Collate:
     steady.R
     setBevertonHolt.R
     tuneParams_predation_simpleControl.R
+    tuneParams_biomassTab.R
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
