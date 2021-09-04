@@ -41,6 +41,7 @@ Collate:
     plotBiomassObservedVsModel.R
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
+    plotGrowthRate.R
     tuneParams.R
     tuneParams_controls.R
     tuneParams_tabs.R
