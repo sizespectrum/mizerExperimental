@@ -1,4 +1,4 @@
-predation_simpleControlUI <- function(p, sp) {
+growthControlUI <- function(p, sp) {
     sp_sel <- p@species_params$species == sp$species
     w_min_idx <- p@w_min_idx[sp_sel]
     w_min <- p@w[w_min_idx]
@@ -30,7 +30,7 @@ predation_simpleControlUI <- function(p, sp) {
     )
 }
 
-predation_simpleControl <- function(input, output, session, params, flags,
+growthControl <- function(input, output, session, params, flags,
                                     ...) {
 
     ## Adjust predation ####
