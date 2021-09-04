@@ -13,19 +13,15 @@ growthControlUI <- function(p, sp) {
                     min = signif(sp$gamma / 2, 3),
                     max = signif(sp$gamma * 1.5, 3),
                     ticks = FALSE),
-        sliderInput("f0", "Feeding level at smallest size",
-                    value = f0,
-                    min = 0,
-                    max = 1),
-        tags$h3(tags$a(id = "background"), "Background"),
+        tags$h3(tags$a(id = "resource"), "Resource"),
         popify(sliderInput("kappa",
-                           "kappa",
+                           "Power-law coefficient 'kappa'",
                            value = kappa, 
                            min = signif(kappa / 2, 3), 
                            max = signif(kappa * 1.5, 3),
                            ticks = FALSE),
-               title = "Adjusting background abundance",
-               content = "You can adjust the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum, for example to achieve a more constant feeding level."
+               title = "Adjusting resource abundance",
+               content = "Adjusting the resource abundance allows you to line up your community spectrum with the resource spectrum, for example to achieve a more constant feeding level."
         )
     )
 }
@@ -34,37 +30,31 @@ growthControl <- function(input, output, session, params, flags,
                                     ...) {
 
     ## Adjust predation ####
-    observeEvent(
-        list(input$gamma, input$f0), {
-            p <- params()
-            sp <- input$sp
-            sp_sel <- p@species_params$species == sp
-            if (!identical(sp, flags$sp_old_pred)) {
-                flags$sp_old_pred <- sp
-                return()
-            }
-            w_min_idx <- p@w_min_idx[sp_sel]
-            
-            # adjust gamma
-            updateSliderInput(session, "gamma",
-                              min = signif(input$gamma / 2, 3),
-                              max = signif(input$gamma * 1.5, 3))
-            p@species_params[sp, "gamma"] <- input$gamma
-            p <- setSearchVolume(p)
-            
-            # adjust h
-            w_min <- p@w[w_min_idx]
-            e <- getEncounter(p)[sp_sel, w_min_idx]
-            h <- e * w_min ^ -p@species_params[sp, "n"] *
-                (1 - input$f0) / input$f0
-            
-            p@species_params[sp, "h"]     <- h
-            p <- setMaxIntakeRate(p)
-            
-            tuneParams_update_species(sp, p, params)
-        },
-        ignoreInit = TRUE,
-        ignoreNULL = TRUE
+    observeEvent(input$gamma, {
+        p <- params()
+        sp <- input$sp
+        sp_sel <- p@species_params$species == sp
+        if (!identical(sp, flags$sp_old_pred)) {
+            flags$sp_old_pred <- sp
+            return()
+        }
+        factor <- input$gamma / p@species_params[sp, "gamma"]
+        
+        # adjust gamma
+        updateSliderInput(session, "gamma",
+                          min = signif(input$gamma / 2, 3),
+                          max = signif(input$gamma * 1.5, 3))
+        p@species_params[sp, "gamma"] <- input$gamma
+        p <- setSearchVolume(p)
+        
+        # adjust h
+        p@species_params[sp, "h"] <- p@species_params[sp, "h"] * factor
+        p <- setMaxIntakeRate(p)
+        
+        tuneParams_update_species(sp, p, params)
+    },
+    ignoreInit = TRUE,
+    ignoreNULL = TRUE
     )
     
     ## Scale background ####
