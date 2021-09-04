@@ -72,6 +72,8 @@
 #'   below.
 #' @param tabs A character vector of names of the tabs that should be displayed
 #'   in the main section. See "Customisation" below.
+#' @param match Determines whether the biomasses or the yields should be
+#'   matched to observations each time the "steady" button is pressed.
 #' @param preserve Specifies whether the `reproduction_level` should be
 #'   preserved or the maximum reproduction rate `R_max` or the reproductive
 #'   efficiency `erepro` (Default). See [setBevertonHolt()] for an explanation
@@ -99,7 +101,10 @@ tuneParams <- function(p,
                                 "Resource",
                                 "Rates",
                                 "Sim"),
-                       preserve = c("erepro", "reproduction_level", "R_max"), ...) {
+                       match = c("none", "biomass", "yield"),
+                       preserve = c("erepro", "reproduction_level", "R_max"),
+                       ...) {
+    match <- match.arg(match)
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
@@ -302,7 +307,8 @@ tuneParams <- function(p,
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
             tuneParams_run_steady(params(), params = params,
-                       logs = logs, session = session, input = input)
+                       logs = logs, session = session, input = input,
+                       match = match)
         })
 
         ## Undo ####

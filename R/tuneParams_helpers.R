@@ -77,8 +77,8 @@ tuneParams_update_species <- function(sp, p, params) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-tuneParams_run_steady <- function(p, params, logs, session, input, 
-                                  return_sim = FALSE) {
+tuneParams_run_steady <- function(p, params, logs, session, input,
+                                  match, return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
@@ -96,6 +96,17 @@ tuneParams_run_steady <- function(p, params, logs, session, input,
         }
         p <- steady(p, t_max = 100, tol = 1e-2,
                     progress_bar = progress)
+        if (match == "biomass") {
+            p <- calibrateBiomass(p)
+            p <- matchBiomasses(p)
+            p <- steady(p, t_max = 100, tol = 1e-2,
+                        progress_bar = progress)
+        } else if (match == "yield") {
+            p <- calibrateYield(p)
+            p <- matchYields(p)
+            p <- steady(p, t_max = 100, tol = 1e-2,
+                        progress_bar = progress)
+        }
         
         # Update the egg slider
         sp_idx <- which.max(p@species_params$species == isolate(input$sp))

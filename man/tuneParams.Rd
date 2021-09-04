@@ -10,6 +10,7 @@ tuneParams(
     "resource"),
   tabs = c("Spectra", "Growth", "Repro", "Catch", "Diet", "Death", "Resource", "Rates",
     "Sim"),
+  match = c("none", "biomass", "yield"),
   preserve = c("erepro", "reproduction_level", "R_max"),
   ...
 )
@@ -24,6 +25,9 @@ below.}
 
 \item{tabs}{A character vector of names of the tabs that should be displayed
 in the main section. See "Customisation" below.}
+
+\item{match}{Determines whether the biomasses or the yields should be
+matched to observations each time the "steady" button is pressed.}
 
 \item{preserve}{Specifies whether the \code{reproduction_level} should be
 preserved or the maximum reproduction rate \code{R_max} or the reproductive
