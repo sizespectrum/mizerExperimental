@@ -20,8 +20,7 @@
 #' and `erepro` set to the value it had after the last run to steady state.
 #'
 #' At any time the gadget allows the user to download the current params object
-#' as an .rds file via the "Download" button in the "File" section, or to
-#' upload a params object from an .rds file.
+#' as an .rds file via the "Download" button.
 #'
 #' # Undo functionality
 #'
@@ -161,13 +160,15 @@ tuneParams <- function(p,
             ## Sidebar ####
             sidebarPanel(
                 introBox(
-                    tipify(actionButton("help", "Instructions"),
+                    tipify(actionButton("help", "Help"),
                            title = "Start the introductory instructions"),
+                    tipify(downloadButton("params", ""),
+                           title = "Download the current params object"),
                     tipify(actionButton("done", "Done", icon = icon("check"),
                                  onclick = "setTimeout(function(){window.close();},500);"),
                            title = "Return the current params objects to R"),
                     data.step = 8,
-                    data.intro = "When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
+                    data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
                     actionButton("sp_steady", "Steady"),
@@ -192,18 +193,11 @@ tuneParams <- function(p,
                             list("->",
                                  tags$a(section, href = paste0("#", section)))
                         }),
-                        "->",
-                        tags$a("File", href = "#file"),
                         data.step = 4,
                         data.intro = "There are many parameters, organised into sections. To avoid too much scrolling you can click on a link to jump to a section."),
                     tags$br(),
                     tags$div(id = "params",
-                             uiOutput("sp_params"),
-                             introBox(
-                                 uiOutput("file_management"),
-                                 data.step = 7,
-                                 data.intro = "At any point you can download the current state of the params object or upload a new params object to work on."
-                             )
+                             uiOutput("sp_params")
                     ),
                     tags$head(tags$style(
                         type = 'text/css',
@@ -235,9 +229,6 @@ tuneParams <- function(p,
             shinyjs::disable("undo")
         }
 
-        # The file name will be empty until the user uploads a params file
-        output$filename <- renderText("")
-
         # Define a reactive value for triggering an update of species sliders
         trigger_update <- reactiveVal(0)
 
@@ -265,8 +256,6 @@ tuneParams <- function(p,
                                list(p = p, sp = sp))
                    })
         })
-
-        fileManagement(input, output, session, params, logs)
 
         # Serve controls ####
         for (section in controls) {
@@ -357,6 +346,13 @@ tuneParams <- function(p,
             # Trigger an update of sliders
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
+        })
+        
+        ## Prepare for download of params object ####
+        output$params <- downloadHandler(
+            filename = "tuned_params.rds",
+            content = function(file) {
+                saveRDS(finalise_params(params()), file = file)
         })
 
         ## Done ####

@@ -9,6 +9,8 @@ prepare_params <- function(p) {
     return(p)
 }
 
+# This is called when a params object is downloaded or when the done button
+# is pressed
 finalise_params <- function(p) {
     if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
         p <- setBevertonHolt(p, reproduction_level =
@@ -135,50 +137,4 @@ tuneParams_add_to_logs <- function(logs, p) {
         shinyjs::enable("undo")
         shinyjs::enable("undo_all")
     }
-}
-
-fileManagement <- function(input, output, session, params, logs) {
-
-    output$file_management <- renderUI(
-        tagList(
-            tags$h3(tags$a(id = "file"), "File management"),
-            textOutput("filename"),
-            fileInput("upload", "Upload new params",
-                      accept = ".rds"),
-            downloadButton("params", "Download params")))
-
-    ## Handle upload of params object ####
-    observeEvent(input$upload, {
-        inFile <- input$upload
-        tryCatch({
-            p <- readRDS(inFile$datapath)
-            validObject(p)
-            # Update species selector
-            species <- as.character(p@species_params$species[!is.na(p@A)])
-            updateSelectInput(session, "sp",
-                              choices = species,
-                              selected = species[1])
-
-            # Update the reactive params object
-            params(prepare_params(p))
-            output$filename <- renderText(paste0("Previously uploaded file: ",
-                                                 inFile$name))
-        },
-        error = function(e) {
-            showModal(modalDialog(
-                title = "Invalid parameter file",
-                HTML(paste0("Trying to load that file led to an error.<br>",
-                            "The error message was:<br>", e)),
-                easyClose = TRUE
-            ))
-            p <- params()}
-        )
-    })
-
-    ## Prepare for download of params object ####
-    output$params <- downloadHandler(
-        filename = "params.rds",
-        content = function(file) {
-            saveRDS(finalise_params(params()), file = file)
-        })
 }

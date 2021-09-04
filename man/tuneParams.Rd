@@ -55,8 +55,7 @@ the parameter object in the state at that time, with \code{Rmax} set to \code{In
 and \code{erepro} set to the value it had after the last run to steady state.
 
 At any time the gadget allows the user to download the current params object
-as an .rds file via the "Download" button in the "File" section, or to
-upload a params object from an .rds file.
+as an .rds file via the "Download" button.
 }
 \section{Undo functionality}{
 The gadget keeps a log of all steady states you create while working with
