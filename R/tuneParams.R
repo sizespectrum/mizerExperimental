@@ -275,7 +275,8 @@ tuneParams <- function(p,
                               output = output,
                               session = session,
                               params = params,
-                              flags = flags))
+                              flags = flags,
+                              trigger_update = trigger_update))
         }
 
         ## UI for tabs ####

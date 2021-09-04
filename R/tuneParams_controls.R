@@ -9,7 +9,7 @@ eggControlUI <- function(p, sp) {
                     step = n0 / 50))
 }
 
-eggControl <- function(input, output, session, params, flags) {
+eggControl <- function(input, output, session, params, flags, ...) {
     observe({
         n0 <- req(input$n0)
         p <- isolate(params())
@@ -51,7 +51,7 @@ resourceControlUI <- function(p, sp) {
                      max = 1e3))
 }
 
-resourceControl <- function(input, output, session, params, flags) {
+resourceControl <- function(input, output, session, params, flags, ...) {
     observe({
         req(input$kappa,
             input$lambda,
@@ -98,7 +98,7 @@ otherControlUI <- function(p, sp) {
     )
 }
 
-otherControl <- function(input, output, session, params, flags) {
+otherControl <- function(input, output, session, params, flags, ...) {
     observe({
         req(input$alpha, input$ks, input$k, input$z0)
         p <- isolate(params())
@@ -168,7 +168,7 @@ reproductionControlUI <- function(p, sp) {
     )
 }
 
-reproductionControl <- function(input, output, session, params, flags) {
+reproductionControl <- function(input, output, session, params, flags, ...) {
     observeEvent(
         list(input$w_mat, input$wfrac, input$w_inf, input$m),
         {
@@ -228,7 +228,7 @@ predationControlUI <- function(p, sp) {
     )
 }
 
-predationControl <- function(input, output, session, params, flags) {
+predationControl <- function(input, output, session, params, flags, ...) {
     ## Adjust predation kernel ####
     observeEvent(
         list(input$beta, input$sigma),
@@ -377,7 +377,7 @@ fishingControlUI <- function(p, sp) {
     l1
 }
 
-fishingControl <- function(input, output, session, params, flags) {
+fishingControl <- function(input, output, session, params, flags, ...) {
     observeEvent(
         list(input$catchability,
              input$effort,
@@ -460,7 +460,7 @@ interactionControlUI <- function(p, sp) {
     l1
 }
 
-interactionControl <- function(input, output, session, params, flags) {
+interactionControl <- function(input, output, session, params, flags, ...) {
     observe({
         req(input$interaction_resource)
         p <- isolate(params())
