@@ -40,7 +40,6 @@ reference:
   - tuneParams
   - markBackground
   - adjustBackgroundSpecies
-  - scaleModel
   - scaleAbundance
   - updateInitialValues
   - pruneSpecies

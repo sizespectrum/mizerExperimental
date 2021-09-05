@@ -11,7 +11,7 @@ Description: This mizer extension package collects contributions from the mizer
 License: GPL-3
 Depends:
     R (>= 3.1),
-    mizer (>= 2.2.1)
+    mizer (>= 2.2.1.9008)
 Imports:
     assertthat,
     cubelyr,
@@ -34,11 +34,8 @@ Suggests:
     testthat (>= 2.1.0),
     vdiffr
 Collate:
-    calibrateBiomass.R
     manipulateParams.R
-    matchBiomasses.R
     mizerExperimental-package.R
-    plotBiomassObservedVsModel.R
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
     tuneParams.R
@@ -47,8 +44,6 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     validSim.R
-    steady.R
-    setBevertonHolt.R
     tuneParams_growthControl.R
     tuneParams_biomassTab.R
 Encoding: UTF-8

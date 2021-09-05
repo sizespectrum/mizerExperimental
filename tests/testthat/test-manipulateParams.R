@@ -63,7 +63,7 @@ test_that("scaleAbundance works", {
     factor <- c(Cod = 2, Haddock = 3)
     expect_warning(p2 <- scaleAbundance(NS_params, factor))
     expect_identical(p@initial_n["Cod"] * 2, p2@initial_n["Cod"])
-    expect_equal(p, expect_warning(scaleAbundance(p2, 1/factor)))
+    expect_unchanged(p, expect_warning(scaleAbundance(p2, 1/factor)))
 })
 test_that("scaleAbundance throws correct error",{
     expect_error(scaleAbundance(NS_params, c(2, 3)))
@@ -72,14 +72,4 @@ test_that("scaleAbundance throws correct error",{
 test_that("scaleAbundance warns on wrong names", {
     expect_error(scaleAbundance(NS_params, c(Kod = 2, Hadok = 3)),
                  "Kod, Hadok do not exist")
-})
-
-# scaleModel ----
-test_that("scaleModel does not change dynamics.", {
-    factor <- 10
-    sim <- project(NS_params, t_max = 1)
-    params2 <- scaleModel(NS_params, factor)
-    sim2 <- project(params2, t_max = 1)
-    expect_equal(sim2@n[1, , ], sim@n[1, , ] * factor)
-    expect_equal(sim2@n[2, , ], sim@n[2, , ] * factor)
 })

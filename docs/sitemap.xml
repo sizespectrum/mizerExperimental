@@ -7,7 +7,7 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/calibrateBiomass.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/biomassTab.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc>
@@ -19,9 +19,6 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/matchBiomasses.html</loc>
-  </url>
-  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/mizerExperimental-package.html</loc>
   </url>
   <url>
@@ -29,6 +26,9 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.html</loc>
@@ -43,13 +43,7 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleModel.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/setBevertonHolt.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/steady.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/tuneGrowth.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/tuneParams.html</loc>
