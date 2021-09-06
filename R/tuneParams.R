@@ -158,6 +158,12 @@ tuneParams <- function(p,
           if (e.which == 83) {
             $('#sp_steady').click()
           }
+          if (e.which == 78) {
+            $('#next_sp').click()
+          }
+          if (e.which == 80) {
+            $('#previous_sp').click()
+          }
         });})")),
         tags$head(
             tags$style(HTML(".center{float:center;}"))),
@@ -178,7 +184,8 @@ tuneParams <- function(p,
                     data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
-                    actionButton("sp_steady", "Steady"),
+                    tipify(actionButton("sp_steady", HTML("<u>s</u>teady")),
+                           title = "Find steady state. Keyboard shortcut: s"),
                     # We should not put a tooltip on the Undo or Redo buttons
                     # because they get stuck when the button gets disabled
                     actionButton("undo", "", icon = icon("undo")),
@@ -244,10 +251,16 @@ tuneParams <- function(p,
         output$sp_sel <- renderUI({
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
-            popify(selectInput("sp", "Species to tune:", species),
-                   title = "Species to tune",
-                   content = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on. You can also sometimes change this selection by clicking on a species in some of the plots.")
-        })
+            tagList(
+                popify(selectInput("sp", "Species to tune:", species),
+                       placement = "right",
+                       title = "Species to tune",
+                       content = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on. You can also sometimes change this selection by clicking on a species in some of the plots."),
+                tipify(actionButton("previous_sp", HTML("<u>p</u>revious")),
+                       title = "Select previous species. Keyboard shortcut: p"),
+                tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
+                       title = "Select next species. Keyboard shortcut: n"))
+            })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
             # The parameter sliders get updated whenever the species selector
@@ -313,6 +326,26 @@ tuneParams <- function(p,
             tuneParams_run_steady(params(), params = params,
                        logs = logs, session = session, input = input,
                        match = match)
+        })
+        
+        ## Previous ####
+        observeEvent(input$previous_sp, {
+            p <- params()
+            all_species <- species_params(p)$species[!is.na(p@A)]
+            no_sp <- length(all_species)
+            idx <- which(all_species == input$sp)
+            prev <- ((idx - 2) %% no_sp) + 1
+            updateSelectInput(session, "sp",
+                              selected = all_species[[prev]])
+        })
+        ## Next ####
+        observeEvent(input$next_sp, {
+            p <- params()
+            all_species <- species_params(p)$species[!is.na(p@A)]
+            no_sp <- length(all_species)
+            idx <- which(all_species == input$sp)
+            updateSelectInput(session, "sp",
+                              selected = all_species[[(idx %% no_sp) + 1]])
         })
 
         ## Undo ####
