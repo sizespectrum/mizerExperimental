@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Serve tab with catch data — catchTab • mizerExperimental</title>
+<title>Serve tab with resource plots — resourceTab • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Serve tab with catch data — catchTab" />
-<meta property="og:description" content="Serve tab with catch data" />
+<meta property="og:title" content="Serve tab with resource plots — resourceTab" />
+<meta property="og:description" content="Serve tab with resource plots" />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -138,18 +138,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Serve tab with catch data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/catchTab.R'><code>R/catchTab.R</code></a></small>
-    <div class="hidden name"><code>catchTab.Rd</code></div>
+    <h1>Serve tab with resource plots</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/resourceTab.R'><code>R/resourceTab.R</code></a></small>
+    <div class="hidden name"><code>resourceTab.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Serve tab with catch data</p>
+    <p>Serve tab with resource plots</p>
     </div>
 
-    <pre class="usage"><span class='fu'>catchTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, catch <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>resourceTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>catchTabUI</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>resourceTabUI</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,18 +173,6 @@
     <tr>
       <th>logs</th>
       <td><p>Environment holding the log of steady states.</p></td>
-    </tr>
-    <tr>
-      <th>catch</th>
-      <td><p>Data frame holding binned observed catch data. The data can
-be binned either into length bins or weight bins. In the former case the data
-frame should have columns <code>length</code> and <code>dl</code> holding the start of
-the size bins in cm and the width of the size bins in cm respectively. In
-the latter case the data frame should have columns <code>weight</code> and
-<code>dw</code> holding the start of the size bins in grams and the width of the
-size bins in grams. The data frame also needs to have the columns
-<code>species</code> (the name of the species), <code>catch</code> (the number of
-individuals of a particular species caught in a size bin).</p></td>
     </tr>
     <tr>
       <th>...</th>

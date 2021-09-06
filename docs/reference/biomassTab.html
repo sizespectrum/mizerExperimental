@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Biomass tab for tuning gadget — biomassTabUI • mizerExperimental</title>
+<title>Biomass tab for tuning gadget — biomassTab • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Biomass tab for tuning gadget — biomassTabUI" />
+<meta property="og:title" content="Biomass tab for tuning gadget — biomassTab" />
 <meta property="og:description" content="The Biomass tab shows:
 A plot of total biomass for each species, compared to
 observed biomasses when available, using plotBiomossObservedVsModel().
@@ -147,7 +147,7 @@ using plotSpectra().
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Biomass tab for tuning gadget</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/tuneParams_biomassTab.R'><code>R/tuneParams_biomassTab.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/biomassTab.R'><code>R/biomassTab.R</code></a></small>
     <div class="hidden name"><code>biomassTab.Rd</code></div>
     </div>
 
@@ -163,40 +163,41 @@ using <code>plotSpectra()</code>.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>biomassTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>biomassTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>biomassTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>biomassTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>params</th>
-      <td><p>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>.</p></td>
-    </tr>
-    <tr>
       <th>input</th>
-      <td><p>.</p></td>
+      <td><p>Reactive holding the inputs</p></td>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>.</p></td>
+      <td><p>Reactive holding the outputs</p></td>
     </tr>
     <tr>
       <th>session</th>
-      <td><p>.</p></td>
+      <td><p>Shiny session</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>Reactive value holding a MizerParams object.</p></td>
     </tr>
     <tr>
       <th>logs</th>
-      <td><p>.</p></td>
+      <td><p>Environment holding the log of steady states.</p></td>
     </tr>
     <tr>
       <th>trigger_update</th>
-      <td><p>.</p></td>
+      <td><p>Reactive value used for triggering update of
+species parameter sliders.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Unused</p></td>
     </tr>
     </table>
 

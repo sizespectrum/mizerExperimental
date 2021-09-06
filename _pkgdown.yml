@@ -36,17 +36,28 @@ destination: docs
 
 reference:
 - title: Interactively tuning a multispecies model
-  contents:
+- contents:
   - tuneParams
+  - tuneGrowth
+- subtitle: Tabs for tuning gadget
+- contents:
+  - ends_with("Tab")
+- subtitle: Controls for tuning gadget
+- contents:
+  - ends_with("Control")
+- title: Helper functions for model tuning
+- contents:
   - markBackground
   - adjustBackgroundSpecies
+  - removeBackgroundSpecies
   - scaleAbundance
+  - scaleDownBackground
   - updateInitialValues
   - pruneSpecies
 - title: New plotting functions
-  contents:
+- contents:
   - starts_with("plot")
 - title: Others
-  contents:
+- contents:
   - validSim
 

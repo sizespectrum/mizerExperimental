@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Serve tab with catch data — catchTab • mizerExperimental</title>
+<title>Controlling the resource parameters in the tuning gadget — resourceControl • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Serve tab with catch data — catchTab" />
-<meta property="og:description" content="Serve tab with catch data" />
+<meta property="og:title" content="Controlling the resource parameters in the tuning gadget — resourceControl" />
+<meta property="og:description" content="Controlling the resource parameters in the tuning gadget" />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -138,57 +138,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Serve tab with catch data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/catchTab.R'><code>R/catchTab.R</code></a></small>
-    <div class="hidden name"><code>catchTab.Rd</code></div>
+    <h1>Controlling the resource parameters in the tuning gadget</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/resourceControl.R'><code>R/resourceControl.R</code></a></small>
+    <div class="hidden name"><code>resourceControl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Serve tab with catch data</p>
+    <p>Controlling the resource parameters in the tuning gadget</p>
     </div>
 
-    <pre class="usage"><span class='fu'>catchTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, catch <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>resourceControl</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>flags</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>catchTabUI</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>resourceControlUI</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>sp</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>Reactive holding the inputs</p></td>
+      <td><p>.</p></td>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>Reactive holding the outputs</p></td>
+      <td><p>.</p></td>
     </tr>
     <tr>
       <th>session</th>
-      <td><p>Shiny session</p></td>
+      <td><p>.</p></td>
     </tr>
     <tr>
       <th>params</th>
-      <td><p>Reactive value holding a MizerParams object.</p></td>
+      <td><p>.</p></td>
     </tr>
     <tr>
-      <th>logs</th>
-      <td><p>Environment holding the log of steady states.</p></td>
-    </tr>
-    <tr>
-      <th>catch</th>
-      <td><p>Data frame holding binned observed catch data. The data can
-be binned either into length bins or weight bins. In the former case the data
-frame should have columns <code>length</code> and <code>dl</code> holding the start of
-the size bins in cm and the width of the size bins in cm respectively. In
-the latter case the data frame should have columns <code>weight</code> and
-<code>dw</code> holding the start of the size bins in grams and the width of the
-size bins in grams. The data frame also needs to have the columns
-<code>species</code> (the name of the species), <code>catch</code> (the number of
-individuals of a particular species caught in a size bin).</p></td>
+      <th>flags</th>
+      <td><p>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Unused</p></td>
+      <td><p>.</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>The MizerParams object currently being tuned.</p></td>
+    </tr>
+    <tr>
+      <th>sp</th>
+      <td><p>The single row from the pecies parameter data frame for the
+currently selected species.</p></td>
     </tr>
     </table>
 

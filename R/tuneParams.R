@@ -85,7 +85,7 @@
 #' @import shinyBS 
 #' @export
 tuneParams <- function(p,
-                       controls = c("egg",
+                       controls = c("abundance",
                                    "predation",
                                    "fishing",
                                    "reproduction",

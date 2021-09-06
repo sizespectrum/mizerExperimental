@@ -4,6 +4,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/index.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/abundanceControl.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
@@ -13,13 +16,31 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/deathTab.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/dietTab.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/fishingControl.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/growthTab.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/interactionControl.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/mizerExperimental-package.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/otherControl.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc>
@@ -31,10 +52,28 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/predationControl.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/ratesTab.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/resourceControl.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/resourceTab.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.html</loc>

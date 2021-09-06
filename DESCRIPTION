@@ -39,13 +39,26 @@ Collate:
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
     tuneParams.R
-    tuneParams_controls.R
+    abundanceControl.R
+    fishingControl.R
+    growthControl.R
+    interactionControl.R
+    otherControl.R
+    predationControl.R
+    reproductionControl.R
+    resourceControl.R
     tuneParams_tabs.R
+    biomassTab.R
+    catchTab.R
+    deathTab.R
+    dietTab.R
+    growthTab.R
+    ratesTab.R
+    reproTab.R
+    resourceTab.R
     tuneParams_helpers.R
     getYieldVsFcurve.R
     validSim.R
-    tuneParams_growthControl.R
-    tuneParams_biomassTab.R
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

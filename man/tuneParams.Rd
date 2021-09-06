@@ -6,8 +6,8 @@
 \usage{
 tuneParams(
   p,
-  controls = c("egg", "predation", "fishing", "reproduction", "other", "interaction",
-    "resource"),
+  controls = c("abundance", "predation", "fishing", "reproduction", "other",
+    "interaction", "resource"),
   tabs = c("Spectra", "Growth", "Repro", "Catch", "Diet", "Death", "Resource", "Rates",
     "Sim"),
   match = c("none", "biomass", "yield"),
