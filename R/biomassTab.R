@@ -212,9 +212,12 @@ biomassTabUI <- function(params, ...) {
     
     # plot Biomass ----
     tl <- tagList(tl,
-                  plotOutput("plotTotalBiomass",
+                  popify(plotOutput("plotTotalBiomass",
                              click = "biomass_click",
                              dblclick = "tune_egg"),
+                         placement = "left",
+                         title = "Comparison between model and observed biomasses",
+                         content = "For each species this plots the observed biomass (square) and the model biomass (circle). You will want to get these into alignment. You can click in the column for a species to select that species. If you double-click in a column the abundance of that species will be scaled to give the observed biomass."),
                   uiOutput("biomass_sel"))
     
     # calibration buttons ----
@@ -245,16 +248,9 @@ biomassTabUI <- function(params, ...) {
     )
     # Explain spectra ----
     tl <- tagList(tl,
-                  h1("Size spectra"),
-                  p("This tab shows the biomass size spectra of the individual fish species and of the resource, as well as the total size spectrum (in black)."),
-                  p("This plot, as well as those on other tabs, is interactive in various",
-                    "ways. For example you can remove individual species from the plot by",
-                    "clicking on their name in the legend. Hovering over the lines pops",
-                    "up extra information. You can zoom into a portion of the plot by",
-                    "dragging a rectangle with the mouse while holding the left mouse",
-                    "button down."),
-                  p("Remember that after any adjustment you make in this app, you need",
-                    "to hit the 'Steady' button before you will see the full ",
-                    "multi-species consequences of the change."),
+                  h2("Size spectra"),
+                  p("The lower plot shows the biomass size spectra of the individual fish species and of the resource, as well as the total size spectrum (in black)."),
+                  p("This plot, as well as those on other tabs, is interactive in various ways. For example you can remove individual species from the plot by clicking on their name in the legend. Hovering over the lines pops up extra information. You can zoom into a portion of the plot by dragging a rectangle with the mouse while holding the left mouse button down."),
+                  p("Remember that after any adjustment you make in this app, you need to hit the 'Steady' button before you will see the full multi-species consequences of the change.")
     )
 }
