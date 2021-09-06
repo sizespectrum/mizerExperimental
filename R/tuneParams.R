@@ -172,6 +172,7 @@ tuneParams <- function(p,
 
             ## Sidebar ####
             sidebarPanel(
+                width = 3,
                 introBox(
                     tipify(actionButton("help", "Help"),
                            title = "Start the introductory instructions"),
@@ -219,12 +220,12 @@ tuneParams <- function(p,
                     )),
                     data.step = 3,
                     data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will immediately update."
-                ),
-                width = 3
+                )
             ),  # endsidebarpanel
 
             ## Main panel ####
             mainPanel(
+                width = 9,
                 introBox(uiOutput("tabs"),
                          data.step = 1,
                          data.intro = "This main panel has tabs that display various aspects of the steady state of your model. At the bottom of each tab you find text explanations for that tab. You may need to scroll down in the tab to see them. Individual components may show tooltips when you hover over them."
@@ -294,7 +295,7 @@ tuneParams <- function(p,
         output$tabs <- renderUI({
             tablist <- lapply(tabs, function(tab) {
                 tab_content <- div(
-                    style = "max-height: 90vh; overflow-y: auto; overflow-x: hidden;",
+                    style = "max-height: 94vh; overflow-y: auto; overflow-x: hidden;",
                     do.call(paste0(tolower(tab), "TabUI"), 
                             list(params = params)))
                 tabPanel(tab, tab_content)
