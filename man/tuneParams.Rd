@@ -54,7 +54,7 @@ functions like \code{setRmax()} or \code{changeResource()}.
 There is an "Instructions" button near the top left of the gadget that
 gives you a quick overview of the user interface.
 
-After you click the "Done" button in the side panel, the function will return
+After you click the "Return" button in the side panel, the function will return
 the parameter object in the state at that time, with \code{Rmax} set to \code{Inf}
 and \code{erepro} set to the value it had after the last run to steady state.
 
@@ -67,7 +67,7 @@ the gadget. You can go back to the last steady state by hitting the "Undo"
 button. You can go back an arbitrary number of states and also go forward
 again. There is also a button to go right back to the initial steady state.
 
-When you leave the gadget by hitting the "Done" button, this log is cleared.
+When you leave the gadget by hitting the "Return" button, this log is cleared.
 If you stop the gadget from RStudio by hitting the "Stop" button, then the
 log is left behind. You can then restart the gadget by calling \code{tuneParams()}
 without a \code{params} argument and it will re-instate the states from the log.

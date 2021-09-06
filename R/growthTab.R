@@ -53,7 +53,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
                     numericInput("k_vb", "Von Bertalanffy k", value = k_vb, width = "9em")),
                 div(style = "display:inline-block",
                     numericInput("t0", "t_0", value = t0, width = "6em")),
-                p("Parameters for length-weight relationship l = a w^b"),
+                p("Parameters for length-weight relationship w = a l^b"),
                 div(style = "display:inline-block",
                     numericInput("a", "a", value = a, width = "8em")),
                 div(style = "display:inline-block",
@@ -106,25 +106,26 @@ growthTab <- function(input, output, session, params, logs, ...) {
 #' @inheritParams biomassTabUI
 growthTabUI <- function(...) {
     tagList(
-        popify(radioButtons("all_growth", "Show:",
+        popify(div(radioButtons("all_growth", "Show:",
                             choices = c("All", "Selected species"),
                             selected = "All", inline = TRUE),
+                   style = "width: 200px; margin: auto;"),
                title = "Switch views",
                content = "Select whether to view growth curves for all species or just for the selected species. You can also toggle this by double-clicking on the plot. Single-clicking on the plot changes the selected species without changing the view."),
         plotOutput("plotGrowthCurve",
                    click = "growth_click",
                    dblclick = "growth_dblclick"),
-        textOutput("info"),
         plotlyOutput("plot_feeding_level"),
-        uiOutput("k_vb_sel"),
-        h1("Growth"),
+        popify(uiOutput("k_vb_sel"),
+               title = "Von Bertalanffy growth parameters",
+               content = "Here you can update these parameters describing observed growth curves."),
         h2("Growth curves"),
-        p("The upper plot shows growth curves: the size of an individual plotted against its age. Each growth curve plot shows the mizer growth curve in red and the von Bertalanffy growth curve in blue. The 'Show:' radio buttons let you choose to view the growth curves for all species at once or only that for the selected species. When viewing all growth curves you can double click on one of the graphs to select that species."),
-        p("The von Bertalanffy growth curve is determined by the von Bertalanffy parameters 'w_inf', 'k_vb' and 't0' as well as the length-weight relationship parameters 'a' and 'b' in the species parameter data frame. You can change these manually using the input fields below the single-species growth curve plot. The mizer growth curves in contrast are determined by the energy available for growth from feeding, after metabolic cost and investment into reproduction are taken into account."),
+        p("The upper plot shows growth curves: the size of an individual plotted against its age. Each growth curve plot shows the mizer growth curve in red and the von Bertalanffy growth curve in blue. The 'Show:' radio buttons let you choose to view the growth curves for all species at once or only that for the selected species. When viewing all growth curves you can click on one of the graphs to select that species. Double-clicking toggles between viewing all species and individual species."),
+        p("The von Bertalanffy growth curve is determined by the von Bertalanffy parameters 'w_inf', 'k_vb' and 't0' as well as the length-weight relationship parameters 'a' and 'b' in the species parameter data frame. When viewing a single species, you can change these parameters using the input fields below the plots. The mizer growth curves in contrast are determined by the energy available for growth from feeding, after metabolic cost and investment into reproduction are taken into account."),
         h2("Feeding level"),
-        p("In the lower plot the thick lines shows the feeding level, which reflects the degree of satiation. At feeding level 1 an individual is totally satiated and does not feed any more, so is insensitive to changes in prey availability. The thin lines show the critical feeding level, which is the feeding level below which an individual can no longer meet its metabolic cost and starves. The actual feeding level should lie in between these two extremes."),
-        h3("How to tune growth curves and feeding level"),
+        p("In the lower plot the thick lines shows the feeding level, which reflects the degree of satiation. At feeding level 1 an individual is totally satiated and does not feed any more, so is insensitive to changes in prey availability. The faint lines show the critical feeding level, which is the feeding level below which an individual can no longer meet its metabolic cost and starves. The actual feeding level should lie in between these two extremes."),
+        h3("Parameters affecting growth curves and feeding level"),
         p("The growth rate is strongly influenced by the predation rate coefficient 'gamma' and the maximum feeding rate parameter 'h'. Increasing 'gamma' will increase growth and increase feeding level. Increasing 'h' will also increase growth but decrease feeding level. So in practice you will change both to obtain the desired growth while maintaining an appropriate feeding level."),
-        p("The growth rate is also influenced by losses to basic metabolism (parameters 'ks' and 'p') and activity (parameter 'k') and investment into", a("reproduction", href = "#reproduction"), ". For example changing the exponent 'm' that determines how investment into reproduction scales with size will affect the growth rate of large individuals.")
+        p("The growth rate is also influenced by losses to basic metabolism (parameters 'ks' and 'p') and activity (parameter 'k') and investment into", a("reproduction", href = "#reproduction"), ". For example, changing the exponent 'm' that determines how investment into reproduction scales with size will affect the growth rate of large individuals.")
     )
 }

@@ -15,7 +15,7 @@
 #' There is an "Instructions" button near the top left of the gadget that
 #' gives you a quick overview of the user interface.
 #'
-#' After you click the "Done" button in the side panel, the function will return
+#' After you click the "Return" button in the side panel, the function will return
 #' the parameter object in the state at that time, with `Rmax` set to `Inf`
 #' and `erepro` set to the value it had after the last run to steady state.
 #'
@@ -29,7 +29,7 @@
 #' button. You can go back an arbitrary number of states and also go forward
 #' again. There is also a button to go right back to the initial steady state.
 #'
-#' When you leave the gadget by hitting the "Done" button, this log is cleared.
+#' When you leave the gadget by hitting the "Return" button, this log is cleared.
 #' If you stop the gadget from RStudio by hitting the "Stop" button, then the
 #' log is left behind. You can then restart the gadget by calling `tuneParams()`
 #' without a `params` argument and it will re-instate the states from the log.
@@ -159,6 +159,8 @@ tuneParams <- function(p,
             $('#sp_steady').click()
           }
         });})")),
+        tags$head(
+            tags$style(HTML(".center{float:center;}"))),
 
         sidebarLayout(
 
@@ -169,11 +171,11 @@ tuneParams <- function(p,
                            title = "Start the introductory instructions"),
                     tipify(downloadButton("params", ""),
                            title = "Download the current params object"),
-                    tipify(actionButton("done", "Done", icon = icon("check"),
+                    tipify(actionButton("done", "Return", icon = icon("check"),
                                  onclick = "setTimeout(function(){window.close();},500);"),
                            title = "Return the current params objects to R"),
                     data.step = 8,
-                    data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Done' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
+                    data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
                     actionButton("sp_steady", "Steady"),
@@ -242,7 +244,9 @@ tuneParams <- function(p,
         output$sp_sel <- renderUI({
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
-            selectInput("sp", "Species to tune:", species)
+            popify(selectInput("sp", "Species to tune:", species),
+                   title = "Species to tune",
+                   content = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on. You can also sometimes change this selection by clicking on a species in some of the plots.")
         })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
@@ -361,8 +365,8 @@ tuneParams <- function(p,
                 saveRDS(finalise_params(params()), file = file)
         })
 
-        ## Done ####
-        # When the user hits the "Done" button we want to clear the logs and
+        ## Return ####
+        # When the user hits the "Return" button we want to clear the logs and
         # return with the latest params object
         observeEvent(input$done, {
             file.remove(logs$files)
