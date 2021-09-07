@@ -1,11 +1,13 @@
 #' Controlling egg abundance in the tuning gadget
-#' @param input .
-#' @param output .
-#' @param session .
-#' @param params .
-#' @param flags .
-#' @param ... .
-abundanceControl <- function(input, output, session, params, flags, ...) {
+#' @param input Reactive holding the inputs
+#' @param output Reactive holding the outputs
+#' @param session Shiny session
+#' @param params Reactive value holding updated MizerParams object
+#' @param params_old Reactive value holding non-updated MizerParams object
+#' @param flags Environment holding flags to skip certain observers
+#' @param ... Unused
+abundanceControl <- function(input, output, session, params, params_old,
+                             flags, ...) {
     observe({
         n0 <- req(input$n0)
         p <- isolate(params())

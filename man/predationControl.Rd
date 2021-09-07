@@ -5,22 +5,24 @@
 \alias{predationControlUI}
 \title{Controlling the predation parameters in the tuning gadget}
 \usage{
-predationControl(input, output, session, params, flags, ...)
+predationControl(input, output, session, params, params_old, flags, ...)
 
 predationControlUI(p, sp)
 }
 \arguments{
-\item{input}{.}
+\item{input}{Reactive holding the inputs}
 
-\item{output}{.}
+\item{output}{Reactive holding the outputs}
 
-\item{session}{.}
+\item{session}{Shiny session}
 
-\item{params}{.}
+\item{params}{Reactive value holding updated MizerParams object}
 
-\item{flags}{.}
+\item{params_old}{Reactive value holding non-updated MizerParams object}
 
-\item{...}{.}
+\item{flags}{Environment holding flags to skip certain observers}
+
+\item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
 

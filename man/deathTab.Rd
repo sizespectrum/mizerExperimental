@@ -16,7 +16,7 @@ deathTabUI(...)
 
 \item{session}{Shiny session}
 
-\item{params}{Reactive value holding a MizerParams object.}
+\item{params}{Reactive value holding updated MizerParams object}
 
 \item{logs}{Environment holding the log of steady states.}
 

@@ -5,7 +5,7 @@
 \title{Launch shiny gadget for tuning parameters}
 \usage{
 tuneParams(
-  p,
+  params,
   controls = c("abundance", "predation", "fishing", "reproduction", "other",
     "interaction", "resource"),
   tabs = c("Spectra", "Growth", "Repro", "Catch", "Diet", "Death", "Resource", "Rates",
@@ -16,7 +16,7 @@ tuneParams(
 )
 }
 \arguments{
-\item{p}{MizerParams object to tune. If missing, the gadget tries to recover
+\item{params}{MizerParams object to tune. If missing, the gadget tries to recover
 information from log files left over from aborted previous runs.}
 
 \item{controls}{A character vector of names of input parameter control

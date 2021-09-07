@@ -15,7 +15,11 @@
 #'
 #' @import mizer methods dplyr ggplot2 assertthat shiny rintrojs
 #' @importFrom stats runif
+#' @importFrom utils globalVariables
 #' @rawNamespace import(plotly, except = last_plot)
 #' @md
 #' @keywords internal
 "_PACKAGE"
+
+
+globalVariables(c("expect_equal", "other", "yield"))

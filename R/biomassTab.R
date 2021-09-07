@@ -2,15 +2,12 @@
 #' 
 #' The Biomass tab shows:
 #' * A plot of total biomass for each species, compared to
-#' observed biomasses when available, using [plotBiomossObservedVsModel()].
+#' observed biomasses when available, using [plotBiomassObservedVsModel()].
 #' * Buttons "Calibrate" and "Match" that trigger a call to 
 #' [calibrateBiomass()] or [matchBiomasses()] respectively.
 #' * A plot of the biomass density spectra as a function of log size,
 #' using [plotSpectra()].
-#' @param input Reactive holding the inputs
-#' @param output Reactive holding the outputs
-#' @param session Shiny session
-#' @param params Reactive value holding a MizerParams object.
+#' @inheritParams abundanceControl
 #' @param logs Environment holding the log of steady states.
 #' @param trigger_update Reactive value used for triggering update of
 #'   species parameter sliders.

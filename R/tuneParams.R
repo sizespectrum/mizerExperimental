@@ -65,7 +65,7 @@
 #' enforces the same effort for all gears. It sets all efforts to that for the
 #' first gear and then allows the user to change that single effort value.
 #'
-#' @param p MizerParams object to tune. If missing, the gadget tries to recover
+#' @param params MizerParams object to tune. If missing, the gadget tries to recover
 #'   information from log files left over from aborted previous runs.
 #' @param controls A character vector of names of input parameter control
 #'   sections that should be displayed in the sidebar. See "Customisation"
@@ -84,7 +84,7 @@
 #' @md
 #' @import shinyBS 
 #' @export
-tuneParams <- function(p,
+tuneParams <- function(params,
                        controls = c("abundance",
                                    "predation",
                                    "fishing",
@@ -104,6 +104,7 @@ tuneParams <- function(p,
                        match = c("none", "biomass", "yield"),
                        preserve = c("erepro", "reproduction_level", "R_max"),
                        ...) {
+    p <- params # just because I was lazy and because I am using params later
     match <- match.arg(match)
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check

@@ -16,7 +16,7 @@ biomassTabUI(params, ...)
 
 \item{session}{Shiny session}
 
-\item{params}{Reactive value holding a MizerParams object.}
+\item{params}{Reactive value holding updated MizerParams object}
 
 \item{logs}{Environment holding the log of steady states.}
 
@@ -29,7 +29,7 @@ species parameter sliders.}
 The Biomass tab shows:
 \itemize{
 \item A plot of total biomass for each species, compared to
-observed biomasses when available, using \code{\link[=plotBiomossObservedVsModel]{plotBiomossObservedVsModel()}}.
+observed biomasses when available, using \code{\link[=plotBiomassObservedVsModel]{plotBiomassObservedVsModel()}}.
 \item Buttons "Calibrate" and "Match" that trigger a call to
 \code{\link[=calibrateBiomass]{calibrateBiomass()}} or \code{\link[=matchBiomasses]{matchBiomasses()}} respectively.
 \item A plot of the biomass density spectra as a function of log size,

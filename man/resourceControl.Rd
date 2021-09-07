@@ -10,17 +10,17 @@ resourceControl(input, output, session, params, flags, ...)
 resourceControlUI(p, sp)
 }
 \arguments{
-\item{input}{.}
+\item{input}{Reactive holding the inputs}
 
-\item{output}{.}
+\item{output}{Reactive holding the outputs}
 
-\item{session}{.}
+\item{session}{Shiny session}
 
-\item{params}{.}
+\item{params}{Reactive value holding updated MizerParams object}
 
-\item{flags}{.}
+\item{flags}{Environment holding flags to skip certain observers}
 
-\item{...}{.}
+\item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
 
