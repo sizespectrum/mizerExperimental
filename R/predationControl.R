@@ -1,6 +1,7 @@
 #' Controlling the predation parameters in the tuning gadget
 #' @inheritParams abundanceControl
-predationControl <- function(input, output, session, params, flags, ...) {
+predationControl <- function(input, output, session, params, params_old,
+                             flags, ...) {
     ## Adjust predation kernel ####
     observeEvent(
         list(input$beta, input$sigma),
@@ -22,7 +23,7 @@ predationControl <- function(input, output, session, params, flags, ...) {
             p@species_params[sp, "beta"]  <- input$beta
             p@species_params[sp, "sigma"] <- input$sigma
             p <- setPredKernel(p)
-            tuneParams_update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
     
@@ -49,7 +50,7 @@ predationControl <- function(input, output, session, params, flags, ...) {
             p@species_params[sp, "q"]     <- input$q
             p <- setSearchVolume(p)
             p <- setMaxIntakeRate(p)
-            tuneParams_update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
     

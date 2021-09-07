@@ -1,6 +1,7 @@
 #' Controlling the reproduction parameters in the tuning gadget
 #' @inheritParams abundanceControl
-reproductionControl <- function(input, output, session, params, flags, ...) {
+reproductionControl <- function(input, output, session, params, params_old,
+                                flags, ...) {
     observeEvent(
         list(input$w_mat, input$wfrac, input$w_inf, input$m),
         {
@@ -25,7 +26,7 @@ reproductionControl <- function(input, output, session, params, flags, ...) {
             p@species_params[sp, "m"]     <- input$m
             
             p <- setReproduction(p)
-            tuneParams_update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
 }

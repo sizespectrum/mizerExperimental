@@ -1,7 +1,7 @@
 #' A single slider that adjusts both `h` and `gamma`
 #' 
 #' @inheritParams abundanceControl
-growthControl <- function(input, output, session, params, flags,
+growthControl <- function(input, output, session, params, params_old, flags,
                                     ...) {
     observeEvent(input$gamma, {
         p <- params()
@@ -23,7 +23,7 @@ growthControl <- function(input, output, session, params, flags,
         p@species_params[sp, "h"] <- p@species_params[sp, "h"] * factor
         p <- setMaxIntakeRate(p)
         
-        tuneParams_update_species(sp, p, params)
+        tuneParams_update_species(sp, p, params, params_old)
     },
     ignoreInit = TRUE,
     ignoreNULL = TRUE

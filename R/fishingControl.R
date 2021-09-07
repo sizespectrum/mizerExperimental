@@ -1,6 +1,6 @@
 #' Controlling the fishing parameters in the tuning gadget
 #' @inheritParams abundanceControl
-fishingControl <- function(input, output, session, params, flags, ...) {
+fishingControl <- function(input, output, session, params, params_old, flags, ...) {
     observeEvent(
         list(input$catchability,
              input$effort,
@@ -57,7 +57,7 @@ fishingControl <- function(input, output, session, params, flags, ...) {
             }
             
             p <- setFishing(p, initial_effort = input$effort)
-            tuneParams_update_species(sp, p, params)
+            tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
 }

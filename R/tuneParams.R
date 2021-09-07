@@ -239,6 +239,7 @@ tuneParams <- function(params,
         hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
+        params_old <- reactiveVal(p)
         tuneParams_add_to_logs(logs, p)  # This allows us to get back to the initial state
         if (logs$idx == length(logs$files)) shinyjs::disable("redo")
         if (logs$idx <= 1) {
@@ -288,6 +289,7 @@ tuneParams <- function(params,
                               output = output,
                               session = session,
                               params = params,
+                              params_old = params_old,
                               flags = flags,
                               trigger_update = trigger_update))
         }
@@ -325,9 +327,10 @@ tuneParams <- function(params,
         ## Steady ####
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
-            tuneParams_run_steady(params(), params = params,
-                       logs = logs, session = session, input = input,
-                       match = match)
+            tuneParams_run_steady(params(), params = params, 
+                                  params_old = params_old,
+                                  logs = logs, session = session, input = input,
+                                  match = match)
         })
         
         ## Previous ####
@@ -366,6 +369,7 @@ tuneParams <- function(params,
                 }
             }
             params(p_new)
+            params_old(p_new)
             # Trigger an update of sliders
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
@@ -374,7 +378,9 @@ tuneParams <- function(params,
         observeEvent(input$redo, {
             if (logs$idx >= length(logs$files)) return()
             logs$idx <- logs$idx + 1
-            params(readRDS(logs$files[logs$idx]))
+            p <- readRDS(logs$files[logs$idx])
+            params(p)
+            params_old(p)
             # Trigger an update of sliders
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
@@ -387,7 +393,9 @@ tuneParams <- function(params,
             if (logs$idx > 1) shinyjs::enable("redo")
             shinyjs::disable("undo")
             logs$idx <- 1
-            params(readRDS(logs$files[logs$idx]))
+            p <- readRDS(logs$files[logs$idx])
+            params(p)
+            params_old(p)
             # Trigger an update of sliders
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
@@ -415,6 +423,10 @@ tuneParams <- function(params,
 
 #' Tune Growth
 #' 
+#' A simplified instance of `tuneParams()` that is useful for tuning growth
+#' rates.
+#' @inheritParams tuneParams
+#' @return The tuned MizerParams object
 #' @export
 tuneGrowth <- function(params, match = c("biomass", "yield", "none")) {
     match <- match.arg(match)

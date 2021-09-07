@@ -1,6 +1,7 @@
 #' Controlling the interaction matrix in the tuning gadget
 #' @inheritParams abundanceControl
-interactionControl <- function(input, output, session, params, flags, ...) {
+interactionControl <- function(input, output, session, params, 
+                               params_old, flags, ...) {
     observe({
         req(input$interaction_resource)
         p <- isolate(params())
@@ -21,7 +22,7 @@ interactionControl <- function(input, output, session, params, flags, ...) {
             inter_var <- paste0("inter_", i)
             p@interaction[sp, i] <- input[[inter_var]]
         }
-        tuneParams_update_species(sp, p, params)
+        tuneParams_update_species(sp, p, params, params_old)
     })
 }
 

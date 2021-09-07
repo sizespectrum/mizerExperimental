@@ -1,6 +1,7 @@
 #' Controlling the species parameters not included in other controls
 #' @inheritParams abundanceControl
-otherControl <- function(input, output, session, params, flags, ...) {
+otherControl <- function(input, output, session, params, params_old,
+                         flags, ...) {
     observe({
         req(input$alpha, input$ks, input$k, input$z0)
         p <- isolate(params())
@@ -27,7 +28,7 @@ otherControl <- function(input, output, session, params, flags, ...) {
         p@species_params[sp, "z0"]    <- input$z0
         p <- setMetabolicRate(p)
         p <- setExtMort(p)
-        tuneParams_update_species(sp, p, params)
+        tuneParams_update_species(sp, p, params, params_old)
     })
     
     observeEvent(

@@ -29,16 +29,20 @@ finalise_params <- function(p) {
 }
 
 
-tuneParams_update_species <- function(sp, p, params) {
+tuneParams_update_species <- function(sp, p, params, params_old) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
     tryCatch({
         # The spectrum for the changed species is calculated with new
         # parameters but in the context of the original community
+        p_old <- params_old()
+        n <- p_old@initial_n
+        n_pp <- p_old@initial_n_pp
+        n_other <- p_old@initial_n_other
         # Compute death rate for changed species
-        mumu <- getMort(p)[sp, ]
+        mumu <- getMort(p, n = n, n_pp = n_pp, n_other = n_other)[sp, ]
         # compute growth rate for changed species
-        gg <- getEGrowth(p)[sp, ]
+        gg <- getEGrowth(p, n = n, n_pp = n_pp, n_other = n_other)[sp, ]
         # Compute solution for changed species
         w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
         idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
@@ -77,7 +81,7 @@ tuneParams_update_species <- function(sp, p, params) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-tuneParams_run_steady <- function(p, params, logs, session, input,
+tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                                   match, return_sim = FALSE) {
 
     tryCatch({
@@ -116,8 +120,9 @@ tuneParams_run_steady <- function(p, params, logs, session, input,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
         
-        # Update the reactive params object
+        # Update the reactive params objects
         params(p)
+        params_old(p)
         tuneParams_add_to_logs(logs, p)
     },
     error = function(e) {
