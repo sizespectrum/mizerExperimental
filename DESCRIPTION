@@ -12,6 +12,8 @@ License: GPL-3
 Depends:
     R (>= 3.1),
     mizer (>= 2.2.1.9008)
+Remotes: 
+    github::sizespectrum/mizer
 Imports:
     assertthat,
     cubelyr,
