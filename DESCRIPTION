@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.2.1.9003
+Version: 2.3.0
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -11,9 +11,7 @@ Description: This mizer extension package collects contributions from the mizer
 License: GPL-3
 Depends:
     R (>= 3.1),
-    mizer (>= 2.2.1.9008)
-Remotes: 
-    github::sizespectrum/mizer
+    mizer (>= 2.3.0)
 Imports:
     assertthat,
     cubelyr,
@@ -63,7 +61,7 @@ Collate:
     getYieldVsFcurve.R
     validSim.R
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues

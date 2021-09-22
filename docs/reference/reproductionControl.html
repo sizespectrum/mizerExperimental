@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
     <p>Controlling the reproduction parameters in the tuning gadget</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reproductionControl</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>flags</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>reproductionControl</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>params_old</span>, <span class='va'>flags</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>reproductionControlUI</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>sp</span><span class='op'>)</span></pre>
 
@@ -156,27 +156,31 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>.</p></td>
+      <td><p>Reactive holding the inputs</p></td>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>.</p></td>
+      <td><p>Reactive holding the outputs</p></td>
     </tr>
     <tr>
       <th>session</th>
-      <td><p>.</p></td>
+      <td><p>Shiny session</p></td>
     </tr>
     <tr>
       <th>params</th>
-      <td><p>.</p></td>
+      <td><p>Reactive value holding updated MizerParams object</p></td>
+    </tr>
+    <tr>
+      <th>params_old</th>
+      <td><p>Reactive value holding non-updated MizerParams object</p></td>
     </tr>
     <tr>
       <th>flags</th>
-      <td><p>.</p></td>
+      <td><p>Environment holding flags to skip certain observers</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>.</p></td>
+      <td><p>Unused</p></td>
     </tr>
     <tr>
       <th>p</th>

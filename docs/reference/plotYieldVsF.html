@@ -87,7 +87,7 @@ fixed." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -184,7 +184,7 @@ fixed.</p>
       <th>F_range</th>
       <td><p>A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
-<code>seq(from = 0, to = F_max, length.out = no_steps)</code>.</p></td>
+<code><a href='https://rdrr.io/r/base/seq.html'>seq(from = 0, to = F_max, length.out = no_steps)</a></code>.</p></td>
     </tr>
     </table>
 
@@ -196,11 +196,11 @@ yield. If missing, it is set to
     <div class='dont-index'><p>getYieldVsF</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>}</span></span>
-</pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span>
+<span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

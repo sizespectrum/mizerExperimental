@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -141,14 +141,64 @@
       <small>Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="mizerexperimental-230" class="section level1">
+<h1 class="page-header" data-toc-text="2.3.0">
+<a href="#mizerexperimental-230" class="anchor"></a>mizerExperimental 2.3.0</h1>
+<ul>
+<li>New <code><a href="../reference/tuneGrowth.html">tuneGrowth()</a></code> shiny gadget to help tune growth curves.</li>
+</ul>
+<div id="changes-in-tuneparams" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-in-tuneparams" class="anchor"></a>Changes in <code>tuneParams()</code>
+</h2>
+<ul>
+<li>Important change: The updated species abundance is now always calculated in the unchanged background.</li>
+<li>Using <code>params</code> instead of <code>p</code> as argument name.</li>
+<li>Many more help popups.</li>
+<li>Main panel utilises all available space.</li>
+<li>Add buttons and keyboard shortcuts for cycling through species.</li>
+<li>Move tabs and controls into individual files and add roxygen comments.</li>
+<li>New <code>match</code> argument that determines whether biomasses or yields or neither should be matched at each press of the <code>steady</code> button.</li>
+<li>Remove the ability to upload params objects.</li>
+<li>New <code>growthControl</code> controls.</li>
+<li>New <code>biomassTab</code> tab.</li>
+<li>Controls can now also update species sliders.</li>
+<li>By default preserves <code>erepro</code>.</li>
+<li>Scaling of background now happens by clicking on the slider without need for a ‘Go’ button.</li>
+<li>Double-clicking on a growth curve plot now toggles between the panel view and the individual species view.</li>
+<li>Do not overrride ggplot2 theme, just adjust font size.</li>
+<li>Rename <code>cutoff_size</code> to <code>biomass_cutoff</code> everywhere.</li>
+<li>Many more changes.</li>
+</ul>
+</div>
+<div id="other-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-changes" class="anchor"></a>Other changes</h2>
+<ul>
+<li>New <code><a href="../reference/plotBiomassVsSpecies.html">plotBiomassVsSpecies()</a></code> and <code>plotYieldVsSpecies</code>.</li>
+<li>Egg density slider is now updated by run to steady.</li>
+<li>Improved handling of missing values in <code><a href="../reference/plotBiomassVsSpecies.html">plotBiomassVsSpecies()</a></code>.</li>
+<li>New <code><a href="../reference/scaleDownBackground.html">scaleDownBackground()</a></code> and <code>removeBackgroundspecies()</code>.</li>
+</ul>
+</div>
+<div id="developments-moved-to-core-mizer" class="section level2">
+<h2 class="hasAnchor">
+<a href="#developments-moved-to-core-mizer" class="anchor"></a>Developments moved to core mizer</h2>
+<ul>
+<li>New <code><a href="https://sizespectrum.org/mizer/reference/plotBiomassObservedVsModel.html">mizer::plotBiomassObservedVsModel()</a></code>
+</li>
+<li>New <code><a href="https://sizespectrum.org/mizer/reference/calibrateBiomass.html">mizer::calibrateBiomass()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/matchBiomasses.html">mizer::matchBiomasses()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/calibrateYield.html">mizer::calibrateYield()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/matchYields.html">mizer::matchYields()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/scaleModel.html">mizer::scaleModel()</a></code>.</li>
+</ul>
+</div>
+</div>
     <div id="mizerexperimental-221" class="section level1">
 <h1 class="page-header" data-toc-text="2.2.1">
 <a href="#mizerexperimental-221" class="anchor"></a>mizerExperimental 2.2.1</h1>
 <ul>
 <li>Much polishing of <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and some added documentation.</li>
 <li>First stab at a <code><a href="../reference/validSim.html">validSim()</a></code> function that will be useful when simulations produce non-finite values.</li>
-<li>Graduated the updated <code><a href="https://sizespectrum.org/mizer/reference/setBevertonHolt.html">setBevertonHolt()</a></code> and the new <code><a href="https://sizespectrum.org/mizer/reference/getReproductionLevel.html">getReproductionLevel()</a></code> to mizer package.</li>
-<li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code><a href="https://sizespectrum.org/mizer/reference/plotDataFrame.html">plotDataFrame()</a></code> in mizer.</li>
+<li>Graduated the updated <code>setBevertonHolt()</code> and the new <code>getReproductionLevel()</code> to mizer package.</li>
+<li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code>plotDataFrame()</code> in mizer.</li>
 <li>Removed the vignette explaining size-spectrum dynamics in single-species example because this has graduated to mizer.</li>
 <li>Improvements to argument checks in <code><a href="../reference/getYieldVsF.html">getYieldVsF()</a></code>
 </li>
@@ -159,9 +209,9 @@
 <a href="#mizerexperimental-220" class="anchor"></a>mizerExperimental 2.2.0</h1>
 <p>The version number will now always be that of the latest mizer package that this version of mizerExperimental requires.</p>
 <ul>
-<li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/animateSpectra.html">animateSpectra()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/addSpecies.html">addSpecies()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html">removeSpecies()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/renameSpecies.html">renameSpecies()</a></code> to mizer package.</li>
+<li>Graduated <code>animateSpectra()</code>, <code>addSpecies()</code>, <code>removeSpecies()</code> and <code>renameSpecies()</code> to mizer package.</li>
 <li>
-<code>newSheldonParams()</code> has graduated to mizer package under the new name <code><a href="https://sizespectrum.org/mizer/reference/newSingleSpeciesParams.html">newSingleSpeciesParams()</a></code>.</li>
+<code>newSheldonParams()</code> has graduated to mizer package under the new name <code>newSingleSpeciesParams()</code>.</li>
 <li>Improvements to <code><a href="../reference/tuneParams.html">tuneParams()</a></code>, but still work in progress.</li>
 </ul>
 </div>
@@ -169,13 +219,13 @@
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#mizerexperimental-012" class="anchor"></a>mizerExperimental 0.1.2</h1>
 <ul>
-<li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/projectToSteady.html">projectToSteady()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/constantEggRDI.html">constantEggRDI()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/customFunction.html">customFunction()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/compareParams.html">compareParams()</a></code> to mizer package.</li>
+<li>Graduated <code>projectToSteady()</code>, <code>constantEggRDI()</code>, <code>customFunction()</code> and <code>compareParams()</code> to mizer package.</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Vignette explaining size-spectrum dynamics in single-species example.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html">removeSpecies()</a></code> work also with 3d pred kernel.</li>
+<code>removeSpecies()</code> work also with 3d pred kernel.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html">removeSpecies()</a></code> to handles <code>gear_params</code> correctly</li>
+<code>removeSpecies()</code> to handles <code>gear_params</code> correctly</li>
 </ul>
 </div>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove all background species — removeBackgroundSpecies • mizerExperimental</title>
+<title>A single slider that adjusts both h and gamma — growthControl • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Remove all background species — removeBackgroundSpecies" />
-<meta property="og:description" content="Remove all background species" />
+<meta property="og:title" content="A single slider that adjusts both h and gamma — growthControl" />
+<meta property="og:description" content="A single slider that adjusts both h and gamma" />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -138,23 +138,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove all background species</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/manipulateParams.R'><code>R/manipulateParams.R</code></a></small>
-    <div class="hidden name"><code>removeBackgroundSpecies.Rd</code></div>
+    <h1>A single slider that adjusts both <code>h</code> and <code>gamma</code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/growthControl.R'><code>R/growthControl.R</code></a></small>
+    <div class="hidden name"><code>growthControl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Remove all background species</p>
+    <p>A single slider that adjusts both <code>h</code> and <code>gamma</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>removeBackgroundSpecies</span><span class='op'>(</span><span class='va'>params</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>growthControl</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>params_old</span>, <span class='va'>flags</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>growthControlUI</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>sp</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>input</th>
+      <td><p>Reactive holding the inputs</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>Reactive holding the outputs</p></td>
+    </tr>
+    <tr>
+      <th>session</th>
+      <td><p>Shiny session</p></td>
+    </tr>
+    <tr>
       <th>params</th>
-      <td><p>A MizerParams object</p></td>
+      <td><p>Reactive value holding updated MizerParams object</p></td>
+    </tr>
+    <tr>
+      <th>params_old</th>
+      <td><p>Reactive value holding non-updated MizerParams object</p></td>
+    </tr>
+    <tr>
+      <th>flags</th>
+      <td><p>Environment holding flags to skip certain observers</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Unused</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>The MizerParams object currently being tuned.</p></td>
+    </tr>
+    <tr>
+      <th>sp</th>
+      <td><p>The single row from the pecies parameter data frame for the
+currently selected species.</p></td>
     </tr>
     </table>
 

@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   first_multispecies_model: first_multispecies_model.html
-last_built: 2021-09-06T05:45Z
+last_built: 2021-09-22T04:20Z
 urls:
   reference: https://sizespectrum.org/mizerExperimental/reference
   article: https://sizespectrum.org/mizerExperimental/articles

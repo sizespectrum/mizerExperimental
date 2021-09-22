@@ -87,7 +87,7 @@ with tabs for various diagnostic plots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ with tabs for various diagnostic plots.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tuneParams</span><span class='op'>(</span>
-  <span class='va'>p</span>,
+  <span class='va'>params</span>,
   controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"abundance"</span>, <span class='st'>"predation"</span>, <span class='st'>"fishing"</span>, <span class='st'>"reproduction"</span>, <span class='st'>"other"</span>,
     <span class='st'>"interaction"</span>, <span class='st'>"resource"</span><span class='op'>)</span>,
   tabs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Spectra"</span>, <span class='st'>"Growth"</span>, <span class='st'>"Repro"</span>, <span class='st'>"Catch"</span>, <span class='st'>"Diet"</span>, <span class='st'>"Death"</span>, <span class='st'>"Resource"</span>, <span class='st'>"Rates"</span>,
@@ -168,7 +168,7 @@ with tabs for various diagnostic plots.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>p</th>
+      <th>params</th>
       <td><p>MizerParams object to tune. If missing, the gadget tries to recover
 information from log files left over from aborted previous runs.</p></td>
     </tr>
@@ -211,7 +211,7 @@ tuning the dynamics of the model. That should be done in a second step using
 functions like <code>setRmax()</code> or <code>changeResource()</code>.</p>
 <p>There is an "Instructions" button near the top left of the gadget that
 gives you a quick overview of the user interface.</p>
-<p>After you click the "Done" button in the side panel, the function will return
+<p>After you click the "Return" button in the side panel, the function will return
 the parameter object in the state at that time, with <code>Rmax</code> set to <code>Inf</code>
 and <code>erepro</code> set to the value it had after the last run to steady state.</p>
 <p>At any time the gadget allows the user to download the current params object
@@ -222,7 +222,7 @@ as an .rds file via the "Download" button.</p>
 the gadget. You can go back to the last steady state by hitting the "Undo"
 button. You can go back an arbitrary number of states and also go forward
 again. There is also a button to go right back to the initial steady state.</p>
-<p>When you leave the gadget by hitting the "Done" button, this log is cleared.
+<p>When you leave the gadget by hitting the "Return" button, this log is cleared.
 If you stop the gadget from RStudio by hitting the "Stop" button, then the
 log is left behind. You can then restart the gadget by calling <code>tuneParams()</code>
 without a <code>params</code> argument and it will re-instate the states from the log.</p>

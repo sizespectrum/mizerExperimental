@@ -28,6 +28,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/growthControl.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/growthTab.html</loc>
   </url>
   <url>
@@ -64,10 +67,10 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/resourceControl.html</loc>
