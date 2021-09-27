@@ -64,7 +64,15 @@ getYieldVsF <- function(params,
         sim <- projectToSteady(params, t_max = 100,
                      return_sim = TRUE, progress_bar = FALSE)
         y <- getYield(sim)
-        yield[i] <- y[dim(y)[[1]], idx_species]
+        ft <- idxFinalT(sim)
+        
+        if (ft < 66) { # if convergence use final yield
+            yield[i] <- y[ft, idx_species]
+        } else { # otherwise average over last 30 years (t_per = 1.5)
+            yield[i] <- mean(y[(ft - 20):ft, idx_species])
+        }
+        # Start next simulation with final state from current in the hope that
+        # this will be quicker.
         params <- setInitialValues(params, sim)
     }
 
