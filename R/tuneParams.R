@@ -152,7 +152,7 @@ tuneParams <- function(params,
 
     # User interface ----
     ui <- fluidPage(
-        theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
+        theme = bslib::bs_theme(),
         shinyjs::useShinyjs(),
         introjsUI(),
         tags$script(HTML("$(function(){ 
@@ -237,6 +237,7 @@ tuneParams <- function(params,
     )
 
     server <- function(input, output, session) {
+        bslib::bs_themer()
         hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
