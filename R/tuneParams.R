@@ -152,6 +152,7 @@ tuneParams <- function(params,
 
     # User interface ----
     ui <- fluidPage(
+        theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
         shinyjs::useShinyjs(),
         introjsUI(),
         tags$script(HTML("$(function(){ 
