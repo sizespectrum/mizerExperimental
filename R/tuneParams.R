@@ -237,7 +237,7 @@ tuneParams <- function(params,
     )
 
     server <- function(input, output, session) {
-        bslib::bs_themer()
+        #bslib::bs_themer()
         hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
