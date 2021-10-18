@@ -99,8 +99,10 @@ biomassTab <- function(input, output, session,
     # Adjust biomass observed ----
     observe({
         p <- isolate(params())
+        biomass_observed <- req(input$biomass_observed)
+        if (biomass_observed == 0) biomass_observed <- NA
         p@species_params[isolate(input$sp), "biomass_observed"] <-
-            req(input$biomass_observed)
+            biomass_observed
         p@species_params[isolate(input$sp), "biomass_cutoff"] <-
             req(input$biomass_cutoff)
         params(p)
