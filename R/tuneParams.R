@@ -122,7 +122,7 @@ tuneParams <- function(params,
     logs$files <- vector(mode = "character")
     logs$idx <- 0
 
-    if (missing(p)) {
+    if (missing(params)) {
         # Try to recover old log files ----
         logs$files <- sort(list.files(path = tempdir(),
                                 pattern = "mizer_params_...._.._.._at_.._.._..\\.rds",
