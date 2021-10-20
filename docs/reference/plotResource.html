@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot a yield-vs-F curve — plotYieldVsF • mizerExperimental</title>
+<title>Plot the proportion of the resource spectrum(s) compared to
+their carrying capacity — plotResource • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +47,10 @@
 
 
 
-<meta property="og:title" content="Plot a yield-vs-F curve — plotYieldVsF" />
-<meta property="og:description" content="
-Calculates the yield of a species for a range of fishing mortalities for
-that species while the fishing mortalities for the other species are held
-fixed." />
+<meta property="og:title" content="Plot the proportion of the resource spectrum(s) compared to
+their carrying capacity — plotResource" />
+<meta property="og:description" content="Plot the proportion of the resource spectrum(s) compared to
+their carrying capacity" />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -141,71 +141,59 @@ fixed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot a yield-vs-F curve</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/getYieldVsFcurve.R'><code>R/getYieldVsFcurve.R</code></a></small>
-    <div class="hidden name"><code>plotYieldVsF.Rd</code></div>
+    <h1>Plot the proportion of the resource spectrum(s) compared to
+their carrying capacity</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/plots.R'><code>R/plots.R</code></a></small>
+    <div class="hidden name"><code>plotResource.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Calculates the yield of a species for a range of fishing mortalities for
-that species while the fishing mortalities for the other species are held
-fixed.</p>
+    <p>Plot the proportion of the resource spectrum(s) compared to
+their carrying capacity</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotYieldVsF</span><span class='op'>(</span>
-  <span class='va'>params</span>,
-  <span class='va'>species</span>,
-  no_steps <span class='op'>=</span> <span class='fl'>10</span>,
-  F_max <span class='op'>=</span> <span class='fl'>3</span>,
-  F_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>F_max</span>, length.out <span class='op'>=</span> <span class='va'>no_steps</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>plotResource</span><span class='op'>(</span><span class='va'>object</span>, return_data <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>params</th>
-      <td><p>An object of class <code>MizerParams</code>.</p></td>
+      <th>object</th>
+      <td><p>An object of class MizerSim or
+MizerParams.</p></td>
     </tr>
     <tr>
-      <th>species</th>
-      <td><p>Name of the target species</p></td>
-    </tr>
-    <tr>
-      <th>no_steps</th>
-      <td><p>The number of steps to use. Only used if <code>F_range</code> is missing.</p></td>
-    </tr>
-    <tr>
-      <th>F_max</th>
-      <td><p>The maximum fishing mortality. Used only if <code>F_range</code> is missing.</p></td>
-    </tr>
-    <tr>
-      <th>F_range</th>
-      <td><p>A sequence of fishing mortalities at which to evaluate the
-yield. If missing, it is set to
-<code><a href='https://rdrr.io/r/base/seq.html'>seq(from = 0, to = F_max, length.out = no_steps)</a></code>.</p></td>
+      <th>return_data</th>
+      <td><p>A boolean value that determines whether the formatted data
+used for the plot is returned instead of the plot itself. Default value is FALSE</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object</p>
+    <p>A ggplot2 object, unless <code>return_data = TRUE</code>, in which case a data
+frame with the three variables 'w', 'value', 'Resource' is returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>getYieldVsF</p>
+    <div class='dont-index'><p>plotting_functions</p>
 <p>Other plotting functions: 
 <code><a href='plotDeath.html'>plotDeath</a>()</code>,
 <code><a href='plotEnergyBudget.html'>plotEnergyBudget</a>()</code>,
 <code><a href='plotResourcePred.html'>plotResourcePred</a>()</code>,
-<code><a href='plotResource.html'>plotResource</a>()</code>,
+<code><a href='plotYieldVsF.html'>plotYieldVsF</a>()</code>,
 <code><a href='plotYieldVsSize.html'>plotYieldVsSize</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span>
-<span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span>
-<span class='op'>}</span>
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>plotResource</span><span class='op'>(</span><span class='va'>NS_params</span><span class='op'>)</span>
+</div><div class='img'><img src='plotResource-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Returning the data frame</span>
+<span class='va'>fr</span> <span class='op'>&lt;-</span> <span class='fu'>plotResource</span><span class='op'>(</span><span class='va'>NS_params</span>, return_data <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>fr</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 'data.frame':	179 obs. of  3 variables:
+#&gt;  $ w       : num  2.12e-13 2.53e-13 3.02e-13 3.61e-13 4.30e-13 ...
+#&gt;  $ value   : num  1 1 1 1 1 ...
+#&gt;  $ Resource: chr  "Resource" "Resource" "Resource" "Resource" ...</div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

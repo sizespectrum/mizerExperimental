@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot a yield-vs-F curve — plotYieldVsF • mizerExperimental</title>
+<title>Make a plot from a data frame — plotDataFrame • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,8 @@
 
 
 
-<meta property="og:title" content="Plot a yield-vs-F curve — plotYieldVsF" />
-<meta property="og:description" content="
-Calculates the yield of a species for a range of fishing mortalities for
-that species while the fishing mortalities for the other species are held
-fixed." />
+<meta property="og:title" content="Make a plot from a data frame — plotDataFrame" />
+<meta property="og:description" content="This is used internally by most plotting functions." />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -141,72 +138,95 @@ fixed." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot a yield-vs-F curve</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/getYieldVsFcurve.R'><code>R/getYieldVsFcurve.R</code></a></small>
-    <div class="hidden name"><code>plotYieldVsF.Rd</code></div>
+    <h1>Make a plot from a data frame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/plots.R'><code>R/plots.R</code></a></small>
+    <div class="hidden name"><code>plotDataFrame.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Calculates the yield of a species for a range of fishing mortalities for
-that species while the fishing mortalities for the other species are held
-fixed.</p>
+    <p>This is used internally by most plotting functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotYieldVsF</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>plotDataFrame</span><span class='op'>(</span>
+  <span class='va'>frame</span>,
   <span class='va'>params</span>,
-  <span class='va'>species</span>,
-  no_steps <span class='op'>=</span> <span class='fl'>10</span>,
-  F_max <span class='op'>=</span> <span class='fl'>3</span>,
-  F_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>F_max</span>, length.out <span class='op'>=</span> <span class='va'>no_steps</span><span class='op'>)</span>
+  style <span class='op'>=</span> <span class='st'>"line"</span>,
+  xlab <span class='op'>=</span> <span class='fu'>waiver</span><span class='op'>(</span><span class='op'>)</span>,
+  ylab <span class='op'>=</span> <span class='fu'>waiver</span><span class='op'>(</span><span class='op'>)</span>,
+  xtrans <span class='op'>=</span> <span class='st'>"identity"</span>,
+  ytrans <span class='op'>=</span> <span class='st'>"identity"</span>,
+  y_ticks <span class='op'>=</span> <span class='fl'>6</span>,
+  highlight <span class='op'>=</span> <span class='cn'>NULL</span>,
+  legend_var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  wrap_var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  wrap_scale <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>frame</th>
+      <td><p>A data frame with at least three variables.
+The first three variables are used, in that order, as:</p><ol>
+<li><p>Variable to be plotted on x-axis</p></li>
+<li><p>Variable to be plotted on y-axis</p></li>
+<li><p>Grouping variable</p></li>
+</ol></td>
+    </tr>
+    <tr>
       <th>params</th>
-      <td><p>An object of class <code>MizerParams</code>.</p></td>
+      <td><p>A MizerParams object, which is used for the line colours and
+line types.</p></td>
     </tr>
     <tr>
-      <th>species</th>
-      <td><p>Name of the target species</p></td>
+      <th>style</th>
+      <td><p>The style of the plot. Availalble options are "line' for geom_line
+and "area" for geom_area. Default is "line".</p></td>
     </tr>
     <tr>
-      <th>no_steps</th>
-      <td><p>The number of steps to use. Only used if <code>F_range</code> is missing.</p></td>
+      <th>xlab</th>
+      <td><p>Label for the x-axis</p></td>
     </tr>
     <tr>
-      <th>F_max</th>
-      <td><p>The maximum fishing mortality. Used only if <code>F_range</code> is missing.</p></td>
+      <th>ylab</th>
+      <td><p>Label for the y-axis</p></td>
     </tr>
     <tr>
-      <th>F_range</th>
-      <td><p>A sequence of fishing mortalities at which to evaluate the
-yield. If missing, it is set to
-<code><a href='https://rdrr.io/r/base/seq.html'>seq(from = 0, to = F_max, length.out = no_steps)</a></code>.</p></td>
+      <th>xtrans</th>
+      <td><p>Transformation for the x-axis. Often "log10" may be useful
+instead of the default of "identity".</p></td>
+    </tr>
+    <tr>
+      <th>ytrans</th>
+      <td><p>Transformation for the y-axis.</p></td>
+    </tr>
+    <tr>
+      <th>y_ticks</th>
+      <td><p>The approximate number of ticks desired on the y axis</p></td>
+    </tr>
+    <tr>
+      <th>highlight</th>
+      <td><p>Name or vector of names of the species to be highlighted.</p></td>
+    </tr>
+    <tr>
+      <th>legend_var</th>
+      <td><p>The name of the variable that should be used in the legend
+and to determine the line style. If NULL then the grouping variable is
+used for this purpose.</p></td>
+    </tr>
+    <tr>
+      <th>wrap_var</th>
+      <td><p>Optional. The name of the variable that should be used for
+creating wrapped facets.</p></td>
+    </tr>
+    <tr>
+      <th>wrap_scale</th>
+      <td><p>Optional. Used to pass the scales argument to facet_wrap().</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>getYieldVsF</p>
-<p>Other plotting functions: 
-<code><a href='plotDeath.html'>plotDeath</a>()</code>,
-<code><a href='plotEnergyBudget.html'>plotEnergyBudget</a>()</code>,
-<code><a href='plotResourcePred.html'>plotResourcePred</a>()</code>,
-<code><a href='plotResource.html'>plotResource</a>()</code>,
-<code><a href='plotYieldVsSize.html'>plotYieldVsSize</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'>newMultispeciesParams</span><span class='op'>(</span><span class='va'>NS_species_params_gears</span>, <span class='va'>inter</span><span class='op'>)</span>
-<span class='fu'>plotYieldVsF</span><span class='op'>(</span><span class='va'>params</span>, <span class='st'>"Cod"</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
