@@ -61,6 +61,7 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     validSim.R
+    plots.R
 Encoding: UTF-8
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
