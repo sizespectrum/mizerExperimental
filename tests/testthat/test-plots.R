@@ -28,7 +28,9 @@ test_that("plots have not changed", {
     p <- plotDataFrame(sampleDf, params)
     expect_doppelganger("Plot Data Frame", p)
 
-    p <- plotDeath(NS_params, species = "Haddock")
+    # the next line only needed until NS_params is upgraded
+    params <- setColours(NS_params, c(Fishing = "red"))
+    p <- plotDeath(params, species = "Haddock")
     expect_doppelganger("Plot Death", p)
 
     p <- plotResourcePred(NS_params)
