@@ -54,6 +54,7 @@ Collate:
     tuneParams_tabs.R
     abundanceTab.R
     biomassTab.R
+    biomassAndAbundanceTab.R
     catchTab.R
     deathTab.R
     dietTab.R
