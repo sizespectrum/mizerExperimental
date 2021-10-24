@@ -215,8 +215,7 @@ spectraTab <- function(input, output, session,
 #'   This is useful when including this tab as an element of another tab.
 spectraTabUI <- function(params, help = TRUE, ...) {
     p <- isolate(params())
-    has_bio <- ("biomass_observed" %in% names(p@species_params)) &&
-        !all(is.na(p@species_params$biomass_observed))
+    
     tl <- tagList(plotlyOutput("plotSpectra"),
                   div(style = "display:inline-block;vertical-align:middle; width: 300px;",
                       popify(sliderInput("scale_bkgrd_by", 
@@ -243,4 +242,5 @@ spectraTabUI <- function(params, help = TRUE, ...) {
                       p("Remember that after any adjustment you make in this app, you need to hit the 'Steady' button before you will see the full multi-species consequences of the change.")
         )
     }
+    tl
 }

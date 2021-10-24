@@ -1,14 +1,7 @@
-#' Number tab for tuning gadget
+#' Abundance tab for tuning gadget
 #' 
-#' The Number tab shows:
-#' * A plot of total number for each species, compared to
-#' observed numbers when available, using [plotNumberObservedVsModel()].
-#' * Buttons "Calibrate" and "Match" that trigger a call to 
-#' [calibrateNumber()] or [matchNumbers()] respectively.
-#' 
-#' Clicking on a species in the number plot makes that species the selected
-#' species. Double-clicking on a species selects that species __and__
-#' changes its number.
+#' The Abundance tab combines the [biomassTab()] and the [numberTab()] 
+#' on a single tab.
 #' @inheritParams spectraTab
 abundanceTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
