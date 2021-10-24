@@ -1,29 +1,29 @@
 # The following is a copy of the code for `calibrateBiomass()` just with
-# the text replacements "Biomasses" -> "Abundances", "Biomass" -> "Abundance"
-# and the corresponding lower-case versions, in that order.
+# the text replacements "Biomass" -> "Number" and "biomass" to "number" and
+# the removal of the `params@w` factor in the calculations.
 
-#' Calibrate the model scale to match total observed abundance
+#' Calibrate the model scale to match total observed number
 #' 
 #' `r lifecycle::badge("experimental")`
-#' Given a MizerParams object `params` for which abundance observations are
-#' available for at least some species via the `abundance_observed` column in the
+#' Given a MizerParams object `params` for which number observations are
+#' available for at least some species via the `number_observed` column in the
 #' species_params data frame, this function returns an updated MizerParams
-#' object which is rescaled with [scaleModel()] so that the total abundance in
-#' the model agrees with the total observed abundance.
+#' object which is rescaled with [scaleModel()] so that the total number in
+#' the model agrees with the total observed number.
 #' 
-#' Abundance observations usually only include individuals above a certain size.
-#' This size should be specified in a abundance_cutoff column of the species
+#' Number observations usually only include individuals above a certain size.
+#' This size should be specified in a number_cutoff column of the species
 #' parameter data frame. If this is missing, it is assumed that all sizes are
-#' included in the observed abundance, i.e., it includes larval abundance.
+#' included in the observed number, i.e., it includes larval number.
 #' 
-#' After using this function the total abundance in the model will match the
-#' total abundance, summed over all species. However the abundances of the
+#' After using this function the total number in the model will match the
+#' total number, summed over all species. However the numbers of the
 #' individual species will not match observations yet, with some species
-#' having abundances that are too high and others too low. So after this
-#' function you may want to use [matchAbundances()]. This is described in the
+#' having numbers that are too high and others too low. So after this
+#' function you may want to use [matchNumbers()]. This is described in the
 #' blog post at https://bit.ly/2YqXESV.
 #' 
-#' If you have observations of the yearly yield instead of abundances, you can
+#' If you have observations of the yearly yield instead of numbers, you can
 #' use [calibrateYield()] instead of this function.
 #' 
 #' @param params A MizerParams object
@@ -31,29 +31,29 @@
 #' @export
 #' @examples 
 #' params <- NS_params
-#' species_params(params)$abundance_observed <- 
+#' species_params(params)$number_observed <- 
 #'     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
-#' species_params(params)$abundance_cutoff <- 10
-#' params2 <- calibrateAbundance(params)
-#' plotAbundanceObservedVsModel(params2)
-calibrateAbundance <- function(params) {
-    if ((!("abundance_observed" %in% names(params@species_params))) ||
-        all(is.na(params@species_params$abundance_observed))) {
+#' species_params(params)$number_cutoff <- 10
+#' params2 <- calibrateNumber(params)
+#' plotNumberObservedVsModel(params2)
+calibrateNumber <- function(params) {
+    if ((!("number_observed" %in% names(params@species_params))) ||
+        all(is.na(params@species_params$number_observed))) {
         return(params)
     }
     no_sp <- nrow(params@species_params)
-    cutoff <- params@species_params$abundance_cutoff
+    cutoff <- params@species_params$number_cutoff
     # When no cutoff known, set it to 0
     if (is.null(cutoff)) cutoff <- rep(0, no_sp)
     cutoff[is.na(cutoff)] <- 0
-    observed <- params@species_params$abundance_observed
+    observed <- params@species_params$number_observed
     observed_total <- sum(observed, na.rm = TRUE)
     sp_observed <- which(!is.na(observed))
     model_total <- 0
     for (sp_idx in sp_observed) {
         model_total <- 
             model_total + 
-            sum((params@initial_n[sp_idx, ] * params@w * params@dw)
+            sum((params@initial_n[sp_idx, ] * params@dw)
                 [params@w >= cutoff[[sp_idx]]])
     }
     scaleModel(params, factor = observed_total / model_total)
@@ -74,8 +74,8 @@ calibrateAbundance <- function(params) {
 #' having yields that are too high and others too low. So after this
 #' function you may want to use [matchYields()].
 #' 
-#' If you have observations of species abundances instead of yields, you can
-#' use [calibrateAbundance()] instead of this function.
+#' If you have observations of species numbers instead of yields, you can
+#' use [calibrateNumber()] instead of this function.
 #' 
 #' @param params A MizerParams object
 #' @return A MizerParams object
@@ -97,8 +97,8 @@ calibrateYield<- function(params) {
     observed <- params@species_params$yield_observed
     observed_total <- sum(observed, na.rm = TRUE)
     sp_observed <- which(!is.na(observed))
-    abundance <- sweep(params@initial_n, 2, params@w * params@dw, "*")
-    yield_model <- rowSums(abundance * getFMort(params))[sp_observed]
+    number <- sweep(params@initial_n, 2, params@dw, "*")
+    yield_model <- rowSums(number * getFMort(params))[sp_observed]
     model_total <- sum(yield_model)
     scaleModel(params, factor = observed_total / model_total)
 }
@@ -109,17 +109,17 @@ calibrateYield<- function(params) {
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' The abundances in mizer and some rates depend on the size of the area to
+#' The numbers in mizer and some rates depend on the size of the area to
 #' which they refer. So they could be given per square meter or per square
 #' kilometer or for an entire study area or any other choice of yours. This
 #' function allows you to change the scale of the model by automatically
-#' changing the abundances and rates accordingly.
+#' changing the numbers and rates accordingly.
 #'
 #' @details
 #' If you rescale the model by a factor \eqn{c} then this function makes the
 #' following rescalings in the params object:
 #' \itemize{
-#' \item The initial abundances are rescaled by \eqn{c}.
+#' \item The initial numbers are rescaled by \eqn{c}.
 #' \item The search volume is rescaled by \eqn{1/c}.
 #' \item The resource carrying capacity is rescaled by \eqn{c}
 #' \item The maximum reproduction rate \eqn{R_{max}} is rescaled by
@@ -129,13 +129,13 @@ calibrateYield<- function(params) {
 #' to those of the unscaled model, in the sense that it does not matter whether
 #' one first calls [scaleModel()] and then runs a simulation with
 #' [project()] or whether one first runs a simulation and then rescales the
-#' resulting abundances.
+#' resulting numbers.
 #'
 #' Note that if you use non-standard resource dynamics or other components then you
 #' may need to rescale additional parameters that appear in those dynamics.
 #' 
 #' In practice you will need to use some observations to set the scale for your
-#' model. If you have abundance observations you can use [calibrateAbundance()],
+#' model. If you have number observations you can use [calibrateNumber()],
 #' if you have yearly yields you can use [calibrateYield()].
 #'
 #' @param params A MizerParams object
