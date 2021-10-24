@@ -10,7 +10,7 @@
 #' species. Double-clicking on a species selects that species __and__
 #' changes its number.
 #' @inheritParams spectraTab
-biomassAndNumberTab <- function(input, output, session,
+abundanceTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
     biomassTab(input, output, session,
                params, logs, trigger_update, ...)
@@ -18,8 +18,8 @@ biomassAndNumberTab <- function(input, output, session,
                params, logs, trigger_update, ...)
 }
 
-#' @rdname biomassAndNumberTab
-biomassAndNumberTabUI <- function(params, ...) {
+#' @rdname abundanceTab
+abundanceTabUI <- function(params, ...) {
     tagList(h1("Biomasses"),
             biomassTabUI(params, ...),
             h1("Numbers"),

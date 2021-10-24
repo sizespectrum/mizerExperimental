@@ -52,8 +52,8 @@ Collate:
     reproductionControl.R
     resourceControl.R
     tuneParams_tabs.R
+    abundanceTab.R
     biomassTab.R
-    biomassAndNumberTab.R
     catchTab.R
     deathTab.R
     dietTab.R
