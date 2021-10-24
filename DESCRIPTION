@@ -57,6 +57,9 @@ Collate:
     ratesTab.R
     reproTab.R
     resourceTab.R
+    simTab.R
+    spectraTab.R
+    stomachTab.R
     test-helpers.R
     tuneParams_helpers.R
     getYieldVsFcurve.R

@@ -1,15 +1,41 @@
-#' Biomass tab for tuning gadget
+#' tuneParams tab showing size spectra
 #' 
-#' The Biomass tab shows:
-#' * A plot of total biomass for each species, compared to
-#' observed biomasses when available, using [plotBiomassObservedVsModel()].
-#' * Buttons "Calibrate" and "Match" that trigger a call to 
-#' [calibrateBiomass()] or [matchBiomasses()] respectively.
-#' * A plot of the biomass density spectra as a function of log size,
-#' using [plotSpectra()].
-#' @inheritParams spectraTab
-biomassTab <- function(input, output, session,
+#' This tab shows:
+#' 
+#' * a plot of the biomass density as a function of log size,
+#' including all species and the resource. 
+#' * A slider for scaling the background (resource and possibly background
+#' species).
+#' * If there are background species, buttons to adjust or remove those
+#' background species.
+#' 
+#' @inheritParams abundanceControl
+#' @param logs Environment holding the log of steady states.
+#' @param trigger_update Reactive value used for triggering update of
+#'   species parameter sliders.
+#' @param ... Unused
+spectraTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
+    
+    ## Plot spectra ####
+    output$plotSpectra <- renderPlotly({
+        # if (input$binning == "Logarithmic") {
+        power <- 2
+        # } else {
+        #     power <- 1
+        # }
+        plot <- plotSpectra(params(), power = power, highlight = input$sp, 
+                            total = TRUE) +
+            theme(text = element_text(size = 12))
+        ggplotly(plot, tooltip = c("Species", "w", "value"))
+    })
+    
+    ## Scale ####
+    observeEvent(input$scale_bkgrd_by, {
+        p <- scaleDownBackground(params(), input$scale_bkgrd_by)
+        updateSliderInput(session, "scale_bkgrd_by", value = 1)
+        params(p)
+    })
     
     ## Retune background ####
     observeEvent(input$retune_background, {
@@ -86,8 +112,6 @@ biomassTab <- function(input, output, session,
         if (biomass_observed == 0) biomass_observed <- NA
         p@species_params[isolate(input$sp), "biomass_observed"] <-
             biomass_observed
-        p@species_params[isolate(input$sp), "biomass_cutoff"] <-
-            req(input$biomass_cutoff)
         params(p)
     })
     
@@ -185,33 +209,38 @@ biomassTab <- function(input, output, session,
     })
 }
 
-#' @rdname biomassTab
-biomassTabUI <- function(params, ...) {
+#' @rdname spectraTab
+#' 
+#' @param help Boolean. If FALSE then the help text is not included on the tab.
+#'   This is useful when including this tab as an element of another tab.
+spectraTabUI <- function(params, help = TRUE, ...) {
     p <- isolate(params())
-    tl <- tagList()
-    has_bio <- ("biomass_observed" %in% names(species_params(p))) &&
-        !all(is.na(species_params(p)$biomass_observed))
+    has_bio <- ("biomass_observed" %in% names(p@species_params)) &&
+        !all(is.na(p@species_params$biomass_observed))
+    tl <- tagList(plotlyOutput("plotSpectra"),
+                  div(style = "display:inline-block;vertical-align:middle; width: 300px;",
+                      popify(sliderInput("scale_bkgrd_by", 
+                                         "Scale background down by a factor of:",
+                                         value = 1, min = 0.5, max = 2, step = 0.1),
+                             title = "Scaling the background",
+                             content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Simply click on the factor by which to scale. Afterwards you will want to run to steady state. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
+    )
     
-    # plot Biomass ----
-    tl <- tagList(tl,
-                  popify(plotOutput("plotTotalBiomass",
-                             click = "biomass_click",
-                             dblclick = "tune_egg"),
-                         placement = "left",
-                         title = "Comparison between model and observed biomasses",
-                         content = "For each species this plots the observed biomass (square) and the model biomass (circle). You will want to get these into alignment. You can click in the column for a species to select that species. If you double-click in a column the abundance of that species will be scaled to give the observed biomass."),
-                  uiOutput("biomass_sel"))
-    
-    # calibration buttons ----
-    if (has_bio) {
-        tl <- tagList(tl,
-                      popify(actionButton("scale_system", "Calibrate"),
-                             title = "Calibrate model",
-                             content = "Rescales the entire model so that the total of all observed biomasses agrees with the total of the model biomasses for the same species."),
-                      popify(actionButton("tune_egg_all", "Match"),
-                             title = "Match biomasses",
-                             content = "Moves the entire size spectrum for each species up or down to give the observed biomass value. It does that by multiplying the egg density by the ratio of observed biomass to model biomass. After that adjustment you should run to steady state by hitting the Steady button, after which the biomass will be a bit off again. You can repeat this process if you like to get ever closer to the observed biomass.")
-                      )
+    if (anyNA(p@A)) {
+        tl <- tagList(tl, 
+                      popify(actionButton("retune_background", "Adj bs"),
+                             title = "Adjust background species",
+                             content = "Adjust the biomasses of the background species in such a way that the total spectrum aligns well with the resource spectrum. Background species that are no longer needed because forground species have taken their place in the community spectrum are automatically removed."),
+                      popify(actionButton("remove_background", "Rem bs"),
+                             title = "Remove background species",
+                             content = "Remove all background species."))
     }
-    tl
+    if (help) {
+        tl <- tagList(tl,
+                      h1("Size spectra"),
+                      p("This tab shows the biomass size spectra of the individual fish species and of the resource, as well as the total size spectrum (in black)."),
+                      p("This plot, as well as those on other tabs, is interactive in various ways. For example you can remove individual species from the plot by clicking on their name in the legend. Hovering over the lines pops up extra information. You can zoom into a portion of the plot by dragging a rectangle with the mouse while holding the left mouse button down."),
+                      p("Remember that after any adjustment you make in this app, you need to hit the 'Steady' button before you will see the full multi-species consequences of the change.")
+        )
+    }
 }
