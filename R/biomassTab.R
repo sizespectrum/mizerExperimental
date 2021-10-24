@@ -8,7 +8,7 @@
 #' 
 #' Clicking on a species in the biomass plot makes that species the selected
 #' species. Double-clicking on a species selects that species __and__
-#' rescales its abundance to better match the observed biomass.
+#' changes its biomass.
 #' @inheritParams spectraTab
 biomassTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
@@ -82,10 +82,19 @@ biomassTab <- function(input, output, session,
         if (is.null(input$match_species_biomass$x)) return()
         lvls <- input$match_species_biomass$domain$discrete_limits$x
         sp <- lvls[round(input$match_species_biomass$x)]
-        p <- matchBiomasses(params(), species = sp)
+        p <- params()
+        sp_idx <- which(p@species_params$species == sp)
+        
+        # Temporarily set observed biomass to the clicked biomass, then
+        # match that biomass, then restore observed biomass
+        obs <- p@species_params$biomass_observed[[sp_idx]]
+        p@species_params$biomass_observed[[sp_idx]] <- 
+            input$match_species_biomass$y
+        p <- matchBiomasses(p, species = sp)
+        p@species_params$biomass_observed[[sp_idx]] <- obs
+        
         params(p)
         if (sp == input$sp) {
-            sp_idx <- which(p@species_params$species == input$sp)
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
             updateSliderInput(session, "n0",
                               value = n0,
