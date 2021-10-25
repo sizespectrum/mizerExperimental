@@ -110,7 +110,7 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
 }
 
 
-#' Plot the sources of background, predation and fishing mortality
+#' Plot the sources of external, predation and fishing mortality
 #' per species and size
 
 #' @param object An object of class \linkS4class{MizerSim} or
@@ -143,6 +143,13 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
     } else if (is(object, "MizerParams")) {
         params <- validParams(object)
     }
+    # TODO: Remove this fix once core mizer makes sure a default is set
+    if (!"External" %in% names(getColours(params))) {
+        params <- setColours(params, c(External = "grey"))
+    }
+    if (!"Fishing" %in% names(getColours(params))) {
+        params <- setColours(params, c(Fishing = "red"))
+    }
 
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
@@ -160,10 +167,10 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
         fishing <- getFMort(params)[iSpecies, fish_idx]
         total <- colSums(pred_rate) + params@mu_b[iSpecies, fish_idx] + fishing
         ylab <- "Death rate [1/year]"
-        background <- params@mu_b[iSpecies, fish_idx]
+        external <- ext_mort(params)[iSpecies, fish_idx]
         if (proportion) {
             pred_rate <- pred_rate / rep(total, each = dim(pred_rate)[[1]])
-            background <- background / total
+            external <- external / total
             fishing <- fishing / total
             ylab <- "Proportion of all death"
         }
@@ -171,8 +178,8 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
         plot_dat <-
             rbind(plot_dat,
                   data.frame(w = params@w[fish_idx],
-                             value = background,
-                             Cause = "Background",
+                             value = external,
+                             Cause = "External",
                              Prey = SpIdx[which(iSpecies == SpIdx)]),
                   data.frame(w = params@w[fish_idx],
                              value = fishing,

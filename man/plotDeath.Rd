@@ -3,7 +3,7 @@
 \name{plotDeath}
 \alias{plotDeath}
 \alias{plotlyDeath}
-\title{Plot the sources of background, predation and fishing mortality
+\title{Plot the sources of external, predation and fishing mortality
 per species and size}
 \usage{
 plotDeath(object, species = NULL, proportion = TRUE, return_data = FALSE)
@@ -29,7 +29,7 @@ A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
 frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
 }
 \description{
-Plot the sources of background, predation and fishing mortality
+Plot the sources of external, predation and fishing mortality
 per species and size
 }
 \examples{
