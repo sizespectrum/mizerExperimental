@@ -134,7 +134,6 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
 #' fr <- plotDeath(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-
 plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = FALSE)
 {
     if (is(object, "MizerSim")) {
