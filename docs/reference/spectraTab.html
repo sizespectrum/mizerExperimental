@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Biomass tab for tuning gadget — biomassTab • mizerExperimental</title>
+<title>tuneParams tab showing size spectra — spectraTab • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,8 @@
 
 
 
-<meta property="og:title" content="Biomass tab for tuning gadget — biomassTab" />
-<meta property="og:description" content="The Biomass tab shows:
-A plot of total biomass for each species, compared to
-observed biomasses when available, using plotBiomassObservedVsModel().
-Buttons &quot;Calibrate&quot; and &quot;Match&quot; that trigger a call to
-calibrateBiomass() or matchBiomasses() respectively.
-
-" />
+<meta property="og:title" content="tuneParams tab showing size spectra — spectraTab" />
+<meta property="og:description" content="This tab shows:" />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -144,24 +138,18 @@ calibrateBiomass() or matchBiomasses() respectively.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Biomass tab for tuning gadget</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/biomassTab.R'><code>R/biomassTab.R</code></a></small>
-    <div class="hidden name"><code>biomassTab.Rd</code></div>
+    <h1>tuneParams tab showing size spectra</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/spectraTab.R'><code>R/spectraTab.R</code></a></small>
+    <div class="hidden name"><code>spectraTab.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Biomass tab shows:</p><ul>
-<li><p>A plot of total biomass for each species, compared to
-observed biomasses when available, using <code>plotBiomassObservedVsModel()</code>.</p></li>
-<li><p>Buttons "Calibrate" and "Match" that trigger a call to
-<code>calibrateBiomass()</code> or <code>matchBiomasses()</code> respectively.</p></li>
-</ul>
-
+    <p>This tab shows:</p>
     </div>
 
-    <pre class="usage"><span class='fu'>biomassTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>spectraTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>biomassTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>spectraTabUI</span><span class='op'>(</span><span class='va'>params</span>, help <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,13 +183,25 @@ species parameter sliders.</p></td>
       <th>...</th>
       <td><p>Unused</p></td>
     </tr>
+    <tr>
+      <th>help</th>
+      <td><p>Boolean. If FALSE then the help text is not included on the tab.
+This is useful when including this tab as an element of another tab.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Clicking on a species in the biomass plot makes that species the selected
-species. Double-clicking on a species selects that species <strong>and</strong>
-changes its biomass.</p>
+    
+<ul>
+<li><p>a plot of the biomass density as a function of log size,
+including all species and the resource.</p></li>
+<li><p>A slider for scaling the background (resource and possibly background
+species).</p></li>
+<li><p>If there are background species, buttons to adjust or remove those
+background species.</p></li>
+</ul>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

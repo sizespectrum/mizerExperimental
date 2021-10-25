@@ -54,6 +54,11 @@ reference:
   - scaleDownBackground
   - updateInitialValues
   - pruneSpecies
+  - calibrateNumber
+  - matchNumbers
+  - calibrateYield
+  - getYieldVsF
+  - scaleModel
 - title: New plotting functions
 - contents:
   - starts_with("plot")

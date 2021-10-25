@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Biomass tab for tuning gadget — biomassTab • mizerExperimental</title>
+<title>Abundance tab for tuning gadget — abundanceTab • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,9 @@
 
 
 
-<meta property="og:title" content="Biomass tab for tuning gadget — biomassTab" />
-<meta property="og:description" content="The Biomass tab shows:
-A plot of total biomass for each species, compared to
-observed biomasses when available, using plotBiomassObservedVsModel().
-Buttons &quot;Calibrate&quot; and &quot;Match&quot; that trigger a call to
-calibrateBiomass() or matchBiomasses() respectively.
-
-" />
+<meta property="og:title" content="Abundance tab for tuning gadget — abundanceTab" />
+<meta property="og:description" content="The Abundance tab combines the biomassTab() and the numberTab()
+on a single tab." />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
 <meta property="og:image:alt" content="mizerExperimental: New features for mizer" />
 <meta name="twitter:card" content="summary" />
@@ -144,24 +139,19 @@ calibrateBiomass() or matchBiomasses() respectively.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Biomass tab for tuning gadget</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/biomassTab.R'><code>R/biomassTab.R</code></a></small>
-    <div class="hidden name"><code>biomassTab.Rd</code></div>
+    <h1>Abundance tab for tuning gadget</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/abundanceTab.R'><code>R/abundanceTab.R</code></a></small>
+    <div class="hidden name"><code>abundanceTab.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Biomass tab shows:</p><ul>
-<li><p>A plot of total biomass for each species, compared to
-observed biomasses when available, using <code>plotBiomassObservedVsModel()</code>.</p></li>
-<li><p>Buttons "Calibrate" and "Match" that trigger a call to
-<code>calibrateBiomass()</code> or <code>matchBiomasses()</code> respectively.</p></li>
-</ul>
-
+    <p>The Abundance tab combines the <code><a href='biomassTab.html'>biomassTab()</a></code> and the <code><a href='numberTab.html'>numberTab()</a></code>
+on a single tab.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>biomassTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>abundanceTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>biomassTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>abundanceTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,11 +187,6 @@ species parameter sliders.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Clicking on a species in the biomass plot makes that species the selected
-species. Double-clicking on a species selects that species <strong>and</strong>
-changes its biomass.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
