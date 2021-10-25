@@ -39,6 +39,9 @@ Collate:
     mizerExperimental-package.R
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
+    plotNumberVsSpecies.R
+    calibrateNumber.R
+    matchNumbers.R
     tuneParams.R
     abundanceControl.R
     fishingControl.R
@@ -49,14 +52,19 @@ Collate:
     reproductionControl.R
     resourceControl.R
     tuneParams_tabs.R
+    abundanceTab.R
     biomassTab.R
     catchTab.R
     deathTab.R
     dietTab.R
     growthTab.R
+    numberTab.R
     ratesTab.R
     reproTab.R
     resourceTab.R
+    simTab.R
+    spectraTab.R
+    stomachTab.R
     test-helpers.R
     tuneParams_helpers.R
     getYieldVsFcurve.R

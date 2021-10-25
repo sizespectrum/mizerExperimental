@@ -32,7 +32,10 @@ The Biomass tab shows:
 observed biomasses when available, using \code{\link[=plotBiomassObservedVsModel]{plotBiomassObservedVsModel()}}.
 \item Buttons "Calibrate" and "Match" that trigger a call to
 \code{\link[=calibrateBiomass]{calibrateBiomass()}} or \code{\link[=matchBiomasses]{matchBiomasses()}} respectively.
-\item A plot of the biomass density spectra as a function of log size,
-using \code{\link[=plotSpectra]{plotSpectra()}}.
 }
+}
+\details{
+Clicking on a species in the biomass plot makes that species the selected
+species. Double-clicking on a species selects that species \strong{and}
+changes its biomass.
 }

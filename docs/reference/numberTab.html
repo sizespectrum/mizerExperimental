@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Biomass tab for tuning gadget — biomassTab • mizerExperimental</title>
+<title>Number tab for tuning gadget — numberTab • mizerExperimental</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,12 @@
 
 
 
-<meta property="og:title" content="Biomass tab for tuning gadget — biomassTab" />
-<meta property="og:description" content="The Biomass tab shows:
-A plot of total biomass for each species, compared to
-observed biomasses when available, using plotBiomassObservedVsModel().
+<meta property="og:title" content="Number tab for tuning gadget — numberTab" />
+<meta property="og:description" content="The Number tab shows:
+A plot of total number for each species, compared to
+observed numbers when available, using plotNumberObservedVsModel().
 Buttons &quot;Calibrate&quot; and &quot;Match&quot; that trigger a call to
-calibrateBiomass() or matchBiomasses() respectively.
+calibrateNumber() or matchNumbers() respectively.
 
 " />
 <meta property="og:image" content="https://sizespectrum.org/mizerExperimental/reference/figures/logo.png" />
@@ -144,24 +144,24 @@ calibrateBiomass() or matchBiomasses() respectively.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Biomass tab for tuning gadget</h1>
-    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/biomassTab.R'><code>R/biomassTab.R</code></a></small>
-    <div class="hidden name"><code>biomassTab.Rd</code></div>
+    <h1>Number tab for tuning gadget</h1>
+    <small class="dont-index">Source: <a href='https://github.com/sizespectrum/mizerExperimental/blob/master/R/numberTab.R'><code>R/numberTab.R</code></a></small>
+    <div class="hidden name"><code>numberTab.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Biomass tab shows:</p><ul>
-<li><p>A plot of total biomass for each species, compared to
-observed biomasses when available, using <code>plotBiomassObservedVsModel()</code>.</p></li>
+    <p>The Number tab shows:</p><ul>
+<li><p>A plot of total number for each species, compared to
+observed numbers when available, using <code>plotNumberObservedVsModel()</code>.</p></li>
 <li><p>Buttons "Calibrate" and "Match" that trigger a call to
-<code>calibrateBiomass()</code> or <code>matchBiomasses()</code> respectively.</p></li>
+<code><a href='calibrateNumber.html'>calibrateNumber()</a></code> or <code><a href='matchNumbers.html'>matchNumbers()</a></code> respectively.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>biomassTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>numberTab</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>params</span>, <span class='va'>logs</span>, <span class='va'>trigger_update</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>biomassTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>numberTabUI</span><span class='op'>(</span><span class='va'>params</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,9 +199,9 @@ species parameter sliders.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Clicking on a species in the biomass plot makes that species the selected
+    <p>Clicking on a species in the number plot makes that species the selected
 species. Double-clicking on a species selects that species <strong>and</strong>
-changes its biomass.</p>
+changes its number.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
