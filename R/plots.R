@@ -151,25 +151,26 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
         params <- setColours(params, c(Fishing = "red"))
     }
 
-    SpIdx <- factor(params@species_params$species,
-                    levels = params@species_params$species)
-    species <- valid_species_arg(params,species)
+    species <- valid_species_arg(params, species)
 
+    pred_rate <- getPredRate(params)
+    f_mort <- getFMort(params)
+    mort <- getMort(params)
     plot_dat <- NULL
-    for(iSpecies in species)
+    for (iSpecies in species)
     {
         fish_idx_full <- (params@w_full >= params@species_params[iSpecies, "w_min"]) &
             (params@w_full <= params@species_params[iSpecies, "w_inf"])
         fish_idx <- (params@w >= params@species_params[iSpecies, "w_min"]) &
             (params@w <= params@species_params[iSpecies, "w_inf"])
-        pred_rate <- params@interaction[, iSpecies] *
-            getPredRate(params)[, fish_idx_full]
-        fishing <- getFMort(params)[iSpecies, fish_idx]
-        total <- colSums(pred_rate) + params@mu_b[iSpecies, fish_idx] + fishing
-        ylab <- "Death rate [1/year]"
+        predation <- params@interaction[, iSpecies] *
+            pred_rate[, fish_idx_full]
+        fishing <- f_mort[iSpecies, fish_idx]
         external <- ext_mort(params)[iSpecies, fish_idx]
+        total <- mort[iSpecies, fish_idx]
+        ylab <- "Death rate [1/year]"
         if (proportion) {
-            pred_rate <- pred_rate / rep(total, each = dim(pred_rate)[[1]])
+            predation <- predation / rep(total, each = dim(predation)[[1]])
             external <- external / total
             fishing <- fishing / total
             ylab <- "Proportion of all death"
@@ -180,15 +181,15 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
                   data.frame(w = params@w[fish_idx],
                              value = external,
                              Cause = "External",
-                             Prey = SpIdx[which(iSpecies == SpIdx)]),
+                             Prey = iSpecies),
                   data.frame(w = params@w[fish_idx],
                              value = fishing,
                              Cause = "Fishing",
-                             Prey = SpIdx[which(iSpecies == SpIdx)]),
-                  data.frame(w = rep(params@w[fish_idx], each = dim(pred_rate)[[1]]),
-                             value = c(pred_rate),
-                             Cause = SpIdx,
-                             Prey = SpIdx[which(iSpecies == SpIdx)])
+                             Prey = iSpecies),
+                  data.frame(w = rep(params@w[fish_idx], each = dim(predation)[[1]]),
+                             value = c(predation),
+                             Cause = params@species_params$species,
+                             Prey = iSpecies)
             )
     }
 
