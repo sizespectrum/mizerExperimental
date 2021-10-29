@@ -566,16 +566,16 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
                                         "Abundance" = "solid"))
 
     if (x_var == "Weight") {
-        # remove length-related columns
-        plot_dat <- plot_dat[, -c(2, 4)]
-        colnames(plot_dat)[2] <- "Catch density"
-
         sizeVline <- data.frame(
             w_mat = params@species_params[species, "w_mat"],
             y_coord = plot_dat %>%
                 group_by(Species) %>%
                 summarise(Value = max(catch_w)),
             Type = NA) # geom_text wants a group var for some reasons
+
+        # remove length-related columns
+        plot_dat <- plot_dat[, -c(2, 4)]
+        colnames(plot_dat)[2] <- "Catch density"
         colnames(sizeVline)[2:3] <- c("Species", "y_coord")
 
         if (return_data) return(list(plot_dat, sizeVline))
@@ -592,16 +592,16 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
             geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9,
                                             label = "\nMaturity"))
     } else {
-        # remove weight-related columns
-        plot_dat <- plot_dat[,-c(1,3)]
-        colnames(plot_dat)[2] <- "Catch density"
-
         sizeVline <- data.frame(
             w_mat = (params@species_params[species, "w_mat"] / a) ^ (1 / b),
             y_coord = plot_dat %>%
                 group_by(Species) %>%
                 summarise(Value = max(catch_l)),
             Type = NA) # geom_text wants a group var for some reasons
+
+        # remove weight-related columns
+        plot_dat <- plot_dat[,-c(1,3)]
+        colnames(plot_dat)[2] <- "Catch density"
         colnames(sizeVline)[2:3] <- c("Species", "y_coord")
 
         if (return_data) return(list(plot_dat, sizeVline))
