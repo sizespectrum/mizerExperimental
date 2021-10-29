@@ -102,7 +102,7 @@ tuneParams <- function(params,
                                 "Resource",
                                 "Rates",
                                 "Sim"),
-                       match = c("none", "biomass", "yield"),
+                       match = c("none", "number", "biomass", "yield"),
                        preserve = c("erepro", "reproduction_level", "R_max"),
                        ...) {
     p <- params # just because I was lazy and because I am using params later
@@ -434,9 +434,15 @@ tuneParams <- function(params,
 #' @inheritParams tuneParams
 #' @return The tuned MizerParams object
 #' @export
-tuneGrowth <- function(params, match = c("biomass", "yield", "none")) {
+tuneGrowth <- function(params, match = c("biomass", "number", "yield", "none")) {
     match <- match.arg(match)
+    # Want to include tab appropriate for matched quantity
+    tabname <- match
+    substr(tabname, 1, 1) <- toupper(substr(match, 1, 1))
+    if (tabname == "Yield") {
+        tabname <- "Catch"
+    }
     tuneParams(params, controls = c("growth"), 
-               tabs = c("Growth", "Biomass", "Spectra"), 
+               tabs = c("Growth", tabname, "Spectra"), 
                match = match)
 }
