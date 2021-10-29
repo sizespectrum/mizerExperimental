@@ -12,6 +12,7 @@ predationControl <- function(input, output, session, params, params_old,
                 flags$sp_old_kernel <- sp
                 return()
             }
+
             # Update slider min/max so that they are a fixed proportion of the
             # parameter value
             updateSliderInput(session, "beta",
@@ -20,13 +21,22 @@ predationControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "sigma",
                               min = signif(input$sigma / 2, 2),
                               max = signif(input$sigma * 1.5, 2))
+
+            e_old <- getEncounter(p)[sp, p@w_min_idx[[sp]]]
             p@species_params[sp, "beta"]  <- input$beta
             p@species_params[sp, "sigma"] <- input$sigma
             p <- setPredKernel(p)
-            tuneParams_update_species(sp, p, params, params_old)
+            params(p)
+
+            e_new <- getEncounter(p)[sp, p@w_min_idx[[sp]]]
+            gamma_new <- p@species_params[sp, "gamma"] * e_old / e_new
+
+            # Trigger an update of gamma
+            updateSliderInput(session, "gamma", value = gamma_new)
+
         },
         ignoreInit = TRUE)
-    
+
     ## Adjust predation ####
     observeEvent(
         list(input$gamma, input$h, input$q),
@@ -53,7 +63,7 @@ predationControl <- function(input, output, session, params, params_old,
             tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
-    
+
     ## Adjust growth exponent ####
     observeEvent(
         input$n,
