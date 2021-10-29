@@ -19,13 +19,15 @@ plotlyEnergyBudget(object, species = NULL, logarithmic = TRUE, ...)
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
 
-\item{species}{The name of the predator species for which to plot the mortality.}
+\item{species}{The name of the predator species for which to plot the
+mortality.}
 
 \item{logarithmic}{A boolean value that determines whether values should be
 displayed logarithmicly or linearly. Default is TRUE.}
 
 \item{return_data}{A boolean value that determines whether the formatted data
-used for the plot is returned instead of the plot itself. Default value is FALSE}
+used for the plot is returned instead of the plot itself. Default value is
+FALSE}
 
 \item{...}{Other arguments (currently unused)}
 }

@@ -12,7 +12,8 @@ plotResource(object, return_data = FALSE)
 \linkS4class{MizerParams}.}
 
 \item{return_data}{A boolean value that determines whether the formatted data
-used for the plot is returned instead of the plot itself. Default value is FALSE}
+used for the plot is returned instead of the plot itself. Default value is
+FALSE}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data

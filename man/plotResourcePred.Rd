@@ -14,16 +14,19 @@ plotlyResourcePred(object, proportion = TRUE, ...)
 \linkS4class{MizerParams}.}
 
 \item{proportion}{A boolean value that determines whether values should be
-displayed as proportions from 0 to 1 or with their actual values. Default is TRUE.}
+displayed as proportions from 0 to 1 or with their actual values. Default
+is TRUE.}
 
 \item{return_data}{A boolean value that determines whether the formatted data
-used for the plot is returned instead of the plot itself. Default value is FALSE}
+used for the plot is returned instead of the plot itself. Default value is
+FALSE}
 
 \item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
-frame with the four variables 'w', 'value', 'Predator', 'Resource' is returned.
+frame with the four variables 'w', 'value', 'Predator', 'Resource' is
+returned.
 }
 \description{
 Plot the mortality applied on the resource spectrum(s)

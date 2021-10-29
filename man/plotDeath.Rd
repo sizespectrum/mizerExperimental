@@ -14,13 +14,16 @@ plotlyDeath(object, species = NULL, proportion = TRUE, ...)
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
 
-\item{species}{The name of the predator species for which to plot the mortality.}
+\item{species}{The name of the predator species for which to plot the
+mortality.}
 
 \item{proportion}{A boolean value that determines whether values should be
-displayed as proportions from 0 to 1 or with their actual values. Default is TRUE.}
+displayed as proportions from 0 to 1 or with their actual values. Default
+is TRUE.}
 
 \item{return_data}{A boolean value that determines whether the formatted data
-used for the plot is returned instead of the plot itself. Default value is FALSE}
+used for the plot is returned instead of the plot itself. Default value is
+FALSE}
 
 \item{...}{Other arguments (currently unused)}
 }

@@ -4,7 +4,7 @@
 \alias{tuneGrowth}
 \title{Tune Growth}
 \usage{
-tuneGrowth(params, match = c("biomass", "yield", "none"))
+tuneGrowth(params, match = c("biomass", "number", "yield", "none"))
 }
 \arguments{
 \item{params}{MizerParams object to tune. If missing, the gadget tries to recover
