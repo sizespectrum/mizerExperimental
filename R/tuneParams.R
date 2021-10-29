@@ -93,6 +93,7 @@ tuneParams <- function(params,
                                    "interaction",
                                    "resource"),
                        tabs = c("Spectra",
+                                "Abundance",
                                 "Growth",
                                 "Repro",
                                 "Catch",
@@ -436,6 +437,6 @@ tuneParams <- function(params,
 tuneGrowth <- function(params, match = c("biomass", "yield", "none")) {
     match <- match.arg(match)
     tuneParams(params, controls = c("growth"), 
-               tabs = c("Growth", "Biomass"), 
+               tabs = c("Growth", "Biomass", "Spectra"), 
                match = match)
 }
