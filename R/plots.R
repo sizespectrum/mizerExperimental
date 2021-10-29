@@ -59,8 +59,9 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
         intersect(names(params@linecolour), frame[[legend_var]])
     frame[[legend_var]] <- factor(frame[[legend_var]], levels = legend_levels)
 
-    if(sum(is.na(frame$Legend)))
+    if (sum(is.na(frame$Legend))) {
         warning("missing legend in params@linecolour, some groups won't be displayed")
+    }
 
     linecolour <- params@linecolour[legend_levels]
     linetype <- params@linetype[legend_levels]
@@ -81,7 +82,7 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
                            labels = prettyNum, name = ylab) +
         scale_x_continuous(trans = xtrans, name = xlab)
 
-    switch (style,
+    switch(style,
             "line" = {p <- p +
                 geom_line(aes(x = .data[[x_var]], y = .data[[y_var]],
                               colour = .data[[legend_var]],
@@ -115,11 +116,14 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
 
 #' @param object An object of class \linkS4class{MizerSim} or
 #'   \linkS4class{MizerParams}.
-#' @param species The name of the predator species for which to plot the mortality.
+#' @param species The name of the predator species for which to plot the
+#'   mortality.
 #' @param proportion A boolean value that determines whether values should be
-#' displayed as proportions from 0 to 1 or with their actual values. Default is TRUE.
+#'   displayed as proportions from 0 to 1 or with their actual values. Default
+#'   is TRUE.
 #' @param return_data A boolean value that determines whether the formatted data
-#' used for the plot is returned instead of the plot itself. Default value is FALSE
+#'   used for the plot is returned instead of the plot itself. Default value is
+#'   FALSE
 #' @param ... Other arguments (currently unused)
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
@@ -134,8 +138,8 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
 #' fr <- plotDeath(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = FALSE)
-{
+plotDeath <- function(object, species = NULL, proportion = TRUE,
+                      return_data = FALSE) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)
@@ -156,8 +160,7 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
     f_mort <- getFMort(params)
     mort <- getMort(params)
     plot_dat <- NULL
-    for (iSpecies in species)
-    {
+    for (iSpecies in species) {
         fish_idx_full <- (params@w_full >= params@species_params[iSpecies, "w_min"]) &
             (params@w_full <= params@species_params[iSpecies, "w_inf"])
         fish_idx <- (params@w >= params@species_params[iSpecies, "w_min"]) &
@@ -185,7 +188,8 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
                              value = fishing,
                              Cause = "Fishing",
                              Prey = iSpecies),
-                  data.frame(w = rep(params@w[fish_idx], each = dim(predation)[[1]]),
+                  data.frame(w = rep(params@w[fish_idx],
+                                     each = dim(predation)[[1]]),
                              value = c(predation),
                              Cause = params@species_params$species,
                              Prey = iSpecies)
@@ -194,8 +198,9 @@ plotDeath <- function(object, species = NULL, proportion = TRUE, return_data = F
 
     if (return_data) return(plot_dat)
 
-    plotDataFrame(plot_dat, params, style = "area", xtrans = "log10", wrap_var = "Prey",
-                  wrap_scale = "free_x", xlab = "Size [g]", ylab = ylab)
+    plotDataFrame(plot_dat, params, style = "area", xtrans = "log10",
+                  wrap_var = "Prey", wrap_scale = "free_x",
+                  xlab = "Size [g]", ylab = ylab)
 }
 
 
@@ -214,7 +219,8 @@ plotlyDeath <- function(object,
 #'
 #' @inheritParams plotDeath
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
-#'   frame with the four variables 'w', 'value', 'Predator', 'Resource' is returned.
+#'   frame with the four variables 'w', 'value', 'Predator', 'Resource' is
+#'   returned.
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -252,7 +258,7 @@ plotResourcePred <- function(object, proportion = TRUE, return_data = FALSE)
         value = c(pred_rate),
         Predator = SpIdx
     )
-    if(return_data) return(plot_dat)
+    if (return_data) return(plot_dat)
 
     plotDataFrame(plot_dat, params, style = "area", xtrans = "log10",
                   xlab = "Resource size [g]", ylab = ylab)
@@ -286,8 +292,7 @@ plotlyResourcePred <- function(object,
 #' fr <- plotResource(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResource <- function(object, return_data = FALSE)
-{
+plotResource <- function(object, return_data = FALSE) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)
@@ -301,10 +306,11 @@ plotResource <- function(object, return_data = FALSE)
         value = params@initial_n_pp[select] / params@cc_pp[select],
         Resource = "Resource" # 3rd var for plotDataFrame()
     )
-    if(return_data) return(plot_dat)
+    if (return_data) return(plot_dat)
 
     plotDataFrame(plot_dat, params, xtrans = "log10",
-                  xlab = "Resource size [g]", ylab = "Proportion of carrying capacity")
+                  xlab = "Resource size [g]",
+                  ylab = "Proportion of carrying capacity")
 }
 
 
@@ -330,8 +336,8 @@ plotResource <- function(object, return_data = FALSE)
 #' fr <- plotEnergyBudget(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE, return_data = FALSE)
-{
+plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
+                             return_data = FALSE) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)
@@ -343,8 +349,7 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE, return
     species <- valid_species_arg(params,species)
 
     plot_dat <- NULL
-    for(iSpecies in species)
-    {
+    for (iSpecies in species) {
         max_w <- params@species_params[iSpecies, "w_inf"]
         if (logarithmic) {
             min_w <- params@species_params[iSpecies, "w_min"]
@@ -371,30 +376,36 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE, return
         )
     }
 
-    if(logarithmic) xtrans = "log10" else xtrans = "identity"
+    if (logarithmic) xtrans = "log10" else xtrans = "identity"
 
     # adding legends to params object
-    params <- setColours(params, list("Growth" = "#F8766D", "Income" = "#7CAE00",
-                                      "Metabolic loss" =  "#00BFCFC4", "Reproduction" = "#C77CFF"))
+    params <- setColours(params, list("Growth" = "#F8766D",
+                                      "Income" = "#7CAE00",
+                                      "Metabolic loss" = "#00BFCFC4",
+                                      "Reproduction" = "#C77CFF"))
 
     sizeVline <- data.frame(
         w_mat = params@species_params[species, "w_mat"],
         w_inf = params@species_params[species, "w_inf"],
         y_coord = plot_dat %>% group_by(Species) %>% summarise(Value = max(value)),
-        Type = NA) # geon_text wants a group var for some reasons
+        Type = NA) # geom_text wants a group var for some reason
     colnames(sizeVline)[3:4] <- c("Species", "y_coord")
 
-    if(return_data) return(list(plot_dat,sizeVline))
+    if (return_data) return(list(plot_dat, sizeVline))
 
     pl <- plotDataFrame(plot_dat, params, style = "area", xlab = "Size [g]",
-                        ylab = "Rate [g/year]", xtrans = xtrans, wrap_var = "Species",
-                        wrap_scale = "free")
+                        ylab = "Rate [g/year]", xtrans = xtrans,
+                        wrap_var = "Species", wrap_scale = "free")
 
     pl <- pl +
-        geom_vline(data  = sizeVline, aes(xintercept = w_mat, group = Species), linetype = "dotted") +
-        geom_vline(data  =sizeVline, aes(xintercept = w_inf, group = Species), linetype = "dotted") +
-        geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.2, label = "\nMaturity"), angle = 90) +
-        geom_text(data = sizeVline, aes(x = w_inf, y = y_coord * 0.2, label = "\nMaximum"), angle = 90)
+        geom_vline(data = sizeVline, aes(xintercept = w_mat, group = Species),
+                   linetype = "dotted") +
+        geom_vline(data = sizeVline, aes(xintercept = w_inf, group = Species),
+                   linetype = "dotted") +
+        geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.2,
+                                        label = "\nMaturity"), angle = 90) +
+        geom_text(data = sizeVline, aes(x = w_inf, y = y_coord * 0.2,
+                                        label = "\nMaximum"), angle = 90)
 
     return(pl)
 }
@@ -442,8 +453,9 @@ plotlyEnergyBudget <- function(object,
 #' fr <- plotYieldVsSize(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotYieldVsSize <- function(object, species = NULL, catch = NULL, x_var = c("Weight", "Length"), return_data = FALSE)
-{
+plotYieldVsSize <- function(object, species = NULL, catch = NULL,
+                            x_var = c("Weight", "Length"),
+                            return_data = FALSE) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)
@@ -462,8 +474,7 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL, x_var = c("Wei
     params <- set_species_param_default(params, "b", 3)
 
     plot_dat <- NULL
-    for(iSpecies in species)
-    {
+    for (iSpecies in species) {
         a <- params@species_params[iSpecies, "a"]
         b <- params@species_params[iSpecies, "b"]
 
@@ -545,51 +556,67 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL, x_var = c("Wei
         # last also in legend
         df <- rbind(df, abundance)
         df$Species <- SpIdx[which(params@species_params$species[iSpecies] == SpIdx)]
-        plot_dat <- rbind(plot_dat,df)
+        plot_dat <- rbind(plot_dat, df)
     }
 
     # adding legends to params object
-    params <- setColours(params, list("Model catch" = "#F8766D", "Abundance"  =  "#00BFCFC4"))
-    params <- setLinetypes(params, list("Model catch" = "solid", "Abundance"  =  "solid"))
+    params <- setColours(params, list("Model catch" = "#F8766D",
+                                      "Abundance" = "#00BFCFC4"))
+    params <- setLinetypes(params, list("Model catch" = "solid",
+                                        "Abundance" = "solid"))
 
     if (x_var == "Weight") {
-        plot_dat <- plot_dat[,-c(2,4)]
+        # remove length-related columns
+        plot_dat <- plot_dat[, -c(2, 4)]
         colnames(plot_dat)[2] <- "Catch density"
 
         sizeVline <- data.frame(
             w_mat = params@species_params[species, "w_mat"],
-            y_coord = plot_dat %>% group_by(Species) %>% summarise(Value = max(catch_w)),
-            Type = NA) # geon_text wants a group var for some reasons
+            y_coord = plot_dat %>%
+                group_by(Species) %>%
+                summarise(Value = max(catch_w)),
+            Type = NA) # geom_text wants a group var for some reasons
         colnames(sizeVline)[2:3] <- c("Species", "y_coord")
 
-        if(return_data) return(list(plot_dat,sizeVline))
+        if (return_data) return(list(plot_dat, sizeVline))
 
         pl <- plotDataFrame(plot_dat, params, wrap_var = "Species",
-                            xlab = "Size [g]", ylab = "Normalised number density [1/g]",
+                            xlab = "Size [g]",
+                            ylab = "Normalised number density [1/g]",
                             wrap_scale = "free")
 
         pl <- pl +
-            geom_vline(data  = sizeVline, aes(xintercept = w_mat, group = Species), linetype = "dotted") +
-            geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9, label = "\nMaturity"))
+            geom_vline(data = sizeVline,
+                       aes(xintercept = w_mat, group = Species),
+                       linetype = "dotted") +
+            geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9,
+                                            label = "\nMaturity"))
     } else {
+        # remove weight-related columns
         plot_dat <- plot_dat[,-c(1,3)]
         colnames(plot_dat)[2] <- "Catch density"
 
         sizeVline <- data.frame(
-            w_mat = (params@species_params[species, "w_mat"] /a) ^ (1 / b),
-            y_coord = plot_dat %>% group_by(Species) %>% summarise(Value = max(catch_l)),
-            Type = NA) # geon_text wants a group var for some reasons
+            w_mat = (params@species_params[species, "w_mat"] / a) ^ (1 / b),
+            y_coord = plot_dat %>%
+                group_by(Species) %>%
+                summarise(Value = max(catch_l)),
+            Type = NA) # geom_text wants a group var for some reasons
         colnames(sizeVline)[2:3] <- c("Species", "y_coord")
 
-        if(return_data) return(list(plot_dat,sizeVline))
+        if (return_data) return(list(plot_dat, sizeVline))
 
         pl <- plotDataFrame(plot_dat, params, wrap_var = "Species",
-                            xlab = "Size [cm]", ylab = "Normalised number density [1/cm]",
+                            xlab = "Size [cm]",
+                            ylab = "Normalised number density [1/cm]",
                             wrap_scale = "free")
 
         pl <- pl +
-            geom_vline(data  = sizeVline, aes(xintercept = w_mat, group = Species), linetype = "dotted") +
-            geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9, label = "\nMaturity"))
+            geom_vline(data = sizeVline,
+                       aes(xintercept = w_mat, group = Species),
+                       linetype = "dotted") +
+            geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9,
+                                            label = "\nMaturity"))
     }
     return(pl)
 }
