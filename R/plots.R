@@ -475,30 +475,31 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
 
     plot_dat <- NULL
     for (iSpecies in species) {
+        s <- params@species_params$species[[iSpecies]]
         a <- params@species_params[iSpecies, "a"]
         b <- params@species_params[iSpecies, "b"]
 
         # Check whether we have enough catch data for this species to plot it
-        is_observed <- sum(catch$species == iSpecies) > 3
+        is_observed <- sum(catch$species == s) > 3
 
         # To choose the range of sizes over which to plot we look at the range
         # of sizes for which a non-zero catch was observed. If no catch was
         # observed for the species, we use the range from w_mat/100 to w_inf.
         if (is_observed) {
             if ("length" %in% names(catch)) {
-                l_min = min(catch$length[catch$species == iSpecies])
+                l_min = min(catch$length[catch$species == s])
                 w_min = a * l_min ^ b
-                l_max = max(catch$length[catch$species == iSpecies])
+                l_max = max(catch$length[catch$species == s])
                 w_max = a * l_max ^ b
             } else {
-                w_min = min(catch$weight[catch$species == iSpecies])
-                w_max = max(catch$weight[catch$species == iSpecies])
+                w_min = min(catch$weight[catch$species == s])
+                w_max = max(catch$weight[catch$species == s])
             }
             w_min_idx <- sum(params@w < w_min)
             w_max_idx <- sum(params@w <= w_max)
         } else {
-            w_min_idx <- sum(params@w < (params@species_params$w_mat[iSpecies] / 100))
-            w_max_idx <- sum(params@w <= params@species_params$w_inf[iSpecies])
+            w_min_idx <- sum(params@w < (params@species_params$w_mat[[iSpecies]] / 100))
+            w_max_idx <- sum(params@w <= params@species_params$w_inf[[iSpecies]])
         }
         w_sel <- seq(w_min_idx, w_max_idx, by = 1)
         w <- params@w[w_sel]
@@ -522,7 +523,7 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
         abundance <- data.frame(w, l, catch_w, catch_l, Type = "Abundance")
 
         if (is_observed) {
-            sel <- (catch$species == iSpecies)
+            sel <- (catch$species == s)
             if ("length" %in% names(catch)) {
                 l <- catch$length[sel]
                 dl <- catch$dl[sel]
@@ -561,8 +562,10 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
 
     # adding legends to params object
     params <- setColours(params, list("Model catch" = "#F8766D",
-                                      "Abundance" = "#00BFCFC4"))
+                                      "Observed catch" = "#00BFCFC4",
+                                      "Abundance" = "grey"))
     params <- setLinetypes(params, list("Model catch" = "solid",
+                                        "Observed catch" = "solid",
                                         "Abundance" = "solid"))
 
     if (x_var == "Weight") {
