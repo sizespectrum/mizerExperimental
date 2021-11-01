@@ -10,7 +10,7 @@
 #'   size bins in grams. The data frame also needs to have the columns
 #'   \code{species} (the name of the species), \code{catch} (the number of
 #'   individuals of a particular species caught in a size bin).
-catchTab <- function(input, output, session, params, logs,
+catchTab <- function(input, output, session, params, logs, trigger_update,
                      catch = NULL, ...) {
 
     if (!is.null(catch)) {
@@ -60,28 +60,40 @@ catchTab <- function(input, output, session, params, logs,
         plotlyYieldVsSize(params(), species = req(input$sp),
                           catch = catch, x_var = input$catch_x)
     })
-
+    
+    # Select clicked species ----
+    # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
+    observeEvent(input$yield_click, {
+        if (is.null(input$yield_click$x)) return()
+        lvls <- input$yield_click$domain$discrete_limits$x
+        sp <- lvls[round(input$yield_click$x)]
+        if (sp != input$sp) {
+            updateSelectInput(session, "sp",
+                              selected = sp)
+        }
+    })
+    
     # Total yield by species ----
     output$plotTotalYield <- renderPlot({
-        plotYieldVsSpecies(params())
+        plotYieldVsSpecies(params()) +
+            theme(text = element_text(size = 18))
     })
 
     # Input field for observed yield ----
     output$yield_sel <- renderUI({
         p <- isolate(params())
         sp <- input$sp
-        numericInput("yield_observed",
-                     paste0("Observed total yield for ", sp, " [g/year]"),
-                     value = p@species_params[sp, "yield_observed"])
+        div(style = "display:inline-block",
+            numericInput("yield_observed",
+                         paste0("Observed total yield for ", sp, " [g/year]"),
+                         value = p@species_params[sp, "yield_observed"]))
     })
 
     # Adjust observed yield ----
-    observeEvent(
-        input$yield_observed,
-        {
-            p <- params()
-            p@species_params[input$sp, "yield_observed"] <- input$yield_observed
-            params(p)
+    observeEvent(input$yield_observed, {
+        p <- params()
+        p@species_params[input$sp, "yield_observed"] <- input$yield_observed
+        params(p)
         },
         ignoreInit = TRUE)
 
@@ -93,17 +105,75 @@ catchTab <- function(input, output, session, params, logs,
                          getFMort(p)[sp, ])
         paste("Model yield:", total, "g/year")
     })
+    
+    # Calibrate all yields ----
+    observeEvent(input$calibrate_yield, {
+        # Rescale so that the model matches the total observed yield
+        p <- calibrateYield(params())
+        params(p)
+        tuneParams_add_to_logs(logs, p)
+        # Trigger an update of sliders
+        trigger_update(runif(1))
+    })
+    
+    # Match yield of double-clicked species ----
+    observeEvent(input$match_species_yield, {
+        if (is.null(input$match_species_yield$x)) return()
+        lvls <- input$match_species_yield$domain$discrete_limits$x
+        sp <- lvls[round(input$match_species_yield$x)]
+        p <- params()
+        sp_idx <- which(p@species_params$species == sp)
+        
+        # Temporarily set observed yield to the clicked yield, then
+        # match that yield, then restore observed yield
+        obs <- p@species_params$yield_observed[[sp_idx]]
+        p@species_params$yield_observed[[sp_idx]] <- 
+            input$match_species_yield$y
+        p <- matchYields(p, species = sp)
+        p@species_params$yield_observed[[sp_idx]] <- obs
+        
+        params(p)
+        if (sp == input$sp) {
+            n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+            updateSliderInput(session, "n0",
+                              value = n0,
+                              min = signif(n0 / 10, 3),
+                              max = signif(n0 * 10, 3))
+        } else {
+            updateSelectInput(session, "sp", selected = sp)
+        }
+    })
+    
+    # Match all yields ----
+    observeEvent(input$match_yields, {
+        p <- matchYields(params())
+        sp_idx <- which(p@species_params$species == input$sp)
+        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
+        updateSliderInput(session, "n0",
+                          value = n0,
+                          min = signif(n0 / 10, 3),
+                          max = signif(n0 * 10, 3))
+        params(p)
+    })
 }
 
 #' @rdname catchTab
 catchTabUI <- function(...) {
     tagList(
         # actionButton("tune_catch", "Tune catchability"),
-        plotOutput("plotTotalYield"),
+        plotOutput("plotTotalYield",
+                   click = "yield_click",
+                   dblclick = "match_species_yield"),
         popify(uiOutput("yield_sel"),
                title = "Input observed yield",
                content = "Allows you to update the observed yield for this species."),
         textOutput("yield_total"),
+        popify(actionButton("calibrate_yield", "Calibrate"),
+               title = "Calibrate model",
+               content = "Rescales the entire model so that the total of all observed yields agrees with the total of the model yields for the same species."),
+        popify(actionButton("match_yields", "Match"),
+               title = "Match yields",
+               content = "Moves the entire size spectrum for each species up or down to give the observed yield. It does that by multiplying the egg density by the ratio of observed yield to model yield. After that adjustment you should run to steady state by hitting the Steady button, after which the yield will be a bit off again. You can repeat this process if you like to get ever closer to the observed yield."),
         plotlyOutput("plotCatchDist"),
         radioButtons("catch_x", "Show size in:",
                      choices = c("Weight", "Length"),
