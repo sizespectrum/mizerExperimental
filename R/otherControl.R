@@ -21,7 +21,7 @@ otherControl <- function(input, output, session, params, params_old,
         updateSliderInput(session, "z0",
                           min = signif(input$z0 / 2, 2),
                           max = signif((input$z0 + 0.1) * 1.5, 2))
-        
+
         p@species_params[sp, "alpha"] <- input$alpha
         p@species_params[sp, "ks"]    <- input$ks
         p@species_params[sp, "k"]     <- input$k
@@ -30,13 +30,13 @@ otherControl <- function(input, output, session, params, params_old,
         p <- setExtMort(p)
         tuneParams_update_species(sp, p, params, params_old)
     })
-    
+
     observeEvent(
         input$p,
         {
             p <- params()
             sp <- input$sp
-            
+
             # change ks so that metabolic rate at maturity stays the same
             p@species_params[[sp, "ks"]] <- p@species_params[[sp, "ks"]] *
                 p@species_params[[sp, "w_mat"]] ^
@@ -53,7 +53,7 @@ otherControl <- function(input, output, session, params, params_old,
 
 #' @rdname otherControl
 #' @inheritParams abundanceControlUI
-otherControlUI <- function(p, sp) {
+otherControlUI <- function(p, sp, re) {
     tagList(
         tags$h3(tags$a(id = "other"), "Other"),
         sliderInput("ks", "Coefficient of standard metabolism 'ks'",

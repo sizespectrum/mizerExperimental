@@ -23,7 +23,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
                     easyClose = TRUE
                 ))
             }
-            
+
             # Update slider min/max so that they are a fixed proportion of the
             # parameter value
             p@gear_params[gp_idx, "catchability"]  <- input$catchability
@@ -32,7 +32,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
                               max = signif(max(input$catchability * 2, 2), 2))
             updateSliderInput(session, "effort",
                               max = signif((input$effort + 1) * 1.5, 2))
-            
+
             if (p@gear_params[gp_idx, "sel_func"] == "knife_edge") {
                 updateSliderInput(session, "knife_edge_size",
                                   max = signif(input$knife_edge_size * 2, 2))
@@ -55,7 +55,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
                 updateSliderInput(session, "ldiff_right",
                                   max = signif(input$l50_right / 10, 2))
             }
-            
+
             p <- setFishing(p, initial_effort = input$effort)
             tuneParams_update_species(sp, p, params, params_old)
         },
@@ -64,7 +64,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
 
 #' @rdname fishingControl
 #' @inheritParams abundanceControlUI
-fishingControlUI <- function(p, sp) {
+fishingControlUI <- function(p, sp, re) {
     # If there are several gears, we only use the effort for the first.
     # If this is changed by the user, all efforts will be set the same.
     effort <- p@initial_effort[[1]]
@@ -88,7 +88,7 @@ fishingControlUI <- function(p, sp) {
                            value = effort,
                            min = 0,
                            max = signif((effort + 1) * 1.5, 2)))
-    
+
     if (gp$sel_func == "knife_edge") {
         l1 <- c(l1, list(
             sliderInput("knife_edge_size", "knife_edge_size",

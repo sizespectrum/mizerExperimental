@@ -22,7 +22,7 @@ abundanceControl <- function(input, output, session, params, params_old,
         # rescale abundance to new egg density
         p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
             p@initial_n[sp, p@w_min_idx[sp]]
-        
+
         # Update the reactive params object
         params(p)
     })
@@ -30,10 +30,10 @@ abundanceControl <- function(input, output, session, params, params_old,
 
 #' @rdname abundanceControl
 #' @param p The MizerParams object currently being tuned.
-#' @param sp The single row from the pecies parameter data frame for the 
+#' @param sp The single row from the pecies parameter data frame for the
 #'   currently selected species.
 #' @return A tagList with a slider for the egg density
-abundanceControlUI <- function(p, sp) {
+abundanceControlUI <- function(p, sp, re) {
     n0 <- p@initial_n[sp$species, p@w_min_idx[sp$species]]
     tagList(
         tags$h3(tags$a(id = "egg"), "Abundance"),

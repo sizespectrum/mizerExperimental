@@ -1,6 +1,6 @@
 #' Controlling the interaction matrix in the tuning gadget
 #' @inheritParams abundanceControl
-interactionControl <- function(input, output, session, params, 
+interactionControl <- function(input, output, session, params,
                                params_old, flags, ...) {
     observe({
         req(input$interaction_resource)
@@ -28,7 +28,7 @@ interactionControl <- function(input, output, session, params,
 
 #' @rdname interactionControl
 #' @inheritParams abundanceControlUI
-interactionControlUI <- function(p, sp) {
+interactionControlUI <- function(p, sp, re) {
     l1 <- list(
         tags$h3(tags$a(id = "interaction"), "Prey interactions"),
         sliderInput("interaction_resource", "Resource",
