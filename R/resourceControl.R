@@ -13,16 +13,12 @@ resourceControl <- function(input, output, session, params, flags, ...) {
         {
             no_re <- which(p@other_params$other$MR$resource_params$resource == re)
             mizerMR::resource_params(p)$kappa[no_re] <- input$kappa
-            mizerMR::resource_params(p)$lamda[no_re] <- input$lambda
+            mizerMR::resource_params(p)$lambda[no_re] <- input$lambda
             mizerMR::resource_params(p)$r_pp[no_re]  <- (10^input$log_r_pp)
             mizerMR::resource_params(p)$w_max[no_re] <- input$w_pp_cutoff
             mizerMR::resource_params(p)$n[no_re]     <- input$n_resource
-            # TODO update below too? what is it for?
-          # mu <- getResourceMort(p)
-          # initialNResource(p) <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
-            # TODO update all the relative plots (spectra and res ones)
+            mizerMR::initialNResource(p) <- mizerMR::resource_capacity(p)
 
-print(p@other_params$other$MR$resource_params)
         } else {
         p <- setResource(p,
                          kappa = input$kappa,
