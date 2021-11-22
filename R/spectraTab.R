@@ -1,14 +1,14 @@
 #' tuneParams tab showing size spectra
-#' 
+#'
 #' This tab shows:
-#' 
+#'
 #' * a plot of the biomass density as a function of log size,
-#' including all species and the resource. 
+#' including all species and the resource.
 #' * A slider for scaling the background (resource and possibly background
 #' species).
 #' * If there are background species, buttons to adjust or remove those
 #' background species.
-#' 
+#'
 #' @inheritParams abundanceControl
 #' @param logs Environment holding the log of steady states.
 #' @param trigger_update Reactive value used for triggering update of
@@ -16,27 +16,24 @@
 #' @param ... Unused
 spectraTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
-    
+
     ## Plot spectra ####
     output$plotSpectra <- renderPlotly({
         # if (input$binning == "Logarithmic") {
-        power <- 2
+            power <- 2
         # } else {
         #     power <- 1
         # }
-        plot <- plotSpectra(params(), power = power, highlight = input$sp, 
-                            total = TRUE) +
-            theme(text = element_text(size = 12))
-        ggplotly(plot, tooltip = c("Species", "w", "value"))
+        mizerMR::plotlySpectra(params(), power = power, highlight = input$sp, total = TRUE)
     })
-    
+
     ## Scale ####
     observeEvent(input$scale_bkgrd_by, {
         p <- scaleDownBackground(params(), input$scale_bkgrd_by)
         updateSliderInput(session, "scale_bkgrd_by", value = 1)
         params(p)
     })
-    
+
     ## Retune background ####
     observeEvent(input$retune_background, {
         p <- adjustBackgroundSpecies(params())
@@ -48,7 +45,7 @@ spectraTab <- function(input, output, session,
         # }
         params(p)
     })
-    
+
     ## Remove background ####
     observeEvent(input$remove_background, {
         p <- removeBackgroundSpecies(params())
@@ -61,7 +58,7 @@ spectraTab <- function(input, output, session,
         # }
         params(p)
     })
-    
+
     # Click ----
     # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$biomass_click, {
@@ -73,14 +70,14 @@ spectraTab <- function(input, output, session,
                               selected = sp)
         }
     })
-    
+
     # Plot total biomass ----
     output$plotTotalBiomass <- renderPlot({
         plotBiomassVsSpecies(params()) +
             theme(text = element_text(size = 18))
     })
-    
-    
+
+
     # Biomass selector ----
     output$biomass_sel <- renderUI({
         sp <- input$sp
@@ -104,7 +101,7 @@ spectraTab <- function(input, output, session,
                              value = species_params$biomass_cutoff))
         )
     })
-    
+
     # Adjust biomass observed ----
     observe({
         p <- isolate(params())
@@ -114,7 +111,7 @@ spectraTab <- function(input, output, session,
             biomass_observed
         params(p)
     })
-    
+
     # Rescale model ----
     observeEvent(input$scale_system, {
         # Rescale so that the model matches the total observed biomass
@@ -124,7 +121,7 @@ spectraTab <- function(input, output, session,
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
-    
+
     # to make biomass of current species agree with observation
     observeEvent(input$rescale, {
         p <- params()
@@ -146,7 +143,7 @@ spectraTab <- function(input, output, session,
             trigger_update(runif(1))
         }
     })
-    
+
     # Tune egg density ----
     # The "Tune egg density" button calculates the ratio of observed and
     # model biomass and then multiplies the egg density by that ratio.
@@ -196,7 +193,7 @@ spectraTab <- function(input, output, session,
                 n0 <- n0_old * p@species_params$biomass_observed[[sp]] / total
                 # rescale abundance to new egg density
                 p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 / n0_old
-                
+
                 if (sp == sp_sel) {
                     updateSliderInput(session, "n0",
                                       value = n0,
@@ -210,23 +207,23 @@ spectraTab <- function(input, output, session,
 }
 
 #' @rdname spectraTab
-#' 
+#'
 #' @param help Boolean. If FALSE then the help text is not included on the tab.
 #'   This is useful when including this tab as an element of another tab.
 spectraTabUI <- function(params, help = TRUE, ...) {
     p <- isolate(params())
-    
+
     tl <- tagList(plotlyOutput("plotSpectra"),
                   div(style = "display:inline-block;vertical-align:middle; width: 300px;",
-                      popify(sliderInput("scale_bkgrd_by", 
+                      popify(sliderInput("scale_bkgrd_by",
                                          "Scale background down by a factor of:",
                                          value = 1, min = 0.5, max = 2, step = 0.1),
                              title = "Scaling the background",
                              content = "You can scale down the background in which the fish find themselves (the resource and any background species that your model may contain). This allows you to line up your community spectrum with the background spectrum. Simply click on the factor by which to scale. Afterwards you will want to run to steady state. If you rescale by too large a factor the system may have difficulties finding the steady state. If that happens, just hit the Undo button and choose a smaller factor.")),
     )
-    
+
     if (anyNA(p@A)) {
-        tl <- tagList(tl, 
+        tl <- tagList(tl,
                       popify(actionButton("retune_background", "Adj bs"),
                              title = "Adjust background species",
                              content = "Adjust the biomasses of the background species in such a way that the total spectrum aligns well with the resource spectrum. Background species that are no longer needed because forground species have taken their place in the community spectrum are automatically removed."),
