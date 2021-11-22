@@ -277,7 +277,6 @@ tuneParams <- function(params,
                        title = "Select next species. Keyboard shortcut: n"))
             })
 
-        ## TODO duplicate slider for resources as well
         output$re_sel <- renderUI({
             p <- isolate(params())
             if(!is.null(getComponent(p, "MR")))
