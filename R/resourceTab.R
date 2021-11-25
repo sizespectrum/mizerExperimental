@@ -6,15 +6,20 @@ resourceTab <- function(input, output, session, params, logs, ...) {
     # Plot resource ----
     output$plot_resource <- renderPlot({
         p <- params()
-       mizerMR::plotResource(p)
+      mizerMR::plotResource(p) +
+           theme(text = element_text(size = 12))
+
     })
 
     # Plot resource predators ----
     output$plot_resource_pred <- renderPlotly({
         p <- params()
         if (input$resource_death_prop == "Proportion")
-            mizerMR::plotlyResourcePred(p) else mizerMR::plotlyResourcePred(p, proportion = F)
+           plot <- mizerMR::plotResourcePred(p) else
+               plot <- mizerMR::plotResourcePred(p, proportion = F)
 
+           plot <- plot + theme(text = element_text(size = 12))
+           ggplotly(plot, tooltip = c("Predator", "w", "value"))
     })
 }
 

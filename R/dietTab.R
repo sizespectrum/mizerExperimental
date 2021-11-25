@@ -6,7 +6,9 @@ dietTab <- function(input, output, session, params, logs, ...) {
     # Plot diet ----
     output$plot_diet <- renderPlotly({
         req(input$sp)
-        mizerMR::plotlyDiet(params(), species = input$sp)
+        plot <- mizerMR::plotDiet(params(), species = input$sp) +
+            theme(text = element_text(size = 12))
+        ggplotly(plot, tooltip = c("size", "Proportion", "Prey"))
     })
 
     # Plot prey ----

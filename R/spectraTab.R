@@ -20,11 +20,14 @@ spectraTab <- function(input, output, session,
     ## Plot spectra ####
     output$plotSpectra <- renderPlotly({
         # if (input$binning == "Logarithmic") {
-            power <- 2
+        power <- 2
         # } else {
         #     power <- 1
         # }
-        mizerMR::plotlySpectra(params(), power = power, highlight = input$sp, total = TRUE)
+       plot <- mizerMR::plotSpectra(params(), power = power, highlight = input$sp,
+                           total = TRUE) +
+           theme(text = element_text(size = 12))
+       ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
 
     ## Scale ####
