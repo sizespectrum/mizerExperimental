@@ -7,7 +7,7 @@
 \usage{
 growthControl(input, output, session, params, params_old, flags, ...)
 
-growthControlUI(p, sp)
+growthControlUI(p, input)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
@@ -25,9 +25,6 @@ growthControlUI(p, sp)
 \item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
-
-\item{sp}{The single row from the pecies parameter data frame for the
-currently selected species.}
 }
 \description{
 A single slider that adjusts both \code{h} and \code{gamma}

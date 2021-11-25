@@ -53,7 +53,8 @@ otherControl <- function(input, output, session, params, params_old,
 
 #' @rdname otherControl
 #' @inheritParams abundanceControlUI
-otherControlUI <- function(p, sp, re) {
+otherControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "other"), "Other"),
         sliderInput("ks", "Coefficient of standard metabolism 'ks'",

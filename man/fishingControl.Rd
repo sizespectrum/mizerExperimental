@@ -7,7 +7,7 @@
 \usage{
 fishingControl(input, output, session, params, params_old, flags, ...)
 
-fishingControlUI(p, sp)
+fishingControlUI(p, input)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
@@ -25,9 +25,6 @@ fishingControlUI(p, sp)
 \item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
-
-\item{sp}{The single row from the pecies parameter data frame for the
-currently selected species.}
 }
 \description{
 Controlling the fishing parameters in the tuning gadget

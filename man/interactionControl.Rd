@@ -7,7 +7,7 @@
 \usage{
 interactionControl(input, output, session, params, params_old, flags, ...)
 
-interactionControlUI(p, sp)
+interactionControlUI(p, input)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
@@ -25,9 +25,6 @@ interactionControlUI(p, sp)
 \item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
-
-\item{sp}{The single row from the pecies parameter data frame for the
-currently selected species.}
 }
 \description{
 Controlling the interaction matrix in the tuning gadget

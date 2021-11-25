@@ -7,7 +7,7 @@
 \usage{
 reproductionControl(input, output, session, params, params_old, flags, ...)
 
-reproductionControlUI(p, sp)
+reproductionControlUI(p, input)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
@@ -25,9 +25,6 @@ reproductionControlUI(p, sp)
 \item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
-
-\item{sp}{The single row from the pecies parameter data frame for the
-currently selected species.}
 }
 \description{
 Controlling the reproduction parameters in the tuning gadget

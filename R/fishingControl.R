@@ -64,7 +64,8 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
 
 #' @rdname fishingControl
 #' @inheritParams abundanceControlUI
-fishingControlUI <- function(p, sp, re) {
+fishingControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     # If there are several gears, we only use the effort for the first.
     # If this is changed by the user, all efforts will be set the same.
     effort <- p@initial_effort[[1]]

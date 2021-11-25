@@ -71,7 +71,7 @@ resourceControlUI(p = p, re = re)
 
 #' @rdname resourceControl
 #' @inheritParams abundanceControlUI
-resourceControlUI <- function(p, re) {
+resourceControlUI <- function(p, input) {
 
     if(!is.null(getComponent(p, "MR")))
     {
@@ -133,3 +133,4 @@ resourceControlUI <- function(p, re) {
                          max = 1e3))
     }
 }
+

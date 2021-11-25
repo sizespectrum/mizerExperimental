@@ -33,7 +33,8 @@ reproductionControl <- function(input, output, session, params, params_old,
 
 #' @rdname reproductionControl
 #' @inheritParams abundanceControlUI
-reproductionControlUI <- function(p, sp, re) {
+reproductionControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "reproduction"), "Reproduction"),
         sliderInput("w_mat", "w_mat", value = sp$w_mat,

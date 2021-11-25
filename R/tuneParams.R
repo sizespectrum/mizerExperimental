@@ -304,14 +304,13 @@ tuneParams <- function(params,
             trigger_update()
             # but not each time the params change
             p <- isolate(params())
-            sp <- p@species_params[input$sp, ]
-            # re <- input$re
-            controls <- controls[-which(controls == "resource")] # removing resource from this to give it its own in resource control
+#            controls <- controls[-which(controls == "resource")] # removing resource from this to give it its own in resource control
+
 
             lapply(controls,
                    function(section) {
                        do.call(paste0(section, "ControlUI"),
-                               list(p = p, sp = sp))
+                               list(p = p, input = input))
                    })
         })
 

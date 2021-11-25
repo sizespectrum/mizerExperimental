@@ -28,7 +28,8 @@ interactionControl <- function(input, output, session, params,
 
 #' @rdname interactionControl
 #' @inheritParams abundanceControlUI
-interactionControlUI <- function(p, sp, re) {
+interactionControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     l1 <- list(
         tags$h3(tags$a(id = "interaction"), "Prey interactions"),
         sliderInput("interaction_resource", "Resource",

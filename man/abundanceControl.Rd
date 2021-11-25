@@ -7,7 +7,7 @@
 \usage{
 abundanceControl(input, output, session, params, params_old, flags, ...)
 
-abundanceControlUI(p, sp)
+abundanceControlUI(p, input)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
@@ -25,9 +25,6 @@ abundanceControlUI(p, sp)
 \item{...}{Unused}
 
 \item{p}{The MizerParams object currently being tuned.}
-
-\item{sp}{The single row from the pecies parameter data frame for the
-currently selected species.}
 }
 \value{
 A tagList with a slider for the egg density

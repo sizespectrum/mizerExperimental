@@ -90,7 +90,8 @@ predationControl <- function(input, output, session, params, params_old,
 
 #' @rdname predationControl
 #' @inheritParams abundanceControlUI
-predationControlUI <- function(p, sp, re) {
+predationControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "predation"), "Predation"),
         sliderInput("gamma", "Predation rate coefficient 'gamma'",
