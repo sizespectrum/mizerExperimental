@@ -82,7 +82,7 @@
 #'
 #' @return The tuned MizerParams object
 #' @md
-#' @import shinyBS 
+#' @import shinyBS
 #' @export
 tuneParams <- function(params,
                        controls = c("abundance",
@@ -135,7 +135,7 @@ tuneParams <- function(params,
         }
         p <- readRDS(logs$files[logs$idx])
     } else {
-        validObject(p)    
+        validObject(p)
         # Add the info that should be preserved to the species_params for later
         # recall
         preserve <- match.arg(preserve)
@@ -156,7 +156,7 @@ tuneParams <- function(params,
         theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
         shinyjs::useShinyjs(),
         introjsUI(),
-        tags$script(HTML("$(function(){ 
+        tags$script(HTML("$(function(){
           $(document).keydown(function(e) {
           if (e.which == 83) {
             $('#sp_steady').click()
@@ -275,12 +275,11 @@ tuneParams <- function(params,
             trigger_update()
             # but not each time the params change
             p <- isolate(params())
-            sp <- p@species_params[input$sp, ]
 
             lapply(controls,
                    function(section) {
                        do.call(paste0(section, "ControlUI"),
-                               list(p = p, sp = sp))
+                               list(p = p, input = input))
                    })
         })
 
@@ -303,7 +302,7 @@ tuneParams <- function(params,
                 substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
                 tab_content <- div(
                     style = "max-height: 94vh; overflow-y: auto; overflow-x: hidden;",
-                    do.call(paste0(tabname, "TabUI"), 
+                    do.call(paste0(tabname, "TabUI"),
                             list(params = params)))
                 tabPanel(tab, tab_content)
             })
@@ -333,12 +332,12 @@ tuneParams <- function(params,
         ## Steady ####
         # triggered by "Steady" button in sidebar
         observeEvent(input$sp_steady, {
-            tuneParams_run_steady(params(), params = params, 
+            tuneParams_run_steady(params(), params = params,
                                   params_old = params_old,
                                   logs = logs, session = session, input = input,
                                   match = match)
         })
-        
+
         ## Previous ####
         observeEvent(input$previous_sp, {
             p <- params()
@@ -406,7 +405,7 @@ tuneParams <- function(params,
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
         })
-        
+
         ## Prepare for download of params object ####
         output$params <- downloadHandler(
             filename = "tuned_params.rds",
@@ -428,7 +427,7 @@ tuneParams <- function(params,
 }
 
 #' Tune Growth
-#' 
+#'
 #' A simplified instance of `tuneParams()` that is useful for tuning growth
 #' rates.
 #' @inheritParams tuneParams
@@ -442,7 +441,7 @@ tuneGrowth <- function(params, match = c("biomass", "number", "yield", "none")) 
     if (tabname == "Yield") {
         tabname <- "Catch"
     }
-    tuneParams(params, controls = c("growth"), 
-               tabs = c("Growth", tabname, "Spectra"), 
+    tuneParams(params, controls = c("growth"),
+               tabs = c("Growth", tabname, "Spectra"),
                match = match)
 }

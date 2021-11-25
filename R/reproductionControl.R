@@ -19,12 +19,12 @@ reproductionControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "w_inf",
                               min = signif(input$w_inf / 2, 2),
                               max = signif(input$w_inf * 1.5, 2))
-            
+
             p@species_params[sp, "w_mat25"]   <- input$w_mat * input$wfrac
             p@species_params[sp, "w_mat"]   <- input$w_mat
             p@species_params[sp, "w_inf"]   <- input$w_inf
             p@species_params[sp, "m"]     <- input$m
-            
+
             p <- setReproduction(p)
             tuneParams_update_species(sp, p, params, params_old)
         },
@@ -33,7 +33,8 @@ reproductionControl <- function(input, output, session, params, params_old,
 
 #' @rdname reproductionControl
 #' @inheritParams abundanceControlUI
-reproductionControlUI <- function(p, sp) {
+reproductionControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "reproduction"), "Reproduction"),
         sliderInput("w_mat", "w_mat", value = sp$w_mat,

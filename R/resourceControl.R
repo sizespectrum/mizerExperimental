@@ -21,9 +21,9 @@ resourceControl <- function(input, output, session, params, flags, ...) {
 
 #' @rdname resourceControl
 #' @inheritParams abundanceControlUI
-resourceControlUI <- function(p, sp) {
+resourceControlUI <- function(p, input) {
     log_r_pp <- log10(p@resource_params$r_pp)
-    
+
     tagList(
         tags$h3(tags$a(id = "resource"), "Resource"),
         numericInput("lambda", "Sheldon exponent 'lambda'",

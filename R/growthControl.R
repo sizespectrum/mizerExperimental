@@ -1,5 +1,5 @@
 #' A single slider that adjusts both `h` and `gamma`
-#' 
+#'
 #' @inheritParams abundanceControl
 growthControl <- function(input, output, session, params, params_old, flags,
                                     ...) {
@@ -18,11 +18,11 @@ growthControl <- function(input, output, session, params, params_old, flags,
                           max = signif(input$gamma * 1.5, 3))
         p@species_params[sp, "gamma"] <- input$gamma
         p <- setSearchVolume(p)
-        
+
         # adjust h
         p@species_params[sp, "h"] <- p@species_params[sp, "h"] * factor
         p <- setMaxIntakeRate(p)
-        
+
         tuneParams_update_species(sp, p, params, params_old)
     },
     ignoreInit = TRUE,
@@ -32,7 +32,8 @@ growthControl <- function(input, output, session, params, params_old, flags,
 
 #' @rdname growthControl
 #' @inheritParams abundanceControlUI
-growthControlUI <- function(p, sp) {
+growthControlUI <- function(p, input) {
+    sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "predation"), "Predation"),
         popify(sliderInput("gamma", "Search volume coefficient 'gamma'",
