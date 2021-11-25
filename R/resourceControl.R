@@ -2,43 +2,8 @@
 #' @inheritParams abundanceControl
 resourceControl <- function(input, output, session, params, flags, ...) {
 
-    output$re_sel <- renderUI({
-        p <- isolate(params())
-        if(!is.null(getComponent(p, "MR")))
-        {
-            resources <-  as.character(p@other_params$other$MR$resource_params$resource)
-        } else {
-            resources <- "Resource"
-        }
-
-        tagList(
-            popify(selectInput("re", "Resource to tune:", resources),
-                   placement = "right",
-                   title = "Resource to tune",
-                   content = "Here you select the resource whose parameters you want to change or whose properties
-                       you want to concentrate on. ")
-
-        )
-    })
-
-    output$re_params <- renderUI({
-        # The parameter sliders get updated whenever the species selector
-        # changes
-        req(input$re)
-        print(re)
-        # or when the trigger is set somewhere
-        trigger_update()
-        # but not each time the params change
-        p <- isolate(params())
-
-resourceControlUI(p = p, re = re)
-
-               })
-
-
-
     observe({
-        re <- isolate(input$re) # to know which background is selected
+        re <- isolate(input$re)
         p <- isolate(params())
         req(input$kappa,
             input$lambda,
@@ -73,46 +38,41 @@ resourceControlUI(p = p, re = re)
 #' @inheritParams abundanceControlUI
 resourceControlUI <- function(p, input) {
 
-    if(!is.null(getComponent(p, "MR")))
+    if(!is.null(getComponent(p, "MR"))) # is there one or more resources?
     {
-        # re <- 1
-        tagList(
-            tags$h3(tags$a(id = "resource"), "Resource"),
+        resources <-  as.character(p@other_params$other$MR$resource_params$resource)
+        if(is.null(input$re)) # need to initialise slider when app starts
+        {
+            tagList(
+                tags$h3(tags$a(id = "resource"), "Resource"),
+                selectInput("re", "Resource to tune:", resources, selected = resources[1]))
+            # not adding the parameter sliders as this section just runs once at the start
+        } else {
+            tagList(
+                tags$h3(tags$a(id = "resource"), "Resource"),
 
+                selectInput(inputId = "re", label = "Resource to tune:", choices = resources, selected = input$re),
 
-        # introBox(
-            uiOutput("re_sel"),
-        #          data.step = 2,
-        #          data.position = "right",
-        #          data.intro = "Here you select the resource whose parameters you want to change or whose properties you want to concentrate on."
-        # ),
-
-
-
-
-
-
-#TODO somehow use "re' from the slider to updates the values and shit below
-
-            numericInput("lambda", "Sheldon exponent 'lambda'",
-                         value = p@other_params$other$MR$resource_params[re,]$lambda,
-                         min = 1.9, max = 2.2, step = 0.005),
-            numericInput("kappa", "Resource coefficient 'kappa'",
-                         value = p@other_params$other$MR$resource_params[re,]$kappa),
-            sliderInput("log_r_pp", "log10 Resource replenishment rate",
-                        value = log10(p@other_params$other$MR$resource_params[re,]$r_pp),
-                        min = -1, max = 4, step = 0.05),
-            numericInput("n_resource", "Exponent of replenishment rate",
-                         value = p@other_params$other$MR$resource_params[re,]$n,
-                         min = 0.6, max = 0.8, step = 0.005),
-            numericInput("w_pp_cutoff", "Largest resource",
-                         value = p@other_params$other$MR$resource_params[re,]$w_max,
-                         min = 1e-10,
-                         max = 1e3),
-            numericInput("w_min_resource", "Smallest resource",
-                         value = p@other_params$other$MR$resource_params[re,]$w_min,
-                         min = p@w_full[1],
-                         max = 1e3))
+                numericInput("lambda", "Sheldon exponent 'lambda'",
+                             value = p@other_params$other$MR$resource_params[input$re,]$lambda,
+                             min = 1.9, max = 2.2, step = 0.005),
+                numericInput("kappa", "Resource coefficient 'kappa'",
+                             value = p@other_params$other$MR$resource_params[input$re,]$kappa),
+                sliderInput("log_r_pp", "log10 Resource replenishment rate",
+                            value = log10(p@other_params$other$MR$resource_params[input$re,]$r_pp),
+                            min = -1, max = 4, step = 0.05),
+                numericInput("n_resource", "Exponent of replenishment rate",
+                             value = p@other_params$other$MR$resource_params[input$re,]$n,
+                             min = 0.6, max = 0.8, step = 0.005),
+                numericInput("w_pp_cutoff", "Largest resource",
+                             value = p@other_params$other$MR$resource_params[input$re,]$w_max,
+                             min = 1e-10,
+                             max = 1e3),
+                numericInput("w_min_resource", "Smallest resource",
+                             value = p@other_params$other$MR$resource_params[input$re,]$w_min,
+                             min = p@w_full[1],
+                             max = 1e3))
+        }
     } else {
         log_r_pp <- log10(p@resource_params$r_pp)
         tagList(
@@ -133,4 +93,3 @@ resourceControlUI <- function(p, input) {
                          max = 1e3))
     }
 }
-
