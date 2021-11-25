@@ -5,7 +5,16 @@
 \alias{catchTabUI}
 \title{Serve tab with catch data}
 \usage{
-catchTab(input, output, session, params, logs, catch = NULL, ...)
+catchTab(
+  input,
+  output,
+  session,
+  params,
+  logs,
+  trigger_update,
+  catch = NULL,
+  ...
+)
 
 catchTabUI(...)
 }
@@ -19,6 +28,9 @@ catchTabUI(...)
 \item{params}{Reactive value holding updated MizerParams object}
 
 \item{logs}{Environment holding the log of steady states.}
+
+\item{trigger_update}{Reactive value used for triggering update of
+species parameter sliders.}
 
 \item{catch}{Data frame holding binned observed catch data. The data can
 be binned either into length bins or weight bins. In the former case the data
