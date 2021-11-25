@@ -204,12 +204,6 @@ tuneParams <- function(params,
                          data.position = "right",
                          data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."
                 ),
-                # tags$br(),
-                # introBox(uiOutput("re_sel"),
-                #          data.step = 2,
-                #          data.position = "right",
-                #          data.intro = "Here you select the resource whose parameters you want to change or whose properties you want to concentrate on."
-                # ),
                 introBox(
                     introBox(
                         # Add links to input sections
@@ -274,27 +268,6 @@ tuneParams <- function(params,
                        title = "Select next species. Keyboard shortcut: n"))
             })
 
-        # output$re_sel <- renderUI({
-        #     p <- isolate(params())
-        #     if(!is.null(getComponent(p, "MR")))
-        #     {
-        #         resources <-  as.character(p@other_params$other$MR$resource_params$resource)
-        #     } else {
-        #         resources <- "Resource"
-        #     }
-        #
-        #     tagList(
-        #         popify(selectInput("re", "Resource to tune:", resources),
-        #                placement = "right",
-        #                title = "Resource to tune",
-        #                content = "Here you select the resource whose parameters you want to change or whose properties
-        #                you want to concentrate on. ")#,
-        #         # tipify(actionButton("previous_sp", HTML("<u>p</u>revious")),
-        #         #        title = "Select previous species. Keyboard shortcut: p"),
-        #         # tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
-        #         #        title = "Select next species. Keyboard shortcut: n")
-        #     )
-        # })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
             # The parameter sliders get updated whenever the species selector
@@ -304,8 +277,6 @@ tuneParams <- function(params,
             trigger_update()
             # but not each time the params change
             p <- isolate(params())
-#            controls <- controls[-which(controls == "resource")] # removing resource from this to give it its own in resource control
-
 
             lapply(controls,
                    function(section) {
@@ -313,24 +284,6 @@ tuneParams <- function(params,
                                list(p = p, input = input))
                    })
         })
-
-        # # Sliders for the resource parameters
-        # output$re_params <- renderUI({
-        #     # The parameter sliders get updated whenever the resource selector
-        #     # changes
-        #     req(input$re)
-        #     # or when the trigger is set somewhere
-        #     trigger_update()
-        #     # but not each time the params change
-        #     # p <- isolate(params())
-        #     re <- input$re
-        #
-        #     lapply(controls,
-        #            function(section) {
-        #                do.call(paste0(section, "ControlUI"),
-        #                        list(p = p, sp = sp))
-        #            })
-        # })
 
         # Serve controls ####
         for (section in controls) {
