@@ -105,7 +105,6 @@ tuneParams <- function(params,
                        match = c("none", "number", "biomass", "yield"),
                        preserve = c("erepro", "reproduction_level", "R_max"),
                        ...) {
-    p <- params # just because I was lazy and because I am using params later
     match <- match.arg(match)
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
@@ -135,6 +134,7 @@ tuneParams <- function(params,
         }
         p <- readRDS(logs$files[logs$idx])
     } else {
+        p <- params # just because I was lazy and because I am using params later
         validObject(p)
         # Add the info that should be preserved to the species_params for later
         # recall
