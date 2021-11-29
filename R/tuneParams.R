@@ -215,8 +215,7 @@ tuneParams <- function(params,
                         data.intro = "There are many parameters, organised into sections. To avoid too much scrolling you can click on a link to jump to a section."),
                     tags$br(),
                     tags$div(id = "params",
-                             uiOutput("sp_params"),
-                             uiOutput("re_params")
+                             uiOutput("sp_params")
                     ),
                     tags$head(tags$style(
                         type = 'text/css',
