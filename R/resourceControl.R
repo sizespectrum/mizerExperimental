@@ -19,7 +19,9 @@ resourceControl <- function(input, output, session, params, flags, ...) {
             mizerMR::resource_params(p)$w_max[sel_re]  <- input$w_pp_cutoff
             mizerMR::resource_params(p)$n[sel_re]      <- input$n_resource
             mizerMR::resource_params(p)$w_min[sel_re]  <- input$w_min_resource
-            mizerMR::initialNResource(p) <- mizerMR::resource_capacity(p)
+            mu <- getResourceMort(p)
+            mizerMR::initialNResource(p) <- mizerMR::resource_rate(p) *
+                mizerMR::resource_capacity(p) / (mizerMR::resource_rate(p) + mu)
         } else {
             p <- setResource(p,
                              kappa = input$kappa,
