@@ -3,7 +3,7 @@
 \name{plotYieldVsSize}
 \alias{plotYieldVsSize}
 \alias{plotlyYieldVsSize}
-\title{Plot the modelled abundance and catch yield per species through size}
+\title{Plot the size distribution of the catch}
 \usage{
 plotYieldVsSize(
   object,
@@ -38,8 +38,9 @@ size bins in grams. The data frame also needs to have the columns
 \code{species} (the name of the species), \code{catch} (the number of
 individuals of a particular species caught in a size bin).}
 
-\item{x_var}{Choose to display the values using weight data ("Weight") or
-length data ("Length"). Default is "Weight".}
+\item{x_var}{Determines whether to show the size distribution of the catch as
+a function of weight ("Weight") or as a function of length ("Length").
+Default is "Weight".}
 
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
@@ -55,7 +56,11 @@ and the second slot is a data frame with the four variables 'w_mat',
 'Species', 'y_coord', 'Type' (to plot vertical lines).
 }
 \description{
-Plot the modelled abundance and catch yield per species through size
+Plots the normalised number density of the catch for a species as a function
+of either length or weight. In addition to the catch in the model, also the
+observed catch will be plotted if it is supplied via the \code{catch} argument.
+Also superimposes a plot of the number density of all individuals of the
+species.
 }
 \examples{
 \donttest{
