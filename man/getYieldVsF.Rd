@@ -4,26 +4,23 @@
 \alias{getYieldVsF}
 \title{Calculate a yield-vs-F curve}
 \usage{
-getYieldVsF(
-  params,
-  species,
-  no_steps = 10,
-  F_max = 3,
-  F_range = seq(0, F_max, length.out = no_steps)
-)
+getYieldVsF(params, species, F_range, no_steps = 10, effort_it = 1)
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
 
 \item{species}{Name of the target species}
 
-\item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
-
-\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
-
 \item{F_range}{A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
 \code{seq(from = 0, to = F_max, length.out = no_steps)}.}
+
+\item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
+
+\item{effort_it}{The width of steps used to find maximum fisheries mortality,
+higher values means a faster calculation but less accurate maximum.}
+
+\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 }
 \value{
 A data frame with columns \code{F} and \code{yield}.

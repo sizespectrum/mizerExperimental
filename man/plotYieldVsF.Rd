@@ -4,13 +4,7 @@
 \alias{plotYieldVsF}
 \title{Plot a yield-vs-F curve}
 \usage{
-plotYieldVsF(
-  params,
-  species,
-  no_steps = 10,
-  F_max = 3,
-  F_range = seq(0, F_max, length.out = no_steps)
-)
+plotYieldVsF(params, species, no_steps = 10, F_range)
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
@@ -18,8 +12,6 @@ plotYieldVsF(
 \item{species}{Name of the target species}
 
 \item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
-
-\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 
 \item{F_range}{A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
