@@ -4,3 +4,4 @@
 .Ruserdata
 *.Rproj
 main.Rmd
+paramsMs.RData
