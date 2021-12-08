@@ -5,7 +5,6 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
-    p <- setBevertonHolt(p, reproduction_level = 0)
     return(p)
 }
 
@@ -62,20 +61,17 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
             stop("Candidate steady state holds non-numeric values")
         }
 
-        p <- setBevertonHolt(p, reproduction_level = 0)
+        repro_level <- 0
+        names(repro_level) <- p@species_params[sp, "species"]
+        p <- setBevertonHolt(p, reproduction_level = repro_level)
 
         # Update the reactive params object
         params(p)
     },
     error = function(e) {
-        showModal(modalDialog(
-            title = "Invalid parameters",
-            HTML(paste0("These parameter values lead to an error.<br>",
-                        "The error message was:<br>", e)),
-            easyClose = TRUE
-        ))
-        params(p)}
-    )
+        error_fun(e)
+        params(p)
+    })
 }
 
 
@@ -125,15 +121,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         params_old(p)
         tuneParams_add_to_logs(logs, p)
     },
-    error = function(e) {
-        showModal(modalDialog(
-            title = "Invalid parameters",
-            HTML(paste0("These parameter do not lead to an acceptable steady state. ",
-                        "Please choose other values.<br>",
-                        "The error message was:<br>", e)),
-            easyClose = TRUE
-        ))}
-    )
+    error = error_fun)
 }
 
 
@@ -154,3 +142,12 @@ tuneParams_add_to_logs <- function(logs, p) {
         shinyjs::enable("undo_all")
     }
 }
+
+error_fun <- function(e) {
+    showModal(modalDialog(
+        title = "Invalid parameters",
+        HTML(paste0("These parameter do not lead to an acceptable steady state. ",
+                    "Please choose other values.<br>",
+                    "The error message was:<br>", e)),
+        easyClose = TRUE
+    ))}
