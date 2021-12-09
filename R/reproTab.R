@@ -17,9 +17,12 @@ reproTab <- function(input, output, session, params, logs, ...) {
     output$plot_erepro <- renderPlotly({
         p <- params()
         foreground <- !is.na(p@A)
+        rdi <- getRDI(p)[foreground]
+        rdd <- getRDD(p)[foreground]
+        repro_success <- p@species_params$erepro[foreground] * rdd / rdi
         df <- data.frame(Species = factor(p@species_params$species[foreground],
                                           levels = p@species_params$species[foreground]),
-                         value = p@species_params$erepro[foreground])
+                         value = repro_success)
         ggplot(df, aes(x = Species, y = value)) +
             geom_col() + geom_hline(yintercept = 1, color = "red") +
             scale_y_log10(name = "Reproductive success") +

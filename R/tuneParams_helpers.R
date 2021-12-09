@@ -61,10 +61,6 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
             stop("Candidate steady state holds non-numeric values")
         }
 
-        repro_level <- 0
-        names(repro_level) <- p@species_params[sp, "species"]
-        p <- setBevertonHolt(p, reproduction_level = repro_level)
-
         # Update the reactive params object
         params(p)
     },
