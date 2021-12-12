@@ -423,8 +423,13 @@ plotlyEnergyBudget <- function(object,
 
 
 
-#' Plot the modelled abundance and catch yield per species through size
+#' Plot the size distribution of the catch
 #'
+#' Plots the normalised number density of the catch for a species as a function
+#' of either length or weight. In addition to the catch in the model, also the
+#' observed catch will be plotted if it is supplied via the `catch` argument.
+#' Also superimposes a plot of the number density of all individuals of the
+#' species.
 #' @inheritParams plotDeath
 #' @param catch  Optional. Data frame holding binned observed catch data. The data can
 #'   be binned either into length bins or weight bins. In the former case the data
@@ -435,8 +440,9 @@ plotlyEnergyBudget <- function(object,
 #'   size bins in grams. The data frame also needs to have the columns
 #'   \code{species} (the name of the species), \code{catch} (the number of
 #'   individuals of a particular species caught in a size bin).
-#' @param x_var Choose to display the values using weight data ("Weight") or
-#' length data ("Length"). Default is "Weight".
+#' @param x_var Determines whether to show the size distribution of the catch as
+#'   a function of weight ("Weight") or as a function of length ("Length").
+#'   Default is "Weight".
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a list
 #' composed of two slots is returned. First slot is a data frame with the four
 #' variables 'w' or 'l' (depending on `x_var`), 'Catch density', 'Type', 'Species
