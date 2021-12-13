@@ -45,7 +45,7 @@ getYieldVsF <- function(params,
                         species,
                         F_range,
                         no_steps = 10,
-                        F_max = 3,
+                        F_max,
                         effort_it = 1,
                         distance_func = distanceSSLogN,
                         tol = 0.1,
@@ -80,7 +80,7 @@ getYieldVsF <- function(params,
     initial_effort(params)["tmp"] <- initial_effort(params)[gp$gear[gps]] # setting initial effort same as original gear
     effort <- getInitialEffort(params)
 
-    if(missing(F_range))
+    if(missing(F_range) & missing(F_max))
     {
         maxFdf <- getMaxF(params = params, idx_species = idx_species,
                           effort_it = effort_it, distance_func = distance_func,
@@ -129,6 +129,9 @@ getYieldVsF <- function(params,
         }
         return(rbind(maxFdf,data.frame("yield" = yield_vec, "effort" = effort_vec)))
     } else {
+
+        if (!missing(F_max)) F_range = seq(0, F_max, length.out = no_steps)
+
         assert_that(is.numeric(F_range))
 
         yield_vec <- yieldCalculator(params = params, effort_vec = F_range, idx_species = idx_species,
@@ -157,7 +160,7 @@ getYieldVsF <- function(params,
 plotYieldVsF <- function(params,
                          species,
                          no_steps = 10,
-                         F_max = 3,
+                         F_max,
                          F_range,
                          effort_it = 1,
                          distance_func = distanceSSLogN,
@@ -210,8 +213,6 @@ getMaxF <- function(params, idx_species, effort_it = 1,
     yield_vec <- NULL
     while (max_func(params,idx_species) >= biom_threshold)
     {
-        print("effort - MaxF")
-        print(iEffort)
         params@initial_effort["tmp"] <- iEffort
         sim <- projectToSteady(params, t_max = 100,
                                return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
@@ -228,8 +229,6 @@ getMaxF <- function(params, idx_species, effort_it = 1,
         iEffort <- iEffort + effort_it
     }
     res <- data.frame("yield" = yield_vec, "effort" = seq(effort_init,length(yield_vec)*effort_it, by = effort_it))
-    print("maxF df")
-    print(res)
     # last value of res$effort is max_F
     return(res)
 
@@ -348,8 +347,6 @@ yieldCalculator <- function(params, effort_vec, idx_species,
     yield_vec <- NULL
     for(iEffort in effort_vec)
     {
-        print("effort - filler F")
-        print(iEffort)
     params@initial_effort["tmp"] <- iEffort
     sim <- projectToSteady(params, t_max = 100,
                            return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
