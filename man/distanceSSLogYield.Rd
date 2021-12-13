@@ -4,7 +4,7 @@
 \alias{distanceSSLogYield}
 \title{Measure distance between current and previous state in terms of yield.}
 \usage{
-distanceSSLogYield(params, current, previous, criterion = "proportion")
+distanceSSLogYield(params, current, previous, criterion = "SSE")
 }
 \arguments{
 \item{params}{MizerParams}

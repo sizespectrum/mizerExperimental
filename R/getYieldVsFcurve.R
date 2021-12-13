@@ -16,6 +16,19 @@
 #' @param no_steps The number of steps to use. Only used if `F_range` is missing.
 #' @param effort_it The width of steps used to find maximum fisheries mortality,
 #' higher values means a faster calculation but less accurate maximum.
+#' @param distance_func A function that will be called after every `t_per` years
+#'   with both the previous and the new state and that should return a number
+#'   that in some sense measures the distance between the states. By default
+#'   this uses the function [distanceSSLogN()] that you can use as a model for your
+#'   own distance function.
+#' @param tol The `projectToSteady` function stops when the relative change in the egg production
+#' RDI over t_per years is less than tol for every species.
+#' @param max_func A function used in `getMaxF` to determines the threshold to use
+#' when stopping the fisheries effort.
+#' @param threshold_var A numeric value used in max_func to calculate the threshold
+#' from the `params` object. If supplied the function returns the value of the
+#' threshold using `threshold_var`. If not supplied the function returns the
+#' unchanged value, which can be compared against the version which uses `threshold_var`.
 #'
 #' @return A data frame with columns `F` and `yield`.
 #' @export
@@ -32,7 +45,13 @@ getYieldVsF <- function(params,
                         species,
                         F_range,
                         no_steps = 10,
-                        effort_it = 1) {
+                        F_max = 3,
+                        effort_it = 1,
+                        distance_func = distanceSSLogN,
+                        tol = 0.1,
+                        max_func = maxFthreshold,
+                        threshold_var = 10
+                        ) {
     # Check parameters
     params <- validParams(params)
     species <- valid_species_arg(params, species)
@@ -63,7 +82,10 @@ getYieldVsF <- function(params,
 
     if(missing(F_range))
     {
-        maxFdf <- getMaxF(params = params, idx_species = idx_species, effort_it = effort_it) # find maximum viable fisheries effort
+        maxFdf <- getMaxF(params = params, idx_species = idx_species,
+                          effort_it = effort_it, distance_func = distance_func,
+                          tol = tol, max_func = max_func,
+                          threshold_var = threshold_var) # find maximum viable fisheries effort
 
         if(no_steps > dim(maxFdf)[1]) # if the user asked for more steps than already calculated by getMaxF
         {
@@ -88,8 +110,10 @@ getYieldVsF <- function(params,
             effort_down <- effort_down[order(effort_down,decreasing = TRUE)]
             effort_up <- effort_vec[effort_vec > initial_effort(params)["tmp"]]
 
-            yield_down <- yieldCalculator(params = params, effort_vec = effort_down, idx_species = idx_species)
-            yield_up <- yieldCalculator(params = params, effort_vec = effort_up, idx_species = idx_species)
+            yield_down <- yieldCalculator(params = params, effort_vec = effort_down, idx_species = idx_species,
+                                          distance_func = distance_func, tol = tol)
+            yield_up <- yieldCalculator(params = params, effort_vec = effort_up, idx_species = idx_species,
+                                        distance_func = distance_func, tol = tol)
 
             yield_vec <- c(yield_down,yield_up)
             effort_vec <- c(effort_down,effort_up)
@@ -99,14 +123,16 @@ getYieldVsF <- function(params,
             # if effort_it is too big, just need to calculate the 0 value
             if(myEffort > 0) effort_vec <- seq(0,myEffort,by = effort_it) else effort_vec <- 0
 
-            yield_vec <- yieldCalculator(params = params, effort_vec = effort_vec, idx_species = idx_species)
+            yield_vec <- yieldCalculator(params = params, effort_vec = effort_vec, idx_species = idx_species,
+                                         distance_func = distance_func, tol = tol)
 
         }
         return(rbind(maxFdf,data.frame("yield" = yield_vec, "effort" = effort_vec)))
     } else {
         assert_that(is.numeric(F_range))
 
-        yield_vec <- yieldCalculator(params = params, effort_vec = F_range, idx_species = idx_species)
+        yield_vec <- yieldCalculator(params = params, effort_vec = F_range, idx_species = idx_species,
+                                     distance_func = distance_func, tol = tol)
 
         return(data.frame("yield" = yield_vec, "effort" = F_range))
     }
@@ -131,15 +157,31 @@ getYieldVsF <- function(params,
 plotYieldVsF <- function(params,
                          species,
                          no_steps = 10,
-                         F_range){
+                         F_max = 3,
+                         F_range,
+                         effort_it = 1,
+                         distance_func = distanceSSLogN,
+                         tol = .1,
+                         max_func = maxFthreshold,
+                         threshold_var = 10){
 
     curve <- getYieldVsF(params,
                          species = species,
                          F_range = F_range,
-                         no_steps = no_steps)
+                         no_steps = no_steps,
+                         F_max = F_max,
+                         effort_it = effort_it,
+                         distance_func = distance_func,
+                         tol = tol,
+                         max_func = max_func,
+                         threshold_var = threshold_var
+                         )
 
     ggplot(curve, aes(x = effort, y = yield)) +
         geom_line() +
+        geom_point() +
+        scale_x_continuous(breaks = seq(0,13,by=.5)) +
+        # scale_y_continuous(trans = "log10") +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
         ggtitle(species)
@@ -152,24 +194,27 @@ plotYieldVsF <- function(params,
 #' Calculate the maximum fisheries effort before reaching a specific threshold
 #' Default case is biomass exposed to fisheries lower than 10% of original biomass
 #'
-#' @param params MizerParams
-#' @param idx_species species row number in `params@species_params`
-#' @param effort_it The width of steps used to find maximum fisheries mortality,
-#' higher values means a faster calculation but less accurate maximum.
+#' @inheritParams getYieldVsF
 #'
 #' @return dataframe
 #' @export
-getMaxF <- function(params, idx_species, effort_it = 1)
+getMaxF <- function(params, idx_species, effort_it = 1,
+                    distance_func = distanceSSLogN,
+                    tol = 0.1,
+                    max_func = maxFthreshold,
+                    threshold_var = 10)
 {
     iEffort <- effort_init <- initial_effort(params)["tmp"]
     # threshold to stop the while loop
-    biom_threshold <- sum(params@initial_n[idx_species,which(params@w >= params@gear_params$knife_edge_size[idx_species])])/10
+    biom_threshold <- max_func(params, idx_species, threshold_var)
     yield_vec <- NULL
-    while (sum(params@initial_n[idx_species,which(params@w >= params@gear_params$knife_edge_size[idx_species])]) >= biom_threshold)
+    while (max_func(params,idx_species) >= biom_threshold)
     {
+        print("effort - MaxF")
+        print(iEffort)
         params@initial_effort["tmp"] <- iEffort
         sim <- projectToSteady(params, t_max = 100,
-                               return_sim = TRUE, progress_bar = FALSE,distance_func = distanceSSLogYield, tol = .01)
+                               return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
         y <- getYield(sim)
         ft <- idxFinalT(sim)
         if (ft < 66) { # if convergence use final yield
@@ -182,7 +227,9 @@ getMaxF <- function(params, idx_species, effort_it = 1)
         params <- setInitialValues(params, sim)
         iEffort <- iEffort + effort_it
     }
-    res <- data.frame("yield" = yield_vec, "effort" = seq(effort_init,length(yield_vec), by = effort_it))
+    res <- data.frame("yield" = yield_vec, "effort" = seq(effort_init,length(yield_vec)*effort_it, by = effort_it))
+    print("maxF df")
+    print(res)
     # last value of res$effort is max_F
     return(res)
 
@@ -205,7 +252,7 @@ getMaxF <- function(params, idx_species, effort_it = 1)
 #' @family distance functions
 #' @export
 
-distanceSSLogYield <- function(params, current, previous, criterion = "proportion")
+distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 {
     effort <- params@initial_effort
     time_range <- 0
@@ -290,20 +337,22 @@ distanceSSLogYield <- function(params, current, previous, criterion = "proportio
 #' This function replaces a loop used multiple times within
 #' `getYieldVsCurve`
 #'
-#' @param params Mizer params object
-#' @param effort_vec vector of effort values to calcualte the yield from
-#' @param idx_species targeted species row number in `params@species_params`
+#' @inheritParams getYieldVsF
 #'
 #' @return a vector of yield value of same length as `effort_vec`
 #'
-yieldCalculator <- function(params, effort_vec, idx_species)
+yieldCalculator <- function(params, effort_vec, idx_species,
+                            distance_func = distanceSSLogN,
+                            tol = 0.1)
 {
     yield_vec <- NULL
     for(iEffort in effort_vec)
     {
+        print("effort - filler F")
+        print(iEffort)
     params@initial_effort["tmp"] <- iEffort
     sim <- projectToSteady(params, t_max = 100,
-                           return_sim = TRUE, progress_bar = FALSE,distance_func = distanceSSLogYield, tol = .01)
+                           return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
     y <- getYield(sim)
     ft <- idxFinalT(sim)
     if (ft < 66) { # if convergence use final yield
@@ -317,4 +366,25 @@ yieldCalculator <- function(params, effort_vec, idx_species)
     }
 
     return(yield_vec)
+}
+
+#' Determines maximum the threshold where
+#' fisheries effort should stop
+#'
+#' @description
+#' This function creates a threshold signaling `getMaxF` when
+#' effort is considered at it's maximum. In this case it is
+#' when the fished biomass is less than 10% of the initial
+#' biomass exposed to fisheries.
+#'
+#'
+#' @inheritParams getYieldVsF
+#'
+#' @return a numeric value
+#'
+maxFthreshold <- function(params, idx_species, threshold_var)
+{
+    if(missing(threshold_var))
+    sum(params@initial_n[idx_species,which(params@w >= params@gear_params$knife_edge_size[idx_species])]) else
+        sum(params@initial_n[idx_species,which(params@w >= params@gear_params$knife_edge_size[idx_species])])/threshold_var
 }

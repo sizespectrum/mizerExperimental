@@ -4,14 +4,25 @@
 \alias{yieldCalculator}
 \title{Calculates yield from steady sim}
 \usage{
-yieldCalculator(params, effort_vec, idx_species)
+yieldCalculator(
+  params,
+  effort_vec,
+  idx_species,
+  distance_func = distanceSSLogN,
+  tol = 0.1
+)
 }
 \arguments{
-\item{params}{Mizer params object}
+\item{params}{An object of class \code{MizerParams}.}
 
-\item{effort_vec}{vector of effort values to calcualte the yield from}
+\item{distance_func}{A function that will be called after every \code{t_per} years
+with both the previous and the new state and that should return a number
+that in some sense measures the distance between the states. By default
+this uses the function \code{\link[=distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
+own distance function.}
 
-\item{idx_species}{targeted species row number in \code{params@species_params}}
+\item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
+RDI over t_per years is less than tol for every species.}
 }
 \value{
 a vector of yield value of same length as \code{effort_vec}

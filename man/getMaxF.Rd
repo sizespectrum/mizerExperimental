@@ -4,15 +4,38 @@
 \alias{getMaxF}
 \title{Maximum viable fisheries effort for species}
 \usage{
-getMaxF(params, idx_species, effort_it = 1)
+getMaxF(
+  params,
+  idx_species,
+  effort_it = 1,
+  distance_func = distanceSSLogN,
+  tol = 0.1,
+  max_func = maxFthreshold,
+  threshold_var = 10
+)
 }
 \arguments{
-\item{params}{MizerParams}
-
-\item{idx_species}{species row number in \code{params@species_params}}
+\item{params}{An object of class \code{MizerParams}.}
 
 \item{effort_it}{The width of steps used to find maximum fisheries mortality,
 higher values means a faster calculation but less accurate maximum.}
+
+\item{distance_func}{A function that will be called after every \code{t_per} years
+with both the previous and the new state and that should return a number
+that in some sense measures the distance between the states. By default
+this uses the function \code{\link[=distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
+own distance function.}
+
+\item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
+RDI over t_per years is less than tol for every species.}
+
+\item{max_func}{A function used in \code{getMaxF} to determines the threshold to use
+when stopping the fisheries effort.}
+
+\item{threshold_var}{A numeric value used in max_func to calculate the threshold
+from the \code{params} object. If supplied the function returns the value of the
+threshold using \code{threshold_var}. If not supplied the function returns the
+unchanged value, which can be compared against the version which uses \code{threshold_var}.}
 }
 \value{
 dataframe
