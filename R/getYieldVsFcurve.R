@@ -182,9 +182,6 @@ plotYieldVsF <- function(params,
 
     ggplot(curve, aes(x = effort, y = yield)) +
         geom_line() +
-        geom_point() +
-        scale_x_continuous(breaks = seq(0,13,by=.5)) +
-        # scale_y_continuous(trans = "log10") +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
         ggtitle(species)
@@ -228,7 +225,7 @@ getMaxF <- function(params, idx_species, effort_it = 1,
         params <- setInitialValues(params, sim)
         iEffort <- iEffort + effort_it
     }
-    res <- data.frame("yield" = yield_vec, "effort" = seq(effort_init,length(yield_vec)*effort_it, by = effort_it))
+    res <- data.frame("yield" = yield_vec, "effort" = seq(effort_init,length.out = length(yield_vec), by = effort_it))
     # last value of res$effort is max_F
     return(res)
 
