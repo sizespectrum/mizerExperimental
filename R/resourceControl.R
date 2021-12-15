@@ -14,7 +14,11 @@ resourceControl <- function(input, output, session, params, flags, ...) {
                          w_pp_cutoff = input$w_pp_cutoff,
                          n = input$n_resource)
         mu <- getResourceMort(p)
-        p@initial_n_pp <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
+        if (p@resource_dynamics == "resource_semichemostat") {
+            p@initial_n_pp <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
+        } else if (p@resource_dynamics == "resource_constant") {
+            p@initial_n_pp <- resource_capacity(p)
+        }
         params(p)
     })
 }
