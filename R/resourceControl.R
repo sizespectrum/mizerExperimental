@@ -20,8 +20,10 @@ resourceControl <- function(input, output, session, params, flags, ...) {
             mizerMR::resource_params(p)$n[sel_re]      <- input$n_resource
             mizerMR::resource_params(p)$w_min[sel_re]  <- input$w_min_resource
             mu <- getResourceMort(p)
-            mizerMR::initialNResource(p) <- mizerMR::resource_rate(p) *
+            init_value <- mizerMR::resource_rate(p) *
                 mizerMR::resource_capacity(p) / (mizerMR::resource_rate(p) + mu)
+            init_value[is.nan(init_value)] <- 0
+            mizerMR::initialNResource(p) <- init_value
         } else {
             p <- setResource(p,
                              kappa = input$kappa,
