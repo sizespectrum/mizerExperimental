@@ -3,6 +3,8 @@
 export(adjustBackgroundSpecies)
 export(calibrateNumber)
 export(calibrateYield)
+export(distanceSSLogYield)
+export(getMaxF)
 export(getYieldVsF)
 export(markBackground)
 export(matchNumbers)
