@@ -70,6 +70,7 @@ Collate:
     getYieldVsFcurve.R
     validSim.R
     plots.R
+    getMeanLength.R
 Encoding: UTF-8
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
