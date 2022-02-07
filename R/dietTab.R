@@ -2,13 +2,15 @@
 #'
 #' @inheritParams biomassTab
 dietTab <- function(input, output, session, params, logs, ...) {
-    
+
     # Plot diet ----
     output$plot_diet <- renderPlotly({
         req(input$sp)
-        plotDiet(params(), input$sp)
+        plot <- mizerMR::plotDiet(params(), species = input$sp) +
+            theme(text = element_text(size = 12))
+        ggplotly(plot, tooltip = c("size", "Proportion", "Prey"))
     })
-    
+
     # Plot prey ----
     output$plot_prey <- renderPlotly({
         p <- params()
@@ -43,7 +45,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
             geom_point(aes(x = wp, y = 0), size = 4, colour = "blue") +
             scale_x_log10()
     })
-    
+
     # Prey size slider ----
     output$pred_size_slider <- renderUI({
         p <- isolate(params())

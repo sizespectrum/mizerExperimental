@@ -266,6 +266,7 @@ tuneParams <- function(params,
                 tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
                        title = "Select next species. Keyboard shortcut: n"))
             })
+
         # Sliders for the species parameters
         output$sp_params <- renderUI({
             # The parameter sliders get updated whenever the species selector
