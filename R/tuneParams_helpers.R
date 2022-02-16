@@ -86,21 +86,21 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             # This is for the "Steady" tab where we want to show the
             # evolution of biomass over time during the run to steady
             # to diagnose eventual problems.
-            return(steady(p, t_max = 100, tol = 1e-2,
+            return(mizer::steady(p, t_max = 100, tol = 1e-2,
                           return_sim = TRUE,
                           progress_bar = progress))
         }
-        p <- steady(p, t_max = 100, tol = 1e-2,
+        p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                     progress_bar = progress)
         if (match == "biomass") {
             p <- calibrateBiomass(p)
             p <- matchBiomasses(p)
-            p <- steady(p, t_max = 100, tol = 1e-2,
+            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         } else if (match == "yield") {
             p <- calibrateYield(p)
             p <- matchYields(p)
-            p <- steady(p, t_max = 100, tol = 1e-2,
+            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         }
         
