@@ -9,6 +9,7 @@ getYieldVsF(
   species,
   F_range,
   no_steps = 10,
+  F_max,
   effort_it = 1,
   distance_func = distanceSSLogN,
   tol = 0.1,
@@ -26,6 +27,8 @@ yield. If missing, it is set to
 \code{seq(from = 0, to = F_max, length.out = no_steps)}.}
 
 \item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
+
+\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 
 \item{effort_it}{The width of steps used to find maximum fisheries mortality,
 higher values means a faster calculation but less accurate maximum.}
@@ -46,8 +49,6 @@ when stopping the fisheries effort.}
 from the \code{params} object. If supplied the function returns the value of the
 threshold using \code{threshold_var}. If not supplied the function returns the
 unchanged value, which can be compared against the version which uses \code{threshold_var}.}
-
-\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 }
 \value{
 A data frame with columns \code{F} and \code{yield}.

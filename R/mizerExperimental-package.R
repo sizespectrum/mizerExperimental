@@ -16,6 +16,7 @@
 #' @import mizer methods dplyr ggplot2 assertthat shiny rintrojs
 #' @importFrom stats runif
 #' @importFrom utils globalVariables
+#' @importFrom rmarkdown render
 #' @rawNamespace import(plotly, except = last_plot)
 #' @md
 #' @keywords internal

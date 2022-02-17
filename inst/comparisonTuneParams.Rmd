@@ -1,0 +1,68 @@
+---
+title: Comparison of tuned_params objects
+params: 
+  folder: "savedData"
+---
+
+### Reading the output
+
+The output can be divided in prints:
+
+ - "Files compared" shows the name of the `@params` objects compared within the targeted folder.
+ Objects are compared 2 by 2 following the order of their name.
+ 
+ - "Summary of differences" shows the output of `mizer::compareParams()` which compares all the slots of the mizerParams object and output the ones that differs between the two objects and what is the absolute difference between them
+ Use this ouput to determine which parameters have changed
+ 
+ - "Detailed species" is an in depth comparison of `@species_params` between the two objects.
+ In particular, the table "Summary of overall comparison" shows at its line "Number of variables compared with some values unequal" how many parameters are different between the two objects. Further down, the table "Differences detected by variable" shows how many values differ per variables, followed by the table "Differences detected" which plot side by side the differences. In this description, `x` refers to the previous state and `y` to the current state.
+ 
+ - "Detailed" resource and "Detailed other resources" do the same as "Detailed species" but for the resource background and any other resources, respectively.
+ 
+These detailed sections will be displayed only if there is at least one difference to describe.
+
+### Figure legend:
+- Current state is plotted as solid lines
+- Previous state is plotted as dashed transparent lines
+
+
+```{r, echo = F, message=FALSE}
+
+library(mizerExperimental)
+
+```
+
+
+
+```{r}
+paramsCompar(folder = params$folder)
+
+```
+
+
+```{r, eval = FALSE, echo = F}
+
+janitor::compare_df_cols(params1@species_params, params2@species_params)
+
+  sp_eq <- all.equal(params1@species_params,
+                       params2@species_params, scale = 1)
+
+  setdiff(params1@species_params[,1:30],params2@species_params[,1:30])
+  
+  
+  arsenal::comparedf(params1@species_params,params2@species_params)
+  summary(arsenal::comparedf(params1@species_params,params2@species_params))
+  
+```
+
+<!-- Trying Gustav function -->
+
+
+```{r, eval = FALSE, echo = F}
+
+params1 <- readRDS(gzcon(unz("savedData/tuned_params (1).zip","tuned_params.RDS")))
+params2 <- readRDS(gzcon(unz("savedData/tuned_params (7).zip","tuned_params.RDS")))
+
+compareParams(params1,params2)
+```
+

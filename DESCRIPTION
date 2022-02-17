@@ -27,10 +27,10 @@ Imports:
     shinyjs,
     tibble,
     tidyr,
+    rmarkdown,
     lifecycle
 Suggests:
     pkgdown,
-    rmarkdown,
     roxygen2,
     testthat (>= 2.1.0),
     vdiffr
@@ -70,6 +70,7 @@ Collate:
     getYieldVsFcurve.R
     validSim.R
     plots.R
+    paramsCompar.R
 Encoding: UTF-8
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
