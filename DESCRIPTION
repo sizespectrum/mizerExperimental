@@ -9,6 +9,7 @@ Description: This mizer extension package collects contributions from the mizer
     the community. Once matured, frequently-used features can be moved to the
     core mizer package.
 License: GPL-3
+LazyData: true
 Depends:
     R (>= 3.1),
     mizer (>= 2.3.0)
@@ -28,7 +29,8 @@ Imports:
     tibble,
     tidyr,
     rmarkdown,
-    lifecycle
+    lifecycle,
+    arsenal
 Suggests:
     pkgdown,
     roxygen2,
@@ -72,6 +74,7 @@ Collate:
     plots.R
     paramsCompar.R
     data.R
+    homeTab.R
 Encoding: UTF-8
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)

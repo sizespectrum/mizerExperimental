@@ -17,6 +17,7 @@
 #' @importFrom stats runif
 #' @importFrom utils globalVariables
 #' @importFrom rmarkdown render
+#' @importFrom arsenal comparedf
 #' @rawNamespace import(plotly, except = last_plot)
 #' @md
 #' @keywords internal
