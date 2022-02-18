@@ -71,11 +71,11 @@ if(dim(data.table::rbindlist(re_sum_values))[1]) print(summary(arsenal::compared
 
 
 print("detailed other resources")
-ot_sum <- arsenal::comparedf(as.data.frame(object1@other_params),as.data.frame(object2@other_params))
+ot_sum <- arsenal::comparedf(object1@other_params$other$MR$resource_params,object2@other_params$other$MR$resource_params)
 ot_sum_values <- ot_sum$vars.summary$values # where the differences are read
 ot_sum_values[[length(ot_sum_values)]] <- NULL # last slot is a character
 
-if(dim(data.table::rbindlist(ot_sum_values))[1]) print(summary(arsenal::comparedf(as.data.frame(object1@other_params),as.data.frame(object2@other_params)))) else print("no differences in other resources parameters")
+if(dim(data.table::rbindlist(ot_sum_values))[1]) print(summary(arsenal::comparedf(object1@other_params$other$MR$resource_params,object2@other_params$other$MR$resource_params))) else print("no differences in other resources parameters")
 # print(arsenal::comparedf(as.data.frame(object1@other_params),as.data.frame(object2@other_params)))
 # print(summary(arsenal::comparedf(as.data.frame(object1@other_params),as.data.frame(object2@other_params))))
 
