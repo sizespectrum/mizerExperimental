@@ -8,7 +8,7 @@ tuneParams(
   params,
   controls = c("abundance", "predation", "fishing", "reproduction", "other",
     "interaction", "resource"),
-  tabs = c("Spectra", "Abundance", "Growth", "Repro", "Catch", "Diet", "Death",
+  tabs = c("Home", "Spectra", "Abundance", "Growth", "Repro", "Catch", "Diet", "Death",
     "Resource", "Rates", "Sim"),
   match = c("none", "number", "biomass", "yield"),
   preserve = c("erepro", "reproduction_level", "R_max"),

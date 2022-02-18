@@ -86,13 +86,14 @@
 #' @export
 tuneParams <- function(params,
                        controls = c("abundance",
-                                   "predation",
-                                   "fishing",
-                                   "reproduction",
-                                   "other",
-                                   "interaction",
-                                   "resource"),
-                       tabs = c("Spectra",
+                                    "predation",
+                                    "fishing",
+                                    "reproduction",
+                                    "other",
+                                    "interaction",
+                                    "resource"),
+                       tabs = c("Home",
+                                "Spectra",
                                 "Abundance",
                                 "Growth",
                                 "Repro",
@@ -125,8 +126,8 @@ tuneParams <- function(params,
     if (missing(params)) {
         # Try to recover old log files ----
         logs$files <- sort(list.files(path = tempdir(),
-                                pattern = "mizer_params_...._.._.._at_.._.._..\\.rds",
-                                full.names = TRUE))
+                                      pattern = "mizer_params_...._.._.._at_.._.._..\\.rds",
+                                      full.names = TRUE))
         logs$idx <- length(logs$files)
         if (logs$idx == 0) {
             stop("You need to specify a MizerParams object. ",
@@ -182,7 +183,7 @@ tuneParams <- function(params,
                     tipify(downloadButton("params", ""),
                            title = "Download the current params object"),
                     tipify(actionButton("done", "Return", icon = icon("check"),
-                                 onclick = "setTimeout(function(){window.close();},500);"),
+                                        onclick = "setTimeout(function(){window.close();},500);"),
                            title = "Return the current params objects to R"),
                     data.step = 8,
                     data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
@@ -265,7 +266,7 @@ tuneParams <- function(params,
                        title = "Select previous species. Keyboard shortcut: p"),
                 tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
                        title = "Select next species. Keyboard shortcut: n"))
-            })
+        })
 
         # Sliders for the species parameters
         output$sp_params <- renderUI({
@@ -412,7 +413,7 @@ tuneParams <- function(params,
             filename = "tuned_params.rds",
             content = function(file) {
                 saveRDS(finalise_params(params()), file = file)
-        })
+            })
 
         ## Return ####
         # When the user hits the "Return" button we want to clear the logs and
