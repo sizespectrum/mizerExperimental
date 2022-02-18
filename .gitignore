@@ -4,3 +4,4 @@
 .Ruserdata
 *.Rproj
 romainZone.Rmd
+inst/comparisonTuneParams.html
