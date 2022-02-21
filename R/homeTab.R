@@ -37,21 +37,21 @@ homeTabUI <- function(params, help = TRUE, ...) {
 
         h2("Tuning and exploring size spectrum models with multiple background resources"),
 
-        p('This application allows you to explore a wide range of outputs of multi-species size spectrum
-          models developed using a publicly available R package',
-          a('mizer.', href = 'http://sizespectrum.org/mizer/'),em('mizer'),
-          'modelling framework has been used to investigate a range of aquatic size-structured ecosystems.
-          Its assumptions, equations, user guides, examples and references are described in detail on ',
-          a('http://sizespectrum.org/mizer/.', href = 'http://sizespectrum.org/mizer/')),
-
-        p('Here, the shiny R, application has been adapted for inland and coastal ecosystems by introducing multiple
-          size structured background resources. This enables modelling of independent, size structured energy pathways,
-          such as pelagic, benthic, macroalgal and others. By specifying different fish diet preferences for alternative
-          resources and different resource size distributions, emergent fish diets more accurately resemble empirically
-          observed ontogenetic dietary transitions. The multiple resource extension is implemented in a free', em('mizer'),
-          'add-on', a('mizerMR', href = 'https://github.com/sizespectrum/mizerMR'),
-          'and is important for modelling ecosystems, where
-          independent pelagic and benthic energy pathways play a significant role.'),
+        # p('This application allows you to explore a wide range of outputs of multi-species size spectrum
+        #   models developed using a publicly available R package',
+        #   a('mizer.', href = 'http://sizespectrum.org/mizer/'),em('mizer'),
+        #   'modelling framework has been used to investigate a range of aquatic size-structured ecosystems.
+        #   Its assumptions, equations, user guides, examples and references are described in detail on ',
+        #   a('http://sizespectrum.org/mizer/.', href = 'http://sizespectrum.org/mizer/')),
+        #
+        # p('Here, the shiny R, application has been adapted for inland and coastal ecosystems by introducing multiple
+        #   size structured background resources. This enables modelling of independent, size structured energy pathways,
+        #   such as pelagic, benthic, macroalgal and others. By specifying different fish diet preferences for alternative
+        #   resources and different resource size distributions, emergent fish diets more accurately resemble empirically
+        #   observed ontogenetic dietary transitions. The multiple resource extension is implemented in a free', em('mizer'),
+        #   'add-on', a('mizerMR', href = 'https://github.com/sizespectrum/mizerMR'),
+        #   'and is important for modelling ecosystems, where
+        #   independent pelagic and benthic energy pathways play a significant role.'),
 
         p("This application can be used to investigate outputs of already existing models and to develop new models.
           You can explore species and resource size spectra, diets, biomasses and yields, sources of mortality across

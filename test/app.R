@@ -1,3 +1,8 @@
+# devtools::install_github("sizespectrum/mizerExperimental@tuneMR")
+# devtools::install_github("sizespectrum/mizerMR")
+# devtools::install_github("sizespectrum/mizerStarvation")
+# devtools::install_github("sizespectrum/mizer")
+
 library(mizerExperimental)
 library(mizerMR)
 library(mizerStarvation)
