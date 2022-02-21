@@ -11,6 +11,7 @@
 #'   In case prey items of the same weight have been aggregated in the data
 #'   frame then there should be a column \code{Nprey} saying how many prey
 #'   items have been aggregated in each row.
+#' @export
 stomachTab <- function(input, output, session, params, logs, stomach, ...) {
     if (!is.null(stomach)) {
         assert_that(
@@ -59,6 +60,7 @@ stomachTab <- function(input, output, session, params, logs, stomach, ...) {
     })
 }
 
+#' @export
 stomachTabUI <- function() {
     tagList(
         plotlyOutput("plot_steady")

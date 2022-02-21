@@ -6,6 +6,7 @@
 #' @param params_old Reactive value holding non-updated MizerParams object
 #' @param flags Environment holding flags to skip certain observers
 #' @param ... Unused
+#' @export
 abundanceControl <- function(input, output, session, params, params_old,
                              flags, ...) {
     observe({
@@ -32,6 +33,7 @@ abundanceControl <- function(input, output, session, params, params_old,
 #' @param p The MizerParams object currently being tuned.
 #' @param input Reactive holding the inputs
 #' @return A tagList with a slider for the egg density
+#' @export
 abundanceControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     n0 <- p@initial_n[sp$species, p@w_min_idx[sp$species]]

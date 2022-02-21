@@ -1,6 +1,7 @@
 #' Serve tab with plot of reproductive success rates
 #'
 #' @inheritParams biomassTab
+#' @export
 reproTab <- function(input, output, session, params, logs, ...) {
     # Help button ----
     help_steps <- data.frame(
@@ -29,7 +30,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
             theme(text = element_text(size = 12)) +
             theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     })
-    
+
     # Plot psi ----
     output$plot_psi <- renderPlotly({
         p <- params()
@@ -57,6 +58,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
 }
 
 #' @rdname reproTab
+#' @export
 reproTabUI <- function(...) {
     tagList(
         actionButton("repro_help", "Press for instructions"),

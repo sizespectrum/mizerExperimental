@@ -1,5 +1,6 @@
 #' Controlling the predation parameters in the tuning gadget
 #' @inheritParams abundanceControl
+#' @export
 predationControl <- function(input, output, session, params, params_old,
                              flags, ...) {
     ## Adjust predation kernel ####
@@ -90,6 +91,7 @@ predationControl <- function(input, output, session, params, params_old,
 
 #' @rdname predationControl
 #' @inheritParams abundanceControlUI
+#' @export
 predationControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     tagList(

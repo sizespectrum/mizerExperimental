@@ -1,6 +1,7 @@
 #' Serve tab with diet plot
 #'
 #' @inheritParams biomassTab
+#' @export
 dietTab <- function(input, output, session, params, logs, ...) {
 
     # Plot diet ----
@@ -61,6 +62,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
 }
 
 #' @rdname dietTab
+#' @export
 dietTabUI <- function(...) {
     tagList(
         plotlyOutput("plot_diet"),

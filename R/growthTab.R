@@ -1,5 +1,6 @@
 #' Growth tab for tuning gadget
 #' inheritParams biomassTab
+#' @export
 growthTab <- function(input, output, session, params, logs, ...) {
     # Help button ----
     help_steps <- data.frame(
@@ -12,7 +13,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
             steps = help_steps)
         )
     )
-    
+
     # Click ----
     # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$growth_click, {
@@ -39,7 +40,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
                                selected = "All")
         }
     })
-    
+
     # von Bertalanffy parameters ----
     output$k_vb_sel <- renderUI({
         req(input$sp)
@@ -61,7 +62,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
             )
         }
     })
-    
+
     ## Adjust von Bertalanffy ####
     observeEvent(
         list(input$k_vb, input$t0, input$a, input$b),
@@ -74,7 +75,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
             params(p)
         },
         ignoreInit = TRUE)
-    
+
     # Plot growth curves ----
     output$plotGrowthCurve <- renderPlot({
         p <- params()
@@ -86,7 +87,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
                 theme(text = element_text(size = 16))
         }
     })
-    
+
     # Plot feeding level ----
     output$plot_feeding_level <- renderPlotly({
         if (input$all_growth == "All") {
@@ -104,6 +105,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
 
 #' @rdname growthTab
 #' @inheritParams biomassTabUI
+#' @export
 growthTabUI <- function(...) {
     tagList(
         popify(div(radioButtons("all_growth", "Show:",

@@ -1,5 +1,7 @@
 #' Controlling the interaction matrix in the tuning gadget
 #' @inheritParams abundanceControl
+#'
+#' @export
 interactionControl <- function(input, output, session, params,
                                params_old, flags, ...) {
     observe({
@@ -28,6 +30,7 @@ interactionControl <- function(input, output, session, params,
 
 #' @rdname interactionControl
 #' @inheritParams abundanceControlUI
+#' @export
 interactionControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     l1 <- list(

@@ -1,3 +1,4 @@
+#'@export
 prepare_params <- function(p) {
     p@species_params$species <- as.character(p@species_params$species)
     rownames(p@species_params) <- p@species_params$species
@@ -10,6 +11,7 @@ prepare_params <- function(p) {
 
 # This is called when a params object is downloaded or when the done button
 # is pressed
+#'@export
 finalise_params <- function(p) {
     if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
         p <- setBevertonHolt(p, reproduction_level =
@@ -27,7 +29,7 @@ finalise_params <- function(p) {
     p
 }
 
-
+#'@export
 tuneParams_update_species <- function(sp, p, params, params_old) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
@@ -73,6 +75,7 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
+#'@export
 tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                                   match, return_sim = FALSE) {
 
@@ -103,7 +106,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             p <- steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         }
-        
+
         # Update the egg slider
         sp_idx <- which.max(p@species_params$species == isolate(input$sp))
         n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
@@ -111,7 +114,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        
+
         # Update the reactive params objects
         params(p)
         params_old(p)
@@ -120,7 +123,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
     error = error_fun)
 }
 
-
+#'@export
 tuneParams_add_to_logs <- function(logs, p) {
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
@@ -139,6 +142,7 @@ tuneParams_add_to_logs <- function(logs, p) {
     }
 }
 
+#'@export
 error_fun <- function(e) {
     showModal(modalDialog(
         title = "Invalid parameters",

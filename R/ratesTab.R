@@ -1,13 +1,14 @@
 #' Serve tab with rates plots
 #'
 #' @inheritParams biomassTab
+#' @export
 ratesTab <- function(input, output, session, params, logs, ...) {
     # Plot growth rates ----
     output$plotGrowth <- renderPlotly({
         req(input$sp)
         sp <- input$sp
         p <- params()
-        
+
         max_w <- p@species_params[sp, "w_inf"]
         if (input$axis == "Logarithmic") {
             min_w <- p@species_params[sp, "w_min"]
@@ -50,13 +51,13 @@ ratesTab <- function(input, output, session, params, logs, ...) {
         }
         pl
     })
-    
+
     # Plot death rates ----
     output$plotDeath <- renderPlotly({
         req(input$sp)
         sp <- input$sp
         p <- params()
-        
+
         max_w <- p@species_params[sp, "w_inf"]
         if (input$axis == "Logarithmic") {
             min_w <- p@species_params[sp, "w_min"]
@@ -100,6 +101,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
 }
 
 #' @rdname ratesTab
+#' @export
 ratesTabUI <- function(...) {
     tagList(
         radioButtons("axis", "x-axis scale:",

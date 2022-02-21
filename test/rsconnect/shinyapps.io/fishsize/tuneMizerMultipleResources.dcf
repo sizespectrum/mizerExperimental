@@ -1,0 +1,14 @@
+name: tuneMizerMultipleResources
+title: tuneMizerMultipleResources
+username:
+account: fishsize
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5697709
+bundleId: 5600562
+url: https://fishsize.shinyapps.io/tuneMizerMultipleResources/
+when: 1645417854.42239
+lastSyncTime: 1645417854.4224
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: tuneMR.R

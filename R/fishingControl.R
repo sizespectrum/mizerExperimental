@@ -1,5 +1,6 @@
 #' Controlling the fishing parameters in the tuning gadget
 #' @inheritParams abundanceControl
+#' @export
 fishingControl <- function(input, output, session, params, params_old, flags, ...) {
     observeEvent(
         list(input$catchability,
@@ -64,6 +65,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
 
 #' @rdname fishingControl
 #' @inheritParams abundanceControlUI
+#' @export
 fishingControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     # If there are several gears, we only use the effort for the first.

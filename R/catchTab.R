@@ -10,6 +10,7 @@
 #'   size bins in grams. The data frame also needs to have the columns
 #'   \code{species} (the name of the species), \code{catch} (the number of
 #'   individuals of a particular species caught in a size bin).
+#' @export
 catchTab <- function(input, output, session, params, logs, trigger_update,
                      catch = NULL, ...) {
 
@@ -60,7 +61,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         plotlyYieldVsSize(params(), species = req(input$sp),
                           catch = catch, x_var = input$catch_x)
     })
-    
+
     # Select clicked species ----
     # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$yield_click, {
@@ -72,7 +73,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
                               selected = sp)
         }
     })
-    
+
     # Total yield by species ----
     output$plotTotalYield <- renderPlot({
         plotYieldVsSpecies(params()) +
@@ -105,7 +106,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
                          getFMort(p)[sp, ])
         paste("Model yield:", total, "g/year")
     })
-    
+
     # Calibrate all yields ----
     observeEvent(input$calibrate_yield, {
         # Rescale so that the model matches the total observed yield
@@ -115,7 +116,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
-    
+
     # Match yield of double-clicked species ----
     observeEvent(input$match_species_yield, {
         if (is.null(input$match_species_yield$x)) return()
@@ -123,15 +124,15 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         sp <- lvls[round(input$match_species_yield$x)]
         p <- params()
         sp_idx <- which(p@species_params$species == sp)
-        
+
         # Temporarily set observed yield to the clicked yield, then
         # match that yield, then restore observed yield
         obs <- p@species_params$yield_observed[[sp_idx]]
-        p@species_params$yield_observed[[sp_idx]] <- 
+        p@species_params$yield_observed[[sp_idx]] <-
             input$match_species_yield$y
         p <- matchYields(p, species = sp)
         p@species_params$yield_observed[[sp_idx]] <- obs
-        
+
         params(p)
         if (sp == input$sp) {
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
@@ -143,7 +144,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
             updateSelectInput(session, "sp", selected = sp)
         }
     })
-    
+
     # Match all yields ----
     observeEvent(input$match_yields, {
         p <- matchYields(params())
@@ -158,6 +159,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
 }
 
 #' @rdname catchTab
+#' @export
 catchTabUI <- function(...) {
     tagList(
         # actionButton("tune_catch", "Tune catchability"),

@@ -1,8 +1,9 @@
 #' Abundance tab for tuning gadget
-#' 
-#' The Abundance tab combines the [biomassTab()] and the [numberTab()] 
+#'
+#' The Abundance tab combines the [biomassTab()] and the [numberTab()]
 #' on a single tab.
 #' @inheritParams spectraTab
+#' @export
 abundanceTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
     biomassTab(input, output, session,
@@ -12,6 +13,7 @@ abundanceTab <- function(input, output, session,
 }
 
 #' @rdname abundanceTab
+#' @export
 abundanceTabUI <- function(params, ...) {
     tagList(h1("Biomasses"),
             biomassTabUI(params, ...),

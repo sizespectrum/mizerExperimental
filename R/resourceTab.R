@@ -1,6 +1,7 @@
 #' Serve tab with resource plots
 #'
 #' @inheritParams biomassTab
+#' @export
 resourceTab <- function(input, output, session, params, logs, ...) {
 
     # Plot resource ----
@@ -24,6 +25,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
 }
 
 #' @rdname resourceTab
+#' @export
 resourceTabUI <- function(...) {
     tagList(
         plotlyOutput("plot_resource_pred"),

@@ -1,5 +1,6 @@
 #' Controlling the resource parameters in the tuning gadget
 #' @inheritParams abundanceControl
+#' @export
 resourceControl <- function(input, output, session, params, flags, ...) {
 
     observe({
@@ -43,6 +44,7 @@ resourceControl <- function(input, output, session, params, flags, ...) {
 
 #' @rdname resourceControl
 #' @inheritParams abundanceControlUI
+#' @export
 resourceControlUI <- function(p, input) {
 
     if(!is.null(getComponent(p, "MR"))) # is there one or more resources?

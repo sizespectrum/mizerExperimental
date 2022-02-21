@@ -1,5 +1,6 @@
 #' Controlling the species parameters not included in other controls
 #' @inheritParams abundanceControl
+#' @export
 otherControl <- function(input, output, session, params, params_old,
                          flags, ...) {
     observe({
@@ -53,6 +54,7 @@ otherControl <- function(input, output, session, params, params_old,
 
 #' @rdname otherControl
 #' @inheritParams abundanceControlUI
+#' @export
 otherControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     tagList(

@@ -1,6 +1,7 @@
 #' A single slider that adjusts both `h` and `gamma`
 #'
 #' @inheritParams abundanceControl
+#' @export
 growthControl <- function(input, output, session, params, params_old, flags,
                                     ...) {
     observeEvent(input$gamma, {
@@ -32,6 +33,7 @@ growthControl <- function(input, output, session, params, params_old, flags,
 
 #' @rdname growthControl
 #' @inheritParams abundanceControlUI
+#' @export
 growthControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     tagList(

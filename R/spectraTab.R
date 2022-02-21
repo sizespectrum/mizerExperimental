@@ -14,6 +14,7 @@
 #' @param trigger_update Reactive value used for triggering update of
 #'   species parameter sliders.
 #' @param ... Unused
+#' @export
 spectraTab <- function(input, output, session,
                        params, logs, trigger_update, ...) {
 
@@ -70,6 +71,7 @@ spectraTab <- function(input, output, session,
 #'
 #' @param help Boolean. If FALSE then the help text is not included on the tab.
 #'   This is useful when including this tab as an element of another tab.
+#' @export
 spectraTabUI <- function(params, help = TRUE, ...) {
     p <- isolate(params())
 
