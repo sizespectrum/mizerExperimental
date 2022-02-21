@@ -29,5 +29,6 @@ species parameter sliders.}
 This is useful when including this tab as an element of another tab.}
 }
 \description{
-This tab shows:
+This tab contains a brief introduction to the app
+and the sponsors
 }
