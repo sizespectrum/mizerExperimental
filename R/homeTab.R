@@ -14,14 +14,14 @@ homeTab <- function(input, output, session,
                     params, logs, trigger_update, ...) {
 
     output$mizer <- renderImage({
-        list(src = normalizePath(file.path('./inst/logos/mizerHome.png')))
+        list(src = system.file("logos", "mizerHome.png",
+                               package = "mizerExperimental"))
     }, deleteFile = FALSE)
 
     output$banner <- renderImage({
-        list(src = normalizePath(file.path('./inst/logos/tuneParamsHome.png')))
+        list(src = system.file("logos", "tuneParamsHome.png",
+                               package = "mizerExperimental"))
     }, deleteFile = FALSE)
-
-
 }
 
 #' @rdname homeTab
