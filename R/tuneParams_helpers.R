@@ -57,7 +57,7 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         if (any(is.infinite(p@initial_n))) {
             stop("Candidate steady state holds infinities")
         }
-        if (any(is.na(p@initial_n) || is.nan(p@initial_n))) {
+        if (any(is.na(p@initial_n) | is.nan(p@initial_n))) {
             stop("Candidate steady state holds non-numeric values")
         }
 
@@ -103,7 +103,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         }
-        
+
         # Update the egg slider
         sp_idx <- which.max(p@species_params$species == isolate(input$sp))
         n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
@@ -111,7 +111,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        
+
         # Update the reactive params objects
         params(p)
         params_old(p)
