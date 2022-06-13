@@ -15,7 +15,7 @@ template:
       site: "@mizer_model"
       card: summary
 
-toc: 
+toc:
   depth: 3
 
 navbar:
@@ -65,4 +65,9 @@ reference:
 - title: Others
 - contents:
   - validSim
+  - distanceSSLogYield
+  - getMaxF
+  - maxFthreshold
+  - yieldCalculator
+
 
