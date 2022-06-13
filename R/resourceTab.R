@@ -5,17 +5,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
     
     # Plot resource ----
     output$plot_resource <- renderPlot({
-        p <- params()
-        select <- (p@cc_pp > 0)
-        plot_dat <- data.frame(
-            Size = p@w_full[select],
-            value = p@initial_n_pp[select] / p@cc_pp[select]
-        )
-        ggplot(plot_dat) +
-            geom_line(aes(Size, value)) +
-            scale_x_log10("Resource size [g]") +
-            ylab("Proportion of carrying capacity") +
-            theme(text = element_text(size = 12))
+        plotResourceLevel(params()) + theme(text = element_text(size = 16))
     })
     
     # Plot resource predators ----

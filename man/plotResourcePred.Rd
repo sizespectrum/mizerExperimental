@@ -46,7 +46,7 @@ str(fr)
 Other plotting functions: 
 \code{\link{plotDeath}()},
 \code{\link{plotEnergyBudget}()},
-\code{\link{plotResource}()},
+\code{\link{plotResourceLevel}()},
 \code{\link{plotYieldVsF}()},
 \code{\link{plotYieldVsSize}()}
 }
