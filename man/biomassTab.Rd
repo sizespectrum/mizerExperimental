@@ -29,7 +29,7 @@ species parameter sliders.}
 The Biomass tab shows:
 \itemize{
 \item A plot of total biomass for each species, compared to
-observed biomasses when available, using \code{\link[=plotBiomassObservedVsModel]{plotBiomassObservedVsModel()}}.
+observed biomasses when available, using \code{\link[=plotBiomassVsSpecies]{plotBiomassVsSpecies()}}.
 \item Buttons "Calibrate" and "Match" that trigger a call to
 \code{\link[=calibrateBiomass]{calibrateBiomass()}} or \code{\link[=matchBiomasses]{matchBiomasses()}} respectively.
 }

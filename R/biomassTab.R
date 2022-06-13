@@ -1,11 +1,11 @@
 #' Biomass tab for tuning gadget
-#' 
+#'
 #' The Biomass tab shows:
 #' * A plot of total biomass for each species, compared to
-#' observed biomasses when available, using [plotBiomassObservedVsModel()].
-#' * Buttons "Calibrate" and "Match" that trigger a call to 
+#' observed biomasses when available, using [plotBiomassVsSpecies()].
+#' * Buttons "Calibrate" and "Match" that trigger a call to
 #' [calibrateBiomass()] or [matchBiomasses()] respectively.
-#' 
+#'
 #' Clicking on a species in the biomass plot makes that species the selected
 #' species. Double-clicking on a species selects that species __and__
 #' changes its biomass.
@@ -23,14 +23,14 @@ biomassTab <- function(input, output, session,
                               selected = sp)
         }
     })
-    
+
     # Plot total biomass ----
     output$plotTotalBiomass <- renderPlot({
         plotBiomassVsSpecies(params()) +
             theme(text = element_text(size = 18))
     })
-    
-    
+
+
     # Biomass inputs ----
     output$biomass_sel <- renderUI({
         sp <- input$sp
@@ -54,7 +54,7 @@ biomassTab <- function(input, output, session,
                              value = species_params$biomass_cutoff))
         )
     })
-    
+
     # Process biomass inputs ----
     observe({
         p <- isolate(params())
@@ -66,7 +66,7 @@ biomassTab <- function(input, output, session,
             req(input$biomass_cutoff)
         params(p)
     })
-    
+
     # Calibrate all biomasses ----
     observeEvent(input$calibrate_biomass, {
         # Rescale so that the model matches the total observed biomass
@@ -76,7 +76,7 @@ biomassTab <- function(input, output, session,
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
-    
+
     # Match biomass of double-clicked species ----
     observeEvent(input$match_species_biomass, {
         if (is.null(input$match_species_biomass$x)) return()
@@ -84,15 +84,15 @@ biomassTab <- function(input, output, session,
         sp <- lvls[round(input$match_species_biomass$x)]
         p <- params()
         sp_idx <- which(p@species_params$species == sp)
-        
+
         # Temporarily set observed biomass to the clicked biomass, then
         # match that biomass, then restore observed biomass
         obs <- p@species_params$biomass_observed[[sp_idx]]
-        p@species_params$biomass_observed[[sp_idx]] <- 
+        p@species_params$biomass_observed[[sp_idx]] <-
             input$match_species_biomass$y
         p <- matchBiomasses(p, species = sp)
         p@species_params$biomass_observed[[sp_idx]] <- obs
-        
+
         params(p)
         if (sp == input$sp) {
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
@@ -104,7 +104,7 @@ biomassTab <- function(input, output, session,
             updateSelectInput(session, "sp", selected = sp)
         }
     })
-    
+
     # Match all biomasses ----
     observeEvent(input$match_biomasses, {
         p <- matchBiomasses(params())
@@ -121,7 +121,7 @@ biomassTab <- function(input, output, session,
 #' @rdname biomassTab
 biomassTabUI <- function(params, ...) {
     p <- isolate(params())
-    
+
     tl <- tagList()
     # plot Biomass ----
     tl <- tagList(tl,
@@ -132,7 +132,7 @@ biomassTabUI <- function(params, ...) {
                          title = "Comparison between model and observed biomasses",
                          content = "For each species this plots the observed biomass (square) and the model biomass (circle). You will want to get these into alignment. You can click in the column for a species to select that species. If you double-click in a column the abundance of that species will be scaled to give the observed biomass."),
                   uiOutput("biomass_sel"))
-    
+
     # calibration buttons ----
     tl <- tagList(tl,
                   popify(actionButton("calibrate_biomass", "Calibrate"),

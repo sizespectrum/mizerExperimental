@@ -37,5 +37,5 @@ species_params(params)$yield_observed <-
 gear_params(params)$catchability <-
     c(1.3, 0.065, 0.31, 0.18, 0.98, 0.24, 0.37, 0.46, 0.18, 0.30, 0.27, 0.39)
 params2 <- calibrateYield(params)
-plotYieldObservedVsModel(params2)
+plotYieldVsSpecies(params2)
 }

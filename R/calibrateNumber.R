@@ -3,39 +3,39 @@
 # the removal of the `params@w` factor in the calculations.
 
 #' Calibrate the model scale to match total observed number
-#' 
+#'
 #' `r lifecycle::badge("experimental")`
 #' Given a MizerParams object `params` for which number observations are
 #' available for at least some species via the `number_observed` column in the
 #' species_params data frame, this function returns an updated MizerParams
 #' object which is rescaled with [scaleModel()] so that the total number in
 #' the model agrees with the total observed number.
-#' 
+#'
 #' Number observations usually only include individuals above a certain size.
 #' This size should be specified in a number_cutoff column of the species
 #' parameter data frame. If this is missing, it is assumed that all sizes are
 #' included in the observed number, i.e., it includes larval number.
-#' 
+#'
 #' After using this function the total number in the model will match the
 #' total number, summed over all species. However the numbers of the
 #' individual species will not match observations yet, with some species
 #' having numbers that are too high and others too low. So after this
 #' function you may want to use [matchNumbers()]. This is described in the
 #' blog post at https://bit.ly/2YqXESV.
-#' 
+#'
 #' If you have observations of the yearly yield instead of numbers, you can
 #' use [calibrateYield()] instead of this function.
-#' 
+#'
 #' @param params A MizerParams object
 #' @return A MizerParams object
 #' @export
-#' @examples 
+#' @examples
 #' params <- NS_params
-#' species_params(params)$number_observed <- 
+#' species_params(params)$number_observed <-
 #'     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
 #' species_params(params)$number_cutoff <- 10
 #' params2 <- calibrateNumber(params)
-#' plotNumberObservedVsModel(params2)
+#' plotNumberVsSpecies(params2)
 calibrateNumber <- function(params) {
     if ((!("number_observed" %in% names(params@species_params))) ||
         all(is.na(params@species_params$number_observed))) {
@@ -51,8 +51,8 @@ calibrateNumber <- function(params) {
     sp_observed <- which(!is.na(observed))
     model_total <- 0
     for (sp_idx in sp_observed) {
-        model_total <- 
-            model_total + 
+        model_total <-
+            model_total +
             sum((params@initial_n[sp_idx, ] * params@dw)
                 [params@w >= cutoff[[sp_idx]]])
     }
@@ -60,34 +60,34 @@ calibrateNumber <- function(params) {
 }
 
 #' Calibrate the model scale to match total observed yield
-#' 
+#'
 #' `r lifecycle::badge("experimental")`
 #' Given a MizerParams object `params` for which yield observations are
 #' available for at least some species via the `yield_observed` column in the
 #' species_params data frame, this function returns an updated MizerParams
 #' object which is rescaled with [scaleModel()] so that the total yield in
 #' the model agrees with the total observed yield.
-#' 
+#'
 #' After using this function the total yield in the model will match the
 #' total observed yield, summed over all species. However the yields of the
 #' individual species will not match observations yet, with some species
 #' having yields that are too high and others too low. So after this
 #' function you may want to use [matchYields()].
-#' 
+#'
 #' If you have observations of species numbers instead of yields, you can
 #' use [calibrateNumber()] instead of this function.
-#' 
+#'
 #' @param params A MizerParams object
 #' @return A MizerParams object
 #' @export
-#' @examples 
+#' @examples
 #' params <- NS_params
 #' species_params(params)$yield_observed <-
 #'     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
 #' gear_params(params)$catchability <-
 #'     c(1.3, 0.065, 0.31, 0.18, 0.98, 0.24, 0.37, 0.46, 0.18, 0.30, 0.27, 0.39)
 #' params2 <- calibrateYield(params)
-#' plotYieldObservedVsModel(params2)
+#' plotYieldVsSpecies(params2)
 calibrateYield<- function(params) {
     if ((!("yield_observed" %in% names(params@species_params))) ||
         all(is.na(params@species_params$yield_observed))) {
@@ -133,7 +133,7 @@ calibrateYield<- function(params) {
 #'
 #' Note that if you use non-standard resource dynamics or other components then you
 #' may need to rescale additional parameters that appear in those dynamics.
-#' 
+#'
 #' In practice you will need to use some observations to set the scale for your
 #' model. If you have number observations you can use [calibrateNumber()],
 #' if you have yearly yields you can use [calibrateYield()].
@@ -147,11 +147,11 @@ scaleModel <- function(params, factor) {
     params <- validParams(params)
     assert_that(is.number(factor),
                 factor > 0)
-    
+
     # Resource replenishment rate
     params@cc_pp <- params@cc_pp * factor
     params@resource_params$kappa <- params@resource_params$kappa * factor
-    
+
     # Rmax
     # r_max is a deprecated spelling of R_max. Get rid of it.
     if ("r_max" %in% names(params@species_params)) {
@@ -162,13 +162,13 @@ scaleModel <- function(params, factor) {
     if ("R_max" %in% names(params@species_params)) {
         params@species_params$R_max <- params@species_params$R_max * factor
     }
-    
+
     # Search volume
     params@search_vol = params@search_vol / factor
     if ("gamma" %in% names(params@species_params)) {
         params@species_params$gamma <- params@species_params$gamma / factor
     }
-    
+
     # Initial values
     initial_n_other <- params@initial_n_other
     for (res in names(initial_n_other)) {
@@ -177,9 +177,9 @@ scaleModel <- function(params, factor) {
     initialN(params) <- params@initial_n * factor
     initialNResource(params) <- params@initial_n_pp * factor
     initialNOther(params) = initial_n_other
-    
+
     # community
     params@sc <- params@sc * factor
-    
+
     return(params)
 }
