@@ -147,3 +147,25 @@ error_fun <- function(e) {
                     "The error message was:<br>", e)),
         easyClose = TRUE
     ))}
+
+# Convert the tab name given by the user to lower case, because the names of
+# the tab functions will always start with lower case.
+tab_name <- function(tab) {
+    tabname <- tab
+    substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+    tabname
+}
+
+# Return the title for the tab. This is either defined by the tab author or
+# otherwise is the tab name supplied by the user.
+tab_title <- function(tab) {
+    tabname <- tab_name(tab)
+    title_var <- paste0(tabname, "TabTitle")
+    if (!is.null(title <- get0(title_var))) {
+        if (!is.string(title)) {
+            stop(title_var, "should contain a string with the title for the tab")
+        }
+        return(title)
+    }
+    tab
+}

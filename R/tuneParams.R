@@ -298,13 +298,12 @@ tuneParams <- function(params,
         ## UI for tabs ####
         output$tabs <- renderUI({
             tablist <- lapply(tabs, function(tab) {
-                tabname <- tab
-                substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+                tabname <- tab_name(tab)
                 tab_content <- div(
                     style = "max-height: 94vh; overflow-y: auto; overflow-x: hidden;",
                     do.call(paste0(tabname, "TabUI"),
                             list(params = params)))
-                tabPanel(tab, tab_content)
+                tabPanel(tab_title(tab), tab_content)
             })
             args <- c(id = "mainTabs", type = "tabs", tablist)
             do.call(tabsetPanel, args)
@@ -312,8 +311,7 @@ tuneParams <- function(params,
 
         ## Serve tabs ####
         for (tab in tabs) {
-            tabname <- tab
-            substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+            tabname <- tab_name(tab)
             fun <- paste0(tabname, "Tab")
             do.call(fun, list(input = input,
                               output = output,
