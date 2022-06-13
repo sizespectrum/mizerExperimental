@@ -49,6 +49,7 @@ Collate:
     reproductionControl.R
     resourceControl.R
     tuneParams_tabs.R
+    exampleTab.R
     abundanceTab.R
     biomassTab.R
     catchTab.R
