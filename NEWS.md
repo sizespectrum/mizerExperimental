@@ -2,7 +2,6 @@
 
 ## New plotting functions
 
-* `plotBiomassObservedVsModel()`
 * `plotDeath()`
 * `plotEnergyBudget()`
 * `plotResourceLevel()`
