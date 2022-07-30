@@ -29,7 +29,7 @@ species parameter sliders.}
 The Number tab shows:
 \itemize{
 \item A plot of total number for each species, compared to
-observed numbers when available, using \code{\link[=plotNumberObservedVsModel]{plotNumberObservedVsModel()}}.
+observed numbers when available, using \code{\link[=plotNumberVsSpecies]{plotNumberVsSpecies()}}.
 \item Buttons "Calibrate" and "Match" that trigger a call to
 \code{\link[=calibrateNumber]{calibrateNumber()}} or \code{\link[=matchNumbers]{matchNumbers()}} respectively.
 }

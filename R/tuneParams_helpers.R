@@ -57,7 +57,7 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         if (any(is.infinite(p@initial_n))) {
             stop("Candidate steady state holds infinities")
         }
-        if (any(is.na(p@initial_n) || is.nan(p@initial_n))) {
+        if (any(is.na(p@initial_n) | is.nan(p@initial_n))) {
             stop("Candidate steady state holds non-numeric values")
         }
 
@@ -103,7 +103,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         }
-        
+
         # Update the egg slider
         sp_idx <- which.max(p@species_params$species == isolate(input$sp))
         n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
@@ -111,7 +111,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        
+
         # Update the reactive params objects
         params(p)
         params_old(p)
@@ -147,3 +147,25 @@ error_fun <- function(e) {
                     "The error message was:<br>", e)),
         easyClose = TRUE
     ))}
+
+# Convert the tab name given by the user to lower case, because the names of
+# the tab functions will always start with lower case.
+tab_name <- function(tab) {
+    tabname <- tab
+    substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+    tabname
+}
+
+# Return the title for the tab. This is either defined by the tab author or
+# otherwise is the tab name supplied by the user.
+tab_title <- function(tab) {
+    tabname <- tab_name(tab)
+    title_var <- paste0(tabname, "TabTitle")
+    if (!is.null(title <- get0(title_var))) {
+        if (!is.string(title)) {
+            stop(title_var, "should contain a string with the title for the tab")
+        }
+        return(title)
+    }
+    tab
+}

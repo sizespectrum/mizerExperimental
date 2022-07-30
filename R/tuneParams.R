@@ -54,9 +54,7 @@
 #' For any entry "Foo" or "foo" in the `tabs` list there needs to be a function
 #' "fooTabUI" that defines the tab layout and a function "fooTab"
 #' that calculates the outputs to be displayed on the tab. You can model your
-#' own tabs on the existing ones that you find in the file
-#' `R/tuneParams_tabs.R`. Whether you choose to capitalise "Foo" or "foo" in
-#' the `tabs` argument determines how it is capitalised on the label of the tab.
+#' own tabs on the example tab that you find in the file `R/exampleTab.R`.
 #'
 #' # Limitations
 #'
@@ -298,13 +296,12 @@ tuneParams <- function(params,
         ## UI for tabs ####
         output$tabs <- renderUI({
             tablist <- lapply(tabs, function(tab) {
-                tabname <- tab
-                substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+                tabname <- tab_name(tab)
                 tab_content <- div(
                     style = "max-height: 94vh; overflow-y: auto; overflow-x: hidden;",
                     do.call(paste0(tabname, "TabUI"),
                             list(params = params)))
-                tabPanel(tab, tab_content)
+                tabPanel(tab_title(tab), tab_content)
             })
             args <- c(id = "mainTabs", type = "tabs", tablist)
             do.call(tabsetPanel, args)
@@ -312,8 +309,7 @@ tuneParams <- function(params,
 
         ## Serve tabs ####
         for (tab in tabs) {
-            tabname <- tab
-            substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+            tabname <- tab_name(tab)
             fun <- paste0(tabname, "Tab")
             do.call(fun, list(input = input,
                               output = output,

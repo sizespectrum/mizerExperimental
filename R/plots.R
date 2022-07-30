@@ -292,7 +292,7 @@ plotlyResourcePred <- function(object,
 #' fr <- plotResource(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResource <- function(object, return_data = FALSE) {
+plotResourceLevel <- function(object, return_data = FALSE) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)

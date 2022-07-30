@@ -55,8 +55,8 @@ str(fr)
 
 Other plotting functions: 
 \code{\link{plotDeath}()},
+\code{\link{plotResourceLevel}()},
 \code{\link{plotResourcePred}()},
-\code{\link{plotResource}()},
 \code{\link{plotYieldVsF}()},
 \code{\link{plotYieldVsSize}()}
 }

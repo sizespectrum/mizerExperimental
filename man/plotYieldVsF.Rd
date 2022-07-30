@@ -8,6 +8,7 @@ plotYieldVsF(
   params,
   species,
   no_steps = 10,
+  F_max,
   F_range,
   effort_it = 1,
   distance_func = distanceSSLogN,
@@ -22,6 +23,8 @@ plotYieldVsF(
 \item{species}{Name of the target species}
 
 \item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
+
+\item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 
 \item{F_range}{A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
@@ -69,8 +72,8 @@ getYieldVsF
 Other plotting functions: 
 \code{\link{plotDeath}()},
 \code{\link{plotEnergyBudget}()},
+\code{\link{plotResourceLevel}()},
 \code{\link{plotResourcePred}()},
-\code{\link{plotResource}()},
 \code{\link{plotYieldVsSize}()}
 }
 \concept{plotting functions}

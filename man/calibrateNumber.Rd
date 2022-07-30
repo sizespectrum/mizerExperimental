@@ -38,9 +38,9 @@ use \code{\link[=calibrateYield]{calibrateYield()}} instead of this function.
 }
 \examples{
 params <- NS_params
-species_params(params)$number_observed <- 
+species_params(params)$number_observed <-
     c(0.8, 61, 12, 35, 1.6, 20, 10, 7.6, 135, 60, 30, 78)
 species_params(params)$number_cutoff <- 10
 params2 <- calibrateNumber(params)
-plotNumberObservedVsModel(params2)
+plotNumberVsSpecies(params2)
 }

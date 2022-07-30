@@ -15,10 +15,8 @@ Depends:
 Imports:
     assertthat,
     bslib,
-    cubelyr,
     dplyr,
     ggplot2,
-    ggrepel,
     methods,
     plotly,
     rintrojs,
@@ -26,8 +24,7 @@ Imports:
     shinyBS,
     shinyjs,
     tibble,
-    tidyr,
-    lifecycle
+    tidyr
 Suggests:
     pkgdown,
     rmarkdown,
@@ -52,6 +49,7 @@ Collate:
     reproductionControl.R
     resourceControl.R
     tuneParams_tabs.R
+    exampleTab.R
     abundanceTab.R
     biomassTab.R
     catchTab.R
