@@ -36,7 +36,7 @@ test_that("plots have not changed", {
     p <- plotResourcePred(NS_params)
     expect_doppelganger("Plot Resource Pred", p)
 
-    p <- plotResource(NS_params)
+    p <- plotResourceLevel(NS_params)
     expect_doppelganger("Plot Resource", p)
 
     p <- plotEnergyBudget(NS_params, species = "Haddock")
@@ -61,7 +61,7 @@ test_that("return_data is identical",{
 
     expect_equal(dim(plotResourcePred(sim, return_data = TRUE)), c(612,3))
 
-    expect_equal(dim(plotResource(sim, return_data = TRUE)), c(51,3))
+    expect_equal(dim(plotResourceLevel(sim, return_data = TRUE)), c(51,3))
 
     expect_equal(dim(plotEnergyBudget(sim, species = species, return_data = TRUE)[[1]]), c(224,4))
 

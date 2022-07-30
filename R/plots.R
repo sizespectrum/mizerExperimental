@@ -286,10 +286,10 @@ plotlyResourcePred <- function(object,
 #' @seealso [plotting_functions]
 #' @examples
 #' \donttest{
-#' plotResource(NS_params)
+#' plotResourceLevel(NS_params)
 #'
 #' # Returning the data frame
-#' fr <- plotResource(NS_params, return_data = TRUE)
+#' fr <- plotResourceLevel(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
 plotResourceLevel <- function(object, return_data = FALSE) {
