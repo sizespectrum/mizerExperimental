@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -72,9 +72,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">object</span>, proportion <span class="op">=</span> <span class="cn">TRUE</span>, return_data <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">plotlyResourcePred</span><span class="op">(</span><span class="va">object</span>, proportion <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">object</span>, proportion <span class="op">=</span> <span class="cn">TRUE</span>, return_data <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plotlyResourcePred</span><span class="op">(</span><span class="va">object</span>, proportion <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,25 +114,25 @@ returned.</p>
 <p>Other plotting functions: 
 <code><a href="plotDeath.html">plotDeath</a>()</code>,
 <code><a href="plotEnergyBudget.html">plotEnergyBudget</a>()</code>,
-<code><a href="plotResource.html">plotResource</a>()</code>,
+<code><a href="plotResourceLevel.html">plotResourceLevel</a>()</code>,
 <code><a href="plotYieldVsF.html">plotYieldVsF</a>()</code>,
 <code><a href="plotYieldVsSize.html">plotYieldVsSize</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">NS_params</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">NS_params</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotResourcePred-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Returning the data frame</span></span>
-<span class="r-in"><span class="va">fr</span> <span class="op">&lt;-</span> <span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">NS_params</span>, return_data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fr</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Returning the data frame</span></span></span>
+<span class="r-in"><span><span class="va">fr</span> <span class="op">&lt;-</span> <span class="fu">plotResourcePred</span><span class="op">(</span><span class="va">NS_params</span>, return_data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	2148 obs. of  3 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ w       : num  2.12e-13 2.12e-13 2.12e-13 2.12e-13 2.12e-13 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ value   : num  7.00e-12 5.07e-05 8.17e-11 1.00 8.69e-13 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ Predator: Factor w/ 12 levels "Sprat","Sandeel",..: 1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -147,7 +147,7 @@ returned.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

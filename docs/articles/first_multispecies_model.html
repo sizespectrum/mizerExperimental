@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -122,10 +122,10 @@ effects that we can expect. We start looking at the real world only in
 tomorrow’s notebook.</p>
 <p>Start RStudio and load the following packages:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sizespectrum/mizerExperimental" class="external-link">mizerExperimental</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sizespectrum/mizerExperimental" class="external-link">mizerExperimental</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="a-trait-based-multi-species-model">A trait-based multi-species model<a class="anchor" aria-label="anchor" href="#a-trait-based-multi-species-model"></a>
 </h2>
@@ -134,18 +134,18 @@ interacting species. We use another wrapper function
 <code><a href="https://sizespectrum.org/mizer/reference/newTraitParams.html" class="external-link">newTraitParams()</a></code> that sets up a MizerParams object choosing
 a lot of defaults for us.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params_background</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sizespectrum.org/mizer/reference/newTraitParams.html" class="external-link">newTraitParams</a></span><span class="op">(</span>
-    lambda <span class="op">=</span> <span class="fl">2.12</span>,      <span class="co"># Exponent of community spectrum</span>
-    no_sp <span class="op">=</span> <span class="fl">16</span>,         <span class="co"># Number of species</span>
-    min_w_inf <span class="op">=</span> <span class="fl">1</span>,      <span class="co"># Asymptotic size of smallest species</span>
-    max_w_inf <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,   <span class="co"># Asymptotic size of largest species</span>
-    min_w <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">5</span>,      <span class="co"># Egg size</span>
-    min_w_mat <span class="op">=</span> <span class="fl">0.1</span>,    <span class="co"># Maturity size of smallest species</span>
-    min_w_pp <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">12</span>,  <span class="co"># Size of smallest plankton</span>
-    ext_mort_prop <span class="op">=</span> <span class="fl">0.2</span> <span class="co"># Proportion of mortality that is not due to predation</span>
-    <span class="op">)</span>
-
-<span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params_background</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">params_background</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sizespectrum.org/mizer/reference/newTraitParams.html" class="external-link">newTraitParams</a></span><span class="op">(</span></span>
+<span>    lambda <span class="op">=</span> <span class="fl">2.12</span>,      <span class="co"># Exponent of community spectrum</span></span>
+<span>    no_sp <span class="op">=</span> <span class="fl">16</span>,         <span class="co"># Number of species</span></span>
+<span>    min_w_inf <span class="op">=</span> <span class="fl">1</span>,      <span class="co"># Asymptotic size of smallest species</span></span>
+<span>    max_w_inf <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>,   <span class="co"># Asymptotic size of largest species</span></span>
+<span>    min_w <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">5</span>,      <span class="co"># Egg size</span></span>
+<span>    min_w_mat <span class="op">=</span> <span class="fl">0.1</span>,    <span class="co"># Maturity size of smallest species</span></span>
+<span>    min_w_pp <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">12</span>,  <span class="co"># Size of smallest plankton</span></span>
+<span>    ext_mort_prop <span class="op">=</span> <span class="fl">0.2</span> <span class="co"># Proportion of mortality that is not due to predation</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params_background</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="first_multispecies_model_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>We only had to specify a small number of parameters and the function
 makes default choices for all the others.</p>
@@ -156,12 +156,12 @@ plankton, follows a Sheldon spectrum with the Sheldon exponent
 about which we do not have much information and don’t really care about.
 We tell mizer about this with</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params_background</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/markBackground.html">markBackground</a></span><span class="op">(</span><span class="va">params_background</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">params_background</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/markBackground.html">markBackground</a></span><span class="op">(</span><span class="va">params_background</span><span class="op">)</span></span></code></pre></div>
 <p>This will for example have the effect that these species are plotted
 in grey. We also don’t want to fish them, so we set their catchability
 to zero.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://sizespectrum.org/mizer/reference/gear_params.html" class="external-link">gear_params</a></span><span class="op">(</span><span class="va">params_background</span><span class="op">)</span><span class="op">$</span><span class="va">catchability</span> <span class="op">&lt;-</span> <span class="fl">0</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://sizespectrum.org/mizer/reference/gear_params.html" class="external-link">gear_params</a></span><span class="op">(</span><span class="va">params_background</span><span class="op">)</span><span class="op">$</span><span class="va">catchability</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="adding-a-foreground-species">Adding a foreground species<a class="anchor" aria-label="anchor" href="#adding-a-foreground-species"></a>
@@ -169,11 +169,11 @@ to zero.</p>
 <p>Let’s look at hake. Let’s assume we know the following parameters for
 hake:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">species_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
-    <span class="op">~</span><span class="va">species</span>, <span class="op">~</span><span class="va">w_inf</span>, <span class="op">~</span><span class="va">w_mat</span>, <span class="op">~</span><span class="va">beta</span>, <span class="op">~</span><span class="va">sigma</span>, <span class="op">~</span><span class="va">a</span>,      <span class="op">~</span><span class="va">b</span>,    <span class="op">~</span><span class="va">k_vb</span>, <span class="op">~</span><span class="va">l50</span>, <span class="op">~</span><span class="va">l25</span>,
-    <span class="st">"Hake"</span>,   <span class="fl">10470</span>,  <span class="fl">250</span>,    <span class="fl">11</span>,    <span class="fl">1.1</span>,    <span class="fl">0.00667</span>, <span class="fl">3.035</span>, <span class="fl">0.178</span>, <span class="fl">16.6</span>, <span class="fl">16</span>
-<span class="op">)</span>
-<span class="va">species_params</span><span class="op">$</span><span class="va">sel_func</span> <span class="op">&lt;-</span> <span class="st">"sigmoid_length"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">species_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span><span class="va">species</span>, <span class="op">~</span><span class="va">w_inf</span>, <span class="op">~</span><span class="va">w_mat</span>, <span class="op">~</span><span class="va">beta</span>, <span class="op">~</span><span class="va">sigma</span>, <span class="op">~</span><span class="va">a</span>,      <span class="op">~</span><span class="va">b</span>,    <span class="op">~</span><span class="va">k_vb</span>, <span class="op">~</span><span class="va">l50</span>, <span class="op">~</span><span class="va">l25</span>,</span>
+<span>    <span class="st">"Hake"</span>,   <span class="fl">10470</span>,  <span class="fl">250</span>,    <span class="fl">11</span>,    <span class="fl">1.1</span>,    <span class="fl">0.00667</span>, <span class="fl">3.035</span>, <span class="fl">0.178</span>, <span class="fl">16.6</span>, <span class="fl">16</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">species_params</span><span class="op">$</span><span class="va">sel_func</span> <span class="op">&lt;-</span> <span class="st">"sigmoid_length"</span></span></code></pre></div>
 <p>Here <code>w_inf</code> is the asymptotic size, <code>w_mat</code>
 the maturity size, <code>beta</code> and <code>sigma</code> the
 parameters of the log-normal predation kernel, <code>a</code> and
@@ -187,13 +187,13 @@ create a spreadsheet with the parameters and then read that in with
 <p>We can now add Hake to our existing model with the
 <code><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies</a></span><span class="op">(</span><span class="va">params_background</span>,
-                     <span class="va">species_params</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## No h provided for some species, so using f0 and k_vb to calculate it.</span></code></pre>
-<pre><code><span class="co">## Convergence was achieved in 18 years.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies</a></span><span class="op">(</span><span class="va">params_background</span>,</span>
+<span>                     <span class="va">species_params</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## No h provided for some species, so using f0 and k_vb to calculate it.</span></span></code></pre>
+<pre><code><span><span class="co">## Convergence was achieved in 18 years.</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="first_multispecies_model_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div class="section level2">
@@ -206,11 +206,11 @@ run to steady state.</p>
 <p>First we double the abundance of the foreground species with respect
 to the background species.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scaleAbundance.html">scaleAbundance</a></span><span class="op">(</span><span class="va">params</span>, factor <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Convergence was achieved in 1.5 years.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scaleAbundance.html">scaleAbundance</a></span><span class="op">(</span><span class="va">params</span>, factor <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Convergence was achieved in 1.5 years.</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="first_multispecies_model_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>Now we double it again, which we can do simply by running the
 previous R chunk again.</p>
@@ -226,7 +226,7 @@ shiny gadget, which provides sliders for changing parameters and a set
 of plots that update in real time to reflect the effects of the
 parameter changes. I will demonstrate this on the projector.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">params_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuneParams.html">tuneParams</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">params_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuneParams.html">tuneParams</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -247,7 +247,7 @@ parameter changes. I will demonstrate this on the projector.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

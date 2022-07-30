@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -67,6 +67,50 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="2.3.1" id="mizerexperimental-231">mizerExperimental 2.3.1<a class="anchor" aria-label="anchor" href="#mizerexperimental-231"></a></h2>
+<div class="section level3">
+<h3 id="new-plotting-functions-2-3-1">New plotting functions<a class="anchor" aria-label="anchor" href="#new-plotting-functions-2-3-1"></a></h3>
+<ul><li><code>plotBiomassObservedVsModel()</code></li>
+<li><code><a href="../reference/plotDeath.html">plotDeath()</a></code></li>
+<li><code><a href="../reference/plotEnergyBudget.html">plotEnergyBudget()</a></code></li>
+<li><code><a href="../reference/plotResourceLevel.html">plotResourceLevel()</a></code></li>
+<li><code><a href="../reference/plotResourcePred.html">plotResourcePred()</a></code></li>
+<li><code><a href="../reference/plotYieldVsSize.html">plotYieldVsSize()</a></code></li>
+<li>Also <code><a href="../reference/plotYieldVsF.html">plotYieldVsF()</a></code> has been improved.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-new-functions-2-3-1">Other new functions<a class="anchor" aria-label="anchor" href="#other-new-functions-2-3-1"></a></h3>
+<ul><li><code><a href="../reference/singleSpeciesSteady.html">singleSpeciesSteady()</a></code></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-in-tuneparams-2-3-1">Changes in <code>tuneParams()</code>
+<a class="anchor" aria-label="anchor" href="#changes-in-tuneparams-2-3-1"></a></h3>
+<ul><li>Allow tabs to set their title, see issue <a href="https://github.com/sizespectrum/mizerExperimental/issues/37" class="external-link">#37</a></li>
+<li>
+<code><a href="../reference/resourceControl.html">resourceControl()</a></code> now works also when the resource dynamics are constant.</li>
+<li>Reproduction plot now calculates the reproduction success correctly also for non-zero reproduction level.</li>
+<li>Clean-up of <code>spectraTab</code> code. Now button does not trigger already when it is displayed but only when it is pressed.</li>
+<li>Call <code>setBevertonHolt()</code> only for the focus species.</li>
+<li>The feature whereby one can call <code><a href="../reference/tuneParams.html">tuneParams()</a></code> without a parameter to recover it from log files after a crash is now working again.</li>
+<li>The catch tab now has the same functionality for calibration and matching as the biomass tab.</li>
+<li>When changing predation kernel parameters, the search volume is also rescaled to keep the same encounter rate for larvae.</li>
+<li>Now one can also match abundances to observed numbers instead of observed biomasses.</li>
+<li>Extracted more of the plotting code into plot functions.</li>
+<li>Corrected the plotting of observed catch.</li>
+<li>Corrected the y-axis scale in density plots.</li>
+<li>New <code><a href="../reference/abundanceTab.html">abundanceTab()</a></code> showing both biomasses and numbers.</li>
+<li>Double-clicking on a species on the biomass graph now changes its biomass to the clicked value rather than the observed value.</li>
+<li>Separated spectra and biomass tabs.</li>
+<li>An observed biomass of 0 (not possible) is now converted to NA</li>
+<li>Using the same theme as the mizer website</li>
+<li>Beginnings of an example tab that can be used as a well-documented base for new custom tabs. Needs to be expanded to get better documentation.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-changes-2-3-1">Other changes<a class="anchor" aria-label="anchor" href="#other-changes-2-3-1"></a></h3>
+<ul><li>Allow mizer extensions to overwrite the <code>steady()</code> function.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="2.3.0" id="mizerexperimental-230">mizerExperimental 2.3.0<a class="anchor" aria-label="anchor" href="#mizerexperimental-230"></a></h2>
 <ul><li>New <code><a href="../reference/tuneGrowth.html">tuneGrowth()</a></code> shiny gadget to help tune growth curves.</li>
 </ul><div class="section level3">
@@ -92,7 +136,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="other-changes-2-3-0">Other changes<a class="anchor" aria-label="anchor" href="#other-changes-2-3-0"></a></h3>
-<ul><li>New <code><a href="../reference/plotBiomassVsSpecies.html">plotBiomassVsSpecies()</a></code> and <code>plotYieldVsSpecies</code>.</li>
+<ul><li>New <code><a href="../reference/plotBiomassVsSpecies.html">plotBiomassVsSpecies()</a></code> and <code><a href="../reference/plotYieldVsSpecies.html">plotYieldVsSpecies()</a></code>.</li>
 <li>Egg density slider is now updated by run to steady.</li>
 <li>Improved handling of missing values in <code><a href="../reference/plotBiomassVsSpecies.html">plotBiomassVsSpecies()</a></code>.</li>
 <li>New <code><a href="../reference/scaleDownBackground.html">scaleDownBackground()</a></code> and <code>removeBackgroundspecies()</code>.</li>
@@ -108,7 +152,7 @@
 <h2 class="page-header" data-toc-text="2.2.1" id="mizerexperimental-221">mizerExperimental 2.2.1<a class="anchor" aria-label="anchor" href="#mizerexperimental-221"></a></h2>
 <ul><li>Much polishing of <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and some added documentation.</li>
 <li>First stab at a <code><a href="../reference/validSim.html">validSim()</a></code> function that will be useful when simulations produce non-finite values.</li>
-<li>Graduated the updated <code><a href="https://sizespectrum.org/mizer/reference/setBevertonHolt.html" class="external-link">setBevertonHolt()</a></code> and the new <code><a href="https://sizespectrum.org/mizer/reference/getReproductionLevel.html" class="external-link">getReproductionLevel()</a></code> to mizer package.</li>
+<li>Graduated the updated <code>setBevertonHolt()</code> and the new <code>getReproductionLevel()</code> to mizer package.</li>
 <li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code><a href="../reference/plotDataFrame.html">plotDataFrame()</a></code> in mizer.</li>
 <li>Removed the vignette explaining size-spectrum dynamics in single-species example because this has graduated to mizer.</li>
 <li>Improvements to argument checks in <code><a href="../reference/getYieldVsF.html">getYieldVsF()</a></code>
@@ -117,20 +161,20 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.2.0" id="mizerexperimental-220">mizerExperimental 2.2.0<a class="anchor" aria-label="anchor" href="#mizerexperimental-220"></a></h2>
 <p>The version number will now always be that of the latest mizer package that this version of mizerExperimental requires.</p>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/animateSpectra.html" class="external-link">animateSpectra()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/renameSpecies.html" class="external-link">renameSpecies()</a></code> to mizer package.</li>
+<ul><li>Graduated <code>animateSpectra()</code>, <code>addSpecies()</code>, <code>removeSpecies()</code> and <code>renameSpecies()</code> to mizer package.</li>
 <li>
-<code>newSheldonParams()</code> has graduated to mizer package under the new name <code><a href="https://sizespectrum.org/mizer/reference/newSingleSpeciesParams.html" class="external-link">newSingleSpeciesParams()</a></code>.</li>
+<code>newSheldonParams()</code> has graduated to mizer package under the new name <code>newSingleSpeciesParams()</code>.</li>
 <li>Improvements to <code><a href="../reference/tuneParams.html">tuneParams()</a></code>, but still work in progress.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.2" id="mizerexperimental-012">mizerExperimental 0.1.2<a class="anchor" aria-label="anchor" href="#mizerexperimental-012"></a></h2>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/projectToSteady.html" class="external-link">projectToSteady()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/constantEggRDI.html" class="external-link">constantEggRDI()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/customFunction.html" class="external-link">customFunction()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/compareParams.html" class="external-link">compareParams()</a></code> to mizer package.</li>
+<ul><li>Graduated <code>projectToSteady()</code>, <code>constantEggRDI()</code>, <code>customFunction()</code> and <code>compareParams()</code> to mizer package.</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Vignette explaining size-spectrum dynamics in single-species example.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> work also with 3d pred kernel.</li>
+<code>removeSpecies()</code> work also with 3d pred kernel.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> to handles <code>gear_params</code> correctly</li>
+<code>removeSpecies()</code> to handles <code>gear_params</code> correctly</li>
 </ul></div>
   </div>
 
@@ -146,7 +190,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -22,7 +22,7 @@ the model agrees with the total observed number."><meta property="og:image" cont
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ the model agrees with the total observed number.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calibrateNumber</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calibrateNumber</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -115,13 +115,13 @@ use <code><a href="calibrateYield.html">calibrateYield()</a></code> instead of t
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">params</span> <span class="op">&lt;-</span> <span class="va">NS_params</span></span>
-<span class="r-in"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">number_observed</span> <span class="op">&lt;-</span> </span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">61</span>, <span class="fl">12</span>, <span class="fl">35</span>, <span class="fl">1.6</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">7.6</span>, <span class="fl">135</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">78</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">number_cutoff</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="va">params2</span> <span class="op">&lt;-</span> <span class="fu">calibrateNumber</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotNumberObservedVsModel</span><span class="op">(</span><span class="va">params2</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plotNumberObservedVsModel(params2):</span> could not find function "plotNumberObservedVsModel"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="va">NS_params</span></span></span>
+<span class="r-in"><span><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">number_observed</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">61</span>, <span class="fl">12</span>, <span class="fl">35</span>, <span class="fl">1.6</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">7.6</span>, <span class="fl">135</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">78</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">species_params</span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">$</span><span class="va">number_cutoff</span> <span class="op">&lt;-</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="va">params2</span> <span class="op">&lt;-</span> <span class="fu">calibrateNumber</span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotNumberVsSpecies.html">plotNumberVsSpecies</a></span><span class="op">(</span><span class="va">params2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="calibrateNumber-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </div>
@@ -136,7 +136,7 @@ use <code><a href="calibrateYield.html">calibrateYield()</a></code> instead of t
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

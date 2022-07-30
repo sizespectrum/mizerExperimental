@@ -14,7 +14,7 @@ An object of type \code{MizerParams}
 }
 \description{
 @description
-`\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\verb{r lifecycle::badge("experimental")}
 }
 \details{
 Rescales all background species in such a way that the total community

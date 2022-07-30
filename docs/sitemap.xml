@@ -103,7 +103,7 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotNumberVsSpecies.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotResource.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.html</loc>
@@ -149,6 +149,9 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/scaleModel.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/singleSpeciesSteady.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/spectraTab.html</loc>

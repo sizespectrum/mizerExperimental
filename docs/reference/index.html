@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -218,6 +218,10 @@ inheritParams biomassTab</p></td>
           <p><code><a href="scaleModel.html">scaleModel()</a></code> </p>
         </td>
         <td><p>Change scale of the model</p></td>
+      </tr><tr><td>
+          <p><code><a href="singleSpeciesSteady.html">singleSpeciesSteady()</a></code> </p>
+        </td>
+        <td><p>Set initial abundances to single-species steady state abundances</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="new-plotting-functions">New plotting functions <a href="#new-plotting-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
@@ -241,7 +245,7 @@ This budget is divided between growth, income, metabolic loss and reproduction.<
         </td>
         <td><p>Plot the number against species</p></td>
       </tr><tr><td>
-          <p><code><a href="plotResource.html">plotResource()</a></code> </p>
+          <p><code><a href="plotResourceLevel.html">plotResourceLevel()</a></code> </p>
         </td>
         <td><p>Plot the proportion of the resource spectrum(s) compared to
 their carrying capacity</p></td>
@@ -261,6 +265,27 @@ their carrying capacity</p></td>
           <p><code><a href="plotYieldVsSpecies.html">plotYieldVsSpecies()</a></code> </p>
         </td>
         <td><p>Plot the yield against species</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="helper-functions-for-plotyieldvsf-">Helper functions for <code>plotYieldVsF()</code> <a href="#helper-functions-for-plotyieldvsf-" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="distanceSSLogYield.html">distanceSSLogYield()</a></code> </p>
+        </td>
+        <td><p>Measure distance between current and previous state in terms of yield.</p></td>
+      </tr><tr><td>
+          <p><code><a href="getMaxF.html">getMaxF()</a></code> </p>
+        </td>
+        <td><p>Maximum viable fisheries effort for species</p></td>
+      </tr><tr><td>
+          <p><code><a href="maxFthreshold.html">maxFthreshold()</a></code> </p>
+        </td>
+        <td><p>Determines maximum the threshold where
+fisheries effort should stop</p></td>
+      </tr><tr><td>
+          <p><code><a href="yieldCalculator.html">yieldCalculator()</a></code> </p>
+        </td>
+        <td><p>Calculates yield from steady sim</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="others">Others <a href="#others" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
@@ -299,7 +324,7 @@ fisheries effort should stop</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

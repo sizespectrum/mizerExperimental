@@ -20,7 +20,7 @@ fixed."><meta property="og:image" content="https://sizespectrum.org/mizerExperim
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mizerExperimental</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
       </span>
     </div>
 
@@ -78,18 +78,18 @@ fixed.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plotYieldVsF</span><span class="op">(</span>
-  <span class="va">params</span>,
-  <span class="va">species</span>,
-  no_steps <span class="op">=</span> <span class="fl">10</span>,
-  <span class="va">F_max</span>,
-  <span class="va">F_range</span>,
-  effort_it <span class="op">=</span> <span class="fl">1</span>,
-  distance_func <span class="op">=</span> <span class="va">distanceSSLogN</span>,
-  tol <span class="op">=</span> <span class="fl">0.1</span>,
-  max_func <span class="op">=</span> <span class="va">maxFthreshold</span>,
-  threshold_var <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotYieldVsF</span><span class="op">(</span></span>
+<span>  <span class="va">params</span>,</span>
+<span>  <span class="va">species</span>,</span>
+<span>  no_steps <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">F_max</span>,</span>
+<span>  <span class="va">F_range</span>,</span>
+<span>  effort_it <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  distance_func <span class="op">=</span> <span class="va">distanceSSLogN</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  max_func <span class="op">=</span> <span class="va">maxFthreshold</span>,</span>
+<span>  threshold_var <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,17 +158,17 @@ unchanged value, which can be compared against the version which uses <code>thre
 <p>Other plotting functions: 
 <code><a href="plotDeath.html">plotDeath</a>()</code>,
 <code><a href="plotEnergyBudget.html">plotEnergyBudget</a>()</code>,
+<code><a href="plotResourceLevel.html">plotResourceLevel</a>()</code>,
 <code><a href="plotResourcePred.html">plotResourcePred</a>()</code>,
-<code><a href="plotResource.html">plotResource</a>()</code>,
 <code><a href="plotYieldVsSize.html">plotYieldVsSize</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu">newMultispeciesParams</span><span class="op">(</span><span class="va">NS_species_params_gears</span>, <span class="va">inter</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotYieldVsF</span><span class="op">(</span><span class="va">params</span>, <span class="st">"Cod"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu">newMultispeciesParams</span><span class="op">(</span><span class="va">NS_species_params_gears</span>, <span class="va">inter</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotYieldVsF</span><span class="op">(</span><span class="va">params</span>, <span class="st">"Cod"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -183,7 +183,7 @@ unchanged value, which can be compared against the version which uses <code>thre
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

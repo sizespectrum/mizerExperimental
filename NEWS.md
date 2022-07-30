@@ -1,3 +1,52 @@
+# mizerExperimental 2.3.1
+
+## New plotting functions
+
+* `plotBiomassObservedVsModel()`
+* `plotDeath()`
+* `plotEnergyBudget()`
+* `plotResourceLevel()`
+* `plotResourcePred()`
+* `plotYieldVsSize()`
+* Also `plotYieldVsF()` has been improved.
+
+## Other new functions
+
+* `singleSpeciesSteady()`
+
+## Changes in `tuneParams()`
+* Allow tabs to set their title, see issue #37
+* `resourceControl()` now works also when the resource dynamics are constant.
+* Reproduction plot now calculates the reproduction success correctly also for
+  non-zero reproduction level.
+* Clean-up of `spectraTab` code. Now button does not trigger already when it is
+  displayed but only when it is pressed.
+* Call `setBevertonHolt()` only for the focus species.
+* The feature whereby one can call `tuneParams()` without a parameter to recover
+  it from log files after a crash is now working again.
+* The catch tab now has the same functionality for calibration and matching as
+  the biomass tab.
+* When changing predation kernel parameters, the search volume is also 
+  rescaled to keep the same encounter rate for larvae.
+* Now one can also match abundances to observed numbers instead of observed
+  biomasses.
+* Extracted more of the plotting code into plot functions.
+* Corrected the plotting of observed catch.
+* Corrected the y-axis scale in density plots.
+* New `abundanceTab()` showing both biomasses and numbers.
+* Double-clicking on a species on the biomass graph now changes its biomass to
+  the clicked value rather than the observed value.
+* Separated spectra and biomass tabs.
+* An observed biomass of 0 (not possible) is now converted to NA
+* Using the same theme as the mizer website
+* Beginnings of an example tab that can be used as a well-documented base for
+  new custom tabs. Needs to be expanded to get better documentation.
+
+## Other changes
+* Allow mizer extensions to overwrite the `steady()` function.
+
+
+
 # mizerExperimental 2.3.0
 
 * New `tuneGrowth()` shiny gadget to help tune growth curves.
@@ -28,7 +77,7 @@ the individual species view.
 
 ## Other changes
 
-* New `plotBiomassVsSpecies()` and `plotYieldVsSpecies`.
+* New `plotBiomassVsSpecies()` and `plotYieldVsSpecies()`.
 * Egg density slider is now updated by run to steady.
 * Improved handling of missing values in `plotBiomassVsSpecies()`.
 * New `scaleDownBackground()` and `removeBackgroundspecies()`.
