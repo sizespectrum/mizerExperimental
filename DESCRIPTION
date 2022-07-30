@@ -63,6 +63,7 @@ Collate:
     reproTab.R
     resourceTab.R
     simTab.R
+    singleSpeciesSteady.R
     spectraTab.R
     stomachTab.R
     test-helpers.R
@@ -71,7 +72,7 @@ Collate:
     validSim.R
     plots.R
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
