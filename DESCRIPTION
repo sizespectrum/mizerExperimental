@@ -48,6 +48,7 @@ Collate:
     predationControl.R
     reproductionControl.R
     resourceControl.R
+    steady.R
     tuneParams_tabs.R
     exampleTab.R
     abundanceTab.R
