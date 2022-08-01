@@ -38,9 +38,7 @@ markBackground <- function(object, species = NULL) {
 
 #' Retunes abundance of background species.
 #'
-#'  @description
 #' `r lifecycle::badge("experimental")`
-#'
 #' Rescales all background species in such a way that the total community
 #' spectrum is as close to the Sheldon power law as possible. Background
 #' species that are no longer needed are removed. The reproductive efficiencies
@@ -106,10 +104,8 @@ adjustBackgroundSpecies <- function(params) {
 
 #' Removes species with abundance below a threshold
 #'
-#'  @description
 #' `r lifecycle::badge("experimental")`
-#'
-#' This species simply removes the low-abundance species from the params object.
+#' This function simply removes the low-abundance species from the params object.
 #' It does not recalculate the steady state for the remaining species or
 #' retune their reproductive efficiencies.
 #'
