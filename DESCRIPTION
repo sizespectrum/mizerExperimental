@@ -45,6 +45,7 @@ Collate:
     growthControl.R
     interactionControl.R
     otherControl.R
+    plotSpectra2.R
     predationControl.R
     reproductionControl.R
     resourceControl.R
