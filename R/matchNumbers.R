@@ -45,6 +45,12 @@ matchNumbers <- function(params, species = NULL) {
     if (!("number_observed" %in% names(params@species_params))) {
         return(params)
     }
+    
+    # Preserve reproduction level if using BevertonHolt
+    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
+        old_reproduction_level <- getReproductionLevel(params)
+    }
+    
     species <- valid_species_arg(params, species = species,
                                  return.logical = TRUE) &
         !is.na(params@species_params$number_observed) &
@@ -59,6 +65,11 @@ matchNumbers <- function(params, species = NULL) {
         factor <- params@species_params$number_observed[[sp]] / total
         params@initial_n[sp, ] <- params@initial_n[sp, ] * factor
     }
-
-    setBevertonHolt(params)
+    
+    # Preserve reproduction level if using BevertonHolt
+    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
+        setBevertonHolt(params, reproduction_level = old_reproduction_level)
+    }
+    
+    params
 }

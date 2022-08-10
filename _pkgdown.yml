@@ -55,7 +55,9 @@ reference:
   - updateInitialValues
   - pruneSpecies
   - calibrateNumber
+  - matchBiomasses
   - matchNumbers
+  - matchYields
   - calibrateYield
   - getYieldVsF
   - scaleModel
