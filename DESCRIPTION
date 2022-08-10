@@ -32,6 +32,7 @@ Suggests:
     testthat (>= 2.1.0),
     vdiffr
 Collate:
+    alignResource.R
     manipulateParams.R
     mizerExperimental-package.R
     plotBiomassVsSpecies.R

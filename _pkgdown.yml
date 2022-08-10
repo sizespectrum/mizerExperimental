@@ -60,6 +60,8 @@ reference:
   - getYieldVsF
   - scaleModel
   - singleSpeciesSteady
+  - alignResource
+  - steady
 - title: New plotting functions
 - contents:
   - starts_with("plot")
@@ -76,5 +78,4 @@ reference:
   - getMaxF
   - maxFthreshold
   - yieldCalculator
-
 

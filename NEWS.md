@@ -12,6 +12,7 @@
 ## Other new functions
 
 * `singleSpeciesSteady()`
+* `alignResource()`
 
 ## Changes in `tuneParams()`
 * Allow tabs to set their title, see issue #37

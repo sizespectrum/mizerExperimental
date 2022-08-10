@@ -28,6 +28,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/alignResource.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/biomassTab.html</loc>
   </url>
   <url>
@@ -109,6 +112,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc>
   </url>
   <url>
@@ -155,6 +161,9 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/spectraTab.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/steady.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/stomachTab.html</loc>
