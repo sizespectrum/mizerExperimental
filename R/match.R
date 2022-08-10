@@ -42,11 +42,6 @@ matchBiomasses <- function(params, species = NULL) {
         return(params)
     }
     
-    # Preserve reproduction level if using BevertonHolt
-    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
-        old_reproduction_level <- getReproductionLevel(params)
-    }
-    
     species <- valid_species_arg(params, species = species, 
                                  return.logical = TRUE) &
         !is.na(params@species_params$biomass_observed) &
@@ -60,11 +55,6 @@ matchBiomasses <- function(params, species = NULL) {
                      [params@w >= cutoff])
         factor <- params@species_params$biomass_observed[[sp]] / total
         params@initial_n[sp, ] <- params@initial_n[sp, ] * factor
-    }
-    
-    # Preserve reproduction level if using BevertonHolt
-    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
-        setBevertonHolt(params, reproduction_level = old_reproduction_level)
     }
     
     params
@@ -110,11 +100,6 @@ matchYields <- function(params, species = NULL) {
         return(params)
     }
     
-    # Preserve reproduction level if using BevertonHolt
-    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
-        old_reproduction_level <- getReproductionLevel(params)
-    }
-    
     biomass <- sweep(params@initial_n, 2, params@w * params@dw, "*")
     yield_model <- rowSums(biomass * getFMort(params))
     
@@ -146,11 +131,6 @@ matchYields <- function(params, species = NULL) {
         yield_model[include]
     params@initial_n[include, ] <- 
         sweep(params@initial_n[include, , drop = FALSE], 1, factors, "*")
-    
-    # Preserve reproduction level if using BevertonHolt
-    if (params@rates_funcs$RDD == "BevertonHoltRDD") {
-        setBevertonHolt(params, reproduction_level = old_reproduction_level)
-    }
     
     params
 }
