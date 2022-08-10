@@ -39,7 +39,6 @@ Collate:
     plotYieldVsSpecies.R
     plotNumberVsSpecies.R
     calibrateNumber.R
-    match.R
     matchNumbers.R
     tuneParams.R
     abundanceControl.R
