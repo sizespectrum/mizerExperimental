@@ -189,7 +189,7 @@ create a spreadsheet with the parameters and then read that in with
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies</a></span><span class="op">(</span><span class="va">params_background</span>,</span>
 <span>                     <span class="va">species_params</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/steady.html">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## No h provided for some species, so using f0 and k_vb to calculate it.</span></span></code></pre>
 <pre><code><span><span class="co">## Convergence was achieved in 18 years.</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -207,7 +207,7 @@ run to steady state.</p>
 to the background species.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scaleAbundance.html">scaleAbundance</a></span><span class="op">(</span><span class="va">params</span>, factor <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="https://sizespectrum.org/mizer/reference/steady.html" class="external-link">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/steady.html">steady</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Convergence was achieved in 1.5 years.</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://sizespectrum.org/mizer/reference/plotSpectra.html" class="external-link">plotSpectra</a></span><span class="op">(</span><span class="va">params</span>, power <span class="op">=</span> <span class="fl">2</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
