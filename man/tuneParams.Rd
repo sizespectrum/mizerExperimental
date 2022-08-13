@@ -92,9 +92,7 @@ own control sections on the existing ones that you find in the file
 For any entry "Foo" or "foo" in the \code{tabs} list there needs to be a function
 "fooTabUI" that defines the tab layout and a function "fooTab"
 that calculates the outputs to be displayed on the tab. You can model your
-own tabs on the existing ones that you find in the file
-\code{R/tuneParams_tabs.R}. Whether you choose to capitalise "Foo" or "foo" in
-the \code{tabs} argument determines how it is capitalised on the label of the tab.
+own tabs on the example tab that you find in the file \code{R/exampleTab.R}.
 }
 
 \section{Limitations}{

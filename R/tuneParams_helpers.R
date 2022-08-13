@@ -59,7 +59,7 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         if (any(is.infinite(p@initial_n))) {
             stop("Candidate steady state holds infinities")
         }
-        if (any(is.na(p@initial_n) || is.nan(p@initial_n))) {
+        if (any(is.na(p@initial_n) | is.nan(p@initial_n))) {
             stop("Candidate steady state holds non-numeric values")
         }
 
@@ -89,21 +89,21 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             # This is for the "Steady" tab where we want to show the
             # evolution of biomass over time during the run to steady
             # to diagnose eventual problems.
-            return(steady(p, t_max = 100, tol = 1e-2,
+            return(mizer::steady(p, t_max = 100, tol = 1e-2,
                           return_sim = TRUE,
                           progress_bar = progress))
         }
-        p <- steady(p, t_max = 100, tol = 1e-2,
+        p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                     progress_bar = progress)
         if (match == "biomass") {
             p <- calibrateBiomass(p)
             p <- matchBiomasses(p)
-            p <- steady(p, t_max = 100, tol = 1e-2,
+            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         } else if (match == "yield") {
             p <- calibrateYield(p)
             p <- matchYields(p)
-            p <- steady(p, t_max = 100, tol = 1e-2,
+            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                         progress_bar = progress)
         }
 
@@ -151,3 +151,25 @@ error_fun <- function(e) {
                     "The error message was:<br>", e)),
         easyClose = TRUE
     ))}
+
+# Convert the tab name given by the user to lower case, because the names of
+# the tab functions will always start with lower case.
+tab_name <- function(tab) {
+    tabname <- tab
+    substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+    tabname
+}
+
+# Return the title for the tab. This is either defined by the tab author or
+# otherwise is the tab name supplied by the user.
+tab_title <- function(tab) {
+    tabname <- tab_name(tab)
+    title_var <- paste0(tabname, "TabTitle")
+    if (!is.null(title <- get0(title_var))) {
+        if (!is.string(title)) {
+            stop(title_var, "should contain a string with the title for the tab")
+        }
+        return(title)
+    }
+    tab
+}

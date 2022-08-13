@@ -2,7 +2,7 @@
 #'
 #' The Biomass tab shows:
 #' * A plot of total biomass for each species, compared to
-#' observed biomasses when available, using [plotBiomassObservedVsModel()].
+#' observed biomasses when available, using [plotBiomassVsSpecies()].
 #' * Buttons "Calibrate" and "Match" that trigger a call to
 #' [calibrateBiomass()] or [matchBiomasses()] respectively.
 #'

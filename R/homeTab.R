@@ -60,7 +60,7 @@ homeTabUI <- function(params, help = TRUE, ...) {
 
         p("To run the application locally, follow these steps:"),
 
-        p("remotes::install_github('sizespectrum/mizerExperimental@TasModel')"),
+        p("remotes::install_github('sizespectrum/mizerExperimental', ref = 'tuneMR')"),
 
         p("library(mizerExperimental)"),
 

@@ -2,7 +2,7 @@
 #'
 #' The Number tab shows:
 #' * A plot of total number for each species, compared to
-#' observed numbers when available, using [plotNumberObservedVsModel()].
+#' observed numbers when available, using [plotNumberVsSpecies()].
 #' * Buttons "Calibrate" and "Match" that trigger a call to
 #' [calibrateNumber()] or [matchNumbers()] respectively.
 #'

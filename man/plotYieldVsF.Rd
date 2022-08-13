@@ -72,8 +72,8 @@ getYieldVsF
 Other plotting functions: 
 \code{\link{plotDeath}()},
 \code{\link{plotEnergyBudget}()},
+\code{\link{plotResourceLevel}()},
 \code{\link{plotResourcePred}()},
-\code{\link{plotResource}()},
 \code{\link{plotYieldVsSize}()}
 }
 \concept{plotting functions}
