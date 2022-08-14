@@ -3,17 +3,6 @@
 #' @inheritParams biomassTab
 #' @export
 reproTab <- function(input, output, session, params, logs, ...) {
-    # Help button ----
-    help_steps <- data.frame(
-        element = c(NA),
-        intro = c("This still needs to be written.")
-    )
-    observeEvent(
-        input$repro_help,
-        introjs(session, options = list(
-            steps = help_steps)
-        )
-    )
     # erepro plot ----
     output$plot_erepro <- renderPlotly({
         p <- params()
@@ -61,7 +50,6 @@ reproTab <- function(input, output, session, params, logs, ...) {
 #' @export
 reproTabUI <- function(...) {
     tagList(
-        actionButton("repro_help", "Press for instructions"),
         plotlyOutput("plot_erepro"),
         plotlyOutput("plot_psi")
     )
