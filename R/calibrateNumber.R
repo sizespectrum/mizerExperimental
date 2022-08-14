@@ -148,8 +148,8 @@ scaleModel <- function(params, factor) {
     assert_that(is.number(factor),
                 factor > 0)
 
-    # Resource replenishment rate
-    params@cc_pp <- params@cc_pp * factor
+    # Resource capacity
+    resource_capacity(params) <- resource_capacity(params) * factor
     params@resource_params$kappa <- params@resource_params$kappa * factor
 
     # Rmax
