@@ -23,7 +23,11 @@ dietTab <- function(input, output, session, params, logs, ...) {
         # Calculate total community abundance
         # Todo: take interaction matrix into account
         fish_idx <- (length(p@w_full) - length(p@w) + 1):length(p@w_full)
-        total_n <- p@initial_n_pp
+        if (!is.null(getComponent(p, "MR"))) {
+            total_n <- p@other_params[["MR"]]$interaction %*% p@n_other[["MR"]]
+        } else {
+            total_n <- p@initial_n_pp
+        }
         total_n[fish_idx] <- total_n[fish_idx] +
             p@interaction[sp, ] %*% p@initial_n
         phix <- getPredKernel(p)[sp, wp_idx, ]
