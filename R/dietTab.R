@@ -27,7 +27,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
             total_n <- drop(p@other_params[["MR"]]$interaction[sp, ] %*% p@initial_n_other[["MR"]])
         } else {
             total_n <- p@initial_n_pp
-        }
+        } 
         total_n[fish_idx] <- total_n[fish_idx] +
             p@interaction[sp, ] %*% p@initial_n
         phix <- getPredKernel(p)[sp, wp_idx, ]
