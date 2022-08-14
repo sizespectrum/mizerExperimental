@@ -24,7 +24,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
         # Todo: take interaction matrix into account
         fish_idx <- (length(p@w_full) - length(p@w) + 1):length(p@w_full)
         if (!is.null(getComponent(p, "MR"))) {
-            total_n <- p@other_params[["MR"]]$interaction %*% p@n_other[["MR"]]
+            total_n <- p@other_params[["MR"]]$interaction %*% p@initial_n_other[["MR"]]
         } else {
             total_n <- p@initial_n_pp
         }
