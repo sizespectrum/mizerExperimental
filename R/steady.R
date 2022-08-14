@@ -55,8 +55,13 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
     params@rates_funcs$RDD <- "constantRDD"
     
     # Force resource to stay at current level
-    old_resource_dynamics <- resource_params(params)$dynamics
-    mizerMR::resource_params(params)$dynamics <- "resource_constant"
+    if (!is.null(getComponent(params, "MR"))) {
+        old_resource_dynamics <- resource_params(params)$dynamics
+        mizerMR::resource_params(params)$dynamics <- "resource_constant"
+    } else {
+        old_resource_dynamics <- params@resource_dynamics
+        params@resource_dynamics <- "resource_constant"
+    }
     
     # Force other components to stay at current level
     old_other_dynamics <- params@other_dynamics
@@ -81,7 +86,11 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
     params@rates_funcs$RDD <- old_rdd_fun
     params@other_dynamics <- old_other_dynamics
     params@species_params$constant_reproduction <- NULL
-    mizerMR::resource_params(params)$dynamics <- old_resource_dynamics
+    if (!is.null(getComponent(params, "MR"))) {
+        mizerMR::resource_params(params)$dynamics <- old_resource_dynamics
+    } else {
+        params@resource_dynamics <- old_resource_dynamics
+    }
     
     if (params@rates_funcs$RDD == "BevertonHoltRDD") {
         if (preserve == "reproduction_level") {
