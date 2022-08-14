@@ -97,8 +97,8 @@ calibrateYield<- function(params) {
     observed <- params@species_params$yield_observed
     observed_total <- sum(observed, na.rm = TRUE)
     sp_observed <- which(!is.na(observed))
-    number <- sweep(params@initial_n, 2, params@dw, "*")
-    yield_model <- rowSums(number * getFMort(params))[sp_observed]
+    biomass <- sweep(params@initial_n, 2, params@w * params@dw, "*")
+    yield_model <- rowSums(biomass * getFMort(params))[sp_observed]
     model_total <- sum(yield_model)
     scaleModel(params, factor = observed_total / model_total)
 }
