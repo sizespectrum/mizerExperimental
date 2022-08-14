@@ -23,20 +23,24 @@ dietTab <- function(input, output, session, params, logs, ...) {
         total_n <- p@initial_n_pp
         total_n[fish_idx] <- total_n[fish_idx] +
             p@interaction[sp, ] %*% p@initial_n
-        totalx <- total_n * p@w_full
-        #totalx <- totalx / sum(totalx * dx)
         phix <- getPredKernel(p)[sp, wp_idx, ]
-        pr <- totalx * phix
-        br <- pr * p@w_full
+        n <- total_n * phix
+        n_logw <- n * p@w_full
+        b_logw <- n_logw * p@w_full
         # convert to proportions
         phix <- phix / sum(phix * dx)
-        pr <- pr / sum(pr * dx)
-        br <- br / sum(br * dx)
+        n <- n / sum(n * dx)
+        n_logw <- n_logw / sum(n_logw * dx)
+        b_logw <- b_logw / sum(b_logw * dx)
         df <- tibble::tibble(w = p@w_full,
-                             Kernel = phix,
-                             Biomass = br,
-                             Numbers = pr) %>%
-            tidyr::gather(Type, value, Kernel, Biomass, Numbers)
+                             `Feeding kernel` = phix,
+                             `Number density` = n,
+                             `Number density in log w` = n_logw,
+                             `Biomass density in log w` = b_logw) %>%
+            tidyr::gather(Type, value, `Feeding kernel`, 
+                          `Number density`, `Number density in log w`, 
+                          `Biomass density in log w`) %>%
+            mutate(Type = factor(Type))
         ggplot(df) +
             geom_line(aes(w, value, color = Type)) +
             labs(x = "Weight [g]", y = "Density") +
