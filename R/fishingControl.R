@@ -90,7 +90,8 @@ fishingControlUI <- function(p, input) {
                sliderInput("effort", "Effort",
                            value = effort,
                            min = 0,
-                           max = signif((effort + 1) * 1.5, 2)))
+                           max = signif((effort + 1) * 1.5, 2),
+                           step = 0.01))
 
     if (gp$sel_func == "knife_edge") {
         l1 <- c(l1, list(
