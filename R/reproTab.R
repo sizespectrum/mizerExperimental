@@ -35,7 +35,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
     output$plot_psi <- renderPlotly({
         p <- params()
         sp <- which.max(p@species_params$species == input$sp)
-        w_min <- p@species_params$w_inf[sp] / 50
+        w_min <- 1
         sel <- p@w >= w_min & p@w <= p@species_params$w_inf[sp]
         df <- data.frame(Size = p@w[sel], value = p@psi[sp, sel])
         ggplot(df, aes(x = Size, y = value)) +
