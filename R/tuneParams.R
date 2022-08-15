@@ -191,7 +191,7 @@ tuneParams <- function(params,
                            title = "Find steady state. Keyboard shortcut: s"),
                     # We should not put a tooltip on the Undo or Redo buttons
                     # because they get stuck when the button gets disabled
-                    actionButton("undo_all", "", icon = icon("arrow-left-to-line")),
+                    actionButton("undo_all", "", icon = icon("angles-left")),
                     actionButton("undo", "", icon = icon("angle-left")),
                     actionButton("redo", "", icon = icon("angle-right")),
                     data.step = 5,
