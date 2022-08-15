@@ -169,7 +169,7 @@ scaleModel <- function(params, factor) {
     }
 
     # Search volume
-    search_vol(params) <- search_vol(params) / factor
+    params@search_vol = params@search_vol / factor
     if ("gamma" %in% names(params@species_params)) {
         params@species_params$gamma <- params@species_params$gamma / factor
     }
