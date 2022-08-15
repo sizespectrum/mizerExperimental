@@ -149,8 +149,13 @@ scaleModel <- function(params, factor) {
                 factor > 0)
 
     # Resource capacity
-    resource_capacity(params) <- resource_capacity(params) * factor
-    resource_params(params)$kappa <- resource_params(params)$kappa * factor
+    if (is.null(getComponent(params, "MR"))) {
+        params@cc_pp <- params@cc_pp * factor
+        params@resource_params$kappa <- params@resource_params$kappa * factor
+    } else {
+        mizerMR::resource_params(params)$kappa <- 
+            mizerMR::resource_params(params)$kappa * factor
+    }
 
     # Rmax
     # r_max is a deprecated spelling of R_max. Get rid of it.
@@ -177,7 +182,9 @@ scaleModel <- function(params, factor) {
     initialNOther(params) <- initial_n_other
     
     initialN(params) <- initialN(params) * factor
-    initialNResource(params) <- initialNResource(params) * factor
+    if (is.null(getComponent(params, "MR"))) {
+        initialNResource(params) <- initialNResource(params) * factor
+    }
 
     # community
     params@sc <- params@sc * factor
