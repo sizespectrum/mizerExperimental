@@ -191,9 +191,9 @@ tuneParams <- function(params,
                            title = "Find steady state. Keyboard shortcut: s"),
                     # We should not put a tooltip on the Undo or Redo buttons
                     # because they get stuck when the button gets disabled
-                    actionButton("undo", "", icon = icon("undo")),
-                    actionButton("redo", "", icon = icon("redo")),
-                    actionButton("undo_all", "", icon = icon("fast-backward")),
+                    actionButton("undo_all", "", icon = icon("arrow-left-to-line")),
+                    actionButton("undo", "", icon = icon("angle-left")),
+                    actionButton("redo", "", icon = icon("angle-right")),
                     data.step = 5,
                     data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button or hit 's' on the keyboard. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
                 ),
