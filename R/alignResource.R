@@ -14,8 +14,8 @@ alignResource <- function(params) {
     
     sc <- colSums(params@initial_n) * 
         params@w ^ params@resource_params$lambda
-    min_w_mat = min(params@species_params$w_mat)
-    max_w_mat = max(params@species_params$w_mat)
+    min_w_mat <- min(params@species_params$w_mat)
+    max_w_mat <- max(params@species_params$w_mat)
     sel <- (params@w > min_w_mat) & (params@w < max_w_mat)
     factor <- sum(sc[sel]) / sum(sel) / params@resource_params$kappa 
     
