@@ -150,7 +150,7 @@ scaleModel <- function(params, factor) {
 
     # Resource capacity
     resource_capacity(params) <- resource_capacity(params) * factor
-    params@resource_params$kappa <- params@resource_params$kappa * factor
+    resource_params(params)$kappa <- resource_params(params)$kappa * factor
 
     # Rmax
     # r_max is a deprecated spelling of R_max. Get rid of it.
@@ -164,19 +164,20 @@ scaleModel <- function(params, factor) {
     }
 
     # Search volume
-    params@search_vol = params@search_vol / factor
+    search_vol(params) <- search_vol(params) / factor
     if ("gamma" %in% names(params@species_params)) {
         params@species_params$gamma <- params@species_params$gamma / factor
     }
 
     # Initial values
-    initial_n_other <- params@initial_n_other
+    initial_n_other <- initialNOther(params)
     for (res in names(initial_n_other)) {
         initial_n_other[[res]] <- initial_n_other[[res]] * factor
     }
-    initialN(params) <- params@initial_n * factor
-    initialNResource(params) <- params@initial_n_pp * factor
-    initialNOther(params) = initial_n_other
+    initialNOther(params) <- initial_n_other
+    
+    initialN(params) <- initialN(params) * factor
+    initialNResource(params) <- initialNResource(params) * factor
 
     # community
     params@sc <- params@sc * factor
