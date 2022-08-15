@@ -100,7 +100,7 @@ calibrateYield<- function(params) {
     biomass <- sweep(params@initial_n, 2, params@w * params@dw, "*")
     yield_model <- rowSums(biomass * getFMort(params))[sp_observed]
     model_total <- sum(yield_model)
-    scaleModel(params, factor = observed_total / model_total)
+    mizerExperimental::scaleModel(params, factor = observed_total / model_total)
 }
 
 
