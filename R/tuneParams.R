@@ -109,8 +109,6 @@ tuneParams <- function(params,
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
-    # I am not sure why this is needed, but without it the tooltips won't show.
-    require("shinyBS")
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -153,6 +151,7 @@ tuneParams <- function(params,
     ui <- fluidPage(
         theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
         shinyjs::useShinyjs(),
+        prompter::use_prompt(),
         introjsUI(),
         tags$script(HTML("$(function(){
           $(document).keydown(function(e) {
@@ -175,19 +174,23 @@ tuneParams <- function(params,
             sidebarPanel(
                 width = 3,
                 introBox(
-                    tipify(actionButton("help", "Help"),
-                           title = "Start the introductory instructions"),
-                    tipify(downloadButton("params", ""),
-                           title = "Download the current params object"),
-                    tipify(actionButton("done", "Return", icon = icon("check"),
-                                 onclick = "setTimeout(function(){window.close();},500);"),
-                           title = "Return the current params objects to R"),
+                    prompter::add_prompt(
+                        actionButton("help", "Help"),
+                        message = "Start the introductory instructions",
+                        position = "right"),
+                    downloadButton("params", ""),
+                    prompter::add_prompt(
+                        actionButton("done", "Return", icon = icon("check"),
+                                     onclick = "setTimeout(function(){window.close();},500);"),
+                        message = "Return the current params objects to R"),
                     data.step = 8,
                     data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
-                    tipify(actionButton("sp_steady", HTML("<u>s</u>teady")),
-                           title = "Find steady state. Keyboard shortcut: s"),
+                    prompter::add_prompt(
+                        actionButton("sp_steady", HTML("<u>s</u>teady")),
+                        message = "Find steady state. Keyboard shortcut: s",
+                        position = "right"),
                     # We should not put a tooltip on the Undo or Redo buttons
                     # because they get stuck when the button gets disabled
                     actionButton("undo_all", "", icon = icon("angles-left")),
@@ -255,14 +258,15 @@ tuneParams <- function(params,
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
             tagList(
-                popify(selectInput("sp", "Species to tune:", species),
-                       placement = "right",
-                       title = "Species to tune",
-                       content = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on. You can also sometimes change this selection by clicking on a species in some of the plots."),
-                tipify(actionButton("previous_sp", HTML("<u>p</u>revious")),
-                       title = "Select previous species. Keyboard shortcut: p"),
-                tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
-                       title = "Select next species. Keyboard shortcut: n"))
+                selectInput("sp", "Species to tune:", species),
+                prompter::add_prompt(
+                    actionButton("previous_sp", HTML("<u>p</u>revious")),
+                    message = "Select previous species. Keyboard shortcut: p",
+                    position = "right"),
+                prompter::add_prompt(
+                    actionButton("next_sp", HTML("<u>n</u>ext")),
+                    message = "Select next species. Keyboard shortcut: n",
+                    position = "right"))
             })
         # Sliders for the species parameters
         output$sp_params <- renderUI({

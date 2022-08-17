@@ -19,9 +19,9 @@ Imports:
     ggplot2,
     methods,
     plotly,
+    prompter,
     rintrojs,
     shiny,
-    shinyBS,
     shinyjs,
     tibble,
     tidyr
