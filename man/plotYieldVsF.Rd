@@ -12,9 +12,10 @@ plotYieldVsF(
   F_range,
   effort_it = 1,
   distance_func = distanceSSLogN,
-  tol = 0.1,
+  tol = 0.001,
   max_func = maxFthreshold,
-  threshold_var = 10
+  threshold_var = 10,
+  t_max = 100
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ when stopping the fisheries effort.}
 from the \code{params} object. If supplied the function returns the value of the
 threshold using \code{threshold_var}. If not supplied the function returns the
 unchanged value, which can be compared against the version which uses \code{threshold_var}.}
+
+\item{t_max}{The longest time to run project to find steady state.}
 }
 \value{
 A ggplot object
