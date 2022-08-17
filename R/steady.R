@@ -96,10 +96,17 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
     }
     
     # Set resource carrying capacity
-    rr <- resource_rate(params)
-    cc <- (getResourceMort(params) + rr) / rr * initialNResource(params)
-    cc[rr == 0] <- 0
-    resource_capacity(params) <- cc
+    if (!is.null(getComponent(params, "MR"))) {
+        rr <- mizerMR::resource_rate(params)
+        cc <- (rr + getResourceMort(params)) / rr * mizerMR::initialNResource(params)
+        cc[rr == 0] <- 0
+        mizerMR::resource_capacity(params) <- cc
+    } else {
+        rr <- resource_rate(params)
+        cc <- (rr + getResourceMort(params)) / rr * initialNResource(params)
+        cc[rr == 0] <- 0
+        resource_capacity(params) <- cc
+    }
     
     if (return_sim) {
         object@params <- params
