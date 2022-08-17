@@ -5,6 +5,7 @@ home:
 url: https://sizespectrum.org/mizerExperimental
 
 template:
+  bootstrap: 5
   params:
     bootswatch: cerulean
   opengraph:
@@ -21,16 +22,19 @@ toc:
 navbar:
   structure:
     left: [intro, articles, reference, news]
-    right: [blog, twitter, github]
+    right: [mizer, blog, twitter, github]
   components:
     home: ~
+    mizer:
+      text: mizer Home
+      href: https://sizespectrum.org/mizer
     blog:
       text: Blog
       href: https://blog.mizer.sizespectrum.org
     twitter:
        icon: "fab fa-twitter fa-lg"
        href: https://twitter.com/mizer_model
-
+       aria-label: Twitter
 
 destination: docs
 
