@@ -9,7 +9,8 @@ yieldCalculator(
   effort_vec,
   idx_species,
   distance_func = distanceSSLogN,
-  tol = 0.1
+  tol = 0.001,
+  t_max = 100
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ own distance function.}
 
 \item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
 RDI over t_per years is less than tol for every species.}
+
+\item{t_max}{The longest time to run project to find steady state.}
 }
 \value{
 a vector of yield value of same length as \code{effort_vec}

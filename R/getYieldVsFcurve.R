@@ -29,7 +29,8 @@
 #' from the `params` object. If supplied the function returns the value of the
 #' threshold using `threshold_var`. If not supplied the function returns the
 #' unchanged value, which can be compared against the version which uses `threshold_var`.
-#'
+#' @param t_max The longest time to run project to find steady state.
+#' 
 #' @return A data frame with columns `F` and `yield`.
 #' @export
 #' @family summary functions
@@ -48,9 +49,10 @@ getYieldVsF <- function(params,
                         F_max,
                         effort_it = 1,
                         distance_func = distanceSSLogN,
-                        tol = 0.1,
+                        tol = 0.001,
                         max_func = maxFthreshold,
-                        threshold_var = 10
+                        threshold_var = 10,
+                        t_max = 100
                         ) {
     # Check parameters
     params <- validParams(params)
@@ -62,6 +64,10 @@ getYieldVsF <- function(params,
     if (length(idx_species) != 1) {
         stop("Invalid species specification")
     }
+    
+    # Project to steady with the current fishing
+    params <- projectToSteady(params, t_max = t_max, progress_bar = FALSE,
+                              distance_func = distance_func, tol = tol)
 
     # First make a new gear for that specific species
     sp_name <- params@species_params$species[[idx_species]]
@@ -73,6 +79,7 @@ getYieldVsF <- function(params,
         stop("This function only works in the case where the target species ",
              "is selected by a single gear only")
     }
+    current_FMort <- params@initial_effort * gp_extra$catchability
     gp_extra$gear <- "tmp"
     gp_extra$catchability <- 1
     gp$catchability[gps] <- 0
@@ -130,14 +137,28 @@ getYieldVsF <- function(params,
         return(rbind(maxFdf,data.frame("yield" = yield_vec, "effort" = effort_vec)))
     } else {
 
-        if (!missing(F_max)) F_range = seq(0, F_max, length.out = no_steps)
+        if (!missing(F_max)) {
+            F_range = seq(0, F_max, length.out = no_steps)
+        }
 
         assert_that(is.numeric(F_range))
+        sel <- F_range < current_FMort
+        F_range1 <- rev(F_range[sel])
+        F_range2 <- F_range[!sel]
 
-        yield_vec <- yieldCalculator(params = params, effort_vec = F_range, idx_species = idx_species,
-                                     distance_func = distance_func, tol = tol)
+        yield_vec1 <- 
+            yieldCalculator(params = params, effort_vec = F_range1, 
+                            idx_species = idx_species,
+                            distance_func = distance_func, 
+                            tol = tol, t_max = t_max)
+        yield_vec2 <- 
+            yieldCalculator(params = params, effort_vec = F_range2, 
+                            idx_species = idx_species,
+                            distance_func = distance_func, 
+                            tol = tol, t_max = t_max)
 
-        return(data.frame("yield" = yield_vec, "effort" = F_range))
+        return(data.frame(yield = c(yield_vec1, yield_vec2), 
+                          effort = c(F_range1, F_range2)))
     }
 }
 
@@ -164,9 +185,10 @@ plotYieldVsF <- function(params,
                          F_range,
                          effort_it = 1,
                          distance_func = distanceSSLogN,
-                         tol = .1,
+                         tol = .001,
                          max_func = maxFthreshold,
-                         threshold_var = 10){
+                         threshold_var = 10,
+                         t_max = 100){
 
     curve <- getYieldVsF(params,
                          species = species,
@@ -177,7 +199,8 @@ plotYieldVsF <- function(params,
                          distance_func = distance_func,
                          tol = tol,
                          max_func = max_func,
-                         threshold_var = threshold_var
+                         threshold_var = threshold_var,
+                         t_max = t_max
                          )
 
     ggplot(curve, aes(x = effort, y = yield)) +
@@ -200,9 +223,9 @@ plotYieldVsF <- function(params,
 #' @export
 getMaxF <- function(params, idx_species, effort_it = 1,
                     distance_func = distanceSSLogN,
-                    tol = 0.1,
+                    tol = 0.001,
                     max_func = maxFthreshold,
-                    threshold_var = 10)
+                    threshold_var = 10, t_max = 100)
 {
     iEffort <- effort_init <- initial_effort(params)["tmp"]
     # threshold to stop the while loop
@@ -211,7 +234,7 @@ getMaxF <- function(params, idx_species, effort_it = 1,
     while (max_func(params,idx_species) >= biom_threshold)
     {
         params@initial_effort["tmp"] <- iEffort
-        sim <- projectToSteady(params, t_max = 100,
+        sim <- projectToSteady(params, t_max = t_max,
                                return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
         y <- getYield(sim)
         ft <- idxFinalT(sim)
@@ -339,13 +362,13 @@ distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 #'
 yieldCalculator <- function(params, effort_vec, idx_species,
                             distance_func = distanceSSLogN,
-                            tol = 0.1)
+                            tol = 0.001, t_max = 100)
 {
     yield_vec <- NULL
     for(iEffort in effort_vec)
     {
     params@initial_effort["tmp"] <- iEffort
-    sim <- projectToSteady(params, t_max = 100,
+    sim <- projectToSteady(params, t_max = t_max,
                            return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
     y <- getYield(sim)
     ft <- idxFinalT(sim)
