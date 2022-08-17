@@ -6,7 +6,7 @@ resourceTab <- function(input, output, session, params, logs, ...) {
 
     # Plot resource ----
     output$plot_resource <- renderPlot({
-        mizerMR::plotResource(params()) + 
+        mizerMR::plotResourceLevel(params()) + 
             theme(text = element_text(size = 16))
     })
 
