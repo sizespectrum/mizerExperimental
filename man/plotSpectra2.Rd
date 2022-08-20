@@ -4,18 +4,22 @@
 \alias{plotSpectra2}
 \title{Show two size spectra in the same plot}
 \usage{
-plotSpectra2(params1, name1, params2, name2, power = 1, ...)
+plotSpectra2(object1, name1, object2, name2, power = 1, ...)
 }
 \arguments{
-\item{params1}{MizerParams object for the first model}
+\item{object1}{First MizerParams or MizerSim object}
 
-\item{name1}{An optional string with the name for the first model to be used in the legend. Set to "First" by default.}
+\item{name1}{An optional string with the name for the first model to be used
+in the legend. Set to "First" by default.}
 
-\item{params2}{MizerParams object for the second model}
+\item{object2}{Second MizerParams or MizerSim object}
 
-\item{name2}{An optional string with the name for the first model to be used in the legend. Set to "Second" by default.}
+\item{name2}{An optional string with the name for the first model to be used
+in the legend. Set to "Second" by default.}
 
-\item{power}{The abundance is plotted as the number density times the weight raised to power. The default power = 1 gives the biomass density, whereas power = 2 gives the biomass density with respect to logarithmic size bins.}
+\item{power}{The abundance is plotted as the number density times the weight
+raised to power. The default power = 1 gives the biomass density, whereas
+power = 2 gives the biomass density with respect to logarithmic size bins.}
 
 \item{...}{Parameters pass to \code{plotSpectra()}}
 }
