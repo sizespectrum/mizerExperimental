@@ -25,3 +25,8 @@ A ggplot2 object
 \description{
 Show two size spectra in the same plot
 }
+\examples{
+sim1 <- project(NS_params, t_max = 10)
+sim2 <- project(NS_params, effort = 0.5, t_max = 10)
+plotSpectra2(sim1, "Original", sim2, "Effort = 0.5")
+}

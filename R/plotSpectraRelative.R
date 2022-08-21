@@ -15,7 +15,7 @@
 #' 
 #' @return A ggplot2 object
 #' @export
-#' @example 
+#' @examples
 #' sim1 <- project(NS_params, t_max = 10)
 #' sim2 <- project(NS_params, effort = 0.5, t_max = 10)
 #' plotSpectraRelative(sim1, sim2)

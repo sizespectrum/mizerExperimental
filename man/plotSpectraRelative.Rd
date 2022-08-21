@@ -27,3 +27,8 @@ for the number density or the biomass density or the biomass density in log
 weight because the factors of \eqn{w} by which the densities differ cancels
 out in the relative difference.
 }
+\examples{
+sim1 <- project(NS_params, t_max = 10)
+sim2 <- project(NS_params, effort = 0.5, t_max = 10)
+plotSpectraRelative(sim1, sim2)
+}
