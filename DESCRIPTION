@@ -42,6 +42,7 @@ Collate:
     plotYieldVsSpecies.R
     plotNumberVsSpecies.R
     plotSpectraRelative.R
+    plotYieldCurve.R
     calibrateNumber.R
     matchNumbers.R
     tuneParams.R
