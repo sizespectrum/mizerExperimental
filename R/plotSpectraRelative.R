@@ -84,12 +84,16 @@ plotlyBiomassRelative <- function(sim, sim_original = NULL, ...) {
 #' Plot change in yield over time
 #'
 #' @param sim A MizerSim object
-#' @param params A MizerParams object describing the initial state, used to
-#'   calculate the initial yield.
+#' @param object_original A MizerParams or MizerSim object to calculate
+#'   differences from.
 #' @param ... Parameters passed to `getYield()`
 #' @export
-plotYieldRelative <- function(sim, params, ...) {
-    yield_original <- getYield(params, ...)
+plotYieldRelative <- function(sim, object_original, ...) {
+    if (is(object_original, "MizerParams")) {
+        yield_original <- getYield(params, ...)
+    } else if (is(object_original, "MizerSim")) {
+        yield_original <- t(getYield(params, ...))
+    }
     yield <- t(getYield(sim, ...))
     rel_diff <- (yield - yield_original) / yield_original * 100
     df <- melt(rel_diff) |>
@@ -99,8 +103,8 @@ plotYieldRelative <- function(sim, params, ...) {
 
 #' @rdname plotYieldRelative
 #' @export
-plotlyYieldRelative <- function(sim, params, ...) {
-    ggplotly(plotYieldRelative(sim, params, ...),
+plotlyYieldRelative <- function(sim, object_original, ...) {
+    ggplotly(plotYieldRelative(sim, object_original, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
 
