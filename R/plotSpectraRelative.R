@@ -50,7 +50,7 @@ plotSpectraRelative <- function(object1, object2, ...) {
 #' @export
 plotlySpectraRelative <- function(object1, object2, ...) {
     ggplotly(plotSpectraRelative(object1, object2, ...),
-             tooltip = c("Species", "w", "value"))
+             tooltip = c("Legend", "w", "rel_diff"))
 }
 
 #' Plot change in biomass over time
