@@ -90,9 +90,9 @@ plotlyBiomassRelative <- function(sim, sim_original = NULL, ...) {
 #' @export
 plotYieldRelative <- function(sim, object_original, ...) {
     if (is(object_original, "MizerParams")) {
-        yield_original <- getYield(params, ...)
+        yield_original <- getYield(object_original, ...)
     } else if (is(object_original, "MizerSim")) {
-        yield_original <- t(getYield(params, ...))
+        yield_original <- t(getYield(object_original, ...))
     }
     yield <- t(getYield(sim, ...))
     rel_diff <- (yield - yield_original) / yield_original * 100
