@@ -54,23 +54,30 @@ plotlySpectraRelative <- function(object1, object2, ...) {
 }
 
 #' Plot change in biomass over time
-#' 
+#'
 #' @param sim A MizerSim object
+#' @param sim_original Another MizerSim object to compare the biomasses to. If
+#'   NULL (default) then the biomasses are compared to the initial biomasses in
+#'   `sim`.
 #' @param ... Parameters passed to `getBiomass()`
 #' @export
-plotBiomassRelative <- function(sim, ...) {
-    biomass_original <- getBiomass(sim@params, ...)
+plotBiomassRelative <- function(sim, sim_original = NULL, ...) {
+    if (is.null(sim_original)) {
+        biomass_original <- getBiomass(sim@params, ...)
+    } else {
+        biomass_original <- t(getBiomass(sim_original, ...))
+    }
     biomass <- t(getBiomass(sim, ...))
     rel_diff <- (biomass - biomass_original) / biomass_original * 100
     df <- melt(rel_diff) |>
         transmute(Year = time, `Change %` = value, Species = sp)
-    plotDataFrame(df, cm)
+    plotDataFrame(df, sim@params)
 }
 
 #' @rdname plotBiomassRelative
 #' @export
-plotlyBiomassRelative <- function(sim, ...) {
-    ggplotly(plotBiomassRelative(sim, ...),
+plotlyBiomassRelative <- function(sim, sim_original = NULL, ...) {
+    ggplotly(plotBiomassRelative(sim, sim_original, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
 
@@ -87,7 +94,7 @@ plotYieldRelative <- function(sim, params, ...) {
     rel_diff <- (yield - yield_original) / yield_original * 100
     df <- melt(rel_diff) |>
         transmute(Year = time, `Change %` = value, Species = sp)
-    plotDataFrame(df, cm)
+    plotDataFrame(df, sim@params)
 }
 
 #' @rdname plotYieldRelative
