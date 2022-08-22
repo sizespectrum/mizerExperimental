@@ -2,9 +2,12 @@
 % Please edit documentation in R/plotSpectraRelative.R
 \name{plotSpectraRelative}
 \alias{plotSpectraRelative}
+\alias{plotlySpectraRelative}
 \title{Plot the relative difference between two spectra}
 \usage{
 plotSpectraRelative(object1, object2, ...)
+
+plotlySpectraRelative(object1, object2, ...)
 }
 \arguments{
 \item{object1}{An object of class MizerSim or MizerParams}

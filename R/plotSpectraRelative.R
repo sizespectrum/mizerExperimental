@@ -45,3 +45,55 @@ plotSpectraRelative <- function(object1, object2, ...) {
         geom_hline(yintercept = 0, linetype = 1,
                    colour = "dark grey", size = 0.75)
 }
+
+#' @rdname plotSpectraRelative
+#' @export
+plotlySpectraRelative <- function(object1, object2, ...) {
+    ggplotly(plotSpectraRelative(object1, object2, ...),
+             tooltip = c("Species", "w", "value"))
+}
+
+#' Plot change in biomass over time
+#' 
+#' @param sim A MizerSim object
+#' @param ... Parameters passed to `getBiomass()`
+#' @export
+plotBiomassRelative <- function(sim, ...) {
+    biomass_original <- getBiomass(sim@params, ...)
+    biomass <- t(getBiomass(sim, ...))
+    rel_diff <- (biomass - biomass_original) / biomass_original * 100
+    df <- melt(rel_diff) |>
+        transmute(Year = time, `Change %` = value, Species = sp)
+    plotDataFrame(df, cm)
+}
+
+#' @rdname plotBiomassRelative
+#' @export
+plotlyBiomassRelative <- function(sim, ...) {
+    ggplotly(plotBiomassRelative(sim, ...),
+             tooltip = c("Species", "Year", "Change %"))
+}
+
+#' Plot change in yield over time
+#'
+#' @param sim A MizerSim object
+#' @param params A MizerParams object describing the initial state, used to
+#'   calculate the initial yield.
+#' @param ... Parameters passed to `getYield()`
+#' @export
+plotYieldRelative <- function(sim, params, ...) {
+    yield_original <- getYield(params, ...)
+    yield <- t(getYield(sim, ...))
+    rel_diff <- (yield - yield_original) / yield_original * 100
+    df <- melt(rel_diff) |>
+        transmute(Year = time, `Change %` = value, Species = sp)
+    plotDataFrame(df, cm)
+}
+
+#' @rdname plotYieldRelative
+#' @export
+plotlyYieldRelative <- function(sim, params, ...) {
+    ggplotly(plotYieldRelative(sim, params, ...),
+             tooltip = c("Species", "Year", "Change %"))
+}
+
