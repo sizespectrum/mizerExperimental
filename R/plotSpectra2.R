@@ -1,17 +1,39 @@
 #' Show two size spectra in the same plot
 #' 
-#' @param params1 MizerParams object for the first model
-#' @param name1 An optional string with the name for the first model to be used in the legend. Set to "First" by default.
-#' @param params2 MizerParams object for the second model
-#' @param name2 An optional string with the name for the first model to be used in the legend. Set to "Second" by default.
-#' @param power The abundance is plotted as the number density times the weight raised to power. The default power = 1 gives the biomass density, whereas power = 2 gives the biomass density with respect to logarithmic size bins.
-#' @param ... Parameters pass to `plotSpectra()`
+#' @param object1 First MizerParams or MizerSim object.
+#' @param object2 Second MizerParams or MizerSim object.
+#' @param name1 An optional string with the name for the first model, to be used
+#'   in the legend. Set to "First" by default.
+#' @param name2 An optional string with the name for the second model, to be
+#'   used in the legend. Set to "Second" by default.
+#' @param power The abundance is plotted as the number density times the weight
+#'   raised to this power. The default power = 1 gives the biomass density,
+#'   whereas power = 2 gives the biomass density with respect to logarithmic
+#'   size bins.
+#' @param ... Parameters to pass to `plotSpectra()`
 #' @return A ggplot2 object
 #' @export
-plotSpectra2 <- function(params1, name1, params2, name2, power = 1, ...) {
-    assert_that(is(params1, "MizerParams"),
-                is(params2, "MizerParams"),
-                is.number(power))
+#' 
+#' @examples
+#' sim1 <- project(NS_params, t_max = 10)
+#' sim2 <- project(NS_params, effort = 0.5, t_max = 10)
+#' plotSpectra2(sim1, sim2, "Original", "Effort = 0.5")
+plotSpectra2 <- function(object1, object2, name1 = "First", name2 = "Second",
+                         power = 1, ...) {
+    
+    sf1 <- mizerMR::plotSpectra(object1, power = power, return_data = TRUE, ...)
+    sf1$Model <- name1
+    sf2 <- mizerMR::plotSpectra(object2, power = power, return_data = TRUE, ...)
+    sf2$Model <- name2
+    sf <- rbind(sf1, sf2)
+    
+    if (is(object1, "MizerSim")) {
+        params <- object1@params
+    } else {
+        params <- object1
+    }
+    legend_levels <- intersect(names(params@linecolour), unique(sf$Legend))
+    linecolours <- params@linecolour[legend_levels]
     
     if (power %in% c(0, 1, 2)) {
         y_label <- c("Number density [1/g]", "Biomass density", 
@@ -21,15 +43,10 @@ plotSpectra2 <- function(params1, name1, params2, name2, power = 1, ...) {
         y_label <- paste0("Number density * w^", power)
     }
     
-    sf1 <- plotSpectra(params1, power = power, return_data = TRUE, ...)
-    sf1$Model <- name1
-    sf2 <- plotSpectra(params2, power = power, return_data = TRUE, ...)
-    sf2$Model <- name2
-    ggplot(rbind(sf1, sf2),
-           aes(x = w, y = value, colour = Legend, linetype = Model)) +
+    ggplot(sf, aes(x = w, y = value, colour = Legend, linetype = Model)) +
         geom_line() +
         scale_x_log10("Weight [g]") +
         scale_y_log10(y_label) + 
-        scale_colour_manual(values = getColours(params1), limits = force)
+        scale_colour_manual(values = linecolours)
         
 }
