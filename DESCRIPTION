@@ -38,6 +38,7 @@ Collate:
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
     plotNumberVsSpecies.R
+    plotRelative.R
     calibrateNumber.R
     matchNumbers.R
     tuneParams.R
