@@ -82,4 +82,5 @@ reference:
   - getMaxF
   - maxFthreshold
   - yieldCalculator
+  - a_mat
 
