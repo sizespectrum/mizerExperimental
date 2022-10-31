@@ -16,6 +16,10 @@ yieldCalculator(
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
 
+\item{effort_vec}{TODO: document}
+
+\item{idx_species}{TODO: document}
+
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number
 that in some sense measures the distance between the states. By default

@@ -14,6 +14,8 @@ describing the current state}
 
 \item{previous}{A named list with entries \code{n}, \code{n_pp} and \code{n_other}
 describing the previous state}
+
+\item{criterion}{TODO: document}
 }
 \value{
 proportional difference between current and previous state

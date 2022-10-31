@@ -158,7 +158,7 @@ getYieldVsF <- function(params,
                             tol = tol, t_max = t_max)
 
         return(data.frame(yield = c(yield_vec1, yield_vec2), 
-                          effort = c(F_range1, F_range2)))
+                          F = c(F_range1, F_range2)))
     }
 }
 
@@ -203,7 +203,7 @@ plotYieldVsF <- function(params,
                          t_max = t_max
                          )
 
-    ggplot(curve, aes(x = effort, y = yield)) +
+    ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
@@ -218,6 +218,7 @@ plotYieldVsF <- function(params,
 #' Default case is biomass exposed to fisheries lower than 10% of original biomass
 #'
 #' @inheritParams getYieldVsF
+#' @param idx_species TODO: document
 #'
 #' @return dataframe
 #' @export
@@ -266,6 +267,7 @@ getMaxF <- function(params, idx_species, effort_it = 1,
 #'   describing the current state
 #' @param previous A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the previous state
+#' @param criterion TODO: document
 #'
 #' @return proportional difference between current and previous state
 #' @family distance functions
@@ -357,29 +359,30 @@ distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 #' `getYieldVsCurve`
 #'
 #' @inheritParams getYieldVsF
+#' @param effort_vec TODO: document
+#' @param idx_species TODO: document
 #'
 #' @return a vector of yield value of same length as `effort_vec`
 #'
 yieldCalculator <- function(params, effort_vec, idx_species,
                             distance_func = distanceSSLogN,
-                            tol = 0.001, t_max = 100)
-{
+                            tol = 0.001, t_max = 100) {
     yield_vec <- NULL
-    for(iEffort in effort_vec)
-    {
-    params@initial_effort["tmp"] <- iEffort
-    sim <- projectToSteady(params, t_max = t_max,
-                           return_sim = TRUE, progress_bar = FALSE, distance_func = distance_func, tol = tol)
-    y <- getYield(sim)
-    ft <- idxFinalT(sim)
-    if (ft < 66) { # if convergence use final yield
-        yield_vec <- c(yield_vec, y[ft, idx_species])
-    } else { # otherwise average over last 30 years (t_per = 1.5)
-        yield_vec <- c(yield_vec, mean(y[(ft - 20):ft, idx_species]))
-    }
-    # Start next simulation with final state from current in the hope that
-    # this will be quicker.
-    params <- setInitialValues(params, sim)
+    for (iEffort in effort_vec) {
+        params@initial_effort["tmp"] <- iEffort
+        sim <- projectToSteady(params, t_max = t_max,
+                               return_sim = TRUE, progress_bar = FALSE, 
+                               distance_func = distance_func, tol = tol)
+        y <- getYield(sim)
+        ft <- idxFinalT(sim)
+        if (ft < t_max - 1) { # if convergence use final yield
+            yield_vec <- c(yield_vec, y[ft, idx_species])
+        } else { # otherwise average over last 30 years (t_per = 1.5)
+            yield_vec <- c(yield_vec, mean(y[(ft - 30):ft, idx_species]))
+        }
+        # Start next simulation with final state from current in the hope that
+        # this will be quicker.
+        params <- setInitialValues(params, sim)
     }
 
     return(yield_vec)
@@ -396,6 +399,7 @@ yieldCalculator <- function(params, effort_vec, idx_species,
 #'
 #'
 #' @inheritParams getYieldVsF
+#' @param idx_species TODO: document
 #'
 #' @return a numeric value
 #'

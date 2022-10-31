@@ -18,6 +18,8 @@ getMaxF(
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
 
+\item{idx_species}{TODO: document}
+
 \item{effort_it}{The width of steps used to find maximum fisheries mortality,
 higher values means a faster calculation but less accurate maximum.}
 
