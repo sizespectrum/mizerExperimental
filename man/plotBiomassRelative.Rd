@@ -5,9 +5,9 @@
 \alias{plotlyBiomassRelative}
 \title{Plot change in biomass over time}
 \usage{
-plotBiomassRelative(sim, sim_original = NULL, ...)
+plotBiomassRelative(sim, sim_original = NULL, species = NULL, ...)
 
-plotlyBiomassRelative(sim, sim_original = NULL, ...)
+plotlyBiomassRelative(sim, sim_original = NULL, species = NULL, ...)
 }
 \arguments{
 \item{sim}{A MizerSim object}
@@ -16,6 +16,11 @@ plotlyBiomassRelative(sim, sim_original = NULL, ...)
 NULL (default) then the biomasses are compared to the initial biomasses in
 \code{sim}.}
 
+\item{species}{The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a numeric vector with
+the species indices, or a logical vector indicating for each species
+whether it is to be selected (TRUE) or not.}
+
 \item{...}{Parameters passed to \code{getBiomass()}}
 }
 \description{
@@ -23,4 +28,5 @@ Plot change in biomass over time
 }
 \examples{
 plotBiomassRelative(NS_sim)
+plotBiomassRelative(NS_sim, species = c("Cod", "Sole"))
 }

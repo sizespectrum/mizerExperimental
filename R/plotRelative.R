@@ -67,17 +67,23 @@ plotlySpectraRelative <- function(object1, object2, ...) {
 #' @param sim_original Another MizerSim object to compare the biomasses to. If
 #'   NULL (default) then the biomasses are compared to the initial biomasses in
 #'   `sim`.
+#' @param species The species to be selected. Optional. By default all target
+#'   species are selected. A vector of species names, or a numeric vector with
+#'   the species indices, or a logical vector indicating for each species
+#'   whether it is to be selected (TRUE) or not.
 #' @param ... Parameters passed to `getBiomass()`
 #' @export
 #' @examples
 #' plotBiomassRelative(NS_sim)
-plotBiomassRelative <- function(sim, sim_original = NULL, ...) {
+#' plotBiomassRelative(NS_sim, species = c("Cod", "Sole"))
+plotBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
+    sel <- valid_species_arg(sim, species, return.logical = TRUE)
     if (is.null(sim_original)) {
-        biomass_original <- getBiomass(sim@params, ...)
+        biomass_original <- getBiomass(sim@params, ...)[sel]
     } else {
-        biomass_original <- t(getBiomass(sim_original, ...))
+        biomass_original <- t(getBiomass(sim_original, ...))[sel, , drop = FALSE]
     }
-    biomass <- t(getBiomass(sim, ...))
+    biomass <- t(getBiomass(sim, ...))[sel, , drop = FALSE]
     rel_diff <- (biomass - biomass_original) / biomass_original * 100
     df <- melt(rel_diff) |>
         transmute(Year = time, `Change %` = value, Species = sp)
@@ -86,7 +92,7 @@ plotBiomassRelative <- function(sim, sim_original = NULL, ...) {
 
 #' @rdname plotBiomassRelative
 #' @export
-plotlyBiomassRelative <- function(sim, sim_original = NULL, ...) {
+plotlyBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
     ggplotly(plotBiomassRelative(sim, sim_original, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
@@ -96,17 +102,23 @@ plotlyBiomassRelative <- function(sim, sim_original = NULL, ...) {
 #' @param sim A MizerSim object
 #' @param object_original A MizerParams or MizerSim object to calculate
 #'   differences from.
+#' @param species The species to be selected. Optional. By default all target
+#'   species are selected. A vector of species names, or a numeric vector with
+#'   the species indices, or a logical vector indicating for each species
+#'   whether it is to be selected (TRUE) or not.
 #' @param ... Parameters passed to `getYield()`
 #' @export
 #' @examples
-#' plotYieldRelative(NS_sim)
-plotYieldRelative <- function(sim, object_original, ...) {
+#' plotYieldRelative(NS_sim, NS_params)
+#' plotYieldRelative(NS_sim, NS_params, species = c("Cod", "Sole"))
+plotYieldRelative <- function(sim, object_original, species = NULL, ...) {
+    sel <- valid_species_arg(sim, species, return.logical = TRUE)
     if (is(object_original, "MizerParams")) {
-        yield_original <- getYield(object_original, ...)
+        yield_original <- getYield(object_original, ...)[sel]
     } else if (is(object_original, "MizerSim")) {
-        yield_original <- t(getYield(object_original, ...))
+        yield_original <- t(getYield(object_original, ...))[sel, , drop = FALSE]
     }
-    yield <- t(getYield(sim, ...))
+    yield <- t(getYield(sim, ...))[sel, , drop = FALSE]
     rel_diff <- (yield - yield_original) / yield_original * 100
     df <- melt(rel_diff) |>
         transmute(Year = time, `Change %` = value, Species = sp)
@@ -115,7 +127,7 @@ plotYieldRelative <- function(sim, object_original, ...) {
 
 #' @rdname plotYieldRelative
 #' @export
-plotlyYieldRelative <- function(sim, object_original, ...) {
+plotlyYieldRelative <- function(sim, object_original, species = NULL, ...) {
     ggplotly(plotYieldRelative(sim, object_original, ...),
              tooltip = c("Species", "Year", "Change %"))
 }

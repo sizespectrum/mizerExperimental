@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mizerExperimental</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1.0001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,9 +69,9 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotYieldRelative</span><span class="op">(</span><span class="va">sim</span>, <span class="va">object_original</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotYieldRelative</span><span class="op">(</span><span class="va">sim</span>, <span class="va">object_original</span>, species <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">plotlyYieldRelative</span><span class="op">(</span><span class="va">sim</span>, <span class="va">object_original</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plotlyYieldRelative</span><span class="op">(</span><span class="va">sim</span>, <span class="va">object_original</span>, species <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,6 +85,13 @@
 differences from.</p></dd>
 
 
+<dt>species</dt>
+<dd><p>The species to be selected. Optional. By default all target
+species are selected. A vector of species names, or a numeric vector with
+the species indices, or a logical vector indicating for each species
+whether it is to be selected (TRUE) or not.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Parameters passed to <code>getYield()</code></p></dd>
 
@@ -92,8 +99,11 @@ differences from.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">plotYieldRelative</span><span class="op">(</span><span class="va">NS_sim</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in is(object_original, "MizerParams"):</span> argument "object_original" is missing, with no default</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">plotYieldRelative</span><span class="op">(</span><span class="va">NS_sim</span>, <span class="va">NS_params</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 48 row(s) containing missing values (geom_path).</span>
+<span class="r-plt img"><img src="plotYieldRelative-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">plotYieldRelative</span><span class="op">(</span><span class="va">NS_sim</span>, <span class="va">NS_params</span>, species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cod"</span>, <span class="st">"Sole"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plotYieldRelative-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
