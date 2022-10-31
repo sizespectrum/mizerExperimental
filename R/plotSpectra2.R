@@ -1,8 +1,8 @@
 #' Show two size spectra in the same plot
 #' 
-#' @param params1 MizerParams object for the first model
+#' @param object1 MizerParams or MizerSim object for the first model
 #' @param name1 An optional string with the name for the first model to be used in the legend. Set to "First" by default.
-#' @param params2 MizerParams object for the second model
+#' @param Object2 MizerParams or MizerSim object for the second model
 #' @param name2 An optional string with the name for the first model to be used in the legend. Set to "Second" by default.
 #' @param power The abundance is plotted as the number density times the weight raised to power. The default power = 1 gives the biomass density, whereas power = 2 gives the biomass density with respect to logarithmic size bins.
 #' @param ... Parameters pass to `plotSpectra()`

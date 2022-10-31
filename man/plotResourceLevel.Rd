@@ -39,6 +39,7 @@ Other plotting functions:
 \code{\link{plotDeath}()},
 \code{\link{plotEnergyBudget}()},
 \code{\link{plotResourcePred}()},
+\code{\link{plotYieldCurve}()},
 \code{\link{plotYieldVsF}()},
 \code{\link{plotYieldVsSize}()}
 }

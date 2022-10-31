@@ -8,6 +8,8 @@ setResourceSemichemostat(params, resource_params)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{resource_params}{A resource parameter dataframe}
 }
 \value{
 A MizerParams object with updated resources

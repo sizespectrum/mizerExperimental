@@ -77,6 +77,7 @@ Other plotting functions:
 \code{\link{plotEnergyBudget}()},
 \code{\link{plotResourceLevel}()},
 \code{\link{plotResourcePred}()},
+\code{\link{plotYieldCurve}()},
 \code{\link{plotYieldVsSize}()}
 }
 \concept{plotting functions}

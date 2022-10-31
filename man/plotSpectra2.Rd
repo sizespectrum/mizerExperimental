@@ -7,6 +7,8 @@
 plotSpectra2(object1, name1, object2, name2, power = 1, ...)
 }
 \arguments{
+\item{object1}{MizerParams or MizerSim object for the first model}
+
 \item{name1}{An optional string with the name for the first model to be used in the legend. Set to "First" by default.}
 
 \item{name2}{An optional string with the name for the first model to be used in the legend. Set to "Second" by default.}
@@ -15,9 +17,7 @@ plotSpectra2(object1, name1, object2, name2, power = 1, ...)
 
 \item{...}{Parameters pass to \code{plotSpectra()}}
 
-\item{params1}{MizerParams object for the first model}
-
-\item{params2}{MizerParams object for the second model}
+\item{Object2}{MizerParams or MizerSim object for the second model}
 }
 \value{
 A ggplot2 object

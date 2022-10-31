@@ -5,12 +5,16 @@
 \alias{plotlyBiomassRelative}
 \title{Plot change in biomass over time}
 \usage{
-plotBiomassRelative(sim, ...)
+plotBiomassRelative(sim, sim_original = NULL, ...)
 
-plotlyBiomassRelative(sim, ...)
+plotlyBiomassRelative(sim, sim_original = NULL, ...)
 }
 \arguments{
 \item{sim}{A MizerSim object}
+
+\item{sim_original}{Another MizerSim object to compare the biomasses to. If
+NULL (default) then the biomasses are compared to the initial biomasses in
+\code{sim}.}
 
 \item{...}{Parameters passed to \code{getBiomass()}}
 }

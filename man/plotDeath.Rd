@@ -51,6 +51,7 @@ Other plotting functions:
 \code{\link{plotEnergyBudget}()},
 \code{\link{plotResourceLevel}()},
 \code{\link{plotResourcePred}()},
+\code{\link{plotYieldCurve}()},
 \code{\link{plotYieldVsF}()},
 \code{\link{plotYieldVsSize}()}
 }

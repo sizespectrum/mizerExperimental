@@ -6,7 +6,7 @@
 #' the current consumption rate.
 #' 
 #' @param params A MizerParams object
-#' @params resource_params A resource parameter dataframe
+#' @param resource_params A resource parameter dataframe
 #' @return A MizerParams object with updated resources
 #' @export
 setResourceSemichemostat <- function(params, resource_params) {

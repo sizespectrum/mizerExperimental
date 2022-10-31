@@ -71,6 +71,9 @@ y <- getYieldVsF(params, "Cod", F_max = 1, no_steps = 5)
 }
 \seealso{
 plotYieldVsF
+
+Other summary functions: 
+\code{\link{getYieldCurve}()}
 }
 \concept{summary functions}
 \concept{summary_function}

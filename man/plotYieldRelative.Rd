@@ -5,15 +5,15 @@
 \alias{plotlyYieldRelative}
 \title{Plot change in yield over time}
 \usage{
-plotYieldRelative(sim, params, ...)
+plotYieldRelative(sim, object_original, ...)
 
-plotlyYieldRelative(sim, params, ...)
+plotlyYieldRelative(sim, object_original, ...)
 }
 \arguments{
 \item{sim}{A MizerSim object}
 
-\item{params}{A MizerParams object describing the initial state, used to
-calculate the initial yield.}
+\item{object_original}{A MizerParams or MizerSim object to calculate
+differences from.}
 
 \item{...}{Parameters passed to \code{getYield()}}
 }

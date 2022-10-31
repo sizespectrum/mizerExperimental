@@ -16,9 +16,12 @@ Depends:
 Imports:
     assertthat,
     bslib,
+    data.table,
     dplyr,
     ggplot2,
+    lubridate,
     methods,
+    mizerMR,
     plotly,
     rintrojs,
     shiny,
@@ -27,13 +30,15 @@ Imports:
     tibble,
     tidyr,
     rmarkdown,
-    lifecycle,
     arsenal
 Suggests:
+    lifecycle,
     pkgdown,
     roxygen2,
     testthat (>= 2.1.0),
     vdiffr
+Remotes: 
+    sizespectrum/mizerMR
 Collate:
     alignResource.R
     manipulateParams.R
@@ -86,4 +91,3 @@ RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
-RdMacros: lifecycle
