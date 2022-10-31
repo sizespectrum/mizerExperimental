@@ -131,7 +131,7 @@ plotYieldCurve <- function(params,
         mutate(SSB = SSB / max(SSB),
                RDD = RDD / max(RDD),
                SY = SY / max(SY)) |>
-        pivot_longer(!F , names_to = "Quantity", values_to = "values") |>
+        tidyr::pivot_longer(!F , names_to = "Quantity", values_to = "values") |>
         mutate(Quantity = factor(Quantity, levels = c("SY", "SSB", "RDD")))
     
     ggplot(curve) +
