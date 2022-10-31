@@ -21,9 +21,9 @@
 plotSpectra2 <- function(object1, object2, name1 = "First", name2 = "Second",
                          power = 1, ...) {
     
-    sf1 <- mizerMR::plotSpectra(object1, power = power, return_data = TRUE, ...)
+    sf1 <- plotSpectra(object1, power = power, return_data = TRUE, ...)
     sf1$Model <- name1
-    sf2 <- mizerMR::plotSpectra(object2, power = power, return_data = TRUE, ...)
+    sf2 <- plotSpectra(object2, power = power, return_data = TRUE, ...)
     sf2$Model <- name2
     sf <- rbind(sf1, sf2)
     
