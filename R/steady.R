@@ -99,7 +99,7 @@ steady <- function(params, t_max = 100, t_per = 1.5, dt = 0.1,
     rr <- resource_rate(params)
     cc <- (getResourceMort(params) + rr) / rr * initialNResource(params)
     cc[rr == 0] <- 0
-    resource_capacity(params) <- cc
+    params@cc_pp <- cc
     
     if (return_sim) {
         object@params <- params
