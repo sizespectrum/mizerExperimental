@@ -39,6 +39,7 @@ Collate:
     manipulateParams.R
     mizerExperimental-package.R
     plotBiomassVsSpecies.R
+    plotDiet.R
     plotYieldVsSpecies.R
     plotNumberVsSpecies.R
     plotRelative.R
