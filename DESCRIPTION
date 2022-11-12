@@ -35,6 +35,7 @@ Suggests:
     vdiffr
 Collate:
     age_mat.R
+    matchGrowth.R
     alignResource.R
     manipulateParams.R
     mizerExperimental-package.R
