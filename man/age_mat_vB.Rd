@@ -4,7 +4,7 @@
 \alias{age_mat_vB}
 \title{Calculate age at maturity from von Bertalanffy growth parameters}
 \usage{
-age_mat_vB(params)
+age_mat_vB(object)
 }
 \arguments{
 \item{params}{A MizerParams object or a species_params data frame}
@@ -19,6 +19,7 @@ specified by the \code{w_inf}, \code{k_vb}, \code{t0}, \code{a} and \code{b} par
 species_params data frame.
 }
 \details{
-If any of \code{a}, \code{b} or \code{k_vb} is missing for a species, the function returns
-NA for that species. If \code{t0} is missing a default of 0 is used.
+If any of \code{k_vb} is missing for a species, the function returns NA for that
+species. Default values of \code{b = 3} and \code{t0 = 0} are used if these are
+missing.
 }

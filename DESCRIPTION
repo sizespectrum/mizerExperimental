@@ -36,6 +36,7 @@ Suggests:
 Collate:
     age_mat.R
     matchGrowth.R
+    get_h_default.R
     alignResource.R
     manipulateParams.R
     mizerExperimental-package.R
