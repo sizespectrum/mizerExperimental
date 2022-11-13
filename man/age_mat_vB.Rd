@@ -14,7 +14,11 @@ A named vector. The names are the species names and the values are
 the ages at maturity.
 }
 \description{
-Uses the age at maturity that is implied by the von Bertalanffy growth
-curve specified by the \code{w_inf}, \code{k_vb}, \code{t0} parameters in the
+Uses the age at maturity that is implied by the von Bertalanffy growth curve
+specified by the \code{w_inf}, \code{k_vb}, \code{t0}, \code{a} and \code{b} parameters in the
 species_params data frame.
+}
+\details{
+If any of \code{a}, \code{b} or \code{k_vb} is missing for a species, the function returns
+NA for that species. If \code{t0} is missing a default of 0 is used.
 }

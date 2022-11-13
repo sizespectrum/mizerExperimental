@@ -4,10 +4,15 @@
 \alias{matchGrowth}
 \title{Adjust model to produce observed growth}
 \usage{
-matchGrowth(params)
+matchGrowth(params, species = NULL)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{species}{The species to be affected. Optional. By default all species for
+which growth information is available will be affected. A vector of species
+names, or a numeric vector with the species indices, or a logical vector
+indicating for each species whether it is to be affected (TRUE) or not.}
 }
 \value{
 A modified MizerParams object with rescaled search volume, maximum
@@ -17,10 +22,13 @@ consumption rate and metabolic rate and rescaled species parameters
 \description{
 Scales the search volume, the maximum consumption rate and the metabolic rate
 all by the same factor in order to achieve a growth rate that allows
-indivdiuals to reach their maturity size by their maturity age while keeping
+individuals to reach their maturity size by their maturity age while keeping
 the feeding level and the critical feeding level unchanged.
 }
 \details{
 Maturity size and age are taken from the \code{w_mat} and \code{age_mat} columns in the
-species_params data frame.
+species_params data frame. If \code{age_mat} is missing, mizer calculates it from
+the von Bertalanffy growth curve parameters using \code{age_mat_vB()}. If those
+are not available either for a species, the growth rate for that species will
+not be changed.
 }

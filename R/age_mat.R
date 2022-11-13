@@ -1,9 +1,12 @@
 #' Calculate age at maturity from von Bertalanffy growth parameters
-#' 
-#' Uses the age at maturity that is implied by the von Bertalanffy growth
-#' curve specified by the `w_inf`, `k_vb`, `t0` parameters in the 
+#'
+#' Uses the age at maturity that is implied by the von Bertalanffy growth curve
+#' specified by the `w_inf`, `k_vb`, `t0`, `a` and `b` parameters in the
 #' species_params data frame.
-#' 
+#'
+#' If any of `a`, `b` or `k_vb` is missing for a species, the function returns
+#' NA for that species. If `t0` is missing a default of 0 is used.
+#'
 #' @param params A MizerParams object or a species_params data frame
 #' @return A named vector. The names are the species names and the values are
 #'   the ages at maturity.
@@ -17,10 +20,10 @@ age_mat_vB <- function(params) {
         }
         sp <- validSpeciesParams(params)
     }
-    if (!all(c("a", "b", "k_vb") %in% names(sp))) {
-        stop("The species_params data frame needs to contain the weight-length parameters `a` and `b` and the von Bertalanffy parameter `k_vb`.")
-    }
     sp <- set_species_param_default(sp, "t0", 0)
+    sp <- set_species_param_default(sp, "a", NA)
+    sp <- set_species_param_default(sp, "b", NA)
+    sp <- set_species_param_default(sp, "k_vb", NA)
 
     a_mat <- -log(1 - (sp$w_mat / sp$w_inf) ^ (1/sp$b)) / sp$k_vb + sp$t0
     names(a_mat) <- sp$species
