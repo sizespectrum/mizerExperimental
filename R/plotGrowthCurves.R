@@ -115,7 +115,7 @@ plotGrowthCurves <- function(object, species = NULL,
             if (!is.null(size_at_age)) {
                 size_at_age <- filter(size_at_age, species == selected_species)
                 p <- p + geom_point(aes(x = age, y = weight), data = size_at_age,
-                                    position = "jitter", alpha = 0.2)
+                                    alpha = 0.2)
             }
             
         } else if (species_panel) { # need to add either no panel if no param 
