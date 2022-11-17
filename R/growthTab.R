@@ -1,6 +1,7 @@
 #' Growth tab for tuning gadget
 #' inheritParams biomassTab
-growthTab <- function(input, output, session, params, logs, ...) {
+growthTab <- function(input, output, session, params, logs,
+                      size_at_age = NULL, ...) {
     # Help button ----
     help_steps <- data.frame(
         element = c(NA),
@@ -82,7 +83,7 @@ growthTab <- function(input, output, session, params, logs, ...) {
             plotGrowthCurves(p, species_panel = TRUE) +
                 theme(text = element_text(size = 16))
         } else {
-            plotGrowthCurves(p, species = input$sp) +
+            plotGrowthCurves(p, species = input$sp, size_at_age = size_at_age) +
                 theme(text = element_text(size = 16))
         }
     })
