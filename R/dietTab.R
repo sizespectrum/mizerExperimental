@@ -6,7 +6,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
     # Plot diet ----
     output$plot_diet <- renderPlotly({
         req(input$sp)
-        plotDiet(params(), input$sp)
+        plotDiet(params(), input$sp, xtrans = input$xtrans)
     })
     
     # Plot prey ----
@@ -65,6 +65,9 @@ dietTab <- function(input, output, session, params, logs, ...) {
 #' @rdname dietTab
 dietTabUI <- function(...) {
     tagList(
+        radioButtons("xtrans", "x-axis scale:",
+                     choices = c("log10", "identity"),
+                     selected = "log10", inline = TRUE),
         plotlyOutput("plot_diet"),
         plotlyOutput("plot_prey"),
         uiOutput("pred_size_slider")

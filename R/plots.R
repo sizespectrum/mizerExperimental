@@ -139,13 +139,15 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
 #' str(fr)
 #' }
 plotDeath <- function(object, species = NULL, proportion = TRUE,
-                      return_data = FALSE) {
+                      return_data = FALSE, 
+                      xtrans = c("log10", "identity")) {
     if (is(object, "MizerSim")) {
         params <- object@params
         params <- setInitialValues(params, object)
     } else if (is(object, "MizerParams")) {
         params <- validParams(object)
     }
+    xtrans <- match.arg(xtrans)
     # TODO: Remove this fix once core mizer makes sure a default is set
     if (!"External" %in% names(getColours(params))) {
         params <- setColours(params, c(External = "grey"))
@@ -198,7 +200,7 @@ plotDeath <- function(object, species = NULL, proportion = TRUE,
 
     if (return_data) return(plot_dat)
 
-    plotDataFrame(plot_dat, params, style = "area", xtrans = "log10",
+    plotDataFrame(plot_dat, params, style = "area", xtrans = xtrans,
                   wrap_var = "Prey", wrap_scale = "free_x",
                   xlab = "Size [g]", ylab = ylab)
 }

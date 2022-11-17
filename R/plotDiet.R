@@ -1,7 +1,9 @@
 # TODO: remove upon next release of mizer
 #' @export
-plotDiet <- function(object, species = NULL, return_data = FALSE) {
+plotDiet <- function(object, species = NULL, return_data = FALSE,
+                     xtrans = c("log10", "identity")) {
     assert_that(is.flag(return_data))
+    xtrans = match.arg(xtrans)
     params <- validParams(object)
     species <- valid_species_arg(object, species, return.logical = TRUE)
     diet <- getDiet(params)[species, , , drop = FALSE]
@@ -18,10 +20,10 @@ plotDiet <- function(object, species = NULL, return_data = FALSE) {
         intersect(names(params@linecolour), plot_dat$Prey)
     p <- ggplot(plot_dat) +
         geom_area(aes(x = w, y = Proportion, fill = Prey)) +
-        scale_x_log10() +
         labs(x = "Size [g]", y = "Proportion") +
         scale_fill_manual(values = params@linecolour[legend_levels],
-                          limits = legend_levels)
+                          limits = legend_levels) +
+        scale_x_continuous(trans = xtrans)
     if (sum(species) > 1) {
         p <- p + facet_wrap(vars(Predator))
     }
