@@ -80,7 +80,17 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         # Create a Progress object
         progress <- shiny::Progress$new(session)
         on.exit(progress$close())
-
+        
+        if ("growth" %in% match) {
+            p <- matchGrowth(p)
+        }
+        if ("biomass" %in% match) {
+            p <- matchBiomasses(p)
+        } 
+        if ("yield" %in% match) {
+            p <- matchYields(p)
+        }
+        
         # Run to steady state
         if (return_sim) {
             # This is for the "Steady" tab where we want to show the
@@ -91,18 +101,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                           progress_bar = progress))
         }
         p <- mizer::steady(p, t_max = 100, tol = 1e-2,
-                    progress_bar = progress)
-        if (match == "biomass") {
-            p <- calibrateBiomass(p)
-            p <- matchBiomasses(p)
-            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
-                        progress_bar = progress)
-        } else if (match == "yield") {
-            p <- calibrateYield(p)
-            p <- matchYields(p)
-            p <- mizer::steady(p, t_max = 100, tol = 1e-2,
-                        progress_bar = progress)
-        }
+                           progress_bar = progress)
 
         # Update the egg slider
         sp_idx <- which.max(p@species_params$species == isolate(input$sp))
