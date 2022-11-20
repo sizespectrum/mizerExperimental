@@ -82,7 +82,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         on.exit(progress$close())
         
         if ("growth" %in% input$match) {
-            p <- matchGrowth(p)
+            p <- matchGrowth(p, keep = "biomass")
         }
         if ("biomass" %in% input$match) {
             p <- matchBiomasses(p)

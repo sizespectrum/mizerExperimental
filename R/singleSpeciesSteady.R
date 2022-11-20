@@ -1,10 +1,8 @@
 #' Set initial abundances to single-species steady state abundances
 #'
-#' `r lifecycle::badge("experimental")`
 #' This first calculates growth and death rates that arise from the current
 #' initial abundances. Then it uses these growth and death rates to 
-#' determine the steady-state abundances of the selected species with the 
-#' abundance in the smallest size class kept unchanged. 
+#' determine the steady-state abundances of the selected species. 
 #' 
 #' The result of applying this function is of course not a multi-species steady
 #' state, because after changing the abundances of the selected species the
@@ -15,11 +13,20 @@
 #'   species are selected. A vector of species names, or a numeric vector with
 #'   the species indices, or a logical vector indicating for each species
 #'   whether it is to be selected (TRUE) or not.
+#' @param keep A string determining which quantity is to be kept constant. The
+#'   choices are "egg" which keeps the egg density constant, "biomass" which 
+#'   keeps the total biomass of the species constant and "number" which keeps
+#'   the total number of individuals constant.
 #' @return A MizerParams object in which the initial abundances of the selected
 #'   species are changed to their single-species steady state abundances.
 #' @export
-singleSpeciesSteady <- function(params, species = NULL) {
+singleSpeciesSteady <- function(params, species = NULL,
+                                keep = c("egg", "biomass", "number")) {
     species <- valid_species_arg(params, species)
+    keep <- match.arg(keep)
+    
+    biomass <- getBiomass(params)
+    number <- getN(params)
     
     # Use growth and mortality from current abundances
     growth_all <- getEGrowth(params)
@@ -54,6 +61,15 @@ singleSpeciesSteady <- function(params, species = NULL) {
     }
     if (any(is.na(params@initial_n) | is.nan(params@initial_n))) {
         stop("Candidate steady state holds non-numeric values")
+    }
+    
+    if (keep == "biomass") {
+        factor <- biomass / getBiomass(params)
+        params@initial_n <- params@initial_n * factor
+    }
+    if (keep == "number") {
+        factor <- number / getN(params)
+        params@initial_n <- params@initial_n * factor
     }
     
     params
