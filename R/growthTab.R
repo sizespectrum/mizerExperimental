@@ -107,12 +107,16 @@ growthTab <- function(input, output, session, params, logs,
 #' @inheritParams biomassTabUI
 growthTabUI <- function(...) {
     tagList(
-        popify(div(radioButtons("all_growth", "Show:",
-                            choices = c("All", "Selected species"),
-                            selected = "All", inline = TRUE),
-                   style = "width: 200px; margin: auto;"),
-               title = "Switch views",
-               content = "Select whether to view growth curves for all species or just for the selected species. You can also toggle this by double-clicking on the plot. Single-clicking on the plot changes the selected species without changing the view."),
+        # popify was messing up the layout and wasn't working anyway.
+        # popify(div(radioButtons("all_growth", "Show:",
+        #                     choices = c("All", "Selected species"),
+        #                     selected = "All", inline = TRUE),
+        #            style = "width: 200px; margin: auto;"),
+        #        title = "Switch views",
+        #        content = "Select whether to view growth curves for all species or just for the selected species. You can also toggle this by double-clicking on the plot. Single-clicking on the plot changes the selected species without changing the view."),
+        radioButtons("all_growth", "Show:",
+                     choices = c("All", "Selected species"),
+                     selected = "All", inline = TRUE),
         plotOutput("plotGrowthCurve",
                    click = "growth_click",
                    dblclick = "growth_dblclick"),
