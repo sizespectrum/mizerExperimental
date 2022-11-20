@@ -93,7 +93,7 @@ plotBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
 #' @rdname plotBiomassRelative
 #' @export
 plotlyBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
-    ggplotly(plotBiomassRelative(sim, sim_original, ...),
+    ggplotly(plotBiomassRelative(sim, sim_original, species = species, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
 
@@ -128,7 +128,7 @@ plotYieldRelative <- function(sim, object_original, species = NULL, ...) {
 #' @rdname plotYieldRelative
 #' @export
 plotlyYieldRelative <- function(sim, object_original, species = NULL, ...) {
-    ggplotly(plotYieldRelative(sim, object_original, ...),
+    ggplotly(plotYieldRelative(sim, object_original, species = species, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
 
