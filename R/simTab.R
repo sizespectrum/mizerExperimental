@@ -11,7 +11,7 @@ simTab <- function(input, output, session, params, logs, match, ...) {
         sim <- tuneParams_run_steady(params(), return_sim = TRUE,
                                      params = params, logs = logs,
                                      session = session, input = input,
-                                     match = match)
+                                     match = input$match)
         plotlyBiomass(sim)
     })
 }

@@ -184,6 +184,7 @@ tuneParams <- function(params,
                                  onclick = "setTimeout(function(){window.close();},500);"),
                            title = "Return the current params objects to R"),
                     data.step = 8,
+                    data.position = "right",
                     data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
@@ -195,9 +196,20 @@ tuneParams <- function(params,
                     actionButton("undo", "", icon = icon("angle-left")),
                     actionButton("redo", "", icon = icon("angle-right")),
                     data.step = 5,
-                    data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However this does not take into account the effect on the other species. It therefore also does not take into account the second-order effect on the target species that is induced by the changes in the other species. To calculate the true multi-species steady state you have to press the 'Steady' button or hit 's' on the keyboard. You should do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. Another advantage of calculating the steady-state frequently is that the app keeps a log of all steady states. You can go backwards and forwards among the previously calculated steady states with the 'Undo' and 'Redo' buttons. The last button winds back all the way to the initial state."
+                    data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However to calculate the true multi-species steady state you have to press the 'Steady' button or hit 's' on the keyboard. Do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. You can go backwards and forwards among the previously calculated steady states with the 'Undo All', 'Undo' and 'Redo' buttons.",
+                    data.position = "right"                  
                 ),
-                tags$br(),
+                
+                introBox(
+                    checkboxGroupInput("match", "Match:",
+                                       choices = c("growth", "biomass", "yield"),
+                                       selected = match,
+                                       inline = TRUE),
+                    data.step = 6,
+                    data.position = "right",
+                    data.intro = "Here you can specify that each time you hit the 'steady' button the selected quantities are matched to their observed values. This does of course not mean that a perfect match will be achieved in the steady state. But usually each time you hit the 'steady' button the match will improve."
+                ),
+                    
                 introBox(uiOutput("sp_sel"),
                          data.step = 2,
                          data.position = "right",
@@ -211,6 +223,7 @@ tuneParams <- function(params,
                                  tags$a(section, href = paste0("#", section)))
                         }),
                         data.step = 4,
+                        data.position = "right",
                         data.intro = "There are many parameters, organised into sections. To avoid too much scrolling you can click on a link to jump to a section."),
                     tags$br(),
                     tags$div(id = "params",
@@ -221,7 +234,7 @@ tuneParams <- function(params,
                         '#params { max-height: 60vh; overflow-y: auto; }'
                     )),
                     data.step = 3,
-                    data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will immediately update."
+                    data.intro = "Here you find controls for changing model parameters. The controls for species-specific parameters are for the species you have chosen above. Many of the controls are sliders that you can move by dragging or by clicking. As you change parameters, the plots in the main panel will update immediately."
                 )
             ),  # endsidebarpanel
 
@@ -317,7 +330,6 @@ tuneParams <- function(params,
                               session = session,
                               params = params,
                               logs = logs,
-                              match = match,
                               trigger_update = trigger_update, ...))
         }
 
@@ -332,8 +344,7 @@ tuneParams <- function(params,
         observeEvent(input$sp_steady, {
             tuneParams_run_steady(params(), params = params,
                                   params_old = params_old,
-                                  logs = logs, session = session, input = input,
-                                  match = match)
+                                  logs = logs, session = session, input = input)
         })
 
         ## Previous ####

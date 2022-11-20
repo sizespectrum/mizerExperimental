@@ -74,20 +74,20 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
 tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
-                                  match, return_sim = FALSE) {
+                                  return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
         progress <- shiny::Progress$new(session)
         on.exit(progress$close())
         
-        if ("growth" %in% match) {
+        if ("growth" %in% input$match) {
             p <- matchGrowth(p)
         }
-        if ("biomass" %in% match) {
+        if ("biomass" %in% input$match) {
             p <- matchBiomasses(p)
         } 
-        if ("yield" %in% match) {
+        if ("yield" %in% input$match) {
             p <- matchYields(p)
         }
         
