@@ -3,10 +3,12 @@
 #' `r lifecycle::badge("experimental")`
 #' This first calculates growth and death rates that arise from the current
 #' initial abundances. Then it uses these growth and death rates to 
-#' determine the steady-state abundances of the selected species. The result
-#' is of course not a multi-species steady state, because by changing the
-#' abundances of the selected species, the growth and death rates will have
-#' changed.
+#' determine the steady-state abundances of the selected species with the 
+#' abundance in the smallest size class kept unchanged. 
+#' 
+#' The result of applying this function is of course not a multi-species steady
+#' state, because after changing the abundances of the selected species the
+#' growth and death rates will have changed.
 #' 
 #' @param params A MizerParams object
 #' @param species The species to be selected. Optional. By default all target
