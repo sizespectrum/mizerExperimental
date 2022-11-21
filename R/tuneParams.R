@@ -102,7 +102,7 @@ tuneParams <- function(params,
                                 "Resource",
                                 "Rates",
                                 "Sim"),
-                       match = c("growth", "biomass"),
+                       match = c("none"),
                        preserve = c("erepro", "reproduction_level", "R_max"),
                        ...) {
     # Define some local variables to avoid "no visible bindings for global
