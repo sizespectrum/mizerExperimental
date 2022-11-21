@@ -31,7 +31,6 @@ Suggests:
     pkgdown,
     rmarkdown,
     roxygen2,
-    shinytest2,
     testthat (>= 2.1.0),
     vdiffr
 Collate:
