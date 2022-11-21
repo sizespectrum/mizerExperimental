@@ -78,6 +78,8 @@
 #'   preserved or the maximum reproduction rate `R_max` or the reproductive
 #'   efficiency `erepro` (Default). See [setBevertonHolt()] for an explanation
 #'   of the `reproduction_level`.
+#' @param return_app Boolean. For testing purposes only. When set to TRUE will
+#'   return a shinyApp object instead of running the gadget.
 #' @param ... Other params needed by individual tabs.
 #'
 #' @return The tuned MizerParams object
@@ -104,7 +106,9 @@ tuneParams <- function(params,
                                 "Sim"),
                        match = c("none"),
                        preserve = c("erepro", "reproduction_level", "R_max"),
+                       return_app = FALSE,
                        ...) {
+    
     # Define some local variables to avoid "no visible bindings for global
     # variable" warnings in CMD check
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
@@ -178,7 +182,7 @@ tuneParams <- function(params,
                 introBox(
                     tipify(actionButton("help", "Help"),
                            title = "Start the introductory instructions"),
-                    tipify(downloadButton("params", ""),
+                    tipify(downloadButton("download_params", ""),
                            title = "Download the current params object"),
                     tipify(actionButton("done", "Return", icon = icon("check"),
                                  onclick = "setTimeout(function(){window.close();},500);"),
@@ -428,7 +432,7 @@ tuneParams <- function(params,
         })
 
         ## Prepare for download of params object ####
-        output$params <- downloadHandler(
+        output$download_params <- downloadHandler(
             filename = "tuned_params.rds",
             content = function(file) {
                 saveRDS(finalise_params(params()), file = file)
@@ -443,7 +447,11 @@ tuneParams <- function(params,
         })
 
     } #the server
-
+    
+    if (return_app) {
+        return(shinyApp(ui, server))
+    }
+    
     runGadget(ui, server, viewer = browserViewer())
 }
 
