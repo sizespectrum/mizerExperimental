@@ -19,6 +19,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/news/index.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/a_mat.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/abundanceControl.html</loc>
   </url>
   <url>
@@ -26,6 +29,12 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/age_mat.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/age_mat_vB.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/alignResource.html</loc>
@@ -76,6 +85,9 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
   </url>
   <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/matchGrowth.html</loc>
+  </url>
+  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/matchNumbers.html</loc>
   </url>
   <url>
@@ -89,6 +101,9 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/otherControl.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc>
@@ -113,6 +128,12 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.html</loc>
+  </url>
+  <url>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc>

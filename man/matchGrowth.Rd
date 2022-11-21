@@ -4,7 +4,7 @@
 \alias{matchGrowth}
 \title{Adjust model to produce observed growth}
 \usage{
-matchGrowth(params, species = NULL)
+matchGrowth(params, species = NULL, keep = c("egg", "biomass", "number"))
 }
 \arguments{
 \item{params}{A MizerParams object}
@@ -13,6 +13,11 @@ matchGrowth(params, species = NULL)
 which growth information is available will be affected. A vector of species
 names, or a numeric vector with the species indices, or a logical vector
 indicating for each species whether it is to be affected (TRUE) or not.}
+
+\item{keep}{A string determining which quantity is to be kept constant. The
+choices are "egg" which keeps the egg density constant, "biomass" which
+keeps the total biomass of the species constant and "number" which keeps
+the total number of individuals constant.}
 }
 \value{
 A modified MizerParams object with rescaled search volume, maximum
@@ -23,7 +28,8 @@ consumption rate and metabolic rate and rescaled species parameters
 Scales the search volume, the maximum consumption rate and the metabolic rate
 all by the same factor in order to achieve a growth rate that allows
 individuals to reach their maturity size by their maturity age while keeping
-the feeding level and the critical feeding level unchanged.
+the feeding level and the critical feeding level unchanged. Then recalculates
+the size spectra using \code{\link[=singleSpeciesSteady]{singleSpeciesSteady()}}.
 }
 \details{
 Maturity size and age are taken from the \code{w_mat} and \code{age_mat} columns in the

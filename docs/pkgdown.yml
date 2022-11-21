@@ -1,9 +1,8 @@
-pandoc: '2.18'
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
-articles:
-  first_multispecies_model: first_multispecies_model.html
-last_built: 2022-08-17T15:03Z
+articles: {}
+last_built: 2022-11-21T08:30Z
 urls:
   reference: https://sizespectrum.org/mizerExperimental/reference
   article: https://sizespectrum.org/mizerExperimental/articles

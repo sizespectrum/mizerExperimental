@@ -60,6 +60,7 @@ reference:
   - pruneSpecies
   - calibrateNumber
   - matchNumbers
+  - matchGrowth
   - calibrateYield
   - getYieldVsF
   - scaleModel
@@ -82,5 +83,6 @@ reference:
   - getMaxF
   - maxFthreshold
   - yieldCalculator
-  - a_mat
+  - age_mat
+  - age_mat_vB
 

@@ -6,7 +6,7 @@
 \title{Growth tab for tuning gadget
 inheritParams biomassTab}
 \usage{
-growthTab(input, output, session, params, logs, ...)
+growthTab(input, output, session, params, logs, size_at_age = NULL, ...)
 
 growthTabUI(...)
 }

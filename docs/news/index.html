@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mizerExperimental</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1.0004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,13 +18,7 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/first_multispecies_model.html">A first multi-species size-spectrum model</a>
-  </div>
-</li>
-<li class="nav-item">
+      <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="active nav-item">
@@ -63,6 +57,16 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.3.1.0001" id="mizerexperimental-2310001">mizerExperimental 2.3.1.0001<a class="anchor" aria-label="anchor" href="#mizerexperimental-2310001"></a></h2>
+<div class="section level3">
+<h3 id="new-plotting-functions-2-3-1-0001">New plotting functions<a class="anchor" aria-label="anchor" href="#new-plotting-functions-2-3-1-0001"></a></h3>
+<ul><li><code><a href="../reference/plotBiomassRelative.html">plotBiomassRelative()</a></code></li>
+<li><code><a href="../reference/plotYieldRelative.html">plotYieldRelative()</a></code></li>
+<li><code><a href="../reference/plotSpectraRelative.html">plotSpectraRelative()</a></code></li>
+<li><code><a href="../reference/plotSpectra2.html">plotSpectra2()</a></code></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.3.1" id="mizerexperimental-231">mizerExperimental 2.3.1<a class="anchor" aria-label="anchor" href="#mizerexperimental-231"></a></h2>
 <div class="section level3">
 <h3 id="new-plotting-functions-2-3-1">New plotting functions<a class="anchor" aria-label="anchor" href="#new-plotting-functions-2-3-1"></a></h3>
@@ -86,7 +90,7 @@
 <code><a href="../reference/resourceControl.html">resourceControl()</a></code> now works also when the resource dynamics are constant.</li>
 <li>Reproduction plot now calculates the reproduction success correctly also for non-zero reproduction level.</li>
 <li>Clean-up of <code>spectraTab</code> code. Now button does not trigger already when it is displayed but only when it is pressed.</li>
-<li>Call <code><a href="https://sizespectrum.org/mizer/reference/setBevertonHolt.html" class="external-link">setBevertonHolt()</a></code> only for the focus species.</li>
+<li>Call <code>setBevertonHolt()</code> only for the focus species.</li>
 <li>The feature whereby one can call <code><a href="../reference/tuneParams.html">tuneParams()</a></code> without a parameter to recover it from log files after a crash is now working again.</li>
 <li>The catch tab now has the same functionality for calibration and matching as the biomass tab.</li>
 <li>When changing predation kernel parameters, the search volume is also rescaled to keep the same encounter rate for larvae.</li>
@@ -148,7 +152,7 @@
 <h2 class="pkg-version" data-toc-text="2.2.1" id="mizerexperimental-221">mizerExperimental 2.2.1<a class="anchor" aria-label="anchor" href="#mizerexperimental-221"></a></h2>
 <ul><li>Much polishing of <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and some added documentation.</li>
 <li>First stab at a <code><a href="../reference/validSim.html">validSim()</a></code> function that will be useful when simulations produce non-finite values.</li>
-<li>Graduated the updated <code><a href="https://sizespectrum.org/mizer/reference/setBevertonHolt.html" class="external-link">setBevertonHolt()</a></code> and the new <code><a href="https://sizespectrum.org/mizer/reference/getReproductionLevel.html" class="external-link">getReproductionLevel()</a></code> to mizer package.</li>
+<li>Graduated the updated <code>setBevertonHolt()</code> and the new <code>getReproductionLevel()</code> to mizer package.</li>
 <li>Removed <code>dislayFrames()</code>, <code>getBiomassFrame()</code> and <code>getSSBFrame()</code> because these are superseeded by the new <code><a href="../reference/plotDataFrame.html">plotDataFrame()</a></code> in mizer.</li>
 <li>Removed the vignette explaining size-spectrum dynamics in single-species example because this has graduated to mizer.</li>
 <li>Improvements to argument checks in <code><a href="../reference/getYieldVsF.html">getYieldVsF()</a></code>
@@ -157,20 +161,20 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.0" id="mizerexperimental-220">mizerExperimental 2.2.0<a class="anchor" aria-label="anchor" href="#mizerexperimental-220"></a></h2>
 <p>The version number will now always be that of the latest mizer package that this version of mizerExperimental requires.</p>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/animateSpectra.html" class="external-link">animateSpectra()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/addSpecies.html" class="external-link">addSpecies()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/renameSpecies.html" class="external-link">renameSpecies()</a></code> to mizer package.</li>
+<ul><li>Graduated <code>animateSpectra()</code>, <code>addSpecies()</code>, <code>removeSpecies()</code> and <code>renameSpecies()</code> to mizer package.</li>
 <li>
-<code>newSheldonParams()</code> has graduated to mizer package under the new name <code><a href="https://sizespectrum.org/mizer/reference/newSingleSpeciesParams.html" class="external-link">newSingleSpeciesParams()</a></code>.</li>
+<code>newSheldonParams()</code> has graduated to mizer package under the new name <code>newSingleSpeciesParams()</code>.</li>
 <li>Improvements to <code><a href="../reference/tuneParams.html">tuneParams()</a></code>, but still work in progress.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="mizerexperimental-012">mizerExperimental 0.1.2<a class="anchor" aria-label="anchor" href="#mizerexperimental-012"></a></h2>
-<ul><li>Graduated <code><a href="https://sizespectrum.org/mizer/reference/projectToSteady.html" class="external-link">projectToSteady()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/constantEggRDI.html" class="external-link">constantEggRDI()</a></code>, <code><a href="https://sizespectrum.org/mizer/reference/customFunction.html" class="external-link">customFunction()</a></code> and <code><a href="https://sizespectrum.org/mizer/reference/compareParams.html" class="external-link">compareParams()</a></code> to mizer package.</li>
+<ul><li>Graduated <code>projectToSteady()</code>, <code>constantEggRDI()</code>, <code>customFunction()</code> and <code>compareParams()</code> to mizer package.</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Vignette explaining size-spectrum dynamics in single-species example.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> work also with 3d pred kernel.</li>
+<code>removeSpecies()</code> work also with 3d pred kernel.</li>
 <li>
-<code><a href="https://sizespectrum.org/mizer/reference/removeSpecies.html" class="external-link">removeSpecies()</a></code> to handles <code>gear_params</code> correctly</li>
+<code>removeSpecies()</code> to handles <code>gear_params</code> correctly</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

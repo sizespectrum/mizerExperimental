@@ -1,3 +1,12 @@
+# mizerExperimental 2.3.1.0001
+
+## New plotting functions
+
+* `plotBiomassRelative()`
+* `plotYieldRelative()`
+* `plotSpectraRelative()`
+* `plotSpectra2()`
+
 # mizerExperimental 2.3.1
 
 ## New plotting functions

@@ -4,14 +4,16 @@
 \alias{tuneGrowth}
 \title{Tune Growth}
 \usage{
-tuneGrowth(params, match = c("biomass", "number", "yield", "none"))
+tuneGrowth(params, match = "biomass")
 }
 \arguments{
-\item{params}{MizerParams object to tune. If missing, the gadget tries to recover
-information from log files left over from aborted previous runs.}
+\item{params}{MizerParams object to tune. If missing, the gadget tries to
+recover information from log files left over from aborted previous runs.}
 
-\item{match}{Determines whether the biomasses or the yields should be
-matched to observations each time the "steady" button is pressed.}
+\item{match}{A vector of strings. Determines which quantities should be
+matched to observations each time the "steady" button is pressed. Possible
+entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \code{"biomass"} (using
+\code{\link[=matchBiomasses]{matchBiomasses()}}) and \code{"yield"} (using \code{\link[=matchYields]{matchYields()}}).}
 }
 \value{
 The tuned MizerParams object

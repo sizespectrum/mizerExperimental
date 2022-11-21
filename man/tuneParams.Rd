@@ -10,14 +10,14 @@ tuneParams(
     "interaction", "resource"),
   tabs = c("Spectra", "Abundance", "Growth", "Repro", "Catch", "Diet", "Death",
     "Resource", "Rates", "Sim"),
-  match = c("none", "number", "biomass", "yield"),
+  match = c("growth", "biomass"),
   preserve = c("erepro", "reproduction_level", "R_max"),
   ...
 )
 }
 \arguments{
-\item{params}{MizerParams object to tune. If missing, the gadget tries to recover
-information from log files left over from aborted previous runs.}
+\item{params}{MizerParams object to tune. If missing, the gadget tries to
+recover information from log files left over from aborted previous runs.}
 
 \item{controls}{A character vector of names of input parameter control
 sections that should be displayed in the sidebar. See "Customisation"
@@ -26,8 +26,10 @@ below.}
 \item{tabs}{A character vector of names of the tabs that should be displayed
 in the main section. See "Customisation" below.}
 
-\item{match}{Determines whether the biomasses or the yields should be
-matched to observations each time the "steady" button is pressed.}
+\item{match}{A vector of strings. Determines which quantities should be
+matched to observations each time the "steady" button is pressed. Possible
+entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \code{"biomass"} (using
+\code{\link[=matchBiomasses]{matchBiomasses()}}) and \code{"yield"} (using \code{\link[=matchYields]{matchYields()}}).}
 
 \item{preserve}{Specifies whether the \code{reproduction_level} should be
 preserved or the maximum reproduction rate \code{R_max} or the reproductive
@@ -42,35 +44,37 @@ The tuned MizerParams object
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-The function opens a shiny gadget, an interactive web page. This page has
-a side panel with controls for various model parameters and a main panel
-with tabs for various diagnostic plots.
+The function opens a shiny gadget, an interactive web page. This page has a
+side panel with controls for various model parameters and a main panel with
+tabs for various diagnostic plots.
 }
 \details{
-This gadget is meant for tuning a model to steady state. It is not meant for
-tuning the dynamics of the model. That should be done in a second step using
-functions like \code{setRmax()} or \code{changeResource()}.
+This gadget is meant for tuning a model to steady state. It is not
+meant for tuning the dynamics of the model. That should be done in a second
+step using functions like \code{setRmax()} or \code{changeResource()}.
 
-There is an "Instructions" button near the top left of the gadget that
-gives you a quick overview of the user interface.
+There is an "Instructions" button near the top left of the gadget that gives
+you a quick overview of the user interface.
 
-After you click the "Return" button in the side panel, the function will return
-the parameter object in the state at that time, with \code{Rmax} set to \code{Inf}
-and \code{erepro} set to the value it had after the last run to steady state.
+After you click the "Return" button in the side panel, the function will
+return the parameter object in the state at that time, with \code{Rmax} set to
+\code{Inf} and \code{erepro} set to the value it had after the last run to steady
+state.
 
 At any time the gadget allows the user to download the current params object
 as an .rds file via the "Download" button.
 }
 \section{Undo functionality}{
-The gadget keeps a log of all steady states you create while working with
-the gadget. You can go back to the last steady state by hitting the "Undo"
+The gadget keeps a log of all steady states you create while working with the
+gadget. You can go back to the last steady state by hitting the "Undo"
 button. You can go back an arbitrary number of states and also go forward
 again. There is also a button to go right back to the initial steady state.
 
-When you leave the gadget by hitting the "Return" button, this log is cleared.
-If you stop the gadget from RStudio by hitting the "Stop" button, then the
-log is left behind. You can then restart the gadget by calling \code{tuneParams()}
-without a \code{params} argument and it will re-instate the states from the log.
+When you leave the gadget by hitting the "Return" button, this log is
+cleared. If you stop the gadget from RStudio by hitting the "Stop" button,
+then the log is left behind. You can then restart the gadget by calling
+\code{tuneParams()} without a \code{params} argument and it will re-instate the states
+from the log.
 
 The log is stored in the tempdir of your current R session, as given by
 \code{tempdir()}. For each steady state you calculate the params objects is in a
@@ -79,9 +83,9 @@ file named according to the date and time when it was created.
 
 \section{Customisation}{
 You can customise which functionality is included in the app via the
-\code{controls} and \code{tabs} arguments. You can remove some of the controls and
-tabs by providing shorter lists to those arguments. You can also add your
-own controls and tabs.
+\code{controls} and \code{tabs} arguments. You can remove some of the controls and tabs
+by providing shorter lists to those arguments. You can also add your own
+controls and tabs.
 
 For an entry "foo" in the \code{controls} list there needs to be a function
 "fooControlUI" that defines the input elements and a function "fooControl"
@@ -90,9 +94,9 @@ own control sections on the existing ones that you find in the file
 \code{R/tuneParams_controls.R}.
 
 For any entry "Foo" or "foo" in the \code{tabs} list there needs to be a function
-"fooTabUI" that defines the tab layout and a function "fooTab"
-that calculates the outputs to be displayed on the tab. You can model your
-own tabs on the example tab that you find in the file \code{R/exampleTab.R}.
+"fooTabUI" that defines the tab layout and a function "fooTab" that
+calculates the outputs to be displayed on the tab. You can model your own
+tabs on the example tab that you find in the file \code{R/exampleTab.R}.
 }
 
 \section{Limitations}{

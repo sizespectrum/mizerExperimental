@@ -6,7 +6,13 @@
 \title{Plot the sources of external, predation and fishing mortality
 per species and size}
 \usage{
-plotDeath(object, species = NULL, proportion = TRUE, return_data = FALSE)
+plotDeath(
+  object,
+  species = NULL,
+  proportion = TRUE,
+  return_data = FALSE,
+  xtrans = c("log10", "identity")
+)
 
 plotlyDeath(object, species = NULL, proportion = TRUE, ...)
 }

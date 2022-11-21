@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.3.1.0003
+Version: 2.3.1.0004
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -81,7 +81,7 @@ Collate:
     validSim.R
     plots.R
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
