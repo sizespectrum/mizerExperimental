@@ -70,7 +70,7 @@
 #'   below.
 #' @param tabs A character vector of names of the tabs that should be displayed
 #'   in the main section. See "Customisation" below.
-#' @param match A vector of strings. Determines which quantities should be
+#' @param match A character vector. Determines which quantities should be
 #'   matched to observations each time the "steady" button is pressed. Possible
 #'   entries are `"growth"` (using [matchGrowth()]), `"biomass"` (using
 #'   [matchBiomasses()]) and `"yield"` (using [matchYields()]).
