@@ -253,8 +253,19 @@ tuneParams <- function(params,
         hintjs(session)
         ## Store params object as a reactive value ####
         params <- reactiveVal(p)
+        # The abundances in params() will get updated using 
+        # `singleSpeciesSteady()` each time a parameter gets changed. It is
+        # important that this updating always starts again from the previous
+        # abundances. So we need to preserve those previous abundances. That
+        # is what `params_old()` will be for.
+        # The abundances in params_old() will only get changed when we run to
+        # steady state in `tuneParams_run_steady()` or take a steady state from
+        # the logs. They will not be changed in `tuneParams_update_species()`.
         params_old <- reactiveVal(p)
-        tuneParams_add_to_logs(logs, p)  # This allows us to get back to the initial state
+        
+        tuneParams_add_to_logs(logs, p)  # This allows us to get back to the 
+        # initial state
+        
         if (logs$idx == length(logs$files)) shinyjs::disable("redo")
         if (logs$idx <= 1) {
             shinyjs::disable("undo")

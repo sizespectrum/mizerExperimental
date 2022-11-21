@@ -35,31 +35,9 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         # The spectrum for the changed species is calculated with new
         # parameters but in the context of the original community
         p_old <- params_old()
-        n <- p_old@initial_n
-        n_pp <- p_old@initial_n_pp
-        n_other <- p_old@initial_n_other
-        # Compute death rate for changed species
-        mumu <- getMort(p, n = n, n_pp = n_pp, n_other = n_other)[sp, ]
-        # compute growth rate for changed species
-        gg <- getEGrowth(p, n = n, n_pp = n_pp, n_other = n_other)[sp, ]
-        # Compute solution for changed species
-        w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
-        idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
-        if (any(gg[idx] == 0)) {
-            stop("With these parameter values the ", sp,
-                 " does not have enough food to cover its metabolic cost")
-        }
-        n0 <- p@initial_n[sp, p@w_min_idx[sp]]
-        p@initial_n[sp, ] <- 0
-        p@initial_n[sp, p@w_min_idx[sp]:w_inf_idx] <-
-            c(1, cumprod(gg[idx] / ((gg + mumu * p@dw)[idx + 1]))) *
-            n0
-        if (any(is.infinite(p@initial_n))) {
-            stop("Candidate steady state holds infinities")
-        }
-        if (any(is.na(p@initial_n) | is.nan(p@initial_n))) {
-            stop("Candidate steady state holds non-numeric values")
-        }
+        p@initial_n <- p_old@initial_n
+        
+        p <- singleSpeciesSteady(p)
 
         # Update the reactive params object
         params(p)
