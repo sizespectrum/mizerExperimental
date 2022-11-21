@@ -114,8 +114,6 @@ tuneParams <- function(params,
     wpredator <- wprey <- Nprey <- weight_kernel <- L_inf <-
         Legend <- w_mat <- erepro <- Type <- Abundance <- Catch <-
         Kernel <- Numbers <- Cause <- psi <- Predator <- Density <- NULL
-    # I am not sure why this is needed, but without it the tooltips won't show.
-    require("shinyBS")
 
     # Flags to skip certain observers ----
     flags <- new.env()
@@ -158,6 +156,7 @@ tuneParams <- function(params,
     ui <- fluidPage(
         theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
         shinyjs::useShinyjs(),
+        prompter::use_prompt(),
         introjsUI(),
         tags$script(HTML("$(function(){
           $(document).keydown(function(e) {
@@ -180,44 +179,63 @@ tuneParams <- function(params,
             sidebarPanel(
                 width = 3,
                 introBox(
-                    tipify(actionButton("help", "Help"),
-                           title = "Start the introductory instructions"),
-                    tipify(downloadButton("download_params", ""),
-                           title = "Download the current params object"),
-                    tipify(actionButton("done", "Return", icon = icon("check"),
-                                 onclick = "setTimeout(function(){window.close();},500);"),
-                           title = "Return the current params objects to R"),
+                    prompter::add_prompt(
+                        actionButton("help", "Help"),
+                        message = "Start the introductory instructions",
+                        position = "right"),
+                    prompter::add_prompt(
+                        downloadButton("download_params", ""),
+                        message = "Download the current params object",
+                        position = "right"),
+                    prompter::add_prompt(
+                        actionButton("done", "Return", icon = icon("check"),
+                                     onclick = "setTimeout(function(){window.close();},500);"),
+                        message = "Return the current params objects to R"),
                     data.step = 8,
                     data.position = "right",
                     data.intro = "At any point you can press the download button to save the current state of the params object. When you press the 'Return' button, the gadget will close and the current params object will be returned. The undo log will be cleared."
                 ),
                 introBox(
-                    tipify(actionButton("sp_steady", HTML("<u>s</u>teady")),
-                           title = "Find steady state. Keyboard shortcut: s"),
+                    prompter::add_prompt(
+                        actionButton("sp_steady", HTML("<u>s</u>teady")),
+                        message = "Find steady state. Keyboard shortcut: s",
+                        position = "right"),
                     # We should not put a tooltip on the Undo or Redo buttons
                     # because they get stuck when the button gets disabled
-                    actionButton("undo_all", "", icon = icon("angles-left")),
-                    actionButton("undo", "", icon = icon("angle-left")),
-                    actionButton("redo", "", icon = icon("angle-right")),
+                    prompter::add_prompt(
+                        actionButton("undo_all", "", icon = icon("angles-left")),
+                        message = "Undo all changes"),
+                    prompter::add_prompt(
+                        actionButton("undo", "", icon = icon("angle-left")),
+                        message = "Go back to previous steady state"),
+                    prompter::add_prompt(
+                        actionButton("redo", "", icon = icon("angle-right")),
+                        message = "Go forward to next steady state"),
                     data.step = 5,
                     data.intro = "Each time you change a parameter, the spectrum of the selected species is immediately recalculated. However to calculate the true multi-species steady state you have to press the 'Steady' button or hit 's' on the keyboard. Do this frequently, before changing the parameters too much. Otherwise there is the risk that the steady state can not be found any more. You can go backwards and forwards among the previously calculated steady states with the 'Undo All', 'Undo' and 'Redo' buttons.",
                     data.position = "right"                  
                 ),
                 
                 introBox(
-                    checkboxGroupInput("match", "Match:",
-                                       choices = c("growth", "biomass", "yield"),
-                                       selected = match,
-                                       inline = TRUE),
+                    prompter::add_prompt(
+                        checkboxGroupInput("match", "Match:",
+                                           choices = c("growth", "biomass", "yield"),
+                                           selected = match,
+                                           inline = TRUE),
+                        message = "Choose quantities to match to observations automatically"),
                     data.step = 6,
                     data.position = "right",
                     data.intro = "Here you can specify that each time you hit the 'steady' button the selected quantities are matched to their observed values. This does of course not mean that a perfect match will be achieved in the steady state. But usually each time you hit the 'steady' button the match will improve."
                 ),
                     
-                introBox(uiOutput("sp_sel"),
-                         data.step = 2,
-                         data.position = "right",
-                         data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."
+                introBox(
+                    prompter::add_prompt(
+                        uiOutput("sp_sel"),
+                        message = "Select target species",
+                        position = "right"),
+                    data.step = 2,
+                    data.position = "right",
+                    data.intro = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on."
                 ),
                 introBox(
                     introBox(
@@ -284,14 +302,15 @@ tuneParams <- function(params,
             p <- isolate(params())
             species <- as.character(p@species_params$species[!is.na(p@A)])
             tagList(
-                popify(selectInput("sp", "Species to tune:", species),
-                       placement = "right",
-                       title = "Species to tune",
-                       content = "Here you select the species whose parameters you want to change or whose properties you want to concentrate on. You can also sometimes change this selection by clicking on a species in some of the plots."),
-                tipify(actionButton("previous_sp", HTML("<u>p</u>revious")),
-                       title = "Select previous species. Keyboard shortcut: p"),
-                tipify(actionButton("next_sp", HTML("<u>n</u>ext")),
-                       title = "Select next species. Keyboard shortcut: n"))
+                selectInput("sp", "Species to tune:", species),
+                prompter::add_prompt(
+                    actionButton("previous_sp", HTML("<u>p</u>revious")),
+                    message = "Select previous species. Keyboard shortcut: p",
+                    position = "right"),
+                prompter::add_prompt(
+                    actionButton("next_sp", HTML("<u>n</u>ext")),
+                    message = "Select next species. Keyboard shortcut: n",
+                    position = "right"))
             })
         # Sliders for the species parameters
         output$sp_params <- renderUI({
