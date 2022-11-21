@@ -22,9 +22,8 @@ abundanceControl <- function(input, output, session, params, params_old,
         # rescale abundance to new egg density
         p@initial_n[sp, ] <- p@initial_n[sp, ] * n0 /
             p@initial_n[sp, p@w_min_idx[sp]]
-
-        # Update the reactive params object
-        params(p)
+        
+        tuneParams_update_abundance(p, sp, params, params_old)
     })
 }
 

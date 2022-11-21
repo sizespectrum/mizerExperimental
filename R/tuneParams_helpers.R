@@ -97,6 +97,31 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
     error = error_fun)
 }
 
+# Call this whenever the abundance of a species is changed directly 
+# i.e., not when it is changed as a consequence of a parameter change.
+# This will make the change permanent by also saving it in params_old
+tuneParams_update_abundance <- function(p, sp, params, params_old) {
+    
+    # We need to update `params_old()` because otherwise the change
+    # will not persist past the next parameter change.
+    p_old <- isolate(params_old())
+    p_old@initial_n[sp, ] <- p@initial_n[sp, ]
+    params_old(p_old)
+    
+    # Switch the following off for now because it would be strange to display
+    # these back-reactions from the other species initially and then make them
+    # go away when another parameter is changed (because that would start from
+    # params_old again).
+    # # We let the other species react to this change, but that reaction
+    # # does not get saved in `params_old`. We don't allow a second-order
+    # # change in the changed species.
+    # other_species <- setdiff(p@species_params$species, sp)
+    # p@initial_n <- p_old@initial_n # Important to always start from params_old
+    # p <- singleSpeciesSteady(p, species = other_species)
+    
+    # Update the reactive params object
+    params(p)
+}
 
 tuneParams_add_to_logs <- function(logs, p) {
     # Save params object to disk

@@ -340,6 +340,7 @@ tuneParams <- function(params,
                               output = output,
                               session = session,
                               params = params,
+                              params_old = params_old,
                               logs = logs,
                               trigger_update = trigger_update, ...))
         }
