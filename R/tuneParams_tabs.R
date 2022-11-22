@@ -147,7 +147,7 @@ utils::globalVariables(
 #             req(input$biomass_observed)
 #         p@species_params[isolate(input$sp), "biomass_cutoff"] <-
 #             req(input$biomass_cutoff)
-#         params(p)
+#         tuneParams_update_params(p, params)
 #     })
 # 
 #     # Plot biomass distribution
@@ -205,8 +205,7 @@ utils::globalVariables(
 #             sum((p@initial_n[sp_idx, ] * p@w * p@dw)[p@w >= cutoff[[sp_idx]]])
 #         }
 #         p <- scaleModel(p, factor = observed_total / model_total)
-#         params(p)
-#         tuneParams_add_to_logs(logs, p)
+#         tuneParams_add_to_logs(logs, p, params)
 #         # Trigger an update of sliders
 #         trigger_update(runif(1))
 #     })
@@ -226,8 +225,7 @@ utils::globalVariables(
 #             biomass_model <- sum((p@initial_n[sp, ] * p@w * p@dw)[p@w >= cutoff])
 #             scale_by <- biomass_observed / biomass_model
 #             p <- scaleModel(p, factor = scale_by)
-#             params(p)
-#             tuneParams_add_to_logs(logs, p)
+#             tuneParams_add_to_logs(logs, p, params)
 #             # Trigger an update of sliders
 #             trigger_update(runif(1))
 #         }
@@ -253,7 +251,7 @@ utils::globalVariables(
 #             factor <- p@species_params$biomass_observed[[sp_idx]] / total
 #             p@initial_n[sp_idx, ] <- p@initial_n[sp_idx, ] * factor
 #         }
-#         params(p)
+#         tuneParams_update_params(p, params)
 #         if (sp == input$sp) {
 #             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
 #             updateSliderInput(session, "n0",
@@ -291,7 +289,7 @@ utils::globalVariables(
 #           }
 #         }
 #       }
-#       params(p)
+#       tuneParams_update_params(p, params)
 #     })
 # }
 

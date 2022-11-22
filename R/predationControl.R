@@ -26,7 +26,7 @@ predationControl <- function(input, output, session, params, params_old,
             p@species_params[sp, "beta"]  <- input$beta
             p@species_params[sp, "sigma"] <- input$sigma
             p <- setPredKernel(p)
-            params(p)
+            tuneParams_update_params(p, params)
 
             e_new <- getEncounter(p)[sp, p@w_min_idx[[sp]]]
             gamma_new <- p@species_params[sp, "gamma"] * e_old / e_new

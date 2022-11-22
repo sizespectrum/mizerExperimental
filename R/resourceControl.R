@@ -7,6 +7,12 @@ resourceControl <- function(input, output, session, params, flags, ...) {
             input$log_r_pp,
             input$w_pp_cutoff,
             input$n_resource)
+        p <- isolate(params())
+        sp <- isolate(input$sp)
+        if (!identical(sp, flags$sp_old_resource)) {
+            flags$sp_old_resource <- sp
+            return()
+        }
         p <- setResource(isolate(params()),
                          kappa = input$kappa,
                          lambda = input$lambda,
@@ -19,7 +25,7 @@ resourceControl <- function(input, output, session, params, flags, ...) {
         } else if (p@resource_dynamics == "resource_constant") {
             p@initial_n_pp <- resource_capacity(p)
         }
-        params(p)
+        tuneParams_update_params(p, params)
     })
 }
 

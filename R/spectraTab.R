@@ -35,7 +35,7 @@ spectraTab <- function(input, output, session,
         if (input$scale_bkgrd_by == 1) return(1)
         tryCatch({
             p <- scaleDownBackground(params(), input$scale_bkgrd_by)
-            params(p)
+            tuneParams_update_params(p, params)
         }, error = error_fun)
         updateSliderInput(session, "scale_bkgrd_by", value = 1)
     })
@@ -49,7 +49,7 @@ spectraTab <- function(input, output, session,
         #     shinyjs::disable("retune_background")
         #     removeTooltip(session, "retune_background")
         # }
-        params(p)
+        tuneParams_update_params(p, params)
     })
     
     ## Remove background ####
@@ -62,7 +62,7 @@ spectraTab <- function(input, output, session,
         #   shinyjs::disable("remove_background")
         #   shinyjs::disable("retune_background")
         # }
-        params(p)
+        tuneParams_update_params(p, params)
     })
 }
 

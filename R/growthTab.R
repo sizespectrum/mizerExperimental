@@ -72,7 +72,7 @@ growthTab <- function(input, output, session, params, logs,
             p@species_params[isolate(input$sp), "t0"] <- input$t0
             p@species_params[isolate(input$sp), "a"] <- input$a
             p@species_params[isolate(input$sp), "b"] <- input$b
-            params(p)
+            tuneParams_update_params(p, params)
         },
         ignoreInit = TRUE)
     

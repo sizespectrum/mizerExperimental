@@ -11,7 +11,7 @@
 #' changes its number.
 #' @inheritParams spectraTab
 numberTab <- function(input, output, session,
-                       params, logs, trigger_update, ...) {
+                       params, params_old, logs, trigger_update, ...) {
     # Select clicked species ----
     # See https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     observeEvent(input$number_click, {
@@ -64,15 +64,15 @@ numberTab <- function(input, output, session,
             number_observed
         p@species_params[isolate(input$sp), "number_cutoff"] <-
             req(input$number_cutoff)
-        params(p)
+        tuneParams_update_params(p, params)
     })
 
     # Calibrate all numbers ----
     observeEvent(input$calibrate_number, {
         # Rescale so that the model matches the total observed number
         p <- calibrateNumber(params())
-        params(p)
-        tuneParams_add_to_logs(logs, p)
+        params_old(p)
+        tuneParams_add_to_logs(logs, p, params)
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
@@ -93,7 +93,8 @@ numberTab <- function(input, output, session,
         p <- matchNumbers(p, species = sp)
         p@species_params$number_observed[[sp_idx]] <- obs
 
-        params(p)
+        tuneParams_update_abundance(p, sp, params, params_old)
+        
         if (sp == input$sp) {
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
             updateSliderInput(session, "n0",
@@ -114,7 +115,7 @@ numberTab <- function(input, output, session,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        params(p)
+        tuneParams_update_abundance(p, input$sp, params, params_old)
     })
 }
 

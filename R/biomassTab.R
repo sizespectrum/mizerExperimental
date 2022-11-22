@@ -64,15 +64,14 @@ biomassTab <- function(input, output, session,
             biomass_observed
         p@species_params[isolate(input$sp), "biomass_cutoff"] <-
             req(input$biomass_cutoff)
-        params(p)
+        tuneParams_update_params(p, params)
     })
 
     # Calibrate all biomasses ----
     observeEvent(input$calibrate_biomass, {
         # Rescale so that the model matches the total observed biomass
         p <- calibrateBiomass(params())
-        params(p)
-        tuneParams_add_to_logs(logs, p)
+        tuneParams_add_to_logs(logs, p, params)
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
@@ -93,7 +92,7 @@ biomassTab <- function(input, output, session,
         p <- matchBiomasses(p, species = sp)
         p@species_params$biomass_observed[[sp_idx]] <- obs
 
-        params(p)
+        tuneParams_update_params(p, params)
         if (sp == input$sp) {
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
             updateSliderInput(session, "n0",
@@ -114,7 +113,7 @@ biomassTab <- function(input, output, session,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        params(p)
+        tuneParams_update_params(p, params)
     })
 }
 

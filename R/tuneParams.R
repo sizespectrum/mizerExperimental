@@ -87,8 +87,7 @@
 #' @import shinyBS
 #' @export
 tuneParams <- function(params,
-                       controls = c("abundance",
-                                   "predation",
+                       controls = c("predation",
                                    "fishing",
                                    "reproduction",
                                    "other",
@@ -135,10 +134,12 @@ tuneParams <- function(params,
         }
         p <- readRDS(logs$files[logs$idx])
     } else {
-        p <- params # just because I was lazy and because I am using params later
+        p <- params # because I use `params` as a reactive value later
         validObject(p)
+        
         # Add the info that should be preserved to the species_params for later
-        # recall
+        # recall. This is not needed when a params object is restored from the
+        # logs because its already included there.
         preserve <- match.arg(preserve)
         if (preserve == "reproduction_level") {
             p@species_params$tuneParams_old_repro_level <-
@@ -151,7 +152,7 @@ tuneParams <- function(params,
         }
         p <- prepare_params(p)
     }
-
+    
     # User interface ----
     ui <- fluidPage(
         theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
@@ -200,8 +201,6 @@ tuneParams <- function(params,
                         actionButton("sp_steady", HTML("<u>s</u>teady")),
                         message = "Find steady state. Keyboard shortcut: s",
                         position = "right"),
-                    # We should not put a tooltip on the Undo or Redo buttons
-                    # because they get stuck when the button gets disabled
                     prompter::add_prompt(
                         actionButton("undo_all", "", icon = icon("angles-left")),
                         message = "Undo all changes"),
@@ -273,8 +272,17 @@ tuneParams <- function(params,
 
     server <- function(input, output, session) {
         hintjs(session)
-        ## Store params object as a reactive value ####
-        params <- reactiveVal(p)
+        ## Create params object as a reactive value ####
+        params <- reactiveVal()
+        if (logs$idx == 0) {
+            # Adding it to the logs allows us to get back to the initial state
+            tuneParams_add_to_logs(logs, p, params)
+        } else {
+            # Otherwise p comes from recovered logs and only needs to be saved
+            # in reactive value
+            params(p)
+        }
+        
         # The abundances in params() will get updated using 
         # `singleSpeciesSteady()` each time a parameter gets changed. It is
         # important that this updating always starts again from the previous
@@ -285,12 +293,13 @@ tuneParams <- function(params,
         # the logs. They will not be changed in `tuneParams_update_species()`.
         params_old <- reactiveVal(p)
         
-        tuneParams_add_to_logs(logs, p)  # This allows us to get back to the 
-        # initial state
-        
-        if (logs$idx == length(logs$files)) shinyjs::disable("redo")
+        if (logs$idx == length(logs$files)) {
+            shinyjs::disable("redo")
+        }
         if (logs$idx <= 1) {
+            # There is nothing to undo if there is nothing older in the logs
             shinyjs::disable("undo")
+            shinyjs::disable("undo_all")
         }
 
         # Define a reactive value for triggering an update of species sliders
@@ -404,22 +413,27 @@ tuneParams <- function(params,
 
         ## Undo ####
         observeEvent(input$undo, {
-            if (logs$idx <= 1) return()
+            if (logs$idx < 1) stop("This should never happen")
             p_new <- readRDS(logs$files[logs$idx])
             p_old <- params()
-            # if the params have not changed, go to the previous one
-            if ((nrow(p_old@species_params) == nrow(p_new@species_params)) &&
-                all(p_old@species_params == p_new@species_params, na.rm = TRUE)) {
+            # if the params have not changed, go to the previous one, 
+            # if it exists
+            if (is.null(attr(p_old, "changes")) && logs$idx > 1) {
                 logs$idx <- logs$idx - 1
                 shinyjs::enable("redo")
                 p_new <- readRDS(logs$files[logs$idx])
-                if (logs$idx == 1) {
-                    shinyjs::disable("undo")
-                }
+            } else {
+                shinyjs::disable("redo")
+            }
+            if (logs$idx <= 1) {
+                shinyjs::disable("undo")
+                shinyjs::disable("undo_all")
             }
             params(p_new)
             params_old(p_new)
             # Trigger an update of sliders
+            # First clear all flags so that update of sliders does not trigger
+            # any controls.
             rm(list = ls(flags), pos = flags)
             trigger_update(runif(1))
         })
@@ -441,6 +455,7 @@ tuneParams <- function(params,
         observeEvent(input$undo_all, {
             if (logs$idx > 1) shinyjs::enable("redo")
             shinyjs::disable("undo")
+            shinyjs::disable("undo_all")
             logs$idx <- 1
             p <- readRDS(logs$files[logs$idx])
             params(p)

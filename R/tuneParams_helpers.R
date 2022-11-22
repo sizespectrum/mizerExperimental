@@ -11,6 +11,10 @@ prepare_params <- function(p) {
 # This is called when a params object is downloaded or when the done button
 # is pressed
 finalise_params <- function(p) {
+    # Clear attribute that was only needed for the undo functionality
+    attr(p, "changes") <- NULL
+    
+    # Set reproduction
     if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
         p <- setBevertonHolt(p, reproduction_level =
                                  p@species_params$tuneParams_old_repro_level)
@@ -40,11 +44,11 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         p <- singleSpeciesSteady(p)
 
         # Update the reactive params object
-        params(p)
+        tuneParams_update_params(p, params)
     },
     error = function(e) {
         error_fun(e)
-        params(p)
+        tuneParams_update_params(p, params)
     })
 }
 
@@ -81,18 +85,9 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         p <- mizer::steady(p, t_max = 100, tol = 1e-2,
                            progress_bar = progress)
 
-        # Update the egg slider
-        sp_idx <- which.max(p@species_params$species == isolate(input$sp))
-        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
-        updateSliderInput(session, "n0",
-                          value = n0,
-                          min = signif(n0 / 10, 3),
-                          max = signif(n0 * 10, 3))
-
         # Update the reactive params objects
-        params(p)
         params_old(p)
-        tuneParams_add_to_logs(logs, p)
+        tuneParams_add_to_logs(logs, p, params)
     },
     error = error_fun)
 }
@@ -120,10 +115,36 @@ tuneParams_update_abundance <- function(p, sp, params, params_old) {
     # p <- singleSpeciesSteady(p, species = other_species)
     
     # Update the reactive params object
+    tuneParams_update_params(p, params)
+}
+
+# Call this whenever the params object needs to be updated, unless you also 
+# need to write it to the logs, in which case call `tuneParams_add_to_logs()`
+# instead.
+tuneParams_update_params <- function(p, params) {
+    
+    # indicate that the params have changed. This will be used in the Undo
+    # functionality.
+    if (is.null(attr(p, "changes"))) {
+        attr(p, "changes") <- 1
+        # Now that a change has taken place, there is certainly something to undo
+        shinyjs::enable("undo")
+        shinyjs::enable("undo_all")
+    } else {
+        attr(p, "changes") <- attr(p, "changes") + 1
+    }
+    
     params(p)
 }
 
-tuneParams_add_to_logs <- function(logs, p) {
+# This updates the params object and writes it to the logs
+tuneParams_add_to_logs <- function(logs, p, params) {
+    
+    # Clear attribute used in undo functionality
+    attr(p, "changes") <- NULL
+    # update params object
+    params(p)
+    
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
     file = paste0(tempdir(), "/mizer_params", time, ".rds")
@@ -138,6 +159,9 @@ tuneParams_add_to_logs <- function(logs, p) {
     if (logs$idx > 1) {
         shinyjs::enable("undo")
         shinyjs::enable("undo_all")
+    } else {
+        shinyjs::disable("undo")
+        shinyjs::disable("undo_all")
     }
 }
 

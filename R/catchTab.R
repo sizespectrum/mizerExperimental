@@ -93,7 +93,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     observeEvent(input$yield_observed, {
         p <- params()
         p@species_params[input$sp, "yield_observed"] <- input$yield_observed
-        params(p)
+        tuneParams_update_params(p, params)
         },
         ignoreInit = TRUE)
 
@@ -110,8 +110,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     observeEvent(input$calibrate_yield, {
         # Rescale so that the model matches the total observed yield
         p <- calibrateYield(params())
-        params(p)
-        tuneParams_add_to_logs(logs, p)
+        tuneParams_add_to_logs(logs, p, params)
         # Trigger an update of sliders
         trigger_update(runif(1))
     })
@@ -132,7 +131,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         p <- matchYields(p, species = sp)
         p@species_params$yield_observed[[sp_idx]] <- obs
         
-        params(p)
+        tuneParams_update_params(p, params)
         if (sp == input$sp) {
             n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
             updateSliderInput(session, "n0",
@@ -153,7 +152,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
                           value = n0,
                           min = signif(n0 / 10, 3),
                           max = signif(n0 * 10, 3))
-        params(p)
+        tuneParams_update_params(p, params)
     })
 }
 
