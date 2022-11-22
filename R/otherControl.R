@@ -47,6 +47,9 @@ otherControl <- function(input, output, session, params, params_old,
                               value = ks,
                               min = signif(ks / 2, 2),
                               max = signif((ks + 0.1) * 1.5, 2))
+            updateSliderInput(session, "p",
+                              min = signif(input$p - 0.1, 2),
+                              max = signif(input$p + 0.1, 2))
         },
         ignoreInit = TRUE)
 }
@@ -62,9 +65,10 @@ otherControlUI <- function(p, input) {
                     min = signif(sp$ks / 2, 2),
                     max = signif((sp$ks + 0.1) * 1.5, 2),
                     step = 0.05),
-        numericInput("p", "Exponent of metabolism 'p'",
-                     value = sp$p,
-                     min = 0.6, max = 0.8, step = 0.005),
+        sliderInput("p", "Exponent of metabolism 'p'",
+                     value = sp[["p"]],
+                     min = sp[["p"]] - 0.1, max = sp[["p"]] + 0.1, 
+                     step = 0.005),
         sliderInput("k", "Coefficient of activity 'k'",
                     value = sp$k,
                     min = signif(sp$k / 2, 2),

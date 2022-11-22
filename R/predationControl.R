@@ -55,6 +55,12 @@ predationControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "h",
                               min = signif(input$h / 2, 2),
                               max = signif(input$h * 1.5, 2))
+            updateSliderInput(session, "n",
+                              min = signif(input$n - 0.1, 2),
+                              max = signif(input$n + 0.1, 2))
+            updateSliderInput(session, "q",
+                              min = signif(input$q - 0.1, 2),
+                              max = signif(input$q + 0.1, 2))
             p@species_params[sp, "gamma"] <- input$gamma
             p@species_params[sp, "h"]     <- input$h
             p@species_params[sp, "q"]     <- input$q
@@ -103,12 +109,12 @@ predationControlUI <- function(p, input) {
                     value = sp$h,
                     min = signif(sp$h / 2, 2),
                     max = signif(sp$h * 1.5, 2)),
-        numericInput("q", "Exponent of search volume 'q'",
-                     value = sp$q,
-                     min = 0.6, max = 0.8, step = 0.005),
-        numericInput("n", "Exponent of max feeding rate 'n'",
-                     value = sp$n,
-                     min = 0.6, max = 0.8, step = 0.005),
+        sliderInput("q", "Exponent of search volume 'q'",
+                     value = sp[["q"]],
+                     min = sp[["q"]] - 0.1, max = sp[["q"]] + 0.1, step = 0.005),
+        sliderInput("n", "Exponent of max feeding rate 'n'",
+                     value = sp[["n"]],
+                     min = sp[["n"]] - 0.1, max = sp[["n"]] + 0.1, step = 0.005),
         sliderInput("beta", "Preferred predator-prey mass ratio 'beta'",
                     value = sp$beta,
                     min = signif(sp$beta / 2, 2),
