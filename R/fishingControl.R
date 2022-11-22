@@ -43,7 +43,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
                 updateSliderInput(session, "l50",
                                   max = signif(input$l50 * 2, 2))
                 updateSliderInput(session, "ldiff",
-                                  max = signif(input$l50 / 10, 2))
+                                  max = signif(input$ldiff * 2, 2))
                 p@gear_params[gp_idx, "l50"]   <- input$l50
                 p@gear_params[gp_idx, "l25"]   <- input$l50 - input$ldiff
             }
@@ -53,7 +53,7 @@ fishingControl <- function(input, output, session, params, params_old, flags, ..
                 updateSliderInput(session, "l50_right",
                                   max = signif(input$l50_right * 2, 2))
                 updateSliderInput(session, "ldiff_right",
-                                  max = signif(input$l50_right / 10, 2))
+                                  max = signif(input$ldiff_right * 2, 2))
             }
 
             p <- setFishing(p, initial_effort = input$effort)
@@ -108,7 +108,7 @@ fishingControlUI <- function(p, input) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
+                        max = signif((gp$l50 - gp$l25) * 2, 2),
                         step = 0.1)))
     } else if (gp$sel_func == "double_sigmoid_length") {
         l1 <- c(l1, list(
@@ -120,7 +120,7 @@ fishingControlUI <- function(p, input) {
             sliderInput("ldiff", "L50-L25",
                         value = gp$l50 - gp$l25,
                         min = 0.1,
-                        max = signif(max(gp$l50 / 4, (gp$l50 - gp$l25)*1.1), 2),
+                        max = signif((gp$l50 - gp$l25) * 2, 2),
                         step = 0.1),
             sliderInput("l50_right", "L50 right",
                         value = gp$l50_right,
@@ -130,8 +130,7 @@ fishingControlUI <- function(p, input) {
             sliderInput("ldiff_right", "L50-L25 right",
                         value = gp$l25_right - gp$l50_right,
                         min = 0.1,
-                        max = signif(max(gp$l50_right / 4,
-                                         (gp$l25_right - gp$l50_right)*1.1), 2),
+                        max = signif((gp$l50_right - gp$l25_right) * 2, 2),
                         step = 0.1)
         ))
     }
