@@ -87,10 +87,10 @@ plotDataFrame <- function(frame, params, style = "line", xlab = waiver(),
                 geom_line(aes(x = .data[[x_var]], y = .data[[y_var]],
                               colour = .data[[legend_var]],
                               linetype = .data[[legend_var]],
-                              size = .data[[legend_var]])) +
+                              linewidth = .data[[legend_var]])) +
                 scale_colour_manual(values = linecolour) +
                 scale_linetype_manual(values = linetype) +
-                scale_size_manual(values = linesize)
+                scale_discrete_manual("linewidth", values = linesize)
             },
             "area" = {p <- p +
                 geom_area(aes(x = .data[[x_var]], y = .data[[y_var]],

@@ -53,7 +53,7 @@ stomachTab <- function(input, output, session, params, logs, stomach, ...) {
 
         pl + geom_line(data = df,
                        aes(x, Density, colour = Type),
-                       size = 3)
+                       linewidth = 3)
         st <- stomach %>%
             filter(species == input$sp)
     })

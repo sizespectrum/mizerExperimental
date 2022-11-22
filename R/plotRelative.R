@@ -51,7 +51,7 @@ plotSpectraRelative <- function(object1, object2, ...) {
         scale_x_log10() +
         scale_color_manual(values = linecolours) +
         geom_hline(yintercept = 0, linetype = 1,
-                   colour = "dark grey", size = 0.75)
+                   colour = "dark grey", linewidth = 0.75)
 }
 
 #' @rdname plotSpectraRelative
