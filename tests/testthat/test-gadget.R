@@ -11,5 +11,10 @@ test_that("tuneParams gadget works", {
     test_app(appdir)
 })
 
+# To create new tests run
+# shinytest2::record_test("tests/testthat/apps/tuneParams/", 
+#                          seed = 1, allow_no_input_binding = TRUE)
+# The `allow_no_input_binding` is needed because of plotly.
+
 # To review the snapshots use
 # testthat::snapshot_review(path = "tests/testthat/apps/tuneParams/tests/testthat/")

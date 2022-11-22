@@ -1,4 +1,4 @@
 library(shiny)
 library(mizerExperimental)
 
-tuneParams(newTraitParams(), return_app = TRUE)
+tuneParams(NS_params, return_app = TRUE)
