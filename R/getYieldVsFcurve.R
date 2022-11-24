@@ -202,7 +202,8 @@ plotYieldVsF <- function(params,
                          threshold_var = threshold_var,
                          t_max = t_max
                          )
-
+    
+    species <- valid_species_arg(params, species)
     ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
         xlab("Fishing mortality (1/yr)") +
