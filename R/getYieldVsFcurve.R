@@ -26,8 +26,8 @@
 #' @param max_func A function used in `getMaxF` to determines the threshold to use
 #' when stopping the fisheries effort.
 #' @param threshold_var A numeric value used in max_func to calculate the threshold
-#' from the `params` object. If supplied the function returns the value of the
-#' threshold using `threshold_var`. If not supplied the function returns the
+#' from the `params` object. If supplied, the function returns the value of the
+#' threshold using `threshold_var`. If not supplied, the function returns the
 #' unchanged value, which can be compared against the version which uses `threshold_var`.
 #' @param t_max The longest time to run project to find steady state.
 #' 
@@ -79,7 +79,7 @@ getYieldVsF <- function(params,
         stop("This function only works in the case where the target species ",
              "is selected by a single gear only")
     }
-    current_FMort <- params@initial_effort * gp_extra$catchability
+    current_FMort <- params@initial_effort[gp$gear[gps]] * gp_extra$catchability
     gp_extra$gear <- "tmp"
     gp_extra$catchability <- 1
     gp$catchability[gps] <- 0
@@ -143,14 +143,16 @@ getYieldVsF <- function(params,
 
         assert_that(is.numeric(F_range))
         sel <- F_range < current_FMort
-        F_range1 <- rev(F_range[sel])
-        F_range2 <- F_range[!sel]
-
+        F_range1 <- sort(F_range[sel], decreasing = TRUE)
+        F_range2 <- sort(F_range[!sel])
+        
+        # First work down from current fishing
         yield_vec1 <- 
             yieldCalculator(params = params, effort_vec = F_range1, 
                             idx_species = idx_species,
                             distance_func = distance_func, 
                             tol = tol, t_max = t_max)
+        # Then work up from current fishing
         yield_vec2 <- 
             yieldCalculator(params = params, effort_vec = F_range2, 
                             idx_species = idx_species,
@@ -188,7 +190,10 @@ plotYieldVsF <- function(params,
                          tol = .001,
                          max_func = maxFthreshold,
                          threshold_var = 10,
-                         t_max = 100){
+                         t_max = 100) {
+    # Check parameters
+    params <- validParams(params)
+    species <- valid_species_arg(params, species)
 
     curve <- getYieldVsF(params,
                          species = species,
@@ -202,8 +207,6 @@ plotYieldVsF <- function(params,
                          threshold_var = threshold_var,
                          t_max = t_max
                          )
-    
-    species <- valid_species_arg(params, species)
     
     pl <- ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
@@ -366,7 +369,7 @@ distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 #'
 #' @description
 #' This function replaces a loop used multiple times within
-#' `getYieldVsCurve`
+#' [getYieldVsF()]
 #'
 #' @inheritParams getYieldVsF
 #' @param effort_vec TODO: document
@@ -377,22 +380,23 @@ distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 yieldCalculator <- function(params, effort_vec, idx_species,
                             distance_func = distanceSSLogN,
                             tol = 0.001, t_max = 100) {
-    yield_vec <- NULL
-    for (iEffort in effort_vec) {
-        params@initial_effort["tmp"] <- iEffort
-        sim <- projectToSteady(params, t_max = t_max,
+    yield_vec <- effort_vec # To get the right length
+    for (i in seq_along(effort_vec)) {
+        message(paste("F =", effort_vec[i]))
+        params@initial_effort["tmp"] <- effort_vec[i]
+        sim <- projectToSteady(params, t_max = t_max, t_per = 1.5,
                                return_sim = TRUE, progress_bar = FALSE, 
                                distance_func = distance_func, tol = tol)
         y <- getYield(sim)
         ft <- idxFinalT(sim)
         if (ft < t_max - 1) { # if convergence use final yield
-            yield_vec <- c(yield_vec, y[ft, idx_species])
-        } else { # otherwise average over last 30 years (t_per = 1.5)
-            yield_vec <- c(yield_vec, mean(y[(ft - 30):ft, idx_species]))
+            yield_vec[i] <- y[ft, idx_species]
+            params <- setInitialValues(params, sim)
+        } else { # otherwise average over last 45 years (t_per = 1.5)
+            yield_vec[i] <- mean(y[(ft - 30):ft, idx_species])
+            params <- setInitialValues(params, sim,
+                                       time_range = c(65, 100))
         }
-        # Start next simulation with final state from current in the hope that
-        # this will be quicker.
-        params <- setInitialValues(params, sim)
     }
 
     return(yield_vec)
