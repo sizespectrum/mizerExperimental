@@ -204,11 +204,20 @@ plotYieldVsF <- function(params,
                          )
     
     species <- valid_species_arg(params, species)
-    ggplot(curve, aes(x = F, y = yield)) +
+    
+    pl <- ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
         ggtitle(species)
+    
+    if ("F_MSY" %in% names(params@species_params)) {
+        F_MSY = params@species_params$F_MSY
+        pl <- pl + 
+            geom_vline(xintercept = F_MSY, linetype = dashed, colour = "grey")
+    }
+    
+    pl
 }
 
 
