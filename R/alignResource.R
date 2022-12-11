@@ -3,7 +3,8 @@
 #' This function sets the coefficient of the resource power law so that the
 #' resource spectrum aligns approximately with the fish community spectrum and it
 #' then rescales the search volumes of all fish species so that their resource
-#' consumption stays the same.
+#' encounter rate stays the same. This will therefore modify the encounter rate
+#' with other prey.
 #' 
 #' @param params A MizerParams object
 #' @return A MizerParams object with updated resource carrying capacity,
