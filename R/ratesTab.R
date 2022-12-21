@@ -8,7 +8,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
         sp <- input$sp
         p <- params()
         
-        max_w <- p@species_params[sp, "w_inf"]
+        max_w <- p@species_params[sp, "w_max"]
         if (input$axis == "Logarithmic") {
             min_w <- p@species_params[sp, "w_min"]
         } else {
@@ -33,7 +33,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
             geom_line() +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
                        linetype = "dotted") +
-            geom_vline(xintercept = p@species_params[sp, "w_inf"],
+            geom_vline(xintercept = p@species_params[sp, "w_max"],
                        linetype = "dotted") +
             theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [g/year]")  +
@@ -41,7 +41,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                           y = max(value * 0.2),
                           label = "\nMaturity"),
                       angle = 90)  +
-            geom_text(aes(x = p@species_params[sp, "w_inf"],
+            geom_text(aes(x = p@species_params[sp, "w_max"],
                           y = max(value * 0.2),
                           label = "\nMaximum"),
                       angle = 90)
@@ -57,7 +57,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
         sp <- input$sp
         p <- params()
         
-        max_w <- p@species_params[sp, "w_inf"]
+        max_w <- p@species_params[sp, "w_max"]
         if (input$axis == "Logarithmic") {
             min_w <- p@species_params[sp, "w_min"]
         } else {
@@ -80,7 +80,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
             geom_line() +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
                        linetype = "dotted") +
-            geom_vline(xintercept = p@species_params[sp, "w_inf"],
+            geom_vline(xintercept = p@species_params[sp, "w_max"],
                        linetype = "dotted") +
             theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [1/year]")  +
@@ -88,7 +88,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                           y = max(value * 0.2),
                           label = "\nMaturity"),
                       angle = 90)  +
-            geom_text(aes(x = p@species_params[sp, "w_inf"],
+            geom_text(aes(x = p@species_params[sp, "w_max"],
                           y = max(value * 0.2),
                           label = "\nMaximum"),
                       angle = 90)

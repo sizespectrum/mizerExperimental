@@ -24,7 +24,7 @@ reproTab <- function(input, output, session, params, logs, ...) {
         p <- params()
         sp <- which.max(p@species_params$species == input$sp)
         w_min <- 1
-        sel <- p@w >= w_min & p@w <= p@species_params$w_inf[sp]
+        sel <- p@w >= w_min & p@w <= p@species_params$w_max[sp]
         df <- data.frame(Size = p@w[sel], value = p@psi[sp, sel])
         ggplot(df, aes(x = Size, y = value)) +
             geom_line(color = "blue") +
