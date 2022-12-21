@@ -1,15 +1,16 @@
 #' Serve tab with catch data
 #'
 #' @inheritParams biomassTab
-#' @param catch Data frame holding binned observed catch data. The data can
-#'   be binned either into length bins or weight bins. In the former case the data
+#' @param catch Data frame holding binned observed catch data. The data can be
+#'   binned either into length bins or weight bins. In the former case the data
 #'   frame should have columns \code{length} and \code{dl} holding the start of
 #'   the size bins in cm and the width of the size bins in cm respectively. In
 #'   the latter case the data frame should have columns \code{weight} and
 #'   \code{dw} holding the start of the size bins in grams and the width of the
 #'   size bins in grams. The data frame also needs to have the columns
-#'   \code{species} (the name of the species), \code{catch} (the number of
-#'   individuals of a particular species caught in a size bin).
+#'   \code{species} (the name of the species), \code{gear} (the name of the
+#'   gear) and \code{catch} (the number of individuals of a particular species
+#'   caught by a particular gear in a size bin).
 catchTab <- function(input, output, session, params, logs, trigger_update,
                      catch = NULL, ...) {
 
@@ -18,6 +19,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
             is.data.frame(catch),
             "catch" %in% names(catch),
             "species" %in% names(catch),
+            "gear" %in% names(catch),
             all(c("length", "dl") %in% names(catch)) |
                 all(c("weight", "dw") %in% names(catch))
         )
@@ -30,23 +32,17 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     observeEvent(input$tune_catch, {
         p <- isolate(params())
         sp <- isolate(input$sp)
+        gear <- isolate(input$gear)
         sp_idx <- which.max(p@species_params$species == sp)
-        gp_idx <- which(p@gear_params$species == sp)
-        if (length(gp_idx) != 1) {
-            showModal(modalDialog(
-                title = "Invalid gear specification",
-                HTML(paste0("Currently you can only use models where each ",
-                            "species is caught by only one gear")),
-                easyClose = TRUE
-            ))
-        }
-        if ("yield_observed" %in% names(p@species_params) &&
-            !is.na(p@species_params$yield_observed[sp_idx]) &&
-            p@species_params$yield_observed[sp_idx] > 0) {
+        gp_idx <- which(p@gear_params$species == sp,
+                        p@gear_params$gear == gear)
+        gp <- p@gear_params[gp_idx, ]
+        if ("yield_observed" %in% names(gp) && !is.na(gp$yield_observed) &&
+            gp$yield_observed > 0) {
             total <- sum(p@initial_n[sp_idx, ] * p@w * p@dw *
-                             getFMort(p)[sp_idx, ])
+                             getFMortGear(p)[gear, sp, ])
             catchability <-
-                p@gear_params$catchability[gp_idx] *
+                gp$catchability *
                 p@species_params$yield_observed[sp_idx] / total
             updateSliderInput(session, "catchability",
                               value = catchability)
@@ -58,6 +54,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     # Catch density for selected species ----
     output$plotCatchDist <- renderPlotly({
         plotlyYieldVsSize(params(), species = req(input$sp),
+                          gear = input$gear,
                           catch = catch, x_var = input$catch_x)
     })
     
@@ -75,7 +72,7 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     
     # Total yield by species ----
     output$plotTotalYield <- renderPlot({
-        plotYieldVsSpecies(params()) +
+        plotYieldVsSpecies(params(), gear = input$gear) +
             theme(text = element_text(size = 18))
     })
 
@@ -83,16 +80,19 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     output$yield_sel <- renderUI({
         p <- isolate(params())
         sp <- input$sp
+        gear <- input$gear
+        spgear <- paste(sp, gear, sep = ", ")
         div(style = "display:inline-block",
             numericInput("yield_observed",
-                         paste0("Observed total yield for ", sp, " [g/year]"),
-                         value = p@species_params[sp, "yield_observed"]))
+                         paste0("Observed yield for ", spgear, " [g/year]"),
+                         value = p@gear_params[spgear, "yield_observed"]))
     })
 
     # Adjust observed yield ----
     observeEvent(input$yield_observed, {
         p <- params()
-        p@species_params[input$sp, "yield_observed"] <- input$yield_observed
+        spgear <- paste(input$sp, input$gear, sep = ", ")
+        p@gear_params[spgear, "yield_observed"] <- input$yield_observed
         tuneParams_update_params(p, params)
         },
         ignoreInit = TRUE)
@@ -100,10 +100,12 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
     # Output of model yield ----
     output$yield_total <- renderText({
         p <- params()
-        sp <- which.max(p@species_params$species == input$sp)
+        sp <- input$sp
+        gear <- input$gear
+        spgear <- paste(sp, gear, sep = ", ")
         total <- sum(p@initial_n[sp, ] * p@w * p@dw *
-                         getFMort(p)[sp, ])
-        paste("Model yield:", total, "g/year")
+                         getFMortGear(p)[gear, sp, ])
+        paste("Model yield for ", spgear, " [g/year]: ", total)
     })
     
     # Calibrate all yields ----
@@ -125,11 +127,11 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         
         # Temporarily set observed yield to the clicked yield, then
         # match that yield, then restore observed yield
-        obs <- p@species_params$yield_observed[[sp_idx]]
-        p@species_params$yield_observed[[sp_idx]] <- 
+        obs <- p@gear_params[spgear, "yield_observed"]
+        p@gear_params[spgear, "yield_observed"] <- 
             input$match_species_yield$y
         p <- matchYields(p, species = sp)
-        p@species_params$yield_observed[[sp_idx]] <- obs
+        p@gear_params[spgear, "yield_observed"] <- obs
         
         tuneParams_update_params(p, params)
         if (sp == input$sp) {

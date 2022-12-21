@@ -322,15 +322,18 @@ plotlyEnergyBudget <- function(object,
 #' Also superimposes a plot of the number density of all individuals of the
 #' species.
 #' @inheritParams plotDeath
-#' @param catch  Optional. Data frame holding binned observed catch data. The data can
-#'   be binned either into length bins or weight bins. In the former case the data
+#' @param gear Optional. The name of a gear. If supplied, only the yield from
+#'   this gear will be displayed.
+#' @param catch Data frame holding binned observed catch data. The data can be
+#'   binned either into length bins or weight bins. In the former case the data
 #'   frame should have columns \code{length} and \code{dl} holding the start of
 #'   the size bins in cm and the width of the size bins in cm respectively. In
 #'   the latter case the data frame should have columns \code{weight} and
 #'   \code{dw} holding the start of the size bins in grams and the width of the
 #'   size bins in grams. The data frame also needs to have the columns
-#'   \code{species} (the name of the species), \code{catch} (the number of
-#'   individuals of a particular species caught in a size bin).
+#'   \code{species} (the name of the species), \code{gear} (the name of the
+#'   gear) and \code{catch} (the number of individuals of a particular species
+#'   caught by a particular gear in a size bin).
 #' @param x_var Determines whether to show the size distribution of the catch as
 #'   a function of weight ("Weight") or as a function of length ("Length").
 #'   Default is "Weight".
@@ -350,7 +353,7 @@ plotlyEnergyBudget <- function(object,
 #' fr <- plotYieldVsSize(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotYieldVsSize <- function(object, species = NULL, catch = NULL,
+plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
                             x_var = c("Weight", "Length"),
                             return_data = FALSE) {
     if (is(object, "MizerSim")) {
@@ -361,6 +364,27 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
     }
 
     x_var = match.arg(x_var)
+    if (!is.null(catch)) {
+        assert_that(is.data.frame(catch),
+                    "catch" %in% names(catch),
+                    "species" %in% names(catch),
+                    all(c("length", "dl") %in% names(catch)) |
+                        all(c("weight", "dw") %in% names(catch)))
+    }
+    
+    if (!is.null(gear)) {
+        assert_that(is.character(gear),
+                    length(gear) == 1)
+        if (!(gear %in% params@gear_params$gear)) {
+            stop("The gear ", gear, " does not exist.")
+        }
+        if (!is.null(catch)) {
+            if (!("gear" %in% names(catch))) {
+                stop("There needs to be a 'gear' column in the catch data frame.")
+            }
+            catch <- catch[catch$gear == gear, ]
+        }
+    }
 
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
@@ -402,7 +426,12 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
         w <- params@w[w_sel]
         l = (params@w[w_sel] / a) ^ (1 / b)
 
-        catch_w <- getFMort(params)[iSpecies, w_sel] *
+        if (is.null(gear)) {
+            f_mort <- getFMort(params)
+        } else {
+            f_mort <- getFMortGear(params)[gear, , ]
+        }
+        catch_w <- f_mort[iSpecies, w_sel] *
             params@initial_n[iSpecies, w_sel]
         # We just want the distribution, so we rescale the density so its area is 1
         if (sum(catch_w) > 0) catch_w <- catch_w / sum(catch_w * params@dw[w_sel])
@@ -518,6 +547,9 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
             geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.9,
                                             label = "\nMaturity"))
     }
+    if (!is.null(gear)) {
+        pl <- pl + ggtitle(paste("Gear:", gear))
+    }
     return(pl)
 }
 
@@ -525,6 +557,7 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
 #' @export
 plotlyYieldVsSize <- function(object,
                               species = NULL,
+                              gear = NULL,
                               catch = NULL,
                               x_var = c("Weight", "Length"),
                               ...) {
