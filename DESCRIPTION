@@ -34,9 +34,6 @@ Suggests:
     testthat (>= 2.1.0),
     vdiffr
 Collate:
-    age_mat.R
-    matchGrowth.R
-    get_h_default.R
     plotGrowthCurves.R
     alignResource.R
     manipulateParams.R
@@ -46,8 +43,6 @@ Collate:
     plotYieldVsSpecies.R
     plotNumberVsSpecies.R
     plotRelative.R
-    calibrateNumber.R
-    matchNumbers.R
     tuneParams.R
     abundanceControl.R
     fishingControl.R
@@ -58,7 +53,6 @@ Collate:
     predationControl.R
     reproductionControl.R
     resourceControl.R
-    steady.R
     tuneParams_tabs.R
     exampleTab.R
     abundanceTab.R
@@ -81,7 +75,7 @@ Collate:
     validSim.R
     plots.R
 Encoding: UTF-8
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
