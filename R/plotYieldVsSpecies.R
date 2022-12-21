@@ -14,9 +14,7 @@ plotYieldVsSpecies <- function(params, gear = NULL) {
         if (!(gear %in% params@gear_params$gear)) {
             stop("The gear ", gear, " does not exist.")
         }
-        gp <- gp %>%
-            filter(gear == gear) %>%
-            select(species, yield_observed)
+        gp <- gp[gp$gear == gear, c("species", "yield_observed")]
     } else {
         gp <- gp %>%
             group_by(species) %>%
