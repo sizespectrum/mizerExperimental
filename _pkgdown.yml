@@ -58,15 +58,9 @@ reference:
   - scaleDownBackground
   - updateInitialValues
   - pruneSpecies
-  - calibrateNumber
-  - matchNumbers
-  - matchGrowth
-  - calibrateYield
   - getYieldVsF
-  - scaleModel
   - singleSpeciesSteady
   - alignResource
-  - steady
 - title: New plotting functions
 - contents:
   - starts_with("plot")
@@ -83,6 +77,4 @@ reference:
   - getMaxF
   - maxFthreshold
   - yieldCalculator
-  - age_mat
-  - age_mat_vB
 

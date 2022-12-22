@@ -4,12 +4,6 @@
     <loc>https://sizespectrum.org/mizerExperimental/404.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/articles/first_multispecies_model.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/articles/index.html</loc>
-  </url>
-  <url>
     <loc>https://sizespectrum.org/mizerExperimental/authors.html</loc>
   </url>
   <url>
@@ -17,9 +11,6 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/a_mat.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/abundanceControl.html</loc>
@@ -31,22 +22,10 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/age_mat.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/age_mat_vB.html</loc>
-  </url>
-  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/alignResource.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/biomassTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/calibrateNumber.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/calibrateYield.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc>
@@ -85,12 +64,6 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/matchGrowth.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/matchNumbers.html</loc>
-  </url>
-  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/maxFthreshold.html</loc>
   </url>
   <url>
@@ -107,9 +80,6 @@
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotDataFrame.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/plotDeath.html</loc>
@@ -157,10 +127,10 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
+    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/resourceControl.html</loc>
@@ -175,16 +145,10 @@
     <loc>https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.html</loc>
   </url>
   <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleModel.html</loc>
-  </url>
-  <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/singleSpeciesSteady.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/spectraTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/steady.html</loc>
   </url>
   <url>
     <loc>https://sizespectrum.org/mizerExperimental/reference/stomachTab.html</loc>

@@ -1,4 +1,4 @@
-# mizerExperimental 2.3.1.0001
+# mizerExperimental 2.4.0
 
 ## New plotting functions
 
