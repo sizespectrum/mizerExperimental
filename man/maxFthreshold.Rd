@@ -13,8 +13,8 @@ maxFthreshold(params, idx_species, threshold_var)
 \item{idx_species}{TODO: document}
 
 \item{threshold_var}{A numeric value used in max_func to calculate the threshold
-from the \code{params} object. If supplied the function returns the value of the
-threshold using \code{threshold_var}. If not supplied the function returns the
+from the \code{params} object. If supplied, the function returns the value of the
+threshold using \code{threshold_var}. If not supplied, the function returns the
 unchanged value, which can be compared against the version which uses \code{threshold_var}.}
 }
 \value{

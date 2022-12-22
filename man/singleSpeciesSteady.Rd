@@ -28,12 +28,16 @@ A MizerParams object in which the initial abundances of the selected
 species are changed to their single-species steady state abundances.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function has been renamed to
+\code{\link[mizer:steadySingleSpecies]{mizer::steadySingleSpecies()}}.
+}
+\details{
 This first calculates growth and death rates that arise from the current
 initial abundances. Then it uses these growth and death rates to
 determine the steady-state abundances of the selected species.
-}
-\details{
+
 The result of applying this function is of course not a multi-species steady
 state, because after changing the abundances of the selected species the
 growth and death rates will have changed.
 }
+\keyword{internal}

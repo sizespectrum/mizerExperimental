@@ -8,6 +8,7 @@
 plotYieldVsSize(
   object,
   species = NULL,
+  gear = NULL,
   catch = NULL,
   x_var = c("Weight", "Length"),
   return_data = FALSE
@@ -16,6 +17,7 @@ plotYieldVsSize(
 plotlyYieldVsSize(
   object,
   species = NULL,
+  gear = NULL,
   catch = NULL,
   x_var = c("Weight", "Length"),
   ...
@@ -28,15 +30,19 @@ plotlyYieldVsSize(
 \item{species}{The name of the predator species for which to plot the
 mortality.}
 
-\item{catch}{Optional. Data frame holding binned observed catch data. The data can
-be binned either into length bins or weight bins. In the former case the data
+\item{gear}{Optional. The name of a gear. If supplied, only the yield from
+this gear will be displayed.}
+
+\item{catch}{Data frame holding binned observed catch data. The data can be
+binned either into length bins or weight bins. In the former case the data
 frame should have columns \code{length} and \code{dl} holding the start of
 the size bins in cm and the width of the size bins in cm respectively. In
 the latter case the data frame should have columns \code{weight} and
 \code{dw} holding the start of the size bins in grams and the width of the
 size bins in grams. The data frame also needs to have the columns
-\code{species} (the name of the species), \code{catch} (the number of
-individuals of a particular species caught in a size bin).}
+\code{species} (the name of the species), \code{gear} (the name of the
+gear) and \code{catch} (the number of individuals of a particular species
+caught by a particular gear in a size bin).}
 
 \item{x_var}{Determines whether to show the size distribution of the catch as
 a function of weight ("Weight") or as a function of length ("Length").
