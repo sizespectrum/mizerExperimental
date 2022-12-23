@@ -36,5 +36,5 @@ a vector of yield value of same length as \code{effort_vec}
 }
 \description{
 This function replaces a loop used multiple times within
-\code{getYieldVsCurve}
+\code{\link[=getYieldVsF]{getYieldVsF()}}
 }

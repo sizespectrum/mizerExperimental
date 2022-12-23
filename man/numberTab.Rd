@@ -5,7 +5,16 @@
 \alias{numberTabUI}
 \title{Number tab for tuning gadget}
 \usage{
-numberTab(input, output, session, params, logs, trigger_update, ...)
+numberTab(
+  input,
+  output,
+  session,
+  params,
+  params_old,
+  logs,
+  trigger_update,
+  ...
+)
 
 numberTabUI(params, ...)
 }

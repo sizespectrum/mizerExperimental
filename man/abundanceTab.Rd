@@ -5,25 +5,16 @@
 \alias{abundanceTabUI}
 \title{Abundance tab for tuning gadget}
 \usage{
-abundanceTab(input, output, session, params, logs, trigger_update, ...)
+abundanceTab(input, ...)
 
 abundanceTabUI(params, ...)
 }
 \arguments{
 \item{input}{Reactive holding the inputs}
 
-\item{output}{Reactive holding the outputs}
-
-\item{session}{Shiny session}
+\item{...}{Unused}
 
 \item{params}{Reactive value holding updated MizerParams object}
-
-\item{logs}{Environment holding the log of steady states.}
-
-\item{trigger_update}{Reactive value used for triggering update of
-species parameter sliders.}
-
-\item{...}{Unused}
 }
 \description{
 The Abundance tab combines the \code{\link[=biomassTab]{biomassTab()}} and the \code{\link[=numberTab]{numberTab()}}

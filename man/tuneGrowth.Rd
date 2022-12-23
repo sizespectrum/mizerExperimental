@@ -10,7 +10,7 @@ tuneGrowth(params, match = "biomass")
 \item{params}{MizerParams object to tune. If missing, the gadget tries to
 recover information from log files left over from aborted previous runs.}
 
-\item{match}{A vector of strings. Determines which quantities should be
+\item{match}{A character vector. Determines which quantities should be
 matched to observations each time the "steady" button is pressed. Possible
 entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \code{"biomass"} (using
 \code{\link[=matchBiomasses]{matchBiomasses()}}) and \code{"yield"} (using \code{\link[=matchYields]{matchYields()}}).}

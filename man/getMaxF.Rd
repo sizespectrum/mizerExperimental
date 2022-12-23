@@ -36,8 +36,8 @@ RDI over t_per years is less than tol for every species.}
 when stopping the fisheries effort.}
 
 \item{threshold_var}{A numeric value used in max_func to calculate the threshold
-from the \code{params} object. If supplied the function returns the value of the
-threshold using \code{threshold_var}. If not supplied the function returns the
+from the \code{params} object. If supplied, the function returns the value of the
+threshold using \code{threshold_var}. If not supplied, the function returns the
 unchanged value, which can be compared against the version which uses \code{threshold_var}.}
 
 \item{t_max}{The longest time to run project to find steady state.}

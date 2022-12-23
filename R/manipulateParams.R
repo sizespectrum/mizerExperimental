@@ -210,15 +210,15 @@ updateInitialValues <- function(params) {
         (params@rr_pp + resource_mort)
     # Recompute all species
     for (sp in 1:length(params@species_params$species)) {
-        w_inf_idx <- min(sum(params@w < params@species_params[sp, "w_inf"]) + 1,
+        w_max_idx <- min(sum(params@w < params@species_params[sp, "w_max"]) + 1,
                          length(params@w))
-        idx <- params@w_min_idx[sp]:(w_inf_idx - 1)
+        idx <- params@w_min_idx[sp]:(w_max_idx - 1)
         if (any(gg[sp, idx] == 0)) {
             stop("Can not compute steady state due to zero growth rates")
         }
         n0 <- params@initial_n[sp, params@w_min_idx[sp]]
         params@initial_n[sp, ] <- 0
-        params@initial_n[sp, params@w_min_idx[sp]:w_inf_idx] <-
+        params@initial_n[sp, params@w_min_idx[sp]:w_max_idx] <-
             c(1, cumprod(gg[sp, idx] / ((gg[sp, ] + mumu[sp, ] * params@dw)[idx + 1]))) *
             n0
     }

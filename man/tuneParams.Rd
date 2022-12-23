@@ -6,12 +6,13 @@
 \usage{
 tuneParams(
   params,
-  controls = c("abundance", "predation", "fishing", "reproduction", "other",
-    "interaction", "resource"),
+  controls = c("predation", "fishing", "reproduction", "other", "interaction",
+    "resource"),
   tabs = c("Spectra", "Abundance", "Growth", "Repro", "Catch", "Diet", "Death",
     "Resource", "Rates", "Sim"),
-  match = c("growth", "biomass"),
+  match = c("none"),
   preserve = c("erepro", "reproduction_level", "R_max"),
+  return_app = FALSE,
   ...
 )
 }
@@ -26,7 +27,7 @@ below.}
 \item{tabs}{A character vector of names of the tabs that should be displayed
 in the main section. See "Customisation" below.}
 
-\item{match}{A vector of strings. Determines which quantities should be
+\item{match}{A character vector. Determines which quantities should be
 matched to observations each time the "steady" button is pressed. Possible
 entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \code{"biomass"} (using
 \code{\link[=matchBiomasses]{matchBiomasses()}}) and \code{"yield"} (using \code{\link[=matchYields]{matchYields()}}).}
@@ -35,6 +36,9 @@ entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \
 preserved or the maximum reproduction rate \code{R_max} or the reproductive
 efficiency \code{erepro} (Default). See \code{\link[=setBevertonHolt]{setBevertonHolt()}} for an explanation
 of the \code{reproduction_level}.}
+
+\item{return_app}{Boolean. For testing purposes only. When set to TRUE will
+return a shinyApp object instead of running the gadget.}
 
 \item{...}{Other params needed by individual tabs.}
 }

@@ -3,8 +3,7 @@
 \name{plotEnergyBudget}
 \alias{plotEnergyBudget}
 \alias{plotlyEnergyBudget}
-\title{Plot the energy budget of each species through size.
-This budget is divided between growth, income, metabolic loss and reproduction.}
+\title{Plot the energy budget of each species through size.}
 \usage{
 plotEnergyBudget(
   object,
@@ -35,10 +34,9 @@ FALSE}
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a list composed of
 two slots is returned. First slot is a data frame with the four variables 'w', 'value',
 'Type', 'Species and the second slot is a data frame with the five variables 'w_mat',
-'w_inf', 'Species', 'y_coord', 'Type' (to plot vertical lines).
+'w_max', 'Species', 'y_coord', 'Type' (to plot vertical lines).
 }
 \description{
-Plot the energy budget of each species through size.
 This budget is divided between growth, income, metabolic loss and reproduction.
 }
 \examples{

@@ -157,7 +157,7 @@ utils::globalVariables(
 #         p <- params()
 #         biomass <- cumsum(p@initial_n[sp, ] * p@w * p@dw)
 # 
-#         max_w <- p@species_params[sp, "w_inf"]
+#         max_w <- p@species_params[sp, "w_max"]
 #         min_w <- p@species_params[sp, "w_min"]
 #         sel <- p@w >= min_w & p@w <= max_w
 #         df <- data.frame(Size = p@w[sel], Biomass = biomass[sel])

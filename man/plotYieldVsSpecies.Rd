@@ -4,10 +4,13 @@
 \alias{plotYieldVsSpecies}
 \title{Plot the yield against species}
 \usage{
-plotYieldVsSpecies(params)
+plotYieldVsSpecies(params, gear = NULL)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{gear}{Optional. The name of a gear. If supplied, only the yield from
+this gear will be displayed.}
 }
 \description{
 Plot the yield against species

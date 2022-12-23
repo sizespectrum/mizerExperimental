@@ -1,14 +1,37 @@
 #' Plot the yield against species
 #' 
 #' @param params A MizerParams object
+#' @param gear Optional. The name of a gear. If supplied, only the yield from
+#'   this gear will be displayed.
 #' @export
-plotYieldVsSpecies <- function(params) {
+plotYieldVsSpecies <- function(params, gear = NULL) {
+    params <- validParams(params)
+    gp <- params@gear_params %>%
+        set_species_param_default("yield_observed", NA)
+    if (!is.null(gear)) {
+        assert_that(is.character(gear),
+                    length(gear) == 1)
+        if (!(gear %in% params@gear_params$gear)) {
+            stop("The gear ", gear, " does not exist.")
+        }
+        gp <- gp[gp$gear == gear, c("species", "yield_observed")]
+    } else {
+        gp <- gp %>%
+            group_by(species) %>%
+            summarise(yield_observed = sum(yield_observed))
+    }
     no_sp <- length(params@species_params$species)
-    observed <- params@species_params$yield_observed
-    if (is.null(observed)) observed <- rep(NA, no_sp)
+    observed <- vector(mode = "double", length = no_sp)
+    names(observed) <- params@species_params$species
+    observed[gp$species] <- gp$yield_observed
     
     biomass <- sweep(params@initial_n, 2, params@w * params@dw, "*")
-    yield_model <- rowSums(biomass * getFMort(params))
+    if (is.null(gear)) {
+        f_mort <- getFMort(params)
+    } else {
+        f_mort <- getFMortGear(params)[gear, , ]
+    }
+    yield_model <- rowSums(biomass * f_mort)
     
     # selector for foreground species
     foreground <- !is.na(params@A)
@@ -30,7 +53,7 @@ plotYieldVsSpecies <- function(params) {
     # Get rid of unobserved entries
     df <- df[df$Yield > 0 & !is.na(df$Yield), ] 
     
-    ggplot(df, aes(x = Species, y = Yield)) +
+    pl <- ggplot(df, aes(x = Species, y = Yield)) +
         geom_point(aes(shape = Type), size = 4) +
         geom_linerange(aes(ymin = Yield, ymax = other, colour = Species)) +
         scale_y_continuous(name = "Yield [g/year]", trans = "log10",
@@ -39,4 +62,9 @@ plotYieldVsSpecies <- function(params) {
         scale_shape_manual(values = c(Model = 1, Observation = 15)) +
         guides(colour = "none") +
         theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+    
+    if (!is.null(gear)) {
+        pl <- pl + ggtitle(paste("Gear:", gear))
+    }
+    return(pl)
 }
