@@ -5,6 +5,8 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
+    p <- set_species_param_default(p, "w_mat25",
+                                   p@species_params$w_mat/(3^(1/10)))
     return(p)
 }
 

@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.4.0
+Version: 2.4.0.9000
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
