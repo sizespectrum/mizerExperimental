@@ -4,27 +4,19 @@ resourceControl <- function(input, output, session, params, flags, ...) {
     observe({
         req(input$kappa,
             input$lambda,
-            input$log_r_pp,
-            input$w_pp_cutoff,
-            input$n_resource)
+            input$w_pp_cutoff)
         p <- isolate(params())
         sp <- isolate(input$sp)
         if (!identical(sp, flags$sp_old_resource)) {
             flags$sp_old_resource <- sp
             return()
         }
-        p <- setResource(isolate(params()),
-                         kappa = input$kappa,
-                         lambda = input$lambda,
-                         r_pp = 10^input$log_r_pp,
-                         w_pp_cutoff = input$w_pp_cutoff,
-                         n = input$n_resource)
-        mu <- getResourceMort(p)
-        if (p@resource_dynamics == "resource_semichemostat") {
-            p@initial_n_pp <- p@rr_pp * p@cc_pp / (p@rr_pp + mu)
-        } else if (p@resource_dynamics == "resource_constant") {
-            p@initial_n_pp <- resource_capacity(p)
-        }
+        p@resource_params$kappa <- input$kappa
+        p@resource_params$lambda <- input$lambda
+        p@resource_params$w_pp_cutoff <- input$w_pp_cutoff
+        npp <- input$kappa * p@w_full^(-input$lambda)
+        npp[p@w_full > input$w_pp_cutoff] <- 0
+        initialNResource(p) <- npp
         tuneParams_update_params(p, params)
     })
 }
@@ -32,7 +24,6 @@ resourceControl <- function(input, output, session, params, flags, ...) {
 #' @rdname resourceControl
 #' @inheritParams abundanceControlUI
 resourceControlUI <- function(p, input) {
-    log_r_pp <- log10(p@resource_params$r_pp)
 
     tagList(
         tags$h3(tags$a(id = "resource"), "Resource"),
@@ -41,11 +32,6 @@ resourceControlUI <- function(p, input) {
                      min = 1.9, max = 2.2, step = 0.005),
         numericInput("kappa", "Resource coefficient 'kappa'",
                      value = p@resource_params$kappa),
-        sliderInput("log_r_pp", "log10 Resource replenishment rate",
-                    value = log_r_pp, min = -1, max = 4, step = 0.05),
-        numericInput("n_resource", "Exponent of replenishment rate",
-                     value = p@resource_params$n,
-                     min = 0.6, max = 0.8, step = 0.005),
         numericInput("w_pp_cutoff", "Largest resource",
                      value = p@resource_params$w_pp_cutoff,
                      min = 1e-10,
