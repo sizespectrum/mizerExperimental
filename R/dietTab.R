@@ -6,7 +6,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
     # Plot diet ----
     output$plot_diet <- renderPlotly({
         req(input$sp)
-        plotDiet(params(), input$sp, xtrans = input$xtrans)
+        plotDietX(params(), input$sp, xtrans = input$xtrans)
     })
     
     # Plot prey ----
