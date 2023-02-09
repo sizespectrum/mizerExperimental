@@ -111,7 +111,7 @@ fishingControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     gp <- p@gear_params[p@gear_params$species == sp$species, ]
     if (nrow(gp) == 0) { # Species not selected by any gears
-        return(taglist())
+        return(tagList())
     }
     gears <- as.character(gp$gear)
     if (is.null(input$gear) || !(input$gear %in% gears)) {
