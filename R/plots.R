@@ -420,7 +420,7 @@ plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
                 w_max = max(catch$weight[catch$species == s])
             }
             w_min_idx <- sum(params@w < w_min)
-            w_max_idx <- sum(params@w <= w_max)
+            w_max_idx <- min(length(params@w), sum(params@w <= w_max) + 1)
         } else {
             w_min_idx <- sum(params@w < (params@species_params$w_mat[[iSpecies]] / 100))
             w_max_idx <- sum(params@w <= params@species_params$w_max[[iSpecies]])
