@@ -65,14 +65,14 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         progress <- shiny::Progress$new(session)
         on.exit(progress$close())
         
-        if ("growth" %in% input$match) {
-            p <- matchGrowth(p, keep = "biomass")
+        if ("yield" %in% input$match) {
+            p <- matchYields(p)
         }
         if ("biomass" %in% input$match) {
             p <- matchBiomasses(p)
-        } 
-        if ("yield" %in% input$match) {
-            p <- matchYields(p)
+        }
+        if ("growth" %in% input$match) {
+            p <- matchGrowth(p, keep = "biomass")
         }
         
         # Run to steady state
