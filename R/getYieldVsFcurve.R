@@ -46,7 +46,7 @@ getYieldVsF <- function(params,
                         species,
                         F_range,
                         no_steps = 10,
-                        F_max,
+                        F_max = 1,
                         effort_it = 1,
                         distance_func = distanceSSLogN,
                         tol = 0.001,
@@ -73,19 +73,20 @@ getYieldVsF <- function(params,
     sp_name <- params@species_params$species[[idx_species]]
     gp <- gear_params(params)
     gp$gear <- as.character(gp$gear)
-    gps <- gp$species == sp_name
-    gp_extra <- gp[gps, ]
-    if (nrow(gp_extra) > 1) {
-        stop("This function only works in the case where the target species ",
-             "is selected by a single gear only")
+    sp_sel <- which(gp$species == sp_name)
+    if (length(sp_sel) == 0) {
+        stop(species, " is not selected by any gear.")
     }
-    current_FMort <- params@initial_effort[gp$gear[gps]] * gp_extra$catchability
+    current_FMort <- sum(params@initial_effort[gp$gear[sp_sel]] * 
+                             gp$catchability[sp_sel])
+    # base the new gear on the first gear that catches this species
+    # TODO: think about how to improve this arbitrary choice.
+    gp_extra <- gp[sp_sel[1], ]
     gp_extra$gear <- "tmp"
     gp_extra$catchability <- 1
-    gp$catchability[gps] <- 0
+    gp$catchability[sp_sel] <- 0
     gear_params(params) <- rbind(gp, gp_extra)
-    initial_effort(params)["tmp"] <- initial_effort(params)[gp$gear[gps]] # setting initial effort same as original gear
-    effort <- getInitialEffort(params)
+    initial_effort(params)["tmp"] <- 1
 
     if(missing(F_range) & missing(F_max))
     {
