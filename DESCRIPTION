@@ -17,12 +17,12 @@ Imports:
     bslib,
     dplyr,
     ggplot2,
-    lubridate,
     methods,
     plotly,
     prompter,
     rintrojs,
     shiny,
+    shinyBS,
     shinyjs,
     tibble,
     tidyr
