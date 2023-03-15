@@ -5,11 +5,18 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
-    p <- setBevertonHolt(p, reproduction_level = 0)
+    p <- set_species_param_default(p, "w_mat25",
+                                   p@species_params$w_mat/(3^(1/10)))
     return(p)
 }
 
+# This is called when a params object is downloaded or when the done button
+# is pressed
 finalise_params <- function(p) {
+    # Clear attribute that was only needed for the undo functionality
+    attr(p, "changes") <- NULL
+    
+    # Set reproduction
     if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
         p <- setBevertonHolt(p, reproduction_level =
                                  p@species_params$tuneParams_old_repro_level)
@@ -19,103 +26,127 @@ finalise_params <- function(p) {
         p <- setBevertonHolt(p, R_max =  p@species_params$tuneParams_old_R_max)
         p@species_params$tuneParams_old_R_max <- NULL
     }
+    if ("tuneParams_old_erepro" %in% names(p@species_params)) {
+        p <- setBevertonHolt(p, erepro =  p@species_params$tuneParams_old_erepro)
+        p@species_params$tuneParams_old_erepro <- NULL
+    }
     p
 }
 
 
-tuneParams_update_species <- function(sp, p, params) {
+tuneParams_update_species <- function(sp, p, params, params_old) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
     tryCatch({
         # The spectrum for the changed species is calculated with new
         # parameters but in the context of the original community
-        # Compute death rate for changed species
-        mumu <- getMort(p)[sp, ]
-        # compute growth rate for changed species
-        gg <- getEGrowth(p)[sp, ]
-        # Compute solution for changed species
-        w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
-        idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
-        if (any(gg[idx] == 0)) {
-            stop("With these parameter values the ", sp,
-                 " does not have enough food to cover its metabolic cost")
-        }
-        n0 <- p@initial_n[sp, p@w_min_idx[sp]]
-        p@initial_n[sp, ] <- 0
-        p@initial_n[sp, p@w_min_idx[sp]:w_inf_idx] <-
-            c(1, cumprod(gg[idx] / ((gg + mumu * p@dw)[idx + 1]))) *
-            n0
-        if (any(is.infinite(p@initial_n))) {
-            stop("Candidate steady state holds infinities")
-        }
-        if (any(is.na(p@initial_n) || is.nan(p@initial_n))) {
-            stop("Candidate steady state holds non-numeric values")
-        }
-
-        p <- setBevertonHolt(p, reproduction_level = 0)
+        p_old <- params_old()
+        p@initial_n <- p_old@initial_n
+        
+        p <- singleSpeciesSteady(p)
 
         # Update the reactive params object
-        params(p)
+        tuneParams_update_params(p, params)
     },
     error = function(e) {
-        showModal(modalDialog(
-            title = "Invalid parameters",
-            HTML(paste0("These parameter values lead to an error.<br>",
-                        "The error message was:<br>", e)),
-            easyClose = TRUE
-        ))
-        params(p)}
-    )
+        error_fun(e)
+        tuneParams_update_params(p, params)
+    })
 }
 
 
 # Define function that runs to steady state using `steady()` and
 # then adds the new steady state to the logs
-tuneParams_run_steady <- function(p, params, logs, session, input, 
+tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                                   return_sim = FALSE) {
 
     tryCatch({
         # Create a Progress object
         progress <- shiny::Progress$new(session)
         on.exit(progress$close())
-
+        
+        if ("yield" %in% input$match) {
+            p <- matchYields(p)
+        }
+        if ("biomass" %in% input$match) {
+            p <- matchBiomasses(p)
+        }
+        if ("growth" %in% input$match) {
+            p <- matchGrowth(p, keep = "biomass")
+        }
+        
         # Run to steady state
         if (return_sim) {
             # This is for the "Steady" tab where we want to show the
             # evolution of biomass over time during the run to steady
             # to diagnose eventual problems.
-            return(steady(p, t_max = 100, tol = 1e-2,
+            return(mizer::steady(p, t_max = 100, tol = 1e-2,
                           return_sim = TRUE,
                           progress_bar = progress))
         }
-        p <- steady(p, t_max = 100, tol = 1e-2,
-                    progress_bar = progress)
-        
-        # Update the egg slider
-        sp_idx <- which.max(p@species_params$species == isolate(input$sp))
-        n0 <- p@initial_n[sp_idx, p@w_min_idx[[sp_idx]]]
-        updateSliderInput(session, "n0",
-                          value = n0,
-                          min = signif(n0 / 10, 3),
-                          max = signif(n0 * 10, 3))
-        
-        # Update the reactive params object
-        params(p)
-        tuneParams_add_to_logs(logs, p)
+        p <- mizer::steady(p, t_max = 100, tol = 1e-2,
+                           progress_bar = progress)
+
+        # Update the reactive params objects
+        params_old(p)
+        tuneParams_add_to_logs(logs, p, params)
     },
-    error = function(e) {
-        showModal(modalDialog(
-            title = "Invalid parameters",
-            HTML(paste0("These parameter do not lead to an acceptable steady state. ",
-                        "Please choose other values.<br>",
-                        "The error message was:<br>", e)),
-            easyClose = TRUE
-        ))}
-    )
+    error = error_fun)
 }
 
+# Call this whenever the abundance of a species is changed directly 
+# i.e., not when it is changed as a consequence of a parameter change.
+# This will make the change permanent by also saving it in params_old
+tuneParams_update_abundance <- function(p, sp, params, params_old) {
+    
+    # We need to update `params_old()` because otherwise the change
+    # will not persist past the next parameter change.
+    p_old <- isolate(params_old())
+    p_old@initial_n[sp, ] <- p@initial_n[sp, ]
+    params_old(p_old)
+    
+    # Switch the following off for now because it would be strange to display
+    # these back-reactions from the other species initially and then make them
+    # go away when another parameter is changed (because that would start from
+    # params_old again).
+    # # We let the other species react to this change, but that reaction
+    # # does not get saved in `params_old`. We don't allow a second-order
+    # # change in the changed species.
+    # other_species <- setdiff(p@species_params$species, sp)
+    # p@initial_n <- p_old@initial_n # Important to always start from params_old
+    # p <- singleSpeciesSteady(p, species = other_species)
+    
+    # Update the reactive params object
+    tuneParams_update_params(p, params)
+}
 
-tuneParams_add_to_logs <- function(logs, p) {
+# Call this whenever the params object needs to be updated, unless you also 
+# need to write it to the logs, in which case call `tuneParams_add_to_logs()`
+# instead.
+tuneParams_update_params <- function(p, params) {
+    
+    # indicate that the params have changed. This will be used in the Undo
+    # functionality.
+    if (is.null(attr(p, "changes"))) {
+        attr(p, "changes") <- 1
+        # Now that a change has taken place, there is certainly something to undo
+        shinyjs::enable("undo")
+        shinyjs::enable("undo_all")
+    } else {
+        attr(p, "changes") <- attr(p, "changes") + 1
+    }
+    
+    params(p)
+}
+
+# This updates the params object and writes it to the logs
+tuneParams_add_to_logs <- function(logs, p, params) {
+    
+    # Clear attribute used in undo functionality
+    attr(p, "changes") <- NULL
+    # update params object
+    params(p)
+    
     # Save params object to disk
     time = format(Sys.time(), "_%Y_%m_%d_at_%H_%M_%S")
     file = paste0(tempdir(), "/mizer_params", time, ".rds")
@@ -130,51 +161,39 @@ tuneParams_add_to_logs <- function(logs, p) {
     if (logs$idx > 1) {
         shinyjs::enable("undo")
         shinyjs::enable("undo_all")
+    } else {
+        shinyjs::disable("undo")
+        shinyjs::disable("undo_all")
     }
 }
 
-fileManagement <- function(input, output, session, params, logs) {
+error_fun <- function(e) {
+    showModal(modalDialog(
+        title = "Invalid parameters",
+        HTML(paste0("These parameter do not lead to an acceptable steady state. ",
+                    "Please choose other values.<br>",
+                    "The error message was:<br>", e)),
+        easyClose = TRUE
+    ))}
 
-    output$file_management <- renderUI(
-        tagList(
-            tags$h3(tags$a(id = "file"), "File management"),
-            textOutput("filename"),
-            fileInput("upload", "Upload new params",
-                      accept = ".rds"),
-            downloadButton("params", "Download params")))
+# Convert the tab name given by the user to lower case, because the names of
+# the tab functions will always start with lower case.
+tab_name <- function(tab) {
+    tabname <- tab
+    substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
+    tabname
+}
 
-    ## Handle upload of params object ####
-    observeEvent(input$upload, {
-        inFile <- input$upload
-        tryCatch({
-            p <- readRDS(inFile$datapath)
-            validObject(p)
-            # Update species selector
-            species <- as.character(p@species_params$species[!is.na(p@A)])
-            updateSelectInput(session, "sp",
-                              choices = species,
-                              selected = species[1])
-
-            # Update the reactive params object
-            params(prepare_params(p))
-            output$filename <- renderText(paste0("Previously uploaded file: ",
-                                                 inFile$name))
-        },
-        error = function(e) {
-            showModal(modalDialog(
-                title = "Invalid parameter file",
-                HTML(paste0("Trying to load that file led to an error.<br>",
-                            "The error message was:<br>", e)),
-                easyClose = TRUE
-            ))
-            p <- params()}
-        )
-    })
-
-    ## Prepare for download of params object ####
-    output$params <- downloadHandler(
-        filename = "params.rds",
-        content = function(file) {
-            saveRDS(finalise_params(params()), file = file)
-        })
+# Return the title for the tab. This is either defined by the tab author or
+# otherwise is the tab name supplied by the user.
+tab_title <- function(tab) {
+    tabname <- tab_name(tab)
+    title_var <- paste0(tabname, "TabTitle")
+    if (!is.null(title <- get0(title_var))) {
+        if (!is.string(title)) {
+            stop(title_var, "should contain a string with the title for the tab")
+        }
+        return(title)
+    }
+    tab
 }

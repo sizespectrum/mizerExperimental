@@ -38,9 +38,7 @@ markBackground <- function(object, species = NULL) {
 
 #' Retunes abundance of background species.
 #'
-#'  @description
 #' `r lifecycle::badge("experimental")`
-#'
 #' Rescales all background species in such a way that the total community
 #' spectrum is as close to the Sheldon power law as possible. Background
 #' species that are no longer needed are removed. The reproductive efficiencies
@@ -106,10 +104,8 @@ adjustBackgroundSpecies <- function(params) {
 
 #' Removes species with abundance below a threshold
 #'
-#'  @description
 #' `r lifecycle::badge("experimental")`
-#'
-#' This species simply removes the low-abundance species from the params object.
+#' This function simply removes the low-abundance species from the params object.
 #' It does not recalculate the steady state for the remaining species or
 #' retune their reproductive efficiencies.
 #'
@@ -186,83 +182,6 @@ scaleAbundance <- function(params, factor) {
     return(setBevertonHolt(params, reproduction_level = 1/4))
 }
 
-#' Rescale System
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' The abundances in mizer and some rates depend on the size of the area to
-#' which they refer. So they could be given per square meter or per square
-#' kilometer or for an entire study area or any other choice of yours. This
-#' function allows you to change the size by automatically changing the
-#' abundances and rates accordingly.
-#'
-#' @details
-#' If you rescale the system by a factor \eqn{c} then this function makes the
-#' following rescalings in the params object:
-#' \itemize{
-#' \item The initial abundances `initial_n`, `initial_n_pp` and
-#'   `initial_n_other` are rescaled by \eqn{c}.
-#' \item The search volume is rescaled by \eqn{1/c}.
-#' \item The resource carrying capacity is rescaled by \eqn{c}
-#' \item The maximum reproduction rate \eqn{R_{max}}, if used, is rescaled by
-#'   \eqn{c}.
-#' }
-#' The effect of this is that the dynamics of the rescaled system are identical
-#' to those of the unscaled system, in the sense that it does not matter whether
-#' one first calls [scaleModel()] and then runs a simulation with
-#' [project()] or whether one first runs a simulation and then rescales the
-#' resulting abundances.
-#'
-#' Note that if you use non-standard resource dynamics or other components then you
-#' may need to rescale additional parameters that appear in those dynamics.
-#'
-#' @param params A mizer params object
-#' @param factor The factor by which the size is rescaled with respect to which
-#'   the abundances are given.
-#'
-#' @return An object of type \linkS4class{MizerParams}
-#' @export
-scaleModel <- function(params, factor) {
-    params <- validParams(params)
-    assert_that(is.number(factor),
-                factor > 0)
-
-    # Resource replenishment rate
-    params@cc_pp <- params@cc_pp * factor
-    params@resource_params$kappa <- params@resource_params$kappa * factor
-
-    # Rmax
-    # r_max is a deprecated spelling of R_max. Get rid of it.
-    if ("r_max" %in% names(params@species_params)) {
-        params@species_params$R_max <- params@species_params$r_max
-        params@species_params$r_max <- NULL
-        message("The 'r_max' column has been renamed to 'R_max'.")
-    }
-    if ("R_max" %in% names(params@species_params)) {
-        params@species_params$R_max <- params@species_params$R_max * factor
-    }
-
-    # Search volume
-    params@search_vol = params@search_vol / factor
-    if ("gamma" %in% names(params@species_params)) {
-        params@species_params$gamma <- params@species_params$gamma / factor
-    }
-
-    # Initial values
-    initial_n_other <- params@initial_n_other
-    for (res in names(initial_n_other)) {
-        initial_n_other[[res]] <- initial_n_other[[res]] * factor
-    }
-    initialN(params) <- params@initial_n * factor
-    initialNResource(params) <- params@initial_n_pp * factor
-    initialNOther(params) = initial_n_other
-    
-    # community
-    params@sc <- params@sc * factor
-
-    return(params)
-}
 
 
 #' Update the initial values
@@ -291,15 +210,15 @@ updateInitialValues <- function(params) {
         (params@rr_pp + resource_mort)
     # Recompute all species
     for (sp in 1:length(params@species_params$species)) {
-        w_inf_idx <- min(sum(params@w < params@species_params[sp, "w_inf"]) + 1,
+        w_max_idx <- min(sum(params@w < params@species_params[sp, "w_max"]) + 1,
                          length(params@w))
-        idx <- params@w_min_idx[sp]:(w_inf_idx - 1)
+        idx <- params@w_min_idx[sp]:(w_max_idx - 1)
         if (any(gg[sp, idx] == 0)) {
             stop("Can not compute steady state due to zero growth rates")
         }
         n0 <- params@initial_n[sp, params@w_min_idx[sp]]
         params@initial_n[sp, ] <- 0
-        params@initial_n[sp, params@w_min_idx[sp]:w_inf_idx] <-
+        params@initial_n[sp, params@w_min_idx[sp]:w_max_idx] <-
             c(1, cumprod(gg[sp, idx] / ((gg[sp, ] + mumu[sp, ] * params@dw)[idx + 1]))) *
             n0
     }

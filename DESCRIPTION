@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.2.1.9003
+Version: 2.4.0.9001
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -10,48 +10,71 @@ Description: This mizer extension package collects contributions from the mizer
     core mizer package.
 License: GPL-3
 Depends:
-    R (>= 3.1),
-    mizer (>= 2.2.1)
+    mizer (>= 2.4.0),
+    R (>= 3.1)
 Imports:
     assertthat,
-    cubelyr,
+    bslib,
     dplyr,
     ggplot2,
-    ggrepel,
+    lubridate,
     methods,
     plotly,
+    prompter,
     rintrojs,
     shiny,
-    shinyBS,
     shinyjs,
     tibble,
-    tidyr,
-    lifecycle
+    tidyr
 Suggests:
+    lifecycle,
     pkgdown,
     rmarkdown,
     roxygen2,
     testthat (>= 2.1.0),
     vdiffr
 Collate:
-    calibrateBiomass.R
+    alignResource.R
     manipulateParams.R
-    matchBiomasses.R
     mizerExperimental-package.R
-    plotBiomassObservedVsModel.R
+    plotDiet.R
     plotBiomassVsSpecies.R
     plotYieldVsSpecies.R
+    plotNumberVsSpecies.R
+    plotRelative.R
     tuneParams.R
-    tuneParams_controls.R
+    abundanceControl.R
+    fishingControl.R
+    growthControl.R
+    interactionControl.R
+    otherControl.R
+    plotSpectra2.R
+    predationControl.R
+    reproductionControl.R
+    resourceControl.R
     tuneParams_tabs.R
+    exampleTab.R
+    abundanceTab.R
+    biomassTab.R
+    catchTab.R
+    deathTab.R
+    dietTab.R
+    growthTab.R
+    numberTab.R
+    ratesTab.R
+    reproTab.R
+    resourceTab.R
+    simTab.R
+    singleSpeciesSteady.R
+    spectraTab.R
+    stomachTab.R
+    test-helpers.R
     tuneParams_helpers.R
     getYieldVsFcurve.R
     validSim.R
-    steady.R
-    setBevertonHolt.R
+    plots.R
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
-RdMacros: lifecycle

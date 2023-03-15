@@ -5,6 +5,7 @@ home:
 url: https://sizespectrum.org/mizerExperimental
 
 template:
+  bootstrap: 5
   params:
     bootswatch: cerulean
   opengraph:
@@ -15,39 +16,65 @@ template:
       site: "@mizer_model"
       card: summary
 
-toc: 
+toc:
   depth: 3
 
 navbar:
   structure:
     left: [intro, articles, reference, news]
-    right: [blog, twitter, github]
+    right: [mizer, blog, twitter, github]
   components:
     home: ~
+    mizer:
+      text: mizer Home
+      href: https://sizespectrum.org/mizer
     blog:
       text: Blog
       href: https://blog.mizer.sizespectrum.org
     twitter:
        icon: "fab fa-twitter fa-lg"
        href: https://twitter.com/mizer_model
-
+       aria-label: Twitter
 
 destination: docs
 
 reference:
 - title: Interactively tuning a multispecies model
-  contents:
+- contents:
   - tuneParams
+  - tuneGrowth
+- subtitle: Tabs for tuning gadget
+- contents:
+  - ends_with("Tab")
+- subtitle: Controls for tuning gadget
+- contents:
+  - ends_with("Control")
+- title: Helper functions for model tuning
+- contents:
   - markBackground
   - adjustBackgroundSpecies
-  - scaleModel
+  - removeBackgroundSpecies
   - scaleAbundance
+  - scaleDownBackground
   - updateInitialValues
   - pruneSpecies
+  - getYieldVsF
+  - singleSpeciesSteady
+  - alignResource
 - title: New plotting functions
-  contents:
+- contents:
   - starts_with("plot")
+- title: Helper functions for `plotYieldVsF()`
+- contents:
+  - distanceSSLogYield
+  - getMaxF
+  - maxFthreshold
+  - yieldCalculator
 - title: Others
-  contents:
+- contents:
   - validSim
+  - distanceSSLogYield
+  - getMaxF
+  - maxFthreshold
+  - yieldCalculator
 
