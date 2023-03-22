@@ -36,15 +36,6 @@ install.packages("remotes")
 
 before trying again to install `mizerExperimental`.
 
-If this gives an error saying “there is no package called `shinyBS`”
-then you also need to do
-
-``` r
-install.packages("shinyBS")
-```
-
-before trying again to install `mizerExperimental`.
-
 You may be prompted to update some of your existing packages. The one
 package that you should always update is the `mizer` package, because
 the `mizerExperimental` package will always be designed to work with the
