@@ -47,6 +47,7 @@ getYieldVsF <- function(params,
                         F_range,
                         no_steps = 10,
                         F_max = 1,
+                        F_min = 0,
                         effort_it = 1,
                         distance_func = distanceSSLogN,
                         tol = 0.001,
@@ -140,7 +141,7 @@ getYieldVsF <- function(params,
     } else {
 
         if (!missing(F_max)) {
-            F_range = seq(0, F_max, length.out = no_steps)
+            F_range = seq(F_min, F_max, length.out = no_steps)
         }
 
         assert_that(is.numeric(F_range))
@@ -186,6 +187,7 @@ plotYieldVsF <- function(params,
                          species,
                          no_steps = 10,
                          F_max,
+                         F_min = 0,
                          F_range,
                          effort_it = 1,
                          distance_func = distanceSSLogN,
