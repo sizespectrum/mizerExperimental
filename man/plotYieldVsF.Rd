@@ -9,6 +9,7 @@ plotYieldVsF(
   species,
   no_steps = 10,
   F_max,
+  F_min = 0,
   F_range,
   effort_it = 1,
   distance_func = distanceSSLogN,
