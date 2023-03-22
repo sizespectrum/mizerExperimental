@@ -170,7 +170,7 @@ fishingControlUI <- function(p, input) {
             sliderInput("l50_right", "L50 right",
                         value = gp$l50_right,
                         min = 1,
-                        max = signif(sp$l50_right * 2, 2),
+                        max = signif(gp$l50_right * 2, 2),
                         step = 0.1),
             sliderInput("ldiff_right", "L50-L25 right",
                         value = gp$l25_right - gp$l50_right,
