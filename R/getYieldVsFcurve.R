@@ -209,7 +209,7 @@ plotYieldVsF <- function(params,
                          t_max = t_max
                          )
     
-    pl <- ggplot(curve, aes(x = F, y = yield)) +
+    pl <- ggplot(curve, aes(x = effort, y = yield)) +
         geom_line() +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
