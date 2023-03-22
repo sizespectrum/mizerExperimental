@@ -41,7 +41,7 @@ reproductionControlUI <- function(p, input) {
                     min = signif(sp$w_mat / 2, 2),
                     max = signif(sp$w_mat * 1.5, 2)),
         sliderInput("wfrac", "w_mat25/w_mat", value = sp$w_mat25/sp$w_mat,
-                    min = 0.5,
+                    min = 0.01,
                     max = 1,
                     step = 0.01),
         sliderInput("w_max", "w_max", value = sp$w_max,
