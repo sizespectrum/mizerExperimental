@@ -95,6 +95,7 @@ getYieldVsF <- function(params,
                           effort_it = effort_it, distance_func = distance_func,
                           tol = tol, max_func = max_func,
                           threshold_var = threshold_var) # find maximum viable fisheries effort
+        maxFdf = maxFdf %>% rename("F" = effort) # make effort name F
 
         if(no_steps > dim(maxFdf)[1]) # if the user asked for more steps than already calculated by getMaxF
         {
@@ -136,7 +137,7 @@ getYieldVsF <- function(params,
                                          distance_func = distance_func, tol = tol)
 
         }
-        return(rbind(maxFdf,data.frame("yield" = yield_vec, "effort" = effort_vec)))
+        return(rbind(maxFdf,data.frame("yield" = yield_vec, "F" = effort_vec)))
     } else {
 
         if (!missing(F_max)) {
