@@ -39,8 +39,9 @@ otherControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "z0",
                               min = signif(input$z0 / 2, 2),
                               max = signif((input$z0 + 0.1) * 1.5, 2))
-            # re-calculate ext_mort
-            ext_mort(p)[sp, ] <- ext_mort(p)[sp, ] -
+            # re-calculate ext_mort so that possible additional mortality set
+            # by user is preserved.
+            ext_mort(p)[sp, ] <- ext_mort(p)[sp, ] +
                 (input$z0 - p@species_params[sp, "z0"])
         }
 
