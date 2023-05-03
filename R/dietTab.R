@@ -62,7 +62,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
         sliderInput("pred_size", "log_10 predator size",
                     value = signif(log10(p@species_params$w_mat[sp]), 2),
                     min = signif(log10(p@species_params$w_min[sp]), 2),
-                    max = signif(log10(p@species_params$w_inf[sp]), 2),
+                    max = signif(log10(p@species_params$w_max[sp]), 2),
                     step = 0.2,
                     width = "80%",
                     animate = animationOptions(loop = TRUE))

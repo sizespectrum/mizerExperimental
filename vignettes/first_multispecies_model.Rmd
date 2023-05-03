@@ -34,8 +34,8 @@ object choosing a lot of defaults for us.
 params_background <- newTraitParams(
     lambda = 2.12,      # Exponent of community spectrum
     no_sp = 16,         # Number of species
-    min_w_inf = 1,      # Asymptotic size of smallest species
-    max_w_inf = 10^6,   # Asymptotic size of largest species
+    min_w_max = 1,      # Asymptotic size of smallest species
+    max_w_max = 10^6,   # Asymptotic size of largest species
     min_w = 10^-5,      # Egg size
     min_w_mat = 0.1,    # Maturity size of smallest species
     min_w_pp = 10^-12,  # Size of smallest plankton
@@ -70,12 +70,12 @@ gear_params(params_background)$catchability <- 0
 Let's look at hake. Let's assume we know the following parameters for hake:
 ```{r}
 species_params <- tribble(
-    ~species, ~w_inf, ~w_mat, ~beta, ~sigma, ~a,      ~b,    ~k_vb, ~l50, ~l25,
+    ~species, ~w_max, ~w_mat, ~beta, ~sigma, ~a,      ~b,    ~k_vb, ~l50, ~l25,
     "Hake",   10470,  250,    11,    1.1,    0.00667, 3.035, 0.178, 16.6, 16
 )
 species_params$sel_func <- "sigmoid_length"
 ```
-Here `w_inf` is the asymptotic size, `w_mat` the maturity size, `beta` and
+Here `w_max` is the asymptotic size, `w_mat` the maturity size, `beta` and
 `sigma` the parameters of the log-normal predation kernel, `a` and `b` the
 parameter in the length to weight conversion $w = a\, l^b$, `k_vb` the von
 Bertalanffy growth curve parameter and `l50` and `l25` the parameters of the
