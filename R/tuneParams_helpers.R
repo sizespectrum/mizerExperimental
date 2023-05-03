@@ -6,6 +6,8 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "b", 3)
     p <- set_species_param_default(p, "k_vb", NA)
     p <- set_species_param_default(p, "t0", 0)
+    p <- set_species_param_default(p, "w_mat25", 
+                                   p@species_params$w_mat / (3 ^ (1 / 10)))
     return(p)
 }
 
@@ -45,15 +47,15 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         # compute growth rate for changed species
         gg <- getEGrowth(p, n = n, n_pp = n_pp, n_other = n_other)[sp, ]
         # Compute solution for changed species
-        w_inf_idx <- sum(p@w < p@species_params[sp, "w_inf"])
-        idx <- p@w_min_idx[sp]:(w_inf_idx - 1)
+        w_max_idx <- sum(p@w < p@species_params[sp, "w_max"])
+        idx <- p@w_min_idx[sp]:(w_max_idx - 1)
         if (any(gg[idx] == 0)) {
             stop("With these parameter values the ", sp,
                  " does not have enough food to cover its metabolic cost")
         }
         n0 <- p@initial_n[sp, p@w_min_idx[sp]]
         p@initial_n[sp, ] <- 0
-        p@initial_n[sp, p@w_min_idx[sp]:w_inf_idx] <-
+        p@initial_n[sp, p@w_min_idx[sp]:w_max_idx] <-
             c(1, cumprod(gg[idx] / ((gg + mumu * p@dw)[idx + 1]))) *
             n0
         if (any(is.infinite(p@initial_n))) {

@@ -4,7 +4,7 @@
 reproductionControl <- function(input, output, session, params, params_old,
                                 flags, ...) {
     observeEvent(
-        list(input$w_mat, input$wfrac, input$w_inf, input$m),
+        list(input$w_mat, input$wfrac, input$w_max, input$m),
         {
             p <- params()
             sp <- input$sp
@@ -17,13 +17,13 @@ reproductionControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "w_mat",
                               min = signif(input$w_mat / 2, 2),
                               max = signif(input$w_mat * 1.5, 2))
-            updateSliderInput(session, "w_inf",
-                              min = signif(input$w_inf / 2, 2),
-                              max = signif(input$w_inf * 1.5, 2))
+            updateSliderInput(session, "w_max",
+                              min = signif(input$w_max / 2, 2),
+                              max = signif(input$w_max * 1.5, 2))
 
             p@species_params[sp, "w_mat25"]   <- input$w_mat * input$wfrac
             p@species_params[sp, "w_mat"]   <- input$w_mat
-            p@species_params[sp, "w_inf"]   <- input$w_inf
+            p@species_params[sp, "w_max"]   <- input$w_max
             p@species_params[sp, "m"]     <- input$m
 
             p <- setReproduction(p)
@@ -46,12 +46,12 @@ reproductionControlUI <- function(p, input) {
                     min = 0.5,
                     max = 1,
                     step = 0.01),
-        sliderInput("w_inf", "w_inf", value = sp$w_inf,
-                    min = signif(sp$w_inf / 2, 2),
-                    max = signif(sp$w_inf * 1.5, 2)),
+        sliderInput("w_max", "w_max", value = sp$w_max,
+                    min = signif(sp$w_max / 2, 2),
+                    max = signif(sp$w_max * 1.5, 2)),
         sliderInput("m", "m", value = sp$m,
-                    min = sp$n,
-                    max = sp$n * 2,
+                    min = sp$m,
+                    max = sp$m * 2,
                     step = 0.01)
     )
 }

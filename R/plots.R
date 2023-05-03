@@ -1,7 +1,7 @@
 # Plotting functions ----
 
 # Hackiness to get past the 'no visible binding ... ' warning when running check
-utils::globalVariables(c("w_inf","y_coord"))
+utils::globalVariables(c("w_max","y_coord"))
 
 #' Make a plot from a data frame
 #'
@@ -162,9 +162,9 @@ plotDeath <- function(object, species = NULL, proportion = TRUE,
     plot_dat <- NULL
     for (iSpecies in species) {
         fish_idx_full <- (params@w_full >= params@species_params[iSpecies, "w_min"]) &
-            (params@w_full <= params@species_params[iSpecies, "w_inf"])
+            (params@w_full <= params@species_params[iSpecies, "w_max"])
         fish_idx <- (params@w >= params@species_params[iSpecies, "w_min"]) &
-            (params@w <= params@species_params[iSpecies, "w_inf"])
+            (params@w <= params@species_params[iSpecies, "w_max"])
         predation <- params@interaction[, iSpecies] *
             pred_rate[, fish_idx_full]
         fishing <- f_mort[iSpecies, fish_idx]
@@ -324,7 +324,7 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a list composed of
 #' two slots is returned. First slot is a data frame with the four variables 'w', 'value',
 #' 'Type', 'Species and the second slot is a data frame with the five variables 'w_mat',
-#' 'w_inf', 'Species', 'y_coord', 'Type' (to plot vertical lines).
+#' 'w_max', 'Species', 'y_coord', 'Type' (to plot vertical lines).
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -350,7 +350,7 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
 
     plot_dat <- NULL
     for (iSpecies in species) {
-        max_w <- params@species_params[iSpecies, "w_inf"]
+        max_w <- params@species_params[iSpecies, "w_max"]
         if (logarithmic) {
             min_w <- params@species_params[iSpecies, "w_min"]
         } else {
@@ -386,7 +386,7 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
 
     sizeVline <- data.frame(
         w_mat = params@species_params[species, "w_mat"],
-        w_inf = params@species_params[species, "w_inf"],
+        w_max = params@species_params[species, "w_max"],
         y_coord = plot_dat %>% group_by(Species) %>% summarise(Value = max(value)),
         Type = NA) # geom_text wants a group var for some reason
     colnames(sizeVline)[3:4] <- c("Species", "y_coord")
@@ -400,11 +400,11 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
     pl <- pl +
         geom_vline(data = sizeVline, aes(xintercept = w_mat, group = Species),
                    linetype = "dotted") +
-        geom_vline(data = sizeVline, aes(xintercept = w_inf, group = Species),
+        geom_vline(data = sizeVline, aes(xintercept = w_max, group = Species),
                    linetype = "dotted") +
         geom_text(data = sizeVline, aes(x = w_mat, y = y_coord * 0.2,
                                         label = "\nMaturity"), angle = 90) +
-        geom_text(data = sizeVline, aes(x = w_inf, y = y_coord * 0.2,
+        geom_text(data = sizeVline, aes(x = w_max, y = y_coord * 0.2,
                                         label = "\nMaximum"), angle = 90)
 
     return(pl)
@@ -490,7 +490,7 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
 
         # To choose the range of sizes over which to plot we look at the range
         # of sizes for which a non-zero catch was observed. If no catch was
-        # observed for the species, we use the range from w_mat/100 to w_inf.
+        # observed for the species, we use the range from w_mat/100 to w_max.
         if (is_observed) {
             if ("length" %in% names(catch)) {
                 l_min = min(catch$length[catch$species == s])
@@ -505,7 +505,7 @@ plotYieldVsSize <- function(object, species = NULL, catch = NULL,
             w_max_idx <- sum(params@w <= w_max)
         } else {
             w_min_idx <- sum(params@w < (params@species_params$w_mat[[iSpecies]] / 100))
-            w_max_idx <- sum(params@w <= params@species_params$w_inf[[iSpecies]])
+            w_max_idx <- sum(params@w <= params@species_params$w_max[[iSpecies]])
         }
         w_sel <- seq(w_min_idx, w_max_idx, by = 1)
         w <- params@w[w_sel]

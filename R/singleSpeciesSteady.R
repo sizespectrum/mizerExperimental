@@ -30,8 +30,8 @@ singleSpeciesSteady <- function(params, species = NULL) {
         mort <- mort_all[sp, ]
         
         w_min_idx <- params@w_min_idx[sp]
-        w_inf_idx <- sum(params@w <= params@species_params[sp, "w_inf"])
-        idx <- w_min_idx:(w_inf_idx - 1)
+        w_max_idx <- sum(params@w <= params@species_params[sp, "w_max"])
+        idx <- w_min_idx:(w_max_idx - 1)
         
         if (any(growth[idx] == 0)) {
             stop("With these parameter values the ", sp,
@@ -42,7 +42,7 @@ singleSpeciesSteady <- function(params, species = NULL) {
         n0 <- params@initial_n[sp, w_min_idx]
         # Steady state solution of the upwind-difference scheme used in project
         params@initial_n[sp, ] <- 0
-        params@initial_n[sp, w_min_idx:w_inf_idx] <- 
+        params@initial_n[sp, w_min_idx:w_max_idx] <- 
             n0 * c(1, cumprod(growth[idx] / 
                                   ((growth + mort * params@dw)[idx + 1])))
     }
