@@ -76,5 +76,5 @@ Collate:
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/sizespectrum/mizerExperimental
+URL: https://sizespectrum.org/mizerExperimental, https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
