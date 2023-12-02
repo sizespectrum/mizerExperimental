@@ -27,5 +27,22 @@ otherControlUI(p, input)
 \item{p}{The MizerParams object currently being tuned.}
 }
 \description{
-Controlling the species parameters not included in other controls
+Adds controls for the parameters that did not fit into other categories.
+}
+\details{
+The parameters included are:
+\itemize{
+\item conversion efficiency \code{alpha}
+\item metabolic rate coefficient \code{ks} and exponent \code{p}
+\item activity rate coefficient \code{k}
+\item external mortality \code{z0}.
+}
+
+If the external mortality \code{z0} is changed, then the corresponding rate
+array is changed by the difference between the new value and the previous
+value. Thus any additions made to the rate by the user independently of the
+species parameters are preserved.
+
+If the metabolism exponent \code{p} is changed, this also changes \code{ks} so
+that metabolic rate at maturity stays the same.
 }

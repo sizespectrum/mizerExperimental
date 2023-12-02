@@ -21,6 +21,7 @@ and we'll comment on how it can be included in this package.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://sizespectrum.org/mizerExperimental}
   \item \url{https://github.com/sizespectrum/mizerExperimental}
   \item Report bugs at \url{https://github.com/sizespectrum/mizerExperimental/issues}
 }

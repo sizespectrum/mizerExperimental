@@ -1,5 +1,4 @@
 #' Controlling the species parameters not included in other controls
-#' @inheritParams abundanceControl
 #'
 #'   Adds controls for the parameters that did not fit into other categories.
 #'
@@ -16,6 +15,8 @@
 #'
 #'   If the metabolism exponent `p` is changed, this also changes `ks` so
 #'   that metabolic rate at maturity stays the same.
+#'   
+#' @inheritParams abundanceControl
 otherControl <- function(input, output, session, params, params_old,
                          flags, ...) {
     observe({
