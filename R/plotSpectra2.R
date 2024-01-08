@@ -26,6 +26,9 @@ plotSpectra2 <- function(object1, object2, name1 = "First", name2 = "Second",
     sf2 <- plotSpectra(object2, power = power, return_data = TRUE, ...)
     sf2$Model <- name2
     sf <- rbind(sf1, sf2)
+
+    # Adding this line ensures model 1 will always be model 1, regardless of naming - that way they could be named with numbers
+    sf$Model <- factor(sf$Model, levels = c(name1, name2))
     
     if (is(object1, "MizerSim")) {
         params <- object1@params
