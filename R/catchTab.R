@@ -123,6 +123,8 @@ catchTab <- function(input, output, session, params, logs, trigger_update,
         lvls <- input$match_species_yield$domain$discrete_limits$x
         sp <- lvls[round(input$match_species_yield$x)]
         p <- params()
+        gear <- input$gear
+        spgear <- paste(sp, gear, sep = ", ")
         sp_idx <- which(p@species_params$species == sp)
         
         # Temporarily set observed yield to the clicked yield, then
