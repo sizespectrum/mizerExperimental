@@ -3,7 +3,6 @@
 export(adjustBackgroundSpecies)
 export(alignResource)
 export(distanceSSLogYield)
-export(getMaxF)
 export(getYieldVsF)
 export(markBackground)
 export(plotBiomassRelative)

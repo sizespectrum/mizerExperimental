@@ -8,14 +8,11 @@ getYieldVsF(
   params,
   species,
   F_range,
-  no_steps = 10,
   F_max = 1,
   F_min = 0,
-  effort_it = 1,
+  no_steps = 10,
   distance_func = distanceSSLogN,
   tol = 0.001,
-  max_func = maxFthreshold,
-  threshold_var = 10,
   t_max = 100
 )
 }
@@ -28,12 +25,11 @@ getYieldVsF(
 yield. If missing, it is set to
 \code{seq(from = 0, to = F_max, length.out = no_steps)}.}
 
-\item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
-
 \item{F_max}{The maximum fishing mortality. Used only if \code{F_range} is missing.}
 
-\item{effort_it}{The width of steps used to find maximum fisheries mortality,
-higher values means a faster calculation but less accurate maximum.}
+\item{F_min}{The minimum fishing mortality. Used only if \code{F_range} is missing.}
+
+\item{no_steps}{The number of steps to use. Only used if \code{F_range} is missing.}
 
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number
@@ -43,14 +39,6 @@ own distance function.}
 
 \item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
 RDI over t_per years is less than tol for every species.}
-
-\item{max_func}{A function used in \code{getMaxF} to determines the threshold to use
-when stopping the fisheries effort.}
-
-\item{threshold_var}{A numeric value used in max_func to calculate the threshold
-from the \code{params} object. If supplied, the function returns the value of the
-threshold using \code{threshold_var}. If not supplied, the function returns the
-unchanged value, which can be compared against the version which uses \code{threshold_var}.}
 
 \item{t_max}{The longest time to run project to find steady state.}
 }
