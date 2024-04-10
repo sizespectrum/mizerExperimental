@@ -90,6 +90,8 @@ predationControl <- function(input, output, session, params, params_old,
                               value = h,
                               min = signif(h / 2, 2),
                               max = signif(h * 1.5, 2))
+            p <- setMaxIntakeRate(p)
+            tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
 }
