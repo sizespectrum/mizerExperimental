@@ -80,6 +80,26 @@ test_that("valid_gears_arg works", {
     expect_equal(valid_gears_arg(NS_sim, "Sprat"), "Sprat")
 })
 
+# getDiscardsByGear ----
+test_that("getDiscardsByGear works", {
+    params <- NS_params
+    params@species_params$a <- 0.01
+    params@species_params$b <- 3
+    sim <- project(params, t_max = 0.4, t_save = 0.2, progress_bar = FALSE)
+    gear_params(params)$retain_l50 <- NA
+    # Set retain_l50 for Sprat, Industrial trawl
+    gear_params(params)["Sprat, Industrial", "retain_l50"] <- 10
+    sim@params <- params
+    d <- getDiscardsByGear(sim)
+    # check dims
+    expect_equal(dim(d),c(3,dim(params@catchability)[1],dim(params@catchability)[2]))
+    # TODO: add a check of the values
+    
+    # Works also with params object
+    expect_equal(getDiscardsByGear(sim)[1, , ], 
+                 getDiscardsByGear(sim@params))
+})
+
 test_that("plotCatchVsSize throws the correct errors", {
     expect_error(plotCatchVsSize(NS_params),
                  "You must select a single species")

@@ -3,6 +3,7 @@
 export(adjustBackgroundSpecies)
 export(alignResource)
 export(distanceSSLogYield)
+export(getDiscardsByGear)
 export(getMaxF)
 export(getRetainProbGear)
 export(getYieldVsF)
