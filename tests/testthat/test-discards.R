@@ -22,6 +22,9 @@ test_that("plotCatchVsSize throws the correct errors", {
                  "You must select a single species")
     expect_error(plotCatchVsSize(NS_params, species = c("Sprat", "Sandeel")),
                  "You must select a single species")
+    expect_warning(plotCatchVsSize(NS_params, species = "Sprat", gears = "nonexistent"),
+                  "The following gears do not exist: nonexistent.") |>
+        expect_error("No gears have been selected.")
 })
 
 test_that("plotCatchVsSize works", {
@@ -41,4 +44,6 @@ test_that("plotCatchVsSize works", {
     data <- plotCatchVsSize(params, species = "Haddock", return_data = TRUE)
     expect_equal(unique(data[[1]]$Type), 
                  c("Model catch", "Model abundance"))
+    
+    # TODO: add more tests when we have a good example catch data frame
 })

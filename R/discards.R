@@ -65,17 +65,18 @@ plotCatchVsSize <- function(object, species = NULL, gears = NULL, catch = NULL,
         params <- validParams(object)
     }
     
+    gears <- valid_gears_arg(params, gears, error_on_empty = TRUE)
+    
     x_var = match.arg(x_var)
     if (!is.null(catch)) {
         assert_that(is.data.frame(catch),
-                    "retained" %in% names(catch),
+                    "catch" %in% names(catch),
                     "species" %in% names(catch),
                     "gear" %in% names(catch),
                     all(c("length", "dl") %in% names(catch)) |
                         all(c("weight", "dw") %in% names(catch)))
+        catch <- filter(catch, gear %in% gears)
     }
-    
-    gears <- valid_gears_arg(params, gears)
     
     # Prepare model data ----
     SpIdx <- factor(params@species_params$species,
@@ -159,62 +160,6 @@ plotCatchVsSize <- function(object, species = NULL, gears = NULL, catch = NULL,
             plot_dat <- rbind(plot_dat, df_retained, df_discarded)
         }
         
-        # Process observed landings ----
-        if (is_observed) {
-            sel <- (catch$species == s)
-            if ("length" %in% names(catch)) {
-                l <- catch$length[sel]
-                dl <- catch$dl[sel]
-                retained_l <- catch$retained[sel]
-                # normalise to a density in l
-                retained_l <- retained_l / sum(retained_l * dl)
-                # To get the density in w we need to divide by dw/dl
-                w <- a * l ^ b
-                retained_w <- retained_l / b * l / w
-            } else {
-                w <- catch$weight[sel]
-                dw <- catch$dw[sel]
-                retained_w <- catch$retained[sel]
-                # normalise to a density in w
-                retained_w <- retained_w / sum(retained_w * dw)
-                # To get the density in l we need to divide by dl/dw
-                l <- (w / a)^(1/b)
-                retained_l <- retained_w * b / l * w
-            }
-            plot_dat <- rbind(plot_dat, 
-                              data.frame(w, l, catch_w = retained_w,
-                                         catch_l = retained_l,
-                                         Type = "Observed landings"))
-        }
-        
-        # Process discarded catch ----
-        if (is_observed && "discarded" %in% names(catch)) {
-            sel <- (catch$species == s)
-            if ("length" %in% names(catch)) {
-                l <- catch$length[sel]
-                dl <- catch$dl[sel]
-                discarded_l <- catch$discarded[sel]
-                # normalise to a density in l
-                discarded_l <- discarded_l / sum(discarded_l * dl)
-                # To get the density in w we need to divide by dw/dl
-                w <- a * l ^ b
-                discarded_w <- discarded_l / b * l / w
-            } else {
-                w <- catch$weight[sel]
-                dw <- catch$dw[sel]
-                discarded_w <- catch$discarded[sel]
-                # normalise to a density in w
-                discarded_w <- discarded_w / sum(discarded_w * dw)
-                # To get the density in l we need to divide by dl/dw
-                l <- (w / a)^(1/b)
-                discarded_l <- discarded_w * b / l * w
-            }
-            plot_dat <- rbind(plot_dat, 
-                              data.frame(w, l, catch_w = discarded_w,
-                                         catch_l = discarded_l,
-                                         Type = "Observed landings"))
-        }
-        
         # Add abundance density ----
         # We also include the abundance density because that helps to understand
         # the catch density
@@ -227,6 +172,61 @@ plotCatchVsSize <- function(object, species = NULL, gears = NULL, catch = NULL,
                                 catch_l = abundance_l,
                                 Type = "Model abundance")
         
+        # Process observed catches ----
+        if (is_observed) {
+            has_discards = ("discarded" %in% names(catch))
+            sel <- (catch$species == s)
+            if ("length" %in% names(catch)) {
+                l <- catch$length[sel]
+                dl <- catch$dl[sel]
+                catch_l <- catch$catch[sel]
+                if (has_discards) {
+                    discarded_l <- catch$discarded[sel]
+                    # normalise to a density in l
+                    discarded_l <- discarded_l / sum(catch_l * dl)
+                }
+                catch_l <- catch_l / sum(catch_l * dl)
+                # To get the density in w we need to divide by dw/dl
+                w <- a * l ^ b
+                catch_w <- catch_l / b * l / w
+                if (has_discards) {
+                    discarded_w <- discarded_l / b * l / w
+                }
+            } else {
+                w <- catch$weight[sel]
+                dw <- catch$dw[sel]
+                catch_w <- catch$catch[sel]
+                if (has_discards) {
+                    discarded_w <- catch$discarded[sel]
+                    # normalise to a density in w
+                    discarded_w <- discarded_w / sum(catch_w * dw)
+                }
+                # normalise to a density in w
+                catch_w <- catch_w / sum(catch_w * dw)
+                # To get the density in l we need to divide by dl/dw
+                l <- (w / a)^(1/b)
+                catch_l <- catch_w * b / l * w
+                if (has_discards) {
+                    discarded_l <- discarded_w * b / l * w
+                }
+            }
+            plot_dat <- rbind(plot_dat, 
+                              data.frame(w, l, catch_w, catch_l,
+                                         Type = "Observed catch"))
+            if (has_discards) {
+                retained_w <- catch_w - discarded_w
+                retained_l <- catch_l - discarded_l
+                plot_dat <- rbind(plot_dat, 
+                                  data.frame(w, l, catch_w = discarded_w,
+                                             catch_l = discarded_l,
+                                             Type = "Observed discards"),
+                                  data.frame(w, l, catch_w = retained_w,
+                                             catch_l = retained_l,
+                                             Type = "Observed landings"))
+            }
+        }
+        
+        # Prune abundance density ----
         # From the abundance only keep values that are no larger than
         # the maximum of the other shown densities.
         if (x_var == "Weight") {

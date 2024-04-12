@@ -30,7 +30,8 @@ plotlyCatchVsSize(
 \item{species}{The name of the species for which to plot the catches.}
 
 \item{gears}{Optional. The name of a gear or a list of names of gear. If
-supplied, only the catches from these gears will be displayed.}
+supplied, only the catches from these gears will be included. Otherwise
+catches from all gears will be included.}
 
 \item{catch}{Data frame holding binned observed catch data. See Details,}
 
@@ -84,8 +85,6 @@ str(fr)
 }
 }
 \seealso{
-\link{plotting_functions}
-
 Other plotting functions: 
 \code{\link{plotDeath}()},
 \code{\link{plotEnergyBudget}()},

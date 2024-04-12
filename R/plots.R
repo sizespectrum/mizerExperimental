@@ -11,8 +11,7 @@ utils::globalVariables(c("y_coord"))
 
 #' @param object An object of class \linkS4class{MizerSim} or
 #'   \linkS4class{MizerParams}.
-#' @param species The name of the predator species for which to plot the
-#'   mortality.
+#' @param species The name of the species for which to plot the mortality.
 #' @param proportion A boolean value that determines whether values should be
 #'   displayed as proportions from 0 to 1 or with their actual values. Default
 #'   is TRUE.
@@ -391,8 +390,11 @@ plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
 
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
-    species <- valid_species_arg(params,species)
-    species <- which(params@species_params$species %in% species)
+    species <- valid_species_arg(params, species, error_on_empty = TRUE)
+    if (length(species) != 1) {
+        stop("You must select a single species")
+    }
+    species <- which(params@species_params$species == species)
 
     params <- set_species_param_default(params, "a", 0.006)
     params <- set_species_param_default(params, "b", 3)
