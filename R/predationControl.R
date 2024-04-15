@@ -55,9 +55,6 @@ predationControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "h",
                               min = signif(input$h / 2, 2),
                               max = signif(input$h * 1.5, 2))
-            updateSliderInput(session, "n",
-                              min = signif(input$n - 0.1, 2),
-                              max = signif(input$n + 0.1, 2))
             updateSliderInput(session, "q",
                               min = signif(input$q - 0.1, 2),
                               max = signif(input$q + 0.1, 2))
@@ -90,6 +87,9 @@ predationControl <- function(input, output, session, params, params_old,
                               value = h,
                               min = signif(h / 2, 2),
                               max = signif(h * 1.5, 2))
+            updateSliderInput(session, "n",
+                              min = signif(input$n - 0.1, 2),
+                              max = signif(input$n + 0.1, 2))
             p <- setMaxIntakeRate(p)
             tuneParams_update_species(sp, p, params, params_old)
         },
