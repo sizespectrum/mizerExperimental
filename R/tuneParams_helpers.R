@@ -43,7 +43,7 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
         p_old <- params_old()
         p@initial_n <- p_old@initial_n
         
-        p <- singleSpeciesSteady(p)
+        p <- steadySingleSpecies(p)
 
         # Update the reactive params object
         tuneParams_update_params(p, params)
@@ -114,7 +114,7 @@ tuneParams_update_abundance <- function(p, sp, params, params_old) {
     # # change in the changed species.
     # other_species <- setdiff(p@species_params$species, sp)
     # p@initial_n <- p_old@initial_n # Important to always start from params_old
-    # p <- singleSpeciesSteady(p, species = other_species)
+    # p <- steadySingleSpecies(p, species = other_species)
     
     # Update the reactive params object
     tuneParams_update_params(p, params)
