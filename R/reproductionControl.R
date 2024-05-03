@@ -19,9 +19,6 @@ reproductionControl <- function(input, output, session, params, params_old,
             updateSliderInput(session, "w_max",
                               min = signif(input$w_max / 2, 2),
                               max = signif(input$w_max * 1.5, 2))
-            updateSliderInput(session, "m",
-                              min = signif(input$m / 2, 2),
-                              max = signif(input$m * 1.5, 2))
 
             p@species_params[sp, "w_mat25"]   <- input$w_mat * input$wfrac
             p@species_params[sp, "w_mat"]   <- input$w_mat
@@ -50,9 +47,10 @@ reproductionControlUI <- function(p, input) {
         sliderInput("w_max", "w_max", value = sp$w_max,
                     min = signif(sp$w_max / 2, 2),
                     max = signif(sp$w_max * 1.5, 2)),
+        # m must always be larger than n
         sliderInput("m", "m", value = sp$m,
-                    min = signif(sp$m / 2, 2),
-                    max = signif(sp$m * 1.5, 2),
+                    min = signif(sp$n, 2),
+                    max = signif(1.5, 2),
                     step = 0.01)
     )
 }
