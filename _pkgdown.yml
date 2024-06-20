@@ -67,14 +67,8 @@ reference:
 - title: Helper functions for `plotYieldVsF()`
 - contents:
   - distanceSSLogYield
-  - getMaxF
-  - maxFthreshold
   - yieldCalculator
 - title: Others
 - contents:
   - validSim
-  - distanceSSLogYield
-  - getMaxF
-  - maxFthreshold
-  - yieldCalculator
 
