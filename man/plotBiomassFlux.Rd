@@ -18,11 +18,15 @@ Default is c(NA, NA).}
 flux. Default is FALSE.}
 }
 \description{
-Plot biomass flux
+This function plots the biomass flux for each species in the model
+as a function of body size. To understand the meaning of the biomass flux
+one should think of the growth of the fish as transporting biomass from
+the small to the large individuals. The biomass flux is the rate at which
+biomass is transported through a particular size. So it is given as the
+product of the growth rate \eqn{g(w)}, the body mass \eqn{w} and the
+density of individuals \eqn{N(w)} of that size,
+\deqn{J_B(w) = g(w) w N(w).}
 }
 \examples{
-\dontrun{
-  params <- newMultispeciesParams(NS_species_params_gears, inter)
-  plotBiomassFlux(params)
-}
+plotBiomassFlux(NS_params, ylim = c(1e7, NA), total = TRUE)
 }
