@@ -68,3 +68,12 @@ test_that("return_data is identical",{
     expect_equal(dim(plotYieldVsSize(sim, species = species, return_data = TRUE)[[1]]), c(43,4))
 }
 )
+
+# testing single-species and single-gear
+test_that("plotYieldVsSize works with single species and single gear", {
+    params_single <- newSingleSpeciesParams()
+    initial_effort(params_single) <- 1
+    expect_error(plotYieldVsSize(params_single, species = "Target species",
+                                 gear = "knife_edge_gear"),
+                 NA)
+})

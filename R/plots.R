@@ -430,12 +430,11 @@ plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
         l = (params@w[w_sel] / a) ^ (1 / b)
 
         if (is.null(gear)) {
-            f_mort <- getFMort(params)
+            f_mort <- getFMort(params)[iSpecies, w_sel]
         } else {
-            f_mort <- getFMortGear(params)[gear, , ]
+            f_mort <- getFMortGear(params)[gear, iSpecies, w_sel]
         }
-        catch_w <- f_mort[iSpecies, w_sel] *
-            params@initial_n[iSpecies, w_sel]
+        catch_w <- f_mort * params@initial_n[iSpecies, w_sel]
         # We just want the distribution, so we rescale the density so its area is 1
         if (sum(catch_w) > 0) catch_w <- catch_w / sum(catch_w * params@dw[w_sel])
         # The catch density in l gets an extra factor of dw/dl
