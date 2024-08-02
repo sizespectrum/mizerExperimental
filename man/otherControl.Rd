@@ -35,13 +35,11 @@ The parameters included are:
 \item conversion efficiency \code{alpha}
 \item metabolic rate coefficient \code{ks} and exponent \code{p}
 \item activity rate coefficient \code{k}
-\item external mortality \code{z0}.
+\item external mortality at maturity size
 }
 
-If the external mortality \code{z0} is changed, then the corresponding rate
-array is changed by the difference between the new value and the previous
-value. Thus any additions made to the rate by the user independently of the
-species parameters are preserved.
+If the external mortality at maturity size is changed, then the
+external mortality at all other sizes is scaled by the same factor.
 
 If the metabolism exponent \code{p} is changed, this also changes \code{ks} so
 that metabolic rate at maturity stays the same.
