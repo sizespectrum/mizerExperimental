@@ -6,8 +6,7 @@ fishingControl <- function(input, output, session, params, params_old,
         gear <- isolate(input$gear)
         p <- isolate(params())
         sp <- isolate(input$sp)
-        req(input$catchability,
-            input$effort)
+        req(input$gear)
         # The following line makes sure this observer gets triggered by
         # any of the inputs
         l <- input$l50 + input$ldiff + input$l50_right + input$ldiff_right +
@@ -19,17 +18,6 @@ fishingControl <- function(input, output, session, params, params_old,
         }
         gp_idx <- which(p@gear_params$species == sp &
                             p@gear_params$gear == gear)
-        
-        # Update slider min/max so that they are a fixed proportion of the
-        # parameter value
-        p@gear_params[gp_idx, "catchability"]  <- input$catchability
-        updateSliderInput(session, "catchability",
-                          min = signif(max(input$catchability / 2 - 1, 0), 2),
-                          max = signif(max(input$catchability * 2, 2), 2))
-        
-        initial_effort(p)[gear] <- input$effort
-        updateSliderInput(session, "effort",
-                          max = signif((input$effort + 1) * 1.5, 2))
         
         if (p@gear_params[gp_idx, "sel_func"] == "knife_edge") {
             updateSliderInput(session, "knife_edge_size",
@@ -65,17 +53,6 @@ fishingControl <- function(input, output, session, params, params_old,
         
         gp_idx <- which(p@gear_params$species == sp &
                             p@gear_params$gear == gear)
-        
-        catchability <- p@gear_params[gp_idx, "catchability"]
-        updateSliderInput(session, "catchability",
-                          value = catchability,
-                          min = signif(max(catchability / 2 - 1, 0), 2),
-                          max = signif(max(catchability * 2, 2), 2))
-        
-        effort <- initial_effort(p)[[gear]]
-        updateSliderInput(session, "effort",
-                          value = effort,
-                          max = signif((effort + 1) * 1.5, 2))
         
         if (p@gear_params[gp_idx, "sel_func"] == "knife_edge") {
             knife_edge_size <- p@gear_params[gp_idx, "knife_edge_size"]
@@ -124,21 +101,11 @@ fishingControlUI <- function(p, input) {
         gear <- input$gear
     }
     
-    effort <- p@initial_effort[[gear]]
     gp <- gp[gp$gear == gear, ]
     l1 <- list(tags$h3(tags$a(id = "fishing"), "Fishing"),
                selectInput("gear", "Gear to tune:", gears, 
-                           selected = gear),
-               sliderInput("catchability", "Catchability",
-                           value = gp$catchability,
-                           min = signif(max(0, gp$catchability / 2 - 1), 5),
-                           max = signif(max(gp$catchability * 2, 2), 5),
-                           step = 0.00001),
-               sliderInput("effort", "Effort",
-                           value = effort,
-                           min = 0,
-                           max = signif((effort + 1) * 1.5, 2),
-                           step = 0.01))
+                           selected = gear)
+    )
     
     if (gp$sel_func == "knife_edge") {
         l1 <- c(l1, list(
