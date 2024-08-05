@@ -56,13 +56,6 @@
 #' calculates the outputs to be displayed on the tab. You can model your own
 #' tabs on the example tab that you find in the file `R/exampleTab.R`.
 #'
-#' # Limitations
-#'
-#' The fishing control currently assumes that each species is selected by only
-#' one gear. It allows the user to change the parameters for that gear. It also
-#' enforces the same effort for all gears. It sets all efforts to that for the
-#' first gear and then allows the user to change that single effort value.
-#'
 #' @param params MizerParams object to tune. If missing, the gadget tries to
 #'   recover information from log files left over from aborted previous runs.
 #' @param controls A character vector of names of input parameter control
