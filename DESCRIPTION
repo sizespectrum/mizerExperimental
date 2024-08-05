@@ -34,6 +34,7 @@ Suggests:
     testthat (>= 2.1.0),
     vdiffr
 Collate:
+    ecopath_tune.R
     alignResource.R
     manipulateParams.R
     mizerExperimental-package.R
