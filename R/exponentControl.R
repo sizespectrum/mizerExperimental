@@ -4,7 +4,7 @@ exponentControl <- function(input, output, session, params, params_old,
                              flags, ...) {
     ## Adjust consumption exponent ####
     observeEvent(
-        input$n,
+        list(input$n, input$p, input$d),
         {
             p <- params()
             sp <- input$sp
@@ -12,26 +12,56 @@ exponentControl <- function(input, output, session, params, params_old,
                 flags$sp_old_n <- sp
                 return()
             }
-            # Change encounter but keep consumption the same
-            Q <- getConsumption(p)[sp]
-            ext_encounter(p)[sp, ] <- p@w ^ input$n
-            Qn <- getConsumption(p)[sp]
-            ext_encounter(p)[sp, ] <- ext_encounter(p)[sp, ] * (Q / Qn)
             
-            # Set intake_max to keep feeding level of 0.6
-            E0 <- p@ext_encounter[sp, 1] / p@w[1]
-            h <- 2 / 3 * E0
-            
-            # change species parameters
-            p@species_params[[sp, "h"]] <- h
-            p@species_params[[sp, "n"]] <- input$n
             delta_n = input$n - p@species_params[[sp, "n"]]
-            p@species_params[[sp, "q"]] <- p@species_params[[sp, "q"]] + delta_n
+            if (delta_n != 0) {
+                # Change encounter but keep consumption the same
+                Q <- getConsumption(p)[sp]
+                ext_encounter(p)[sp, ] <- p@w ^ input$n
+                Qn <- getConsumption(p)[sp]
+                ext_encounter(p)[sp, ] <- ext_encounter(p)[sp, ] * (Q / Qn)
+                
+                # change species parameters
+                p@species_params[[sp, "n"]] <- input$n
+                p@species_params[[sp, "q"]] <- p@species_params[[sp, "q"]] + delta_n
+                
+                updateSliderInput(session, "n",
+                                  min = signif(input$n - 0.02, 3),
+                                  max = signif(input$n + 0.02, 3))
+            }
             
-            updateSliderInput(session, "n",
-                              min = signif(input$n - 0.1, 2),
-                              max = signif(input$n + 0.1, 2))
-            p <- setMaxIntakeRate(p)
+            delta_p = input$p - p@species_params[[sp, "p"]]
+            if (delta_p != 0) {
+                # Change metabolism but keep respiration the same
+                R <- getRespiration(p)[sp]
+                metab(p)[sp, ] <- p@w ^ input$p
+                Rn <- getRespiration(p)[sp]
+                metab(p)[sp, ] <- metab(p)[sp, ] * (R / Rn)
+                
+                # change species parameters
+                p@species_params[[sp, "p"]] <- input$p
+                
+                updateSliderInput(session, "p",
+                                  min = signif(input$p - 0.02, 3),
+                                  max = signif(input$p + 0.02, 3))
+            }
+            
+            delta_d = input$d - p@species_params[[sp, "d"]]
+            if (delta_d != 0) {
+                # Change metabolism but keep respiration the same
+                M <- getM0B(p)[sp]
+                ext_mort(p)[sp, ] <- p@w ^ input$d
+                Mn <- getM0B(p)[sp]
+                ext_mort(p)[sp, ] <- ext_mort(p)[sp, ] * (M / Mn)
+                
+                # change species parameters
+                p@species_params[[sp, "d"]] <- input$d
+                
+                updateSliderInput(session, "d",
+                                  min = signif(input$d - 0.02, 3),
+                                  max = signif(input$d + 0.02, 3))
+            }
+            
             tuneParams_update_species(sp, p, params, params_old)
         },
         ignoreInit = TRUE)
@@ -43,10 +73,20 @@ exponentControlUI <- function(p, input) {
     sp <- p@species_params[input$sp, ]
     tagList(
         tags$h3(tags$a(id = "exponent"), "Allometric exponents"),
-        sliderInput("n", "Exponent of max feeding rate 'n'",
+        sliderInput("n", "Exponent of consumption",
                     value = sp[["n"]],
-                    min = sp[["n"]] - 0.1, 
-                    max = sp[["n"]] + 0.1, 
-                    step = 0.01)
+                    min = sp[["n"]] - 0.02, 
+                    max = sp[["n"]] + 0.02, 
+                    step = 0.005),
+        sliderInput("p", "Exponent of respiration",
+                    value = sp[["p"]],
+                    min = sp[["p"]] - 0.02, 
+                    max = sp[["p"]] + 0.02, 
+                    step = 0.005),
+        sliderInput("d", "Exponent of mortality",
+                    value = sp[["d"]],
+                    min = sp[["d"]] - 0.02, 
+                    max = sp[["d"]] + 0.02, 
+                    step = 0.005)
     )
 }
