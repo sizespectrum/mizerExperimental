@@ -25,7 +25,8 @@ spectraTab <- function(input, output, session,
         #     power <- 1
         # }
         plot <- plotSpectra(params(), power = power, highlight = input$sp, 
-                            total = TRUE) +
+                            total = FALSE,
+                            resource = FALSE) +
             theme(text = element_text(size = 12))
         ggplotly(plot, tooltip = c("Species", "w", "value"))
     })
