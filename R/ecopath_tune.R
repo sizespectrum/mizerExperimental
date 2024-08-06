@@ -76,7 +76,8 @@
 #' @export
 tuneEcopath <- function(params,
                         controls = c("fishing",
-                                     "reproduction"),
+                                     "reproduction",
+                                     "exponent"),
                         tabs = c("Spectra",
                                  "Catch",
                                  "Growth",
@@ -471,4 +472,12 @@ tuneParams_match <- function(p, params, params_old, logs, session, input) {
         tuneParams_add_to_logs(logs, p, params)
     },
     error = error_fun)
+}
+
+getConsumption <- function(params) {
+    N <- initialN(params)
+    dw <- dw(params)
+    Q <- as.vector((getEncounter(params) * (1 - getFeedingLevel(params)) * N) %*% dw)
+    names(Q) <- params@species_params$species
+    return(Q)
 }
