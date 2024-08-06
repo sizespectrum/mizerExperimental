@@ -1,12 +1,17 @@
 #' Serve tab with death plots
 #'
 #' @inheritParams biomassTab
-deathTab <- function(input, output, session, params, logs, ...) {
+deathTab <- function(input, output, session, params, logs,
+                     diet = NULL, ...) {
     
     # Plot predators ----
     output$plot_pred <- renderPlotly({
         req(input$sp)
-        plotDeath(params(), species = input$sp, 
+        p <- params()
+        if (!is.null(diet)) {
+            p <- matchEcopathDiet(p, diet)
+        }
+        plotDeath(p, species = input$sp, 
                   proportion = input$death_prop == "Proportion",
                   xtrans = input$death_xtrans)
     })
