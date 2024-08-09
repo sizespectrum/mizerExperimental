@@ -31,6 +31,7 @@ interactionControl <- function(input, output, session, params,
     })
     
     observe({ # Change in prey species selector
+        req(input$prey_sp)
         p <- isolate(params())
         sp <- isolate(input$sp)
         updateSliderInput(session, "prey_inter",
@@ -38,6 +39,7 @@ interactionControl <- function(input, output, session, params,
                           max = 2 * (p@interaction[sp, input$prey_sp] + 0.5))
     })
     observe({ # Change in predator species selector
+        req(input$pred_sp)
         p <- isolate(params())
         sp <- isolate(input$sp)
         updateSliderInput(session, "pred_inter",
