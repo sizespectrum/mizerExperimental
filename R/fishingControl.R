@@ -73,8 +73,8 @@ fishingControl <- function(input, output, session, params, params_old,
         }
         if (p@gear_params[gp_idx, "sel_func"] == "double_sigmoid_length") {
             l50_right <- p@gear_params[gp_idx, "l50_right"]
-            ldiff_right <- p@gear_params[gp_idx, "l50_right"] - 
-                p@gear_params[gp_idx, "l25_right"]
+            ldiff_right <- p@gear_params[gp_idx, "l25_right"] - 
+                p@gear_params[gp_idx, "l50_right"]
             updateSliderInput(session, "l50_right",
                               value = l50_right,
                               max = signif(l50_right * 2, 2))
@@ -143,10 +143,10 @@ fishingControlUI <- function(p, input) {
                         min = 1,
                         max = signif(gp$l50_right * 2, 2),
                         step = 0.1),
-            sliderInput("ldiff_right", "L50-L25 right",
+            sliderInput("ldiff_right", "L25-L50 right",
                         value = gp$l25_right - gp$l50_right,
                         min = 0.1,
-                        max = signif((gp$l50_right - gp$l25_right) * 2, 2),
+                        max = signif((gp$l25_right - gp$l50_right) * 2, 2),
                         step = 0.1)
         ))
     }

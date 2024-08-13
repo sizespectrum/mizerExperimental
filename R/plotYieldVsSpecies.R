@@ -51,7 +51,14 @@ plotYieldVsSpecies <- function(params, gear = NULL) {
                    other = observed)
     )
     # Get rid of unobserved entries
-    df <- df[df$Yield > 0 & !is.na(df$Yield), ] 
+    df <- df[df$Yield > 0 & !is.na(df$Yield), ]
+    if (nrow(df) == 0) {
+        # Create a ggplot object with a text annotation indicating no data
+        p <- ggplot() +
+            annotate("text", x = 0.5, y = 0.5, label = "No yield", size = 6, colour = "red", hjust = 0.5) +
+            theme_void()  # Remove axes and background
+        return(p)
+    }
     
     pl <- ggplot(df, aes(x = Species, y = Yield)) +
         geom_point(aes(shape = Type), size = 4) +

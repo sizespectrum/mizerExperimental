@@ -29,6 +29,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                      rep("Reproduction", len)),
             value = c(growth, income, metab, repro)
         )
+        y_annotation <- max(df$value) * 0.2
         pl <- ggplot(df, aes(x = w, y = value, color = Type)) +
             geom_line() +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
@@ -37,14 +38,16 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                        linetype = "dotted") +
             theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [g/year]")  +
-            geom_text(aes(x = p@species_params[sp, "w_mat"],
-                          y = max(value * 0.2),
-                          label = "\nMaturity"),
-                      angle = 90)  +
-            geom_text(aes(x = p@species_params[sp, "w_max"],
-                          y = max(value * 0.2),
-                          label = "\nMaximum"),
-                      angle = 90)
+            annotate("text",
+                     x = p@species_params[sp, "w_mat"],
+                     y = y_annotation,
+                     label = "\nMaturity",
+                     angle = 90)  +
+            annotate("text",
+                     x = p@species_params[sp, "w_max"],
+                     y = y_annotation,
+                     label = "\nMaximum",
+                     angle = 90)
         if (input$axis == "Logarithmic") {
             pl <- pl + scale_x_log10()
         }
@@ -76,6 +79,7 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                       getFMort(p)[sp, sel],
                       p@mu_b[sp, sel])
         )
+        y_annotation <- max(df$value) * 0.2
         pl <- ggplot(df, aes(x = w, y = value, color = Type)) +
             geom_line() +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
@@ -84,14 +88,16 @@ ratesTab <- function(input, output, session, params, logs, ...) {
                        linetype = "dotted") +
             theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Rate [1/year]")  +
-            geom_text(aes(x = p@species_params[sp, "w_mat"],
-                          y = max(value * 0.2),
-                          label = "\nMaturity"),
-                      angle = 90)  +
-            geom_text(aes(x = p@species_params[sp, "w_max"],
-                          y = max(value * 0.2),
-                          label = "\nMaximum"),
-                      angle = 90)
+            annotate("text",
+                     x = p@species_params[sp, "w_mat"],
+                     y = y_annotation,
+                     label = "\nMaturity",
+                     angle = 90)  +
+            annotate("text",
+                     x = p@species_params[sp, "w_max"],
+                     y = y_annotation,
+                     label = "\nMaximum",
+                     angle = 90)
         if (input$axis == "Logarithmic") {
             pl <- pl + scale_x_log10()
         }
