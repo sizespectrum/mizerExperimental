@@ -26,20 +26,23 @@ reproTab <- function(input, output, session, params, logs, ...) {
         w_min <- 1
         sel <- p@w >= w_min & p@w <= p@species_params$w_max[sp]
         df <- data.frame(Size = p@w[sel], value = p@psi[sp, sel])
+        y_max <- max(df$value)
         ggplot(df, aes(x = Size, y = value)) +
             geom_line(color = "blue") +
             geom_vline(xintercept = p@species_params[sp, "w_mat"],
                        linetype = "dashed") +
-            geom_text(aes(x = p@species_params[sp, "w_mat"],
-                          y = max(value * 0.8),
-                          label = "\nw_mat"),
-                      angle = 90) +
+            annotate("text",
+                     x = p@species_params[sp, "w_mat"],
+                     y = y_max * 0.8,
+                     label = "\nw_mat",
+                     angle = 90)  +
             geom_vline(xintercept = p@species_params[sp, "w_mat25"],
                        linetype = "dotted") +
-            geom_text(aes(x = p@species_params[sp, "w_mat25"],
-                          y = max(value * 0.6),
-                          label = "\nw_mat25"),
-                      angle = 90) +
+            annotate("text",
+                     x = p@species_params[sp, "w_mat25"],
+                     y = y_max * 0.6,
+                     label = "\nw_mat25",
+                     angle = 90) +
             theme(text = element_text(size = 12)) +
             labs(x = "Size [g]", y = "Proportion of energy for reproduction")
     })

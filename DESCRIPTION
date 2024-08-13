@@ -75,7 +75,7 @@ Collate:
     validSim.R
     plots.R
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 URL: https://sizespectrum.org/mizerExperimental, https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues

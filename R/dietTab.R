@@ -44,7 +44,7 @@ dietTab <- function(input, output, session, params, logs, ...) {
         ggplot(df) +
             geom_line(aes(w, value, color = Type)) +
             labs(x = "Weight [g]", y = "Density") +
-            geom_point(aes(x = wp, y = 0), size = 4, colour = "blue") +
+            annotate("point", x = wp, y = 0, size = 4, colour = "blue") +
             scale_x_log10()
     })
     
