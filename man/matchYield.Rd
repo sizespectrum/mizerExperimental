@@ -4,10 +4,15 @@
 \alias{matchYield}
 \title{Match observed yields}
 \usage{
-matchYield(params)
+matchYield(params, keep = c("egg", "biomass", "number"))
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{keep}{A string determining which quantity is to be kept constant. The
+choices are "egg" which keeps the egg density constant, "biomass" which
+keeps the total biomass of the species constant and "number" which keeps
+the total number of individuals constant.}
 }
 \value{
 A MizerParams object with updated catchabilities
