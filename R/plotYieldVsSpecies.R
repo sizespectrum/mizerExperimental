@@ -8,6 +8,8 @@ plotYieldVsSpecies <- function(params, gear = NULL) {
     params <- validParams(params)
     gp <- params@gear_params %>%
         set_species_param_default("yield_observed", NA)
+    gp$gear <- as.character(gp$gear)
+    gp$species <- as.character(gp$species)
     if (!is.null(gear)) {
         assert_that(is.character(gear),
                     length(gear) == 1)
