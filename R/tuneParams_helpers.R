@@ -70,9 +70,19 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
         }
         if ("growth" %in% input$match) {
             p <- matchGrowth(p, keep = "biomass")
+            sp <- p@species_params[p@species_params$species == input$sp, ]
+            updateSliderInput(session, "gamma", value = sp$gamma)
+            updateSliderInput(session, "h", value = sp$h)
+            updateSliderInput(session, "ks", value = sp$ks)
+            updateSliderInput(session, "k", value = sp$k)
         }
         if ("yield" %in% input$match) {
             p <- matchYield(p, keep = "biomass")
+            gp_idx <- which(p@gear_params$species == input$sp &
+                                p@gear_params$gear == input$gear)
+            catchability <- p@gear_params[gp_idx, "catchability"]
+            updateSliderInput(session, "catchability",
+                              value = catchability)
         }
         
         # Run to steady state
