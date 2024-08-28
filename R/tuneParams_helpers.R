@@ -72,7 +72,7 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
             p <- matchGrowth(p, keep = "biomass")
         }
         if ("yield" %in% input$match) {
-            p <- matchYield(p)
+            p <- matchYield(p, keep = "biomass")
         }
         
         # Run to steady state
