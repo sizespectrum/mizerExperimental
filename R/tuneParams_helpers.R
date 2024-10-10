@@ -7,6 +7,22 @@ prepare_params <- function(p) {
     p <- set_species_param_default(p, "t0", 0)
     p <- set_species_param_default(p, "w_mat25",
                                    p@species_params$w_mat/(3^(1/10)))
+    # Make sure every species has a gear by adding a "no gear" gear
+    # This will be removed again at the end
+    sp <- species_params(p)
+    gp <- gear_params(p)
+    missing_species <- setdiff(sp$species, gp$species)
+    if (length(missing_species) > 0) {
+        gp_missing <- data.frame(species = missing_species,
+                                 gear = "no gear",
+                                 catchability = 0,
+                                 sel_func = "sigmoid_length",
+                                 l25 = 10,
+                                 l50 = 15)
+        gp_missing <- validGearParams(gp_missing, sp)
+        gear_params(p) <- dplyr::bind_rows(gp, gp_missing)
+    }
+    
     return(p)
 }
 
@@ -15,6 +31,11 @@ prepare_params <- function(p) {
 finalise_params <- function(p) {
     # Clear attribute that was only needed for the undo functionality
     attr(p, "changes") <- NULL
+    
+    # Remove the "no gear" gear that was added at the beginning
+    gp <- gear_params(p)
+    gp <- gp[gp$gear != "no gear", ]
+    gear_params(p) <- gp
     
     # Set reproduction
     if ("tuneParams_old_repro_level" %in% names(p@species_params)) {
