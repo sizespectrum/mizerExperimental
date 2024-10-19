@@ -14,8 +14,6 @@ The MizerParams object with updated \code{initial_n} and
 \code{initial_n_pp} slots.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Recalculates the steady-state abundances in a fixed background
 given by the current abundances, keeping the abundances fixed in the
 smallest size class for each species. Then readjusts the \code{erepro}

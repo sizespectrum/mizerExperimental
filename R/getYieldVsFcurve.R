@@ -1,8 +1,5 @@
 #' Calculate a yield-vs-F curve
 #'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' Calculates the yield of a species for a range of fishing mortalities for
 #' that species while the fishing mortalities for the other species are held
 #' fixed.

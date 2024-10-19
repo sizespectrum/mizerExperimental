@@ -1,8 +1,5 @@
 #' Designate species as background species
 #'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' Marks the specified set of species as background species. Background species
 #' are handled differently in some plots and their abundance is automatically
 #' adjusted in [adjustBackgroundSpecies()] to keep the community close to the
@@ -38,7 +35,6 @@ markBackground <- function(object, species = NULL) {
 
 #' Retunes abundance of background species.
 #'
-#' `r lifecycle::badge("experimental")`
 #' Rescales all background species in such a way that the total community
 #' spectrum is as close to the Sheldon power law as possible. Background
 #' species that are no longer needed are removed. The reproductive efficiencies
@@ -104,7 +100,6 @@ adjustBackgroundSpecies <- function(params) {
 
 #' Removes species with abundance below a threshold
 #'
-#' `r lifecycle::badge("experimental")`
 #' This function simply removes the low-abundance species from the params object.
 #' It does not recalculate the steady state for the remaining species or
 #' retune their reproductive efficiencies.
@@ -138,9 +133,6 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #'
 #' Multiplies the abundances of all or of selected species by given factors and
 #' then retunes the reproductive efficiencies accordingly.
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' @details
 #' Does not run the system to steady state. For that you should call
@@ -185,9 +177,6 @@ scaleAbundance <- function(params, factor) {
 
 
 #' Update the initial values
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' Recalculates the steady-state abundances in a fixed background
 #' given by the current abundances, keeping the abundances fixed in the

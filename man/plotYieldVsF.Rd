@@ -46,8 +46,6 @@ RDI over t_per years is less than tol for every species.}
 A ggplot object
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Calculates the yield of a species for a range of fishing mortalities for
 that species while the fishing mortalities for the other species are held
 fixed.
