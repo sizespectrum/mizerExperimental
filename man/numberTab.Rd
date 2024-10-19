@@ -27,6 +27,8 @@ numberTabUI(params, ...)
 
 \item{params}{Reactive value holding updated MizerParams object}
 
+\item{params_old}{Reactive value holding non-updated MizerParams object}
+
 \item{logs}{Environment holding the log of steady states.}
 
 \item{trigger_update}{Reactive value used for triggering update of

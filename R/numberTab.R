@@ -10,6 +10,7 @@
 #' species. Double-clicking on a species selects that species __and__
 #' changes its number.
 #' @inheritParams spectraTab
+#' @param params_old Reactive value holding non-updated MizerParams object
 numberTab <- function(input, output, session,
                        params, params_old, logs, trigger_update, ...) {
     # Select clicked species ----

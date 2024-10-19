@@ -1,5 +1,10 @@
 #' Growth tab for tuning gadget
 #' inheritParams biomassTab
+#' @param size_at_age A data frame with observed size at age data to be plotted
+#'   on top of growth curves. Should contain columns `species` (species name as
+#'   used in the model), `age` (in years) and either `weight` (in grams) or
+#'   `length` (in cm). If both `weight` and `length` are provided, only `weight`
+#'   is used.
 growthTab <- function(input, output, session, params, logs,
                       size_at_age = NULL, ...) {
     # Help button ----
