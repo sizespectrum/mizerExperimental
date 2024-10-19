@@ -1,171 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/404.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/abundanceControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/abundanceTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/alignResource.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/biomassTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/deathTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/dietTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/distanceSSLogYield.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/fishingControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/getMaxF.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/growthControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/growthTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/interactionControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/maxFthreshold.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/mizerExperimental-package.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/numberTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/otherControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotDeath.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotNumberVsSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/predationControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/ratesTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/resourceControl.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/resourceTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/singleSpeciesSteady.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/spectraTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/stomachTab.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/tuneGrowth.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/tuneParams.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/updateInitialValues.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/validSim.html</loc>
-  </url>
-  <url>
-    <loc>https://sizespectrum.org/mizerExperimental/reference/yieldCalculator.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://sizespectrum.org/mizerExperimental/404.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/authors.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/index.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/news/index.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/abundanceControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/abundanceTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/alignResource.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/biomassTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/catchTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/deathTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/dietTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/distanceSSLogYield.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/fishingControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/getMaxF.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/growthControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/growthTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/index.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/interactionControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/markBackground.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/matchYield.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/maxFthreshold.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/mizerExperimental-package.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/numberTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/otherControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassFlux.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotDeath.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotNumberVsSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/predationControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/ratesTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/reproTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/reproductionControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/resourceControl.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/resourceTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/singleSpeciesSteady.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/spectraTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/stomachTab.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/tuneGrowth.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/tuneParams.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/updateInitialValues.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/validSim.html</loc></url>
+<url><loc>https://sizespectrum.org/mizerExperimental/reference/yieldCalculator.html</loc></url>
 </urlset>
+

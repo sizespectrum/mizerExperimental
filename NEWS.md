@@ -1,3 +1,53 @@
+# mizerExperimental 2.5.3
+
+Now works with and expects mizer 2.5.3
+
+## Bug fixes in tuneParams gadget
+
+* Fixed bug that caused `tuneParams()` to crash when some species had no 
+  associated gear.
+* Fixed sliders for control of `double_sigmoid_length` gears
+* Slider for `n` and `m` exponents now update as intended.
+* Gear selectivity sliders are now always active as expected.
+* Avoid crash when double-clicking on catch tab.
+* Update `intake_max` when changing `h`.
+* Make sure that species sliders get updated when values change during "steady".
+
+## Other bug fixes
+
+* Fixed bug in `plotYieldVsF()` that caused it to crash when no `F_max` was 
+  specified (#61) thanks to @SamikDatta
+* `plotSpectra2()` now shows models in the expected order (#63) thanks to 
+  @cmbeese
+* `plotYieldVsSize()` now works with single species and single gear.
+
+## New functionality in tuneParams gadget
+
+* `tuneParams()` is not longer restricted to a single gear per species.
+* `tuneParams()` can now keep the yield matched to observations.
+* Allow smaller effort values in `fishingControl` and shallower maturity curves 
+  in `reproductionControl`
+* Allow `otherControl()` to change external mortality even if it is protected.
+* Allow `m` parameter to be decreased as well as increased
+* Changed mortality slider to control external mortality at maturity size.
+  
+## New functionality
+
+* New plotting function `plotBiomassFlux()`, which plots the rate at which
+  growth transports biomass up the size axis.
+* `getYieldVsF()` now also works for species targeted by multiple gears.
+* Introduced `F_min` argument to `getYieldVsF()` and `plotYieldVsF()` to allow
+  the user to set a minimum fishing mortality rate for the plot.
+* In `plotYieldVsF()` set sensible default for `F_max`.
+* `tuneYield()` can now keep biomass or numbers constant.
+
+  
+## Functions moved to mizer
+
+* `plotDiet()`
+* `validSim()`
+* `singleSpeciesSteady()` has become `steadySingleSpecies()`
+
 # mizerExperimental 2.4.0
 
 ## New plotting functions
