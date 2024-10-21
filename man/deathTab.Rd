@@ -5,7 +5,7 @@
 \alias{deathTabUI}
 \title{Serve tab with death plots}
 \usage{
-deathTab(input, output, session, params, logs, ...)
+deathTab(input, output, session, params, logs, diet = NULL, ...)
 
 deathTabUI(...)
 }

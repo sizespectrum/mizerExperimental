@@ -6,7 +6,7 @@
 \usage{
 tuneEcopath(
   params,
-  controls = c("fishing", "reproduction"),
+  controls = c("fishing", "reproduction", "exponent"),
   tabs = c("Spectra", "Catch", "Growth", "Repro", "Rates"),
   preserve = c("erepro", "reproduction_level", "R_max"),
   return_app = FALSE,

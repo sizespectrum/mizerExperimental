@@ -5,7 +5,7 @@
 \alias{dietTabUI}
 \title{Serve tab with diet plot}
 \usage{
-dietTab(input, output, session, params, logs, ...)
+dietTab(input, output, session, params, logs, diet = NULL, ...)
 
 dietTabUI(...)
 }
