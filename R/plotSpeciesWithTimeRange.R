@@ -11,7 +11,8 @@
 #'
 #' @param harvested A mizerSim object
 #' @param unharvested A mizerSim object - to compare to.
-#' @param chosentime The year to plot 
+#' @param chosentime1 The first year to plot in the range 
+#' @param chosentime2 The last year to plot in the range
 #'
 #' @return A ggplot object that plots 3 bars per species - in the short, 
 #' chosen and long time - it plots the relative biomass of each species in
@@ -19,8 +20,8 @@
 #' 
 #'
 #' @examples
-#' harvested <- getBiomass(NS_sim)
-#' unharvested <- getBiomass(NS_sim)
+#' harvested <- project(NS_params)
+#' unharvested <- project(NS_params)
 #' plotSpeciesWithTimeRange(harvested, unharvested, 1, 2)
 #'
 #' @export
