@@ -22,9 +22,9 @@
 #' 
 #'
 #' @examples
-#' harvested <- getBiomass(NS_sim)
-#' unharvested <- getBiomass(NS_sim)
-#' comparedietmatrix(harvested, unharvested, 5)
+#' harvested <- project(NS_params)
+#' unharvested <- project(NS_params)
+#' comparedietmatrix(harvested, unharvested, 1:2)
 #'
 #' @export
 comparedietmatrix <- function(unharvestedprojection, harvestedprojection, timerange){
