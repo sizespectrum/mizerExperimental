@@ -21,8 +21,8 @@
 #' 
 #'
 #' @examples
-#' harvested <- getBiomass(NS_sim)
-#' unharvested <- getBiomass(NS_sim)
+#' harvested <- project(NS_params)
+#' unharvested <- project(NS_params)
 #' guildplot(harvested, unharvested, 1, 2)
 #'
 #' @export
