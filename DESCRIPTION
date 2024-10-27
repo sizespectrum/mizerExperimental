@@ -74,6 +74,10 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     plots.R
+    comparedietmatrix.R
+    guildplot.R
+    plotSpeciesWithTimeRange.R
+    yieldplottingfunctions.R
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
