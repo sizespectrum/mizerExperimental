@@ -1,3 +1,8 @@
+# mizerExperimental 2.5.3.9000
+
+* `plotEnergyBudget()` now calculates ERepro correctly and uses line plot 
+  instead of area plot.
+
 # mizerExperimental 2.5.3
 
 Now works with and expects mizer 2.5.3

@@ -34,7 +34,7 @@ utils::globalVariables(c("y_coord"))
 #' str(fr)
 #' }
 plotDeath <- function(object, species = NULL, proportion = TRUE,
-                      return_data = FALSE, 
+                      return_data = FALSE,
                       xtrans = c("log10", "identity")) {
     if (is(object, "MizerSim")) {
         params <- object@params
@@ -209,7 +209,7 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 
 
 #' Plot the energy budget of each species through size.
-#' 
+#'
 #' This budget is divided between growth, income, metabolic loss and reproduction.
 #'
 #' @inheritParams plotDeath
@@ -256,7 +256,7 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
         growth_and_repro <- getEReproAndGrowth(params)[iSpecies, sel]
         metab <- params@metab[iSpecies, sel]
         income <- growth_and_repro + metab
-        repro <- growth_and_repro - growth
+        repro <- getERepro(params)[iSpecies, sel]
 
         plot_dat <- rbind(plot_dat,
                           data.frame(
@@ -277,7 +277,10 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
                                       "Income" = "#7CAE00",
                                       "Metabolic loss" = "#00BFCFC4",
                                       "Reproduction" = "#C77CFF"))
-
+    params <- setLinetypes(params, list("Growth" = "solid",
+                                      "Income" = "solid",
+                                      "Metabolic loss" = "solid",
+                                      "Reproduction" = "solid"))
     sizeVline <- data.frame(
         w_mat = params@species_params[species, "w_mat"],
         w_max = params@species_params[species, "w_max"],
@@ -287,7 +290,7 @@ plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
 
     if (return_data) return(list(plot_dat, sizeVline))
 
-    pl <- plotDataFrame(plot_dat, params, style = "area", xlab = "Size [g]",
+    pl <- plotDataFrame(plot_dat, params, xlab = "Size [g]",
                         ylab = "Rate [g/year]", xtrans = xtrans,
                         wrap_var = "Species", wrap_scale = "free")
 
@@ -374,7 +377,7 @@ plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
                     all(c("length", "dl") %in% names(catch)) |
                         all(c("weight", "dw") %in% names(catch)))
     }
-    
+
     if (!is.null(gear)) {
         assert_that(is.character(gear),
                     length(gear) == 1)
