@@ -1,3 +1,13 @@
+#' Prepare the params object for tuning
+#'
+#' This function is called once when `tuneParams()` is started. It prepares
+#' the params object for tuning by adding a "no gear" gear
+#' to the gear_params data frame if any species are missing a gear. It also sets
+#' defaults for the species parameters that `tuneParams` uses but which may not
+#' be set in the params object.
+#'
+#' @param p The params object
+#' @return The prepared params object
 prepare_params <- function(p) {
     p@species_params$species <- as.character(p@species_params$species)
     rownames(p@species_params) <- p@species_params$species
@@ -22,12 +32,19 @@ prepare_params <- function(p) {
         gp_missing <- validGearParams(gp_missing, sp)
         gear_params(p) <- dplyr::bind_rows(gp, gp_missing)
     }
-    
+
     return(p)
 }
 
-# This is called when a params object is downloaded or when the done button
-# is pressed
+
+#' Finalise the params object after tuning
+#'
+#' This function is called when a params object is downloaded or when the done button
+#' is pressed. It removes the "no gear" gear that was added at the beginning and
+#' sets the reproduction level.
+#'
+#' @param p The params object
+#' @return The finalised params object
 finalise_params <- function(p) {
     # Clear attribute that was only needed for the undo functionality
     attr(p, "changes") <- NULL
@@ -55,6 +72,15 @@ finalise_params <- function(p) {
 }
 
 
+#' Update the species parameters
+#'
+#' This function is called when a species parameter is changed. It calculates the
+#' steady state for the changed species and updates the params object.
+#'
+#' @param sp The species to update
+#' @param p The params object
+#' @param params The reactive params object
+#' @param params_old The reactive params object before the change
 tuneParams_update_species <- function(sp, p, params, params_old) {
     # wrap the code in trycatch so that when there is a problem we can
     # simply stay with the old parameters
@@ -76,8 +102,18 @@ tuneParams_update_species <- function(sp, p, params, params_old) {
 }
 
 
-# Define function that runs to steady state using `steady()` and
-# then adds the new steady state to the logs
+#' Run to steady state
+#'
+#' This function is called when the user clicks the "Steady" button. It runs
+#' the model to steady state and updates the params object.
+#'
+#' @param p The params object
+#' @param params The reactive params object
+#' @param params_old The reactive params object before the change
+#' @param logs The logs object
+#' @param session The Shiny session object
+#' @param input The Shiny input object
+#' @param return_sim Whether to return the simulation object
 tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
                                   return_sim = FALSE) {
 
@@ -125,9 +161,17 @@ tuneParams_run_steady <- function(p, params, params_old, logs, session, input,
     error = error_fun)
 }
 
-# Call this whenever the abundance of a species is changed directly 
-# i.e., not when it is changed as a consequence of a parameter change.
-# This will make the change permanent by also saving it in params_old
+
+#' Update the abundance of a species
+#'
+#' This function is called when the abundance of a species is changed directly
+#' i.e., not when it is changed as a consequence of a parameter change.
+#' It will make the change permanent by also saving it in params_old.
+#'
+#' @param p The params object
+#' @param sp The species to update
+#' @param params The reactive params object
+#' @param params_old The reactive params object before the change
 tuneParams_update_abundance <- function(p, sp, params, params_old) {
     
     # We need to update `params_old()` because otherwise the change
@@ -151,9 +195,17 @@ tuneParams_update_abundance <- function(p, sp, params, params_old) {
     tuneParams_update_params(p, params)
 }
 
-# Call this whenever the params object needs to be updated, unless you also 
-# need to write it to the logs, in which case call `tuneParams_add_to_logs()`
-# instead.
+# Call this whenever the params object needs to be updated
+
+#' Update the params object
+#'
+#' This function is called whenever the params object needs to be updated, unless
+#' you also need to write it to the logs, in which case call 
+#' `tuneParams_add_to_logs()` instead.
+#' It indicates that the params have changed and updates the reactive params object.
+#'
+#' @param p The params object
+#' @param params The reactive params object
 tuneParams_update_params <- function(p, params) {
     
     # indicate that the params have changed. This will be used in the Undo
@@ -170,7 +222,14 @@ tuneParams_update_params <- function(p, params) {
     params(p)
 }
 
-# This updates the params object and writes it to the logs
+#' Add the params object to the logs
+#'
+#' This function is called when the params object needs to be written to the logs.
+#' It updates the params object and writes it to the logs.
+#'
+#' @param logs The logs object
+#' @param p The params object
+#' @param params The reactive params object
 tuneParams_add_to_logs <- function(logs, p, params) {
     
     # Clear attribute used in undo functionality
@@ -198,6 +257,11 @@ tuneParams_add_to_logs <- function(logs, p, params) {
     }
 }
 
+#' Error function
+#'
+#' This function is called when an error occurs. It shows a modal dialog with the error message.
+#'
+#' @param e The error object
 error_fun <- function(e) {
     showModal(modalDialog(
         title = "Invalid parameters",
@@ -207,16 +271,26 @@ error_fun <- function(e) {
         easyClose = TRUE
     ))}
 
-# Convert the tab name given by the user to lower case, because the names of
-# the tab functions will always start with lower case.
+#' Convert the tab name given by the user to lower case
+#'
+#' This function is used to convert the tab name given by the user to lower case,
+#' because the names of the tab functions will always start with lower case.
+#'
+#' @param tab The tab name
+#' @return The tab name in lower case
 tab_name <- function(tab) {
     tabname <- tab
     substr(tabname, 1, 1) <- tolower(substr(tab, 1, 1))
     tabname
 }
 
-# Return the title for the tab. This is either defined by the tab author or
-# otherwise is the tab name supplied by the user.
+#' Return the title for the tab
+#'
+#' This function is used to return the title for the tab. This is either defined 
+#' by the tab author or otherwise is the tab name supplied by the user.
+#'
+#' @param tab The tab name
+#' @return The tab title
 tab_title <- function(tab) {
     tabname <- tab_name(tab)
     title_var <- paste0(tabname, "TabTitle")
