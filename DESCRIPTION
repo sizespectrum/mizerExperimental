@@ -74,6 +74,7 @@ Collate:
     tuneParams_helpers.R
     getYieldVsFcurve.R
     plots.R
+    getMeanLength.R
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
