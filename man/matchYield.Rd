@@ -4,10 +4,23 @@
 \alias{matchYield}
 \title{Match observed yields}
 \usage{
-matchYield(params, keep = c("egg", "biomass", "number"))
+matchYield(
+  params,
+  species = NULL,
+  gears = NULL,
+  keep = c("egg", "biomass", "number")
+)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{species}{The species to be affected. Optional. By default all observed
+biomasses will be matched. A vector of species names, or a numeric vector
+with the species indices, or a logical vector indicating for each species
+whether it is to be affected (TRUE) or not.}
+
+\item{gears}{The gears to be affected. Optional. By default all gears will be
+affected. A vector of gear names.}
 
 \item{keep}{A string determining which quantity is to be kept constant. The
 choices are "egg" which keeps the egg density constant, "biomass" which
