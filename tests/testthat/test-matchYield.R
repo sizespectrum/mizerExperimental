@@ -12,16 +12,20 @@ test_that("matchYield works", {
     gear_params(params) <- gp
     
     # Change only some catchabilities
-    p <- matchYield(params, species = c("Dab", "Sole"), gears = "Beam")
+    p <- matchYield(params, species = c("Dab", "Sole"), gears = "Beam",
+                    keep = "biomass")
     expect_equal(p@gear_params["Dab, Beam", "catchability"],
                  params@gear_params["Dab, Beam", "catchability"] / 2)
     expect_equal(p@gear_params["Sole, Beam", "catchability"],
                  params@gear_params["Sole, Beam", "catchability"] / 2)
     expect_equal(p@gear_params["Plaice, Beam", "catchability"],
                  params@gear_params["Plaice, Beam", "catchability"])
+    expect_equal(getBiomass(p), getBiomass(params))
     
     # Change all catchabilities
-    p <- matchYield(params)
+    p <- matchYield(params,
+                    keep = "biomass")
     expect_equal(p@gear_params$catchability,
                  params@gear_params$catchability / 2)
+    expect_equal(getBiomass(p), getBiomass(params))
 })
