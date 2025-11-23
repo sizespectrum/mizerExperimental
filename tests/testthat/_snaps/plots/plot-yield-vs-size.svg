@@ -30,8 +30,8 @@
 <polyline points='74.24,168.86 74.76,258.20 75.37,325.50 76.11,376.19 76.98,414.31 78.02,442.79 79.27,464.01 80.76,479.78 82.53,491.40 84.65,499.90 87.17,506.00 90.19,510.11 93.79,513.29 98.08,515.69 103.21,517.92 109.32,519.51 116.62,520.51 125.33,521.13 135.72,521.51 148.12,521.75 162.92,521.89 180.58,521.98 201.66,522.04 226.81,522.07 256.82,522.09 292.64,522.11 335.39,522.12 386.40,522.12 447.27,522.12 519.91,522.13 606.60,522.13 ' style='stroke-width: 1.71; stroke: #BEBEBE; stroke-linecap: butt;' />
 <polyline points='71.77,522.13 71.81,522.13 71.85,522.13 71.90,522.13 71.96,522.13 72.04,522.13 72.12,522.13 72.23,522.13 72.35,522.13 72.50,522.13 72.68,522.13 72.89,522.13 73.15,522.13 73.45,522.13 73.81,522.13 74.24,522.13 74.76,522.13 75.37,522.13 76.11,522.13 76.98,522.13 78.02,522.13 79.27,522.13 80.76,522.13 82.53,522.13 84.65,522.13 87.17,522.13 90.19,522.13 93.79,62.42 98.08,187.36 103.21,303.19 109.32,385.83 116.62,438.16 125.33,470.44 135.72,490.26 148.12,502.45 162.92,509.97 180.58,514.62 201.66,517.51 226.81,519.32 256.82,520.44 292.64,521.14 335.39,521.57 386.40,521.83 447.27,521.98 519.91,522.06 606.60,522.11 ' style='stroke-width: 1.71; stroke: #F8766D; stroke-linecap: butt;' />
 <line x1='93.63' y1='545.11' x2='93.63' y2='39.43' style='stroke-width: 1.07; stroke-dasharray: 1.42,4.27; stroke-linecap: butt;' />
-<text x='93.63' y='104.24' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
-<text x='93.63' y='120.14' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='39.27px' lengthAdjust='spacingAndGlyphs'>Maturity</text>
+<text x='93.63' y='104.25' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
+<text x='93.63' y='120.09' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='39.12px' lengthAdjust='spacingAndGlyphs'>Maturity</text>
 <rect x='45.03' y='39.43' width='588.32' height='505.68' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
