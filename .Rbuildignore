@@ -6,3 +6,5 @@
 ^pkgdown$
 ^julia$
 ^vignettes$
+^\.positai$
+^\.claude$

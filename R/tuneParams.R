@@ -7,6 +7,7 @@
 #' @param ... All arguments are forwarded to `mizerEcopath::tuneParams()`.
 #'
 #' @return The tuned MizerParams object
+#' @keywords internal
 #' @export
 tuneParams <- function(...) {
     ecopath_or_stop("tuneParams")
@@ -21,6 +22,7 @@ tuneParams <- function(...) {
 #'
 #' @param ... All arguments are forwarded to `mizerEcopath::tuneGrowth()`.
 #' @return The tuned MizerParams object
+#' @keywords internal
 #' @export
 tuneGrowth <- function(...) {
     ecopath_or_stop("tuneGrowth")
@@ -36,6 +38,7 @@ tuneGrowth <- function(...) {
 #' @param ... All arguments are forwarded to `mizerEcopath::tuningGadget()`.
 #' @return The tuned MizerParams object
 #' @export
+#' @keywords internal
 tuningGadget <- function(...) {
     ecopath_or_stop("tuningGadget")
     mizerEcopath::tuningGadget(...)

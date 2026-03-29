@@ -1,0 +1,35 @@
+# mizerExperimental [![](reference/figures/logo.png)](https://sizespectrum.org/mizerExperimental)
+
+This is an extension package for the mizer package
+(<https://sizespectrum.org/mizer/>) that contains additional features
+contributed by the mizer community. These features can then be further
+improved while being used by the community. Once matured,
+frequently-used features can be moved to the core mizer package.
+
+If you have code for working with mizer that you feel might be useful to
+other mizer users, please describe it in [a new issue on the issue
+tracker](https://github.com/sizespectrum/mizerExperimental/issues/new)
+and we’ll comment on how it can be included in this package.
+
+## Installation
+
+You can install the development version of mizerExperimental from GitHub
+with
+
+``` r
+remotes::install_github("sizespectrum/mizerExperimental")
+```
+
+If this gives an error saying “there is no package called `remotes`”
+then you also need to do
+
+``` r
+install.packages("remotes")
+```
+
+before trying again to install `mizerExperimental`.
+
+You may be prompted to update some of your existing packages. The one
+package that you should always update is the `mizer` package, because
+the `mizerExperimental` package will always be designed to work with the
+most recent released version of mizer.
