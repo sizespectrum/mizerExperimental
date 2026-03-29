@@ -4,21 +4,16 @@
 \alias{tuneGrowth}
 \title{Tune Growth}
 \usage{
-tuneGrowth(params, match = "biomass")
+tuneGrowth(...)
 }
 \arguments{
-\item{params}{MizerParams object to tune. If missing, the gadget tries to
-recover information from log files left over from aborted previous runs.}
-
-\item{match}{A character vector. Determines which quantities should be
-matched to observations each time the "steady" button is pressed. Possible
-entries are \code{"growth"} (using \code{\link[=matchGrowth]{matchGrowth()}}), \code{"biomass"} (using
-\code{\link[=matchBiomasses]{matchBiomasses()}}) and \code{"yield"} (using \code{\link[=matchYields]{matchYields()}}).}
+\item{...}{All arguments are forwarded to \code{mizerEcopath::tuneGrowth()}.}
 }
 \value{
 The tuned MizerParams object
 }
 \description{
-A simplified instance of \code{tuneParams()} that is useful for tuning growth
-rates.
+This function has moved to the mizerEcopath package. If mizerEcopath is
+installed, the call is forwarded automatically. Otherwise you will be
+prompted to install mizerEcopath.
 }

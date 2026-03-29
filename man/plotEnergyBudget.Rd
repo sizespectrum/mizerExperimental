@@ -49,7 +49,7 @@ str(fr)
 }
 }
 \seealso{
-\link{plotting_functions}
+\link[mizer:plotting_functions]{mizer::plotting_functions}
 
 Other plotting functions: 
 \code{\link{plotDeath}()},

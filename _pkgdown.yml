@@ -39,16 +39,9 @@ navbar:
 destination: docs
 
 reference:
-- title: Interactively tuning a multispecies model
+- title: Plotting functions
 - contents:
-  - tuneParams
-  - tuneGrowth
-- subtitle: Tabs for tuning gadget
-- contents:
-  - ends_with("Tab")
-- subtitle: Controls for tuning gadget
-- contents:
-  - ends_with("Control")
+  - starts_with("plot")
 - title: Helper functions for model tuning
 - contents:
   - matchYield
@@ -61,9 +54,6 @@ reference:
   - pruneSpecies
   - getYieldVsF
   - alignResource
-- title: Plotting functions
-- contents:
-  - starts_with("plot")
 - title: Helper functions for `plotYieldVsF()`
 - contents:
   - distanceSSLogYield

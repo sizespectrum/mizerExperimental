@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.5.3.9000
+Version: 2.5.3.9001
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -14,20 +14,15 @@ Depends:
     R (>= 3.1)
 Imports:
     assertthat,
-    bslib,
     dplyr,
     ggplot2,
     methods,
     plotly,
-    prompter,
-    rintrojs,
-    shiny,
-    shinyBS,
-    shinyjs,
     tibble,
     tidyr
 Suggests:
     lifecycle,
+    mizerEcopath,
     pkgdown,
     rmarkdown,
     roxygen2,
@@ -45,37 +40,13 @@ Collate:
     plotNumberVsSpecies.R
     plotRelative.R
     tuneParams.R
-    abundanceControl.R
-    fishingControl.R
-    growthControl.R
-    interactionControl.R
-    otherControl.R
     plotSpectra2.R
-    predationControl.R
-    reproductionControl.R
-    resourceControl.R
-    tuneParams_tabs.R
-    exampleTab.R
-    abundanceTab.R
-    biomassTab.R
-    catchTab.R
-    deathTab.R
-    dietTab.R
-    growthTab.R
-    numberTab.R
-    ratesTab.R
-    reproTab.R
-    resourceTab.R
-    simTab.R
     singleSpeciesSteady.R
-    spectraTab.R
-    stomachTab.R
-    test-helpers.R
-    tuneParams_helpers.R
     getYieldVsFcurve.R
     plots.R
+    test-helpers.R
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 URL: https://sizespectrum.org/mizerExperimental, https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
