@@ -16,7 +16,7 @@ plotNumberVsSpecies <- function(params) {
     if (is.null(observed)) observed <- rep(NA, no_sp)
     
     # selector for foreground species
-    foreground <- !is.na(params@A)
+    foreground <- !params@species_params$is_background
     foreground_indices <- (1:no_sp)[foreground]
     number_model <- foreground_indices  # create vector of right length
     for (i in seq_along(foreground_indices)) {

@@ -1,38 +1,3 @@
-#' Designate species as background species
-#'
-#' Marks the specified set of species as background species. Background species
-#' are handled differently in some plots and their abundance is automatically
-#' adjusted in [adjustBackgroundSpecies()] to keep the community close to the
-#' Sheldon spectrum.
-#'
-#' @param object An object of class \linkS4class{MizerParams} or
-#'   \linkS4class{MizerSim}.
-#' @inheritParams mizer::valid_species_arg
-#'
-#' @return An object of the same class as the `object` argument
-#' @export
-#' @examples
-#' \dontrun{
-#' params <- newMultispeciesParams(NS_species_params_gears, inter)
-#' sim <- project(params, effort=1, t_max=20, t_save = 0.2, progress_bar = FALSE)
-#' sim <- markBackground(sim, species = c("Sprat", "Sandeel",
-#'                                        "N.pout", "Dab", "Saithe"))
-#' plotSpectra(sim)
-#' }
-markBackground <- function(object, species = NULL) {
-    if (is(object, "MizerSim")) {
-        species <- valid_species_arg(object, species)
-        object@params@A[dimnames(object@params@initial_n)$sp %in% species] <- NA
-    } else if (is(object, "MizerParams")) {
-        species <- valid_species_arg(object, species)
-        object@A[dimnames(object@initial_n)$sp %in% species] <- NA
-    } else {
-        stop("The `object` argument must be of type MizerParams or MizerSim.")
-    }
-    return(object)
-}
-
-
 #' Retunes abundance of background species.
 #'
 #' Rescales all background species in such a way that the total community
@@ -48,7 +13,7 @@ markBackground <- function(object, species = NULL) {
 adjustBackgroundSpecies <- function(params) {
     params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
-    L <- is.na(params@A)
+    L <- params@species_params$is_background
     if (!any(L)) {
         message("There are no background species left.")
         return(params)
@@ -154,7 +119,7 @@ scaleAbundance <- function(params, factor) {
     params <- validParams(params)
     assert_that(is.numeric(factor),
                 all(factor > 0))
-    is_foreground <- !is.na(params@A)
+    is_foreground <- !params@species_params$is_background
     no_sp <- sum(is_foreground)
     if (length(factor) == 1 && length(names(factor)) == 0) {
         factor <- rep(factor, no_sp)
@@ -240,10 +205,3 @@ scaleDownBackground <- function(params, factor) {
         scaleModel(factor = 1 / factor)
 }
 
-#' Remove all background species
-#' 
-#' @param params A MizerParams object
-#' @export
-removeBackgroundSpecies <- function(params) {
-    removeSpecies(params, is.na(params@A))
-}

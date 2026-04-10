@@ -3,11 +3,13 @@ library(mizer)
 # markBackground() ----
 test_that("markBackground() works", {
     params <- markBackground(NS_params, species = "Cod")
-    expect_identical(params@A[[11]], NA_real_)
+    expect_true(species_params(params)$is_background[
+        species_params(params)$species == "Cod"])
     params <- markBackground(NS_params, species = c("Cod", "Dab"))
-    expect_identical(params@A[[5]], NA_real_)
+    expect_true(species_params(params)$is_background[
+        species_params(params)$species == "Dab"])
     sim <- markBackground(project(NS_params, t_max = 0.1))
-    expect_true(all(is.na(sim@params@A)))
+    expect_true(all(species_params(sim@params)$is_background))
     expect_error(markBackground(1),
                  "The `object` argument must be of type MizerParams or MizerSim.")
 })
