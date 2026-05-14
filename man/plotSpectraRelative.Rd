@@ -2,19 +2,25 @@
 % Please edit documentation in R/plotRelative.R
 \name{plotSpectraRelative}
 \alias{plotSpectraRelative}
+\alias{plotSpectraRelative.MizerParams}
+\alias{plotSpectraRelative.MizerSim}
 \alias{plotlySpectraRelative}
 \title{Plot the relative difference between two spectra}
 \usage{
-plotSpectraRelative(object1, object2, ...)
+plotSpectraRelative(object1, ...)
+
+\method{plotSpectraRelative}{MizerParams}(object1, object2, ...)
+
+\method{plotSpectraRelative}{MizerSim}(object1, object2, ...)
 
 plotlySpectraRelative(object1, object2, ...)
 }
 \arguments{
 \item{object1}{An object of class MizerSim or MizerParams}
 
-\item{object2}{An object of class MizerSim or MizerParams}
-
 \item{...}{Parameters passed to \code{plotSpectra()}}
+
+\item{object2}{An object of class MizerSim or MizerParams}
 }
 \value{
 A ggplot2 object
@@ -26,10 +32,10 @@ that from the second object as \eqn{N_2(w)}, then this plot shows
 \deqn{2 (N_2(w) - N_1(w)) / (N_2(w) + N_1(w)).}
 }
 \details{
-The individual spectra are calculated by the \code{\link[mizer:plotSpectra]{mizer::plotSpectra()}} function which
+The individual spectra are calculated by the \code{\link[mizer:plotSpectra]{plotSpectra()}} function which
 is passed all additional arguments you supply. So you can for example
 determine a size range over which to average the simulation results via the
-\code{time_range} argument. See \code{\link[mizer:plotSpectra]{mizer::plotSpectra()}} for more options.
+\code{time_range} argument. See \code{\link[mizer:plotSpectra]{plotSpectra()}} for more options.
 
 Note that it does not matter whether the relative difference is calculated
 for the number density or the biomass density or the biomass density in log

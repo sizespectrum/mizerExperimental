@@ -2,9 +2,22 @@
 % Please edit documentation in R/plotSpectra2.R
 \name{plotSpectra2}
 \alias{plotSpectra2}
+\alias{plotSpectra2.MizerParams}
+\alias{plotSpectra2.MizerSim}
 \title{Show two size spectra in the same plot}
 \usage{
-plotSpectra2(
+plotSpectra2(object1, ...)
+
+\method{plotSpectra2}{MizerParams}(
+  object1,
+  object2,
+  name1 = "First",
+  name2 = "Second",
+  power = 1,
+  ...
+)
+
+\method{plotSpectra2}{MizerSim}(
   object1,
   object2,
   name1 = "First",
@@ -15,6 +28,8 @@ plotSpectra2(
 }
 \arguments{
 \item{object1}{First MizerParams or MizerSim object.}
+
+\item{...}{Parameters to pass to \code{plotSpectra()}}
 
 \item{object2}{Second MizerParams or MizerSim object.}
 
@@ -28,8 +43,6 @@ used in the legend. Set to "Second" by default.}
 raised to this power. The default power = 1 gives the biomass density,
 whereas power = 2 gives the biomass density with respect to logarithmic
 size bins.}
-
-\item{...}{Parameters to pass to \code{plotSpectra()}}
 }
 \value{
 A ggplot2 object

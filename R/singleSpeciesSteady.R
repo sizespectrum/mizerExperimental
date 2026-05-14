@@ -20,12 +20,17 @@
 #'   choices are "egg" which keeps the egg density constant, "biomass" which 
 #'   keeps the total biomass of the species constant and "number" which keeps
 #'   the total number of individuals constant.
+#' @param ... Not used.
 #' @return A MizerParams object in which the initial abundances of the selected
 #'   species are changed to their single-species steady state abundances.
 #' @keywords internal
 #' @export
-singleSpeciesSteady <- function(params, species = NULL,
-                                keep = c("egg", "biomass", "number")) {
+singleSpeciesSteady <- function(params, ...) UseMethod("singleSpeciesSteady")
+
+#' @rdname singleSpeciesSteady
+#' @export
+singleSpeciesSteady.MizerParams <- function(params, species = NULL,
+                                keep = c("egg", "biomass", "number"), ...) {
     
     lifecycle::deprecate_warn("2.4.0", "singleSpeciesSteady()", 
                               "mizer::steadySingleSpecies()")

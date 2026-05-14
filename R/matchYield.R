@@ -12,14 +12,18 @@
 #' @param gears The gears to be affected. Optional. By default all gears will be
 #'   affected. A vector of gear names.
 #' @param keep A string determining which quantity is to be kept constant. The
-#'   choices are "egg" which keeps the egg density constant, "biomass" which 
+#'   choices are "egg" which keeps the egg density constant, "biomass" which
 #'   keeps the total biomass of the species constant and "number" which keeps
 #'   the total number of individuals constant.
+#' @param ... Not used.
 #' @return A MizerParams object with updated catchabilities
 #' @export
-matchYield <- function(params, species = NULL, gears = NULL,
-                       keep = c("egg", "biomass", "number")) {
-    assert_that(is(params, "MizerParams"))
+matchYield <- function(params, ...) UseMethod("matchYield")
+
+#' @rdname matchYield
+#' @export
+matchYield.MizerParams <- function(params, species = NULL, gears = NULL,
+                       keep = c("egg", "biomass", "number"), ...) {
     keep <- match.arg(keep)
     species_selected <- valid_species_arg(params, species = species)
     gears_selected <- valid_gears_arg(params, gears = gears)

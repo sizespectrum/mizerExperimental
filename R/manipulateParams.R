@@ -8,6 +8,7 @@
 #' @param object An object of class \linkS4class{MizerParams} or
 #'   \linkS4class{MizerSim}.
 #' @inheritParams mizer::valid_species_arg
+#' @param ... Not used.
 #'
 #' @return An object of the same class as the `object` argument
 #' @export
@@ -19,16 +20,21 @@
 #'                                        "N.pout", "Dab", "Saithe"))
 #' plotSpectra(sim)
 #' }
-markBackground <- function(object, species = NULL) {
-    if (is(object, "MizerSim")) {
-        species <- valid_species_arg(object, species)
-        object@params@A[dimnames(object@params@initial_n)$sp %in% species] <- NA
-    } else if (is(object, "MizerParams")) {
-        species <- valid_species_arg(object, species)
-        object@A[dimnames(object@initial_n)$sp %in% species] <- NA
-    } else {
-        stop("The `object` argument must be of type MizerParams or MizerSim.")
-    }
+markBackground <- function(object, ...) UseMethod("markBackground")
+
+#' @rdname markBackground
+#' @export
+markBackground.MizerParams <- function(object, species = NULL, ...) {
+    species <- valid_species_arg(object, species)
+    object@A[dimnames(object@initial_n)$sp %in% species] <- NA
+    return(object)
+}
+
+#' @rdname markBackground
+#' @export
+markBackground.MizerSim <- function(object, species = NULL, ...) {
+    species <- valid_species_arg(object, species)
+    object@params@A[dimnames(object@params@initial_n)$sp %in% species] <- NA
     return(object)
 }
 
@@ -41,11 +47,16 @@ markBackground <- function(object, species = NULL) {
 #' of all species are retuned.
 #'
 #' @param params A \linkS4class{MizerParams} object
+#' @param ... Not used.
 #'
 #' @return An object of type `MizerParams`
 #' @seealso [markBackground()]
 #' @export
-adjustBackgroundSpecies <- function(params) {
+adjustBackgroundSpecies <- function(params, ...) UseMethod("adjustBackgroundSpecies")
+
+#' @rdname adjustBackgroundSpecies
+#' @export
+adjustBackgroundSpecies.MizerParams <- function(params, ...) {
     params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
     L <- is.na(params@A)
@@ -107,10 +118,15 @@ adjustBackgroundSpecies <- function(params) {
 #' @param params A \linkS4class{MizerParams} object
 #' @param cutoff Species with an abundance at maturity size that is less than
 #'               cutoff times community abundance will be removed. Default 1e-3.
+#' @param ... Not used.
 #'
 #' @return An object of type `MizerParams`
 #' @export
-pruneSpecies <- function(params, cutoff = 1e-3) {
+pruneSpecies <- function(params, ...) UseMethod("pruneSpecies")
+
+#' @rdname pruneSpecies
+#' @export
+pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
     params <- validParams(params)
     no_sp <- nrow(params@species_params)  # Number of species
     # Determine which species need to be removed
@@ -147,10 +163,15 @@ pruneSpecies <- function(params, cutoff = 1e-3) {
 #'     affected.
 #'   \item  A number that gives the factor for all foreground species.
 #'   }
+#' @param ... Not used.
 #'
 #' @return An object of type \linkS4class{MizerParams}
 #' @export
-scaleAbundance <- function(params, factor) {
+scaleAbundance <- function(params, ...) UseMethod("scaleAbundance")
+
+#' @rdname scaleAbundance
+#' @export
+scaleAbundance.MizerParams <- function(params, factor, ...) {
     params <- validParams(params)
     assert_that(is.numeric(factor),
                 all(factor > 0))
@@ -184,11 +205,16 @@ scaleAbundance <- function(params, factor) {
 #' values.
 #'
 #' @param params A MizerParams object
+#' @param ... Not used.
 #'
 #' @return The MizerParams object with updated `initial_n` and
 #'   `initial_n_pp` slots.
 #' @export
-updateInitialValues <- function(params) {
+updateInitialValues <- function(params, ...) UseMethod("updateInitialValues")
+
+#' @rdname updateInitialValues
+#' @export
+updateInitialValues.MizerParams <- function(params, ...) {
     params <- validParams(params)
     # Calculate the rates in the current background
     resource_mort <- getResourceMort(params)
@@ -230,20 +256,30 @@ updateInitialValues <- function(params) {
 }
 
 #' Scale background down by a factor
-#' 
+#'
 #' @param params A MizerParams object
 #' @param factor A number giving the factor by which the background abundance
 #'   will be reduced
+#' @param ... Not used.
 #' @export
-scaleDownBackground <- function(params, factor) {
+scaleDownBackground <- function(params, ...) UseMethod("scaleDownBackground")
+
+#' @rdname scaleDownBackground
+#' @export
+scaleDownBackground.MizerParams <- function(params, factor, ...) {
     scaleAbundance(params, factor = factor) %>%
         scaleModel(factor = 1 / factor)
 }
 
 #' Remove all background species
-#' 
+#'
 #' @param params A MizerParams object
+#' @param ... Not used.
 #' @export
-removeBackgroundSpecies <- function(params) {
+removeBackgroundSpecies <- function(params, ...) UseMethod("removeBackgroundSpecies")
+
+#' @rdname removeBackgroundSpecies
+#' @export
+removeBackgroundSpecies.MizerParams <- function(params, ...) {
     removeSpecies(params, is.na(params@A))
 }

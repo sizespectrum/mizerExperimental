@@ -2,12 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{adjustBackgroundSpecies}
 \alias{adjustBackgroundSpecies}
+\alias{adjustBackgroundSpecies.MizerParams}
 \title{Retunes abundance of background species.}
 \usage{
-adjustBackgroundSpecies(params)
+adjustBackgroundSpecies(params, ...)
+
+\method{adjustBackgroundSpecies}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
+
+\item{...}{Not used.}
 }
 \value{
 An object of type \code{MizerParams}

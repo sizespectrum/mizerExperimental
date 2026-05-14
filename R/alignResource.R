@@ -7,11 +7,16 @@
 #' with other prey.
 #' 
 #' @param params A MizerParams object
+#' @param ... Not used.
 #' @return A MizerParams object with updated resource carrying capacity,
 #'   resource initial value, resource parameter lambda and species parameter
 #'   gamma.
 #' @export
-alignResource <- function(params) {
+alignResource <- function(params, ...) UseMethod("alignResource")
+
+#' @rdname alignResource
+#' @export
+alignResource.MizerParams <- function(params, ...) {
     
     sc <- colSums(params@initial_n) * 
         params@w ^ params@resource_params$lambda

@@ -2,17 +2,23 @@
 % Please edit documentation in R/matchYield.R
 \name{matchYield}
 \alias{matchYield}
+\alias{matchYield.MizerParams}
 \title{Match observed yields}
 \usage{
-matchYield(
+matchYield(params, ...)
+
+\method{matchYield}{MizerParams}(
   params,
   species = NULL,
   gears = NULL,
-  keep = c("egg", "biomass", "number")
+  keep = c("egg", "biomass", "number"),
+  ...
 )
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 
 \item{species}{The species to be affected. Optional. By default all observed
 biomasses will be matched. A vector of species names, or a numeric vector

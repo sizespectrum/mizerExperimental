@@ -3,10 +3,15 @@
 # the removal of the `params@w` factor in the calculations.
 
 #' Plot the number against species
-#' 
+#'
 #' @param params A MizerParams object
+#' @param ... Not used.
 #' @export
-plotNumberVsSpecies <- function(params) {
+plotNumberVsSpecies <- function(params, ...) UseMethod("plotNumberVsSpecies")
+
+#' @rdname plotNumberVsSpecies
+#' @export
+plotNumberVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$number_cutoff
     # When no cutoff known, set it to 0

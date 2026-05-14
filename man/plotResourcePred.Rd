@@ -2,16 +2,24 @@
 % Please edit documentation in R/plots.R
 \name{plotResourcePred}
 \alias{plotResourcePred}
+\alias{plotResourcePred.MizerSim}
+\alias{plotResourcePred.MizerParams}
 \alias{plotlyResourcePred}
 \title{Plot the mortality applied on the resource spectrum(s)}
 \usage{
-plotResourcePred(object, proportion = TRUE, return_data = FALSE)
+plotResourcePred(object, ...)
+
+\method{plotResourcePred}{MizerSim}(object, ...)
+
+\method{plotResourcePred}{MizerParams}(object, proportion = TRUE, return_data = FALSE, ...)
 
 plotlyResourcePred(object, proportion = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
+
+\item{...}{Other arguments (currently unused)}
 
 \item{proportion}{A boolean value that determines whether values should be
 displayed as proportions from 0 to 1 or with their actual values. Default
@@ -20,8 +28,6 @@ is TRUE.}
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
-
-\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
@@ -41,13 +47,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

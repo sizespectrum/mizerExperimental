@@ -2,12 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{pruneSpecies}
 \alias{pruneSpecies}
+\alias{pruneSpecies.MizerParams}
 \title{Removes species with abundance below a threshold}
 \usage{
-pruneSpecies(params, cutoff = 0.001)
+pruneSpecies(params, ...)
+
+\method{pruneSpecies}{MizerParams}(params, cutoff = 0.001, ...)
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
+
+\item{...}{Not used.}
 
 \item{cutoff}{Species with an abundance at maturity size that is less than
 cutoff times community abundance will be removed. Default 1e-3.}

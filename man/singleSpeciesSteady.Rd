@@ -2,16 +2,22 @@
 % Please edit documentation in R/singleSpeciesSteady.R
 \name{singleSpeciesSteady}
 \alias{singleSpeciesSteady}
+\alias{singleSpeciesSteady.MizerParams}
 \title{Set initial abundances to single-species steady state abundances}
 \usage{
-singleSpeciesSteady(
+singleSpeciesSteady(params, ...)
+
+\method{singleSpeciesSteady}{MizerParams}(
   params,
   species = NULL,
-  keep = c("egg", "biomass", "number")
+  keep = c("egg", "biomass", "number"),
+  ...
 )
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 
 \item{species}{The species to be selected. Optional. By default all target
 species are selected. A vector of species names, or a numeric vector with

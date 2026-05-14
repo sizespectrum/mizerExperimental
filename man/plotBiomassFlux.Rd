@@ -2,12 +2,17 @@
 % Please edit documentation in R/plotBiomassFlux.R
 \name{plotBiomassFlux}
 \alias{plotBiomassFlux}
+\alias{plotBiomassFlux.MizerParams}
 \title{Plot biomass flux}
 \usage{
-plotBiomassFlux(params, ylim = c(NA, NA), total = FALSE)
+plotBiomassFlux(params, ...)
+
+\method{plotBiomassFlux}{MizerParams}(params, ylim = c(NA, NA), total = FALSE, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 
 \item{ylim}{A numeric vector of length 2 giving the lower and upper limits
 for the y-axis. If the lower limit is NA, it is set to 1e-20. If the upper

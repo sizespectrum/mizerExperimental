@@ -2,16 +2,23 @@
 % Please edit documentation in R/plots.R
 \name{plotYieldVsSize}
 \alias{plotYieldVsSize}
+\alias{plotYieldVsSize.MizerSim}
+\alias{plotYieldVsSize.MizerParams}
 \alias{plotlyYieldVsSize}
 \title{Plot the size distribution of the catch}
 \usage{
-plotYieldVsSize(
+plotYieldVsSize(object, ...)
+
+\method{plotYieldVsSize}{MizerSim}(object, ...)
+
+\method{plotYieldVsSize}{MizerParams}(
   object,
   species = NULL,
   gear = NULL,
   catch = NULL,
   x_var = c("Weight", "Length"),
-  return_data = FALSE
+  return_data = FALSE,
+  ...
 )
 
 plotlyYieldVsSize(
@@ -26,6 +33,8 @@ plotlyYieldVsSize(
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
+
+\item{...}{Other arguments (currently unused)}
 
 \item{species}{The name of the predator species for which to plot the
 mortality.}
@@ -51,8 +60,6 @@ Default is "Weight".}
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
-
-\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a list
@@ -78,13 +85,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}}
 }
 \concept{plotting functions}

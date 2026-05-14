@@ -19,6 +19,8 @@ utils::globalVariables(c("y_coord"))
 #' @param return_data A boolean value that determines whether the formatted data
 #'   used for the plot is returned instead of the plot itself. Default value is
 #'   FALSE
+#' @param xtrans The transformation to apply to the x-axis. Either "log10"
+#'   (default) or "identity".
 #' @param ... Other arguments (currently unused)
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
@@ -33,15 +35,20 @@ utils::globalVariables(c("y_coord"))
 #' fr <- plotDeath(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotDeath <- function(object, species = NULL, proportion = TRUE,
+plotDeath <- function(object, ...) UseMethod("plotDeath")
+
+#' @rdname plotDeath
+#' @export
+plotDeath.MizerSim <- function(object, ...) {
+    plotDeath(setInitialValues(object@params, object), ...)
+}
+
+#' @rdname plotDeath
+#' @export
+plotDeath.MizerParams <- function(object, species = NULL, proportion = TRUE,
                       return_data = FALSE,
-                      xtrans = c("log10", "identity")) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+                      xtrans = c("log10", "identity"), ...) {
+    params <- validParams(object)
     if (!"External" %in% names(getColours(params))) {
         params <- setColours(params, c("External" = "grey"))
     }
@@ -125,14 +132,19 @@ plotlyDeath <- function(object,
 #' fr <- plotResourcePred(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResourcePred <- function(object, proportion = TRUE, return_data = FALSE)
-{
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotResourcePred <- function(object, ...) UseMethod("plotResourcePred")
+
+#' @rdname plotResourcePred
+#' @export
+plotResourcePred.MizerSim <- function(object, ...) {
+    plotResourcePred(setInitialValues(object@params, object), ...)
+}
+
+#' @rdname plotResourcePred
+#' @export
+plotResourcePred.MizerParams <- function(object, proportion = TRUE,
+                                         return_data = FALSE, ...) {
+    params <- validParams(object)
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
 
@@ -185,13 +197,18 @@ plotlyResourcePred <- function(object,
 #' fr <- plotResourceLevel(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResourceLevel <- function(object, return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotResourceLevel <- function(object, ...) UseMethod("plotResourceLevel")
+
+#' @rdname plotResourceLevel
+#' @export
+plotResourceLevel.MizerSim <- function(object, ...) {
+    plotResourceLevel(setInitialValues(object@params, object), ...)
+}
+
+#' @rdname plotResourceLevel
+#' @export
+plotResourceLevel.MizerParams <- function(object, return_data = FALSE, ...) {
+    params <- validParams(object)
 
     select <- (params@cc_pp > 0)
     plot_dat <- data.frame(
@@ -230,14 +247,20 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 #' fr <- plotEnergyBudget(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
-                             return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotEnergyBudget <- function(object, ...) UseMethod("plotEnergyBudget")
+
+#' @rdname plotEnergyBudget
+#' @export
+plotEnergyBudget.MizerSim <- function(object, ...) {
+    plotEnergyBudget(setInitialValues(object@params, object), ...)
+}
+
+#' @rdname plotEnergyBudget
+#' @export
+plotEnergyBudget.MizerParams <- function(object, species = NULL,
+                                         logarithmic = TRUE,
+                                         return_data = FALSE, ...) {
+    params <- validParams(object)
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
     species <- valid_species_arg(params,species)
@@ -359,15 +382,21 @@ plotlyEnergyBudget <- function(object,
 #' fr <- plotYieldVsSize(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
+plotYieldVsSize <- function(object, ...) UseMethod("plotYieldVsSize")
+
+#' @rdname plotYieldVsSize
+#' @export
+plotYieldVsSize.MizerSim <- function(object, ...) {
+    plotYieldVsSize(setInitialValues(object@params, object), ...)
+}
+
+#' @rdname plotYieldVsSize
+#' @export
+plotYieldVsSize.MizerParams <- function(object, species = NULL, gear = NULL,
+                            catch = NULL,
                             x_var = c("Weight", "Length"),
-                            return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+                            return_data = FALSE, ...) {
+    params <- validParams(object)
 
     x_var = match.arg(x_var)
     if (!is.null(catch)) {

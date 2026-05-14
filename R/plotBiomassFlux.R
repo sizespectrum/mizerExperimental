@@ -16,13 +16,18 @@
 #'   Default is c(NA, NA).
 #' @param total A logical indicating whether to add a line for the total biomass
 #'   flux. Default is FALSE.
-#'  
+#' @param ... Not used.
+#'
 #' @export
 #' @examples
 #' plotBiomassFlux(NS_params, ylim = c(1e7, NA), total = TRUE)
-plotBiomassFlux <- function(params,
+plotBiomassFlux <- function(params, ...) UseMethod("plotBiomassFlux")
+
+#' @rdname plotBiomassFlux
+#' @export
+plotBiomassFlux.MizerParams <- function(params,
                             ylim = c(NA, NA),
-                            total = FALSE) {
+                            total = FALSE, ...) {
     params <- validParams(params)
     assert_that(length(ylim) == 2,
                 is.logical(total))

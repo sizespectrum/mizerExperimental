@@ -2,12 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{scaleDownBackground}
 \alias{scaleDownBackground}
+\alias{scaleDownBackground.MizerParams}
 \title{Scale background down by a factor}
 \usage{
-scaleDownBackground(params, factor)
+scaleDownBackground(params, ...)
+
+\method{scaleDownBackground}{MizerParams}(params, factor, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 
 \item{factor}{A number giving the factor by which the background abundance
 will be reduced}

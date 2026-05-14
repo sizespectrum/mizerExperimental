@@ -1,10 +1,15 @@
 #' Plot the yield against species
-#' 
+#'
 #' @param params A MizerParams object
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
+#' @param ... Not used.
 #' @export
-plotYieldVsSpecies <- function(params, gear = NULL) {
+plotYieldVsSpecies <- function(params, ...) UseMethod("plotYieldVsSpecies")
+
+#' @rdname plotYieldVsSpecies
+#' @export
+plotYieldVsSpecies.MizerParams <- function(params, gear = NULL, ...) {
     params <- validParams(params)
     gp <- params@gear_params %>%
         set_species_param_default("yield_observed", NA)

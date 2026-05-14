@@ -2,12 +2,17 @@
 % Please edit documentation in R/plotYieldVsSpecies.R
 \name{plotYieldVsSpecies}
 \alias{plotYieldVsSpecies}
+\alias{plotYieldVsSpecies.MizerParams}
 \title{Plot the yield against species}
 \usage{
-plotYieldVsSpecies(params, gear = NULL)
+plotYieldVsSpecies(params, ...)
+
+\method{plotYieldVsSpecies}{MizerParams}(params, gear = NULL, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 
 \item{gear}{Optional. The name of a gear. If supplied, only the yield from
 this gear will be displayed.}

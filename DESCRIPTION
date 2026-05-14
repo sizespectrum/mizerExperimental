@@ -46,7 +46,7 @@ Collate:
     plots.R
     test-helpers.R
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 URL: https://sizespectrum.org/mizerExperimental, https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
+Config/roxygen2/version: 8.0.0

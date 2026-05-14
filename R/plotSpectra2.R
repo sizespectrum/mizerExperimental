@@ -13,43 +13,63 @@
 #' @param ... Parameters to pass to `plotSpectra()`
 #' @return A ggplot2 object
 #' @export
-#' 
+#'
 #' @examples
 #' sim1 <- project(NS_params, t_max = 10)
 #' sim2 <- project(NS_params, effort = 0.5, t_max = 10)
 #' plotSpectra2(sim1, sim2, "Original", "Effort = 0.5")
-plotSpectra2 <- function(object1, object2, name1 = "First", name2 = "Second",
-                         power = 1, ...) {
-    
+plotSpectra2 <- function(object1, ...) UseMethod("plotSpectra2")
+
+#' @rdname plotSpectra2
+#' @export
+plotSpectra2.MizerParams <- function(object1, object2, name1 = "First",
+                                     name2 = "Second", power = 1, ...) {
     sf1 <- plotSpectra(object1, power = power, return_data = TRUE, ...)
     sf1$Model <- name1
     sf2 <- plotSpectra(object2, power = power, return_data = TRUE, ...)
     sf2$Model <- name2
     sf <- rbind(sf1, sf2)
-
     # Adding this line ensures model 1 will always be model 1, regardless of naming - that way they could be named with numbers
     sf$Model <- factor(sf$Model, levels = c(name1, name2))
-    
-    if (is(object1, "MizerSim")) {
-        params <- object1@params
-    } else {
-        params <- object1
-    }
+    params <- object1
     legend_levels <- intersect(names(params@linecolour), unique(sf$Legend))
     linecolours <- params@linecolour[legend_levels]
-    
     if (power %in% c(0, 1, 2)) {
-        y_label <- c("Number density [1/g]", "Biomass density", 
+        y_label <- c("Number density [1/g]", "Biomass density",
                      "Biomass density [g]")[power + 1]
-    }
-    else {
+    } else {
         y_label <- paste0("Number density * w^", power)
     }
-    
     ggplot(sf, aes(x = w, y = value, colour = Legend, linetype = Model)) +
         geom_line() +
         scale_x_log10("Weight [g]") +
-        scale_y_log10(y_label) + 
+        scale_y_log10(y_label) +
         scale_colour_manual(values = linecolours)
-        
+}
+
+#' @rdname plotSpectra2
+#' @export
+plotSpectra2.MizerSim <- function(object1, object2, name1 = "First",
+                                  name2 = "Second", power = 1, ...) {
+    sf1 <- plotSpectra(object1, power = power, return_data = TRUE, ...)
+    sf1$Model <- name1
+    sf2 <- plotSpectra(object2, power = power, return_data = TRUE, ...)
+    sf2$Model <- name2
+    sf <- rbind(sf1, sf2)
+    # Adding this line ensures model 1 will always be model 1, regardless of naming - that way they could be named with numbers
+    sf$Model <- factor(sf$Model, levels = c(name1, name2))
+    params <- object1@params
+    legend_levels <- intersect(names(params@linecolour), unique(sf$Legend))
+    linecolours <- params@linecolour[legend_levels]
+    if (power %in% c(0, 1, 2)) {
+        y_label <- c("Number density [1/g]", "Biomass density",
+                     "Biomass density [g]")[power + 1]
+    } else {
+        y_label <- paste0("Number density * w^", power)
+    }
+    ggplot(sf, aes(x = w, y = value, colour = Legend, linetype = Model)) +
+        geom_line() +
+        scale_x_log10("Weight [g]") +
+        scale_y_log10(y_label) +
+        scale_colour_manual(values = linecolours)
 }

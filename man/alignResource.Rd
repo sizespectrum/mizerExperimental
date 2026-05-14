@@ -2,12 +2,17 @@
 % Please edit documentation in R/alignResource.R
 \name{alignResource}
 \alias{alignResource}
+\alias{alignResource.MizerParams}
 \title{Rescale resource to be in line with fish community}
 \usage{
-alignResource(params)
+alignResource(params, ...)
+
+\method{alignResource}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \value{
 A MizerParams object with updated resource carrying capacity,

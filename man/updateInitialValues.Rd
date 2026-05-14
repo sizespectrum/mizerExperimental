@@ -2,12 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{updateInitialValues}
 \alias{updateInitialValues}
+\alias{updateInitialValues.MizerParams}
 \title{Update the initial values}
 \usage{
-updateInitialValues(params)
+updateInitialValues(params, ...)
+
+\method{updateInitialValues}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \value{
 The MizerParams object with updated \code{initial_n} and

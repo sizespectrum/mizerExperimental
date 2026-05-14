@@ -1,8 +1,13 @@
 #' Plot the biomass against species
-#' 
+#'
 #' @param params A MizerParams object
+#' @param ... Not used.
 #' @export
-plotBiomassVsSpecies <- function(params) {
+plotBiomassVsSpecies <- function(params, ...) UseMethod("plotBiomassVsSpecies")
+
+#' @rdname plotBiomassVsSpecies
+#' @export
+plotBiomassVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$biomass_cutoff
     # When no cutoff known, set it to 0

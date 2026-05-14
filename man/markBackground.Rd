@@ -2,13 +2,21 @@
 % Please edit documentation in R/manipulateParams.R
 \name{markBackground}
 \alias{markBackground}
+\alias{markBackground.MizerParams}
+\alias{markBackground.MizerSim}
 \title{Designate species as background species}
 \usage{
-markBackground(object, species = NULL)
+markBackground(object, ...)
+
+\method{markBackground}{MizerParams}(object, species = NULL, ...)
+
+\method{markBackground}{MizerSim}(object, species = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerParams} or
 \linkS4class{MizerSim}.}
+
+\item{...}{Not used.}
 
 \item{species}{The species to be selected. Optional. By default all target
 species are selected. A vector of species names, or a

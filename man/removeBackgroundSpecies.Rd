@@ -2,12 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{removeBackgroundSpecies}
 \alias{removeBackgroundSpecies}
+\alias{removeBackgroundSpecies.MizerParams}
 \title{Remove all background species}
 \usage{
-removeBackgroundSpecies(params)
+removeBackgroundSpecies(params, ...)
+
+\method{removeBackgroundSpecies}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \description{
 Remove all background species
