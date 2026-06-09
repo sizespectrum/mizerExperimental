@@ -5,7 +5,10 @@
 #' then rescales the search volumes of all fish species so that their resource
 #' encounter rate stays the same. This will therefore modify the encounter rate
 #' with other prey.
-#' 
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param ... Not used.
 #' @return A MizerParams object with updated resource carrying capacity,
@@ -14,7 +17,6 @@
 #' @export
 alignResource <- function(params, ...) UseMethod("alignResource")
 
-#' @rdname alignResource
 #' @export
 alignResource.MizerParams <- function(params, ...) {
     
