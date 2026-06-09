@@ -5,15 +5,18 @@
 #' species that are no longer needed are removed. The reproductive efficiencies
 #' of all species are retuned.
 #'
+#' This is a generic function with a method for objects of class
+#' \linkS4class{MizerParams}.
+#'
 #' @param params A \linkS4class{MizerParams} object
 #' @param ... Not used.
 #'
 #' @return An object of type `MizerParams`
 #' @seealso [markBackground()]
+
 #' @export
 adjustBackgroundSpecies <- function(params, ...) UseMethod("adjustBackgroundSpecies")
 
-#' @rdname adjustBackgroundSpecies
 #' @export
 adjustBackgroundSpecies.MizerParams <- function(params, ...) {
     params <- validParams(params)
@@ -74,16 +77,19 @@ adjustBackgroundSpecies.MizerParams <- function(params, ...) {
 #' It does not recalculate the steady state for the remaining species or
 #' retune their reproductive efficiencies.
 #'
+#' This is a generic function with a method for objects of class
+#' \linkS4class{MizerParams}.
+#'
 #' @param params A \linkS4class{MizerParams} object
 #' @param cutoff Species with an abundance at maturity size that is less than
 #'               cutoff times community abundance will be removed. Default 1e-3.
 #' @param ... Not used.
 #'
 #' @return An object of type `MizerParams`
-#' @export
-pruneSpecies <- function(params, ...) UseMethod("pruneSpecies")
 
-#' @rdname pruneSpecies
+#' @export
+pruneSpecies <- function(params, cutoff = 1e-3, ...) UseMethod("pruneSpecies")
+
 #' @export
 pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
     params <- validParams(params)
@@ -113,6 +119,9 @@ pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
 #' Does not run the system to steady state. For that you should call
 #' [steady()] explicitly afterwards.
 #'
+#' This is a generic function with a method for objects of class
+#' \linkS4class{MizerParams}.
+#'
 #' @param params A mizer params object
 #' @param factor The factor by which the abundance of each species is multiplied.
 #'   This can be specified in two ways:
@@ -125,10 +134,10 @@ pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
 #' @param ... Not used.
 #'
 #' @return An object of type \linkS4class{MizerParams}
-#' @export
-scaleAbundance <- function(params, ...) UseMethod("scaleAbundance")
 
-#' @rdname scaleAbundance
+#' @export
+scaleAbundance <- function(params, factor, ...) UseMethod("scaleAbundance")
+
 #' @export
 scaleAbundance.MizerParams <- function(params, factor, ...) {
     params <- validParams(params)
@@ -161,15 +170,18 @@ scaleAbundance.MizerParams <- function(params, factor, ...) {
 #' smallest size class for each species. Then readjusts the `erepro`
 #' values.
 #'
+#' This is a generic function with a method for objects of class
+#' \linkS4class{MizerParams}.
+#'
 #' @param params A MizerParams object
 #' @param ... Not used.
 #'
 #' @return The MizerParams object with updated `initial_n` and
 #'   `initial_n_pp` slots.
+
 #' @export
 updateInitialValues <- function(params, ...) UseMethod("updateInitialValues")
 
-#' @rdname updateInitialValues
 #' @export
 updateInitialValues.MizerParams <- function(params, ...) {
     params <- validParams(params)
@@ -214,14 +226,17 @@ updateInitialValues.MizerParams <- function(params, ...) {
 
 #' Scale background down by a factor
 #'
+#' This is a generic function with a method for objects of class
+#' \linkS4class{MizerParams}.
+#'
 #' @param params A MizerParams object
 #' @param factor A number giving the factor by which the background abundance
 #'   will be reduced
 #' @param ... Not used.
-#' @export
-scaleDownBackground <- function(params, ...) UseMethod("scaleDownBackground")
 
-#' @rdname scaleDownBackground
+#' @export
+scaleDownBackground <- function(params, factor, ...) UseMethod("scaleDownBackground")
+
 #' @export
 scaleDownBackground.MizerParams <- function(params, factor, ...) {
     scaleAbundance(params, factor = factor) %>%

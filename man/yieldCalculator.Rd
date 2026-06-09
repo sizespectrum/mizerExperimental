@@ -2,12 +2,9 @@
 % Please edit documentation in R/getYieldVsFcurve.R
 \name{yieldCalculator}
 \alias{yieldCalculator}
-\alias{yieldCalculator.MizerParams}
 \title{Calculates yield from steady sim}
 \usage{
-yieldCalculator(params, ...)
-
-\method{yieldCalculator}{MizerParams}(
+yieldCalculator(
   params,
   effort_vec,
   idx_species,
@@ -19,8 +16,6 @@ yieldCalculator(params, ...)
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
-
-\item{...}{Not used.}
 
 \item{effort_vec}{TODO: document}
 
@@ -36,6 +31,8 @@ own distance function.}
 RDI over t_per years is less than tol for every species.}
 
 \item{t_max}{The longest time to run project to find steady state.}
+
+\item{...}{Not used.}
 }
 \value{
 a vector of yield value of same length as \code{effort_vec}
@@ -43,4 +40,7 @@ a vector of yield value of same length as \code{effort_vec}
 \description{
 This function replaces a loop used multiple times within
 \code{\link[=getYieldVsF]{getYieldVsF()}}
+
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }

@@ -2,17 +2,11 @@
 % Please edit documentation in R/plots.R
 \name{plotDeath}
 \alias{plotDeath}
-\alias{plotDeath.MizerSim}
-\alias{plotDeath.MizerParams}
 \alias{plotlyDeath}
 \title{Plot the sources of external, predation and fishing mortality
 per species and size}
 \usage{
-plotDeath(object, ...)
-
-\method{plotDeath}{MizerSim}(object, ...)
-
-\method{plotDeath}{MizerParams}(
+plotDeath(
   object,
   species = NULL,
   proportion = TRUE,
@@ -27,8 +21,6 @@ plotlyDeath(object, species = NULL, proportion = TRUE, ...)
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
 
-\item{...}{Other arguments (currently unused)}
-
 \item{species}{The name of the predator species for which to plot the
 mortality.}
 
@@ -42,14 +34,18 @@ FALSE}
 
 \item{xtrans}{The transformation to apply to the x-axis. Either "log10"
 (default) or "identity".}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
 frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
 }
 \description{
-Plot the sources of external, predation and fishing mortality
-per species and size
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the mortality in the initial state of the
+simulation. An interactive version is available as \code{plotlyDeath()}.
 }
 \examples{
 \donttest{

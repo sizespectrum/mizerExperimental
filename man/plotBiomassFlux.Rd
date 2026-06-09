@@ -2,17 +2,12 @@
 % Please edit documentation in R/plotBiomassFlux.R
 \name{plotBiomassFlux}
 \alias{plotBiomassFlux}
-\alias{plotBiomassFlux.MizerParams}
 \title{Plot biomass flux}
 \usage{
-plotBiomassFlux(params, ...)
-
-\method{plotBiomassFlux}{MizerParams}(params, ylim = c(NA, NA), total = FALSE, ...)
+plotBiomassFlux(params, ylim = c(NA, NA), total = FALSE, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
-
-\item{...}{Not used.}
 
 \item{ylim}{A numeric vector of length 2 giving the lower and upper limits
 for the y-axis. If the lower limit is NA, it is set to 1e-20. If the upper
@@ -21,6 +16,8 @@ Default is c(NA, NA).}
 
 \item{total}{A logical indicating whether to add a line for the total biomass
 flux. Default is FALSE.}
+
+\item{...}{Not used.}
 }
 \description{
 This function plots the biomass flux for each species in the model
@@ -31,6 +28,10 @@ biomass is transported through a particular size. So it is given as the
 product of the growth rate \eqn{g(w)}, the body mass \eqn{w} and the
 density of individuals \eqn{N(w)} of that size,
 \deqn{J_B(w) = g(w) w N(w).}
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }
 \examples{
 plotBiomassFlux(NS_params, ylim = c(1e7, NA), total = TRUE)

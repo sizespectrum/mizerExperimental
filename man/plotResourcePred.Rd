@@ -2,24 +2,16 @@
 % Please edit documentation in R/plots.R
 \name{plotResourcePred}
 \alias{plotResourcePred}
-\alias{plotResourcePred.MizerSim}
-\alias{plotResourcePred.MizerParams}
 \alias{plotlyResourcePred}
 \title{Plot the mortality applied on the resource spectrum(s)}
 \usage{
-plotResourcePred(object, ...)
-
-\method{plotResourcePred}{MizerSim}(object, ...)
-
-\method{plotResourcePred}{MizerParams}(object, proportion = TRUE, return_data = FALSE, ...)
+plotResourcePred(object, proportion = TRUE, return_data = FALSE, ...)
 
 plotlyResourcePred(object, proportion = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
-
-\item{...}{Other arguments (currently unused)}
 
 \item{proportion}{A boolean value that determines whether values should be
 displayed as proportions from 0 to 1 or with their actual values. Default
@@ -28,6 +20,8 @@ is TRUE.}
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
@@ -35,7 +29,10 @@ frame with the four variables 'w', 'value', 'Predator', 'Resource' is
 returned.
 }
 \description{
-Plot the mortality applied on the resource spectrum(s)
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the mortality in the initial state of the
+simulation. An interactive version is available as \code{plotlyResourcePred()}.
 }
 \examples{
 \donttest{

@@ -5,11 +5,8 @@ current and previous state. This function can be used in
 projectToSteady() to decide when sufficient convergence to steady state
 has been achieved.
 
-## Usage
-
-``` r
-distanceSSLogYield(params, current, previous, criterion = "SSE")
-```
+This is a generic function with a method for objects of class
+[MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).
 
 ## Arguments
 
@@ -30,6 +27,10 @@ distanceSSLogYield(params, current, previous, criterion = "SSE")
 - criterion:
 
   TODO: document
+
+- ...:
+
+  Not used.
 
 ## Value
 

@@ -2,16 +2,10 @@
 % Please edit documentation in R/plots.R
 \name{plotYieldVsSize}
 \alias{plotYieldVsSize}
-\alias{plotYieldVsSize.MizerSim}
-\alias{plotYieldVsSize.MizerParams}
 \alias{plotlyYieldVsSize}
 \title{Plot the size distribution of the catch}
 \usage{
-plotYieldVsSize(object, ...)
-
-\method{plotYieldVsSize}{MizerSim}(object, ...)
-
-\method{plotYieldVsSize}{MizerParams}(
+plotYieldVsSize(
   object,
   species = NULL,
   gear = NULL,
@@ -33,8 +27,6 @@ plotlyYieldVsSize(
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
-
-\item{...}{Other arguments (currently unused)}
 
 \item{species}{The name of the predator species for which to plot the
 mortality.}
@@ -60,6 +52,8 @@ Default is "Weight".}
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a list
@@ -74,6 +68,12 @@ of either length or weight. In addition to the catch in the model, also the
 observed catch will be plotted if it is supplied via the \code{catch} argument.
 Also superimposes a plot of the number density of all individuals of the
 species.
+}
+\details{
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the catch in the initial state of the simulation.
+An interactive version is available as \code{plotlyYieldVsSize()}.
 }
 \examples{
 \donttest{

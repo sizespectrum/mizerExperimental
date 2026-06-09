@@ -2,12 +2,9 @@
 % Please edit documentation in R/getYieldVsFcurve.R
 \name{plotYieldVsF}
 \alias{plotYieldVsF}
-\alias{plotYieldVsF.MizerParams}
 \title{Plot a yield-vs-F curve}
 \usage{
-plotYieldVsF(params, ...)
-
-\method{plotYieldVsF}{MizerParams}(
+plotYieldVsF(
   params,
   species,
   F_range,
@@ -22,8 +19,6 @@ plotYieldVsF(params, ...)
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
-
-\item{...}{Not used.}
 
 \item{species}{Name of the target species}
 
@@ -47,6 +42,8 @@ own distance function.}
 RDI over t_per years is less than tol for every species.}
 
 \item{t_max}{The longest time to run project to find steady state.}
+
+\item{...}{Not used.}
 }
 \value{
 A ggplot object
@@ -55,6 +52,10 @@ A ggplot object
 Calculates the yield of a species for a range of fishing mortalities for
 that species while the fishing mortalities for the other species are held
 fixed.
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }
 \examples{
 \dontrun{

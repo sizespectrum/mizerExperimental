@@ -6,13 +6,6 @@ reproduction.
 ## Usage
 
 ``` r
-plotEnergyBudget(
-  object,
-  species = NULL,
-  logarithmic = TRUE,
-  return_data = FALSE
-)
-
 plotlyEnergyBudget(object, species = NULL, logarithmic = TRUE, ...)
 ```
 
@@ -49,9 +42,16 @@ four variables 'w', 'value', 'Type', 'Species and the second slot is a
 data frame with the five variables 'w_mat', 'w_max', 'Species',
 'y_coord', 'Type' (to plot vertical lines).
 
+## Details
+
+This is a generic function with methods for objects of class MizerSim
+and MizerParams. The method for a `MizerSim` object plots the energy
+budget in the initial state of the simulation. An interactive version is
+available as `plotlyEnergyBudget()`.
+
 ## See also
 
-[mizer::plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
+[plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
 
 Other plotting functions:
 [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md),

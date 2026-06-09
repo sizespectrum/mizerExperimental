@@ -1,13 +1,8 @@
 # Plot the proportion of the resource spectrum(s) compared to their carrying capacity
 
-Plot the proportion of the resource spectrum(s) compared to their
-carrying capacity
-
-## Usage
-
-``` r
-plotResourceLevel(object, return_data = FALSE)
-```
+This is a generic function with methods for objects of class MizerSim
+and MizerParams. The method for a `MizerSim` object plots the resource
+level in the initial state of the simulation.
 
 ## Arguments
 
@@ -21,6 +16,10 @@ plotResourceLevel(object, return_data = FALSE)
   the plot is returned instead of the plot itself. Default value is
   FALSE
 
+- ...:
+
+  Other arguments (currently unused)
+
 ## Value
 
 A ggplot2 object, unless `return_data = TRUE`, in which case a data
@@ -28,7 +27,7 @@ frame with the three variables 'w', 'value', 'Resource' is returned.
 
 ## See also
 
-[mizer::plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
+[plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
 
 Other plotting functions:
 [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md),

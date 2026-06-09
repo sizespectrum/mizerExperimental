@@ -4,15 +4,18 @@
 
 #' Plot the number against species
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param ... Not used.
 #' @examples
 #' plotNumberVsSpecies(NS_params)
-#' 
+#'
+
 #' @export
 plotNumberVsSpecies <- function(params, ...) UseMethod("plotNumberVsSpecies")
 
-#' @rdname plotNumberVsSpecies
 #' @export
 plotNumberVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)

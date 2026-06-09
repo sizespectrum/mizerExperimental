@@ -2,17 +2,12 @@
 % Please edit documentation in R/manipulateParams.R
 \name{scaleAbundance}
 \alias{scaleAbundance}
-\alias{scaleAbundance.MizerParams}
 \title{Rescale Abundance}
 \usage{
-scaleAbundance(params, ...)
-
-\method{scaleAbundance}{MizerParams}(params, factor, ...)
+scaleAbundance(params, factor, ...)
 }
 \arguments{
 \item{params}{A mizer params object}
-
-\item{...}{Not used.}
 
 \item{factor}{The factor by which the abundance of each species is multiplied.
 This can be specified in two ways:
@@ -22,6 +17,8 @@ value gives the factor for that species. Only the named species are
 affected.
 \item  A number that gives the factor for all foreground species.
 }}
+
+\item{...}{Not used.}
 }
 \value{
 An object of type \linkS4class{MizerParams}
@@ -33,4 +30,7 @@ then retunes the reproductive efficiencies accordingly.
 \details{
 Does not run the system to steady state. For that you should call
 \code{\link[mizer:steady]{steady()}} explicitly afterwards.
+
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }

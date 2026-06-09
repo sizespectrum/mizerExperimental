@@ -2,20 +2,17 @@
 % Please edit documentation in R/manipulateParams.R
 \name{pruneSpecies}
 \alias{pruneSpecies}
-\alias{pruneSpecies.MizerParams}
 \title{Removes species with abundance below a threshold}
 \usage{
-pruneSpecies(params, ...)
-
-\method{pruneSpecies}{MizerParams}(params, cutoff = 0.001, ...)
+pruneSpecies(params, cutoff = 0.001, ...)
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
 
-\item{...}{Not used.}
-
 \item{cutoff}{Species with an abundance at maturity size that is less than
 cutoff times community abundance will be removed. Default 1e-3.}
+
+\item{...}{Not used.}
 }
 \value{
 An object of type \code{MizerParams}
@@ -24,4 +21,8 @@ An object of type \code{MizerParams}
 This function simply removes the low-abundance species from the params object.
 It does not recalculate the steady state for the remaining species or
 retune their reproductive efficiencies.
+}
+\details{
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }

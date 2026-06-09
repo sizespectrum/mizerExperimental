@@ -4,6 +4,9 @@
 #' that species while the fishing mortalities for the other species are held
 #' fixed.
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params An object of class `MizerParams`.
 #' @param species Name of the target species
 #' @param F_range A sequence of fishing mortalities at which to evaluate the
@@ -23,6 +26,7 @@
 #' @param ... Not used.
 #'
 #' @return A data frame with columns `F` and `yield`.
+
 #' @export
 #' @family summary functions
 #' @concept summary_function
@@ -33,9 +37,11 @@
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' y <- getYieldVsF(params, "Cod", F_max = 1, no_steps = 5)
 #' }
-getYieldVsF <- function(params, ...) UseMethod("getYieldVsF")
+getYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
+                        no_steps = 10, distance_func = distanceSSLogN,
+                        tol = 0.001, t_max = 100, ...)
+    UseMethod("getYieldVsF")
 
-#' @rdname getYieldVsF
 #' @export
 getYieldVsF.MizerParams <- function(params,
                         species,
@@ -114,6 +120,7 @@ getYieldVsF.MizerParams <- function(params,
 #' @inheritParams getYieldVsF
 #'
 #' @return A ggplot object
+
 #' @export
 #' @family plotting functions
 #' @seealso getYieldVsF
@@ -123,9 +130,11 @@ getYieldVsF.MizerParams <- function(params,
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' plotYieldVsF(params, "Cod")
 #' }
-plotYieldVsF <- function(params, ...) UseMethod("plotYieldVsF")
+plotYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
+                         no_steps = 10, distance_func = distanceSSLogN,
+                         tol = 0.001, t_max = 100, ...)
+    UseMethod("plotYieldVsF")
 
-#' @rdname plotYieldVsF
 #' @export
 plotYieldVsF.MizerParams <- function(params,
                          species,
@@ -174,6 +183,9 @@ plotYieldVsF.MizerParams <- function(params,
 #' and previous state. This function can be used in projectToSteady() to decide
 #' when sufficient convergence to steady state has been achieved.
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params MizerParams
 #' @param current A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the current state
@@ -184,10 +196,12 @@ plotYieldVsF.MizerParams <- function(params,
 #'
 #' @return proportional difference between current and previous state
 #' @family distance functions
-#' @export
-distanceSSLogYield <- function(params, ...) UseMethod("distanceSSLogYield")
 
-#' @rdname distanceSSLogYield
+#' @export
+distanceSSLogYield <- function(params, current, previous,
+                               criterion = "SSE", ...)
+    UseMethod("distanceSSLogYield")
+
 #' @export
 distanceSSLogYield.MizerParams <- function(params, current, previous,
                                            criterion = "SSE", ...) {
@@ -273,15 +287,20 @@ distanceSSLogYield.MizerParams <- function(params, current, previous,
 #' This function replaces a loop used multiple times within
 #' [getYieldVsF()]
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @inheritParams getYieldVsF
 #' @param effort_vec TODO: document
 #' @param idx_species TODO: document
 #'
 #' @return a vector of yield value of same length as `effort_vec`
-#'
-yieldCalculator <- function(params, ...) UseMethod("yieldCalculator")
 
-#' @rdname yieldCalculator
+yieldCalculator <- function(params, effort_vec, idx_species,
+                            distance_func = distanceSSLogN,
+                            tol = 0.001, t_max = 100, ...)
+    UseMethod("yieldCalculator")
+
 #' @export
 yieldCalculator.MizerParams <- function(params, effort_vec, idx_species,
                             distance_func = distanceSSLogN,

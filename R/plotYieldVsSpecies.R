@@ -1,16 +1,19 @@
 #' Plot the yield against species
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
 #' @param ... Not used.
 #' @examples
 #' plotYieldVsSpecies(NS_params)
-#' 
-#' @export
-plotYieldVsSpecies <- function(params, ...) UseMethod("plotYieldVsSpecies")
+#'
 
-#' @rdname plotYieldVsSpecies
+#' @export
+plotYieldVsSpecies <- function(params, gear = NULL, ...) UseMethod("plotYieldVsSpecies")
+
 #' @export
 plotYieldVsSpecies.MizerParams <- function(params, gear = NULL, ...) {
     params <- validParams(params)

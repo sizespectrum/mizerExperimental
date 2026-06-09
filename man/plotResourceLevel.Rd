@@ -2,34 +2,30 @@
 % Please edit documentation in R/plots.R
 \name{plotResourceLevel}
 \alias{plotResourceLevel}
-\alias{plotResourceLevel.MizerSim}
-\alias{plotResourceLevel.MizerParams}
-\title{Plot the proportion of the resource spectrum(s) compared to
-their carrying capacity}
+\title{Plot the proportion of the resource abundance compared to
+the resource carrying capacity}
 \usage{
-plotResourceLevel(object, ...)
-
-\method{plotResourceLevel}{MizerSim}(object, ...)
-
-\method{plotResourceLevel}{MizerParams}(object, return_data = FALSE, ...)
+plotResourceLevel(object, return_data = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
 
-\item{...}{Other arguments (currently unused)}
-
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
 frame with the three variables 'w', 'value', 'Resource' is returned.
 }
 \description{
-Plot the proportion of the resource spectrum(s) compared to
-their carrying capacity
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the resource level in the initial state of the
+simulation.
 }
 \examples{
 \donttest{

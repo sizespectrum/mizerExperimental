@@ -2,8 +2,11 @@
 #' 
 #' This function matches the observed yields of all the gears for all the
 #' species by scaling the catchabilities by the ratio between current modelled
-#' yield and observed yield. 
-#' 
+#' yield and observed yield.
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param species The species to be affected. Optional. By default all observed
 #'   biomasses will be matched. A vector of species names, or a numeric vector
@@ -17,10 +20,12 @@
 #'   the total number of individuals constant.
 #' @param ... Not used.
 #' @return A MizerParams object with updated catchabilities
-#' @export
-matchYield <- function(params, ...) UseMethod("matchYield")
 
-#' @rdname matchYield
+#' @export
+matchYield <- function(params, species = NULL, gears = NULL,
+                       keep = c("egg", "biomass", "number"), ...)
+    UseMethod("matchYield")
+
 #' @export
 matchYield.MizerParams <- function(params, species = NULL, gears = NULL,
                        keep = c("egg", "biomass", "number"), ...) {

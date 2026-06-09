@@ -2,12 +2,9 @@
 % Please edit documentation in R/alignResource.R
 \name{alignResource}
 \alias{alignResource}
-\alias{alignResource.MizerParams}
 \title{Rescale resource to be in line with fish community}
 \usage{
 alignResource(params, ...)
-
-\method{alignResource}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
@@ -25,4 +22,8 @@ resource spectrum aligns approximately with the fish community spectrum and it
 then rescales the search volumes of all fish species so that their resource
 encounter rate stays the same. This will therefore modify the encounter rate
 with other prey.
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }

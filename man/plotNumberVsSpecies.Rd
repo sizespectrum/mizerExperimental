@@ -2,12 +2,9 @@
 % Please edit documentation in R/plotNumberVsSpecies.R
 \name{plotNumberVsSpecies}
 \alias{plotNumberVsSpecies}
-\alias{plotNumberVsSpecies.MizerParams}
 \title{Plot the number against species}
 \usage{
 plotNumberVsSpecies(params, ...)
-
-\method{plotNumberVsSpecies}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
@@ -15,7 +12,8 @@ plotNumberVsSpecies(params, ...)
 \item{...}{Not used.}
 }
 \description{
-Plot the number against species
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }
 \examples{
 plotNumberVsSpecies(NS_params)

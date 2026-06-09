@@ -2,12 +2,9 @@
 % Please edit documentation in R/plotBiomassVsSpecies.R
 \name{plotBiomassVsSpecies}
 \alias{plotBiomassVsSpecies}
-\alias{plotBiomassVsSpecies.MizerParams}
 \title{Plot the biomass against species}
 \usage{
 plotBiomassVsSpecies(params, ...)
-
-\method{plotBiomassVsSpecies}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
@@ -15,7 +12,8 @@ plotBiomassVsSpecies(params, ...)
 \item{...}{Not used.}
 }
 \description{
-Plot the biomass against species
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }
 \examples{
 plotBiomassVsSpecies(NS_params)

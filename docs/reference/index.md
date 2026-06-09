@@ -2,71 +2,58 @@
 
 ## Plotting functions
 
-- [`plotBiomassFlux()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassFlux.md)
+- [`plotBiomassFlux`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassFlux.md)
   : Plot biomass flux
 - [`plotBiomassRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.md)
   [`plotlyBiomassRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.md)
-  : Plot change in biomass over time
-- [`plotBiomassVsSpecies()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.md)
+  **\[deprecated\]** : Plot change in biomass over time
+- [`plotBiomassVsSpecies`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassVsSpecies.md)
   : Plot the biomass against species
-- [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md)
-  [`plotlyDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md)
+- [`plotlyDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md)
   : Plot the sources of external, predation and fishing mortality per
   species and size
-- [`plotEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md)
-  [`plotlyEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md)
+- [`plotlyEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md)
   : Plot the energy budget of each species through size.
-- [`plotNumberVsSpecies()`](https://sizespectrum.org/mizerExperimental/reference/plotNumberVsSpecies.md)
+- [`plotNumberVsSpecies`](https://sizespectrum.org/mizerExperimental/reference/plotNumberVsSpecies.md)
   : Plot the number against species
-- [`plotResourceLevel()`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md)
+- [`plotResourceLevel`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md)
   : Plot the proportion of the resource spectrum(s) compared to their
   carrying capacity
-- [`plotResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md)
-  [`plotlyResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md)
+- [`plotlyResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md)
   : Plot the mortality applied on the resource spectrum(s)
-- [`plotSpectra2()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.md)
-  : Show two size spectra in the same plot
-- [`plotSpectraRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.md)
-  [`plotlySpectraRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.md)
-  : Plot the relative difference between two spectra
 - [`plotYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
   [`plotlyYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
-  : Plot change in yield over time
-- [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
+  **\[deprecated\]** : Plot change in yield over time
+- [`plotYieldVsF`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
   : Plot a yield-vs-F curve
-- [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
-  [`plotlyYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
+- [`plotlyYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
   : Plot the size distribution of the catch
-- [`plotYieldVsSpecies()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.md)
+- [`plotYieldVsSpecies`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSpecies.md)
   : Plot the yield against species
 
 ## Helper functions for model tuning
 
-- [`matchYield()`](https://sizespectrum.org/mizerExperimental/reference/matchYield.md)
+- [`matchYield`](https://sizespectrum.org/mizerExperimental/reference/matchYield.md)
   : Match observed yields
-- [`markBackground()`](https://sizespectrum.org/mizerExperimental/reference/markBackground.md)
-  : Designate species as background species
-- [`adjustBackgroundSpecies()`](https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.md)
+- [`adjustBackgroundSpecies`](https://sizespectrum.org/mizerExperimental/reference/adjustBackgroundSpecies.md)
   : Retunes abundance of background species.
-- [`removeBackgroundSpecies()`](https://sizespectrum.org/mizerExperimental/reference/removeBackgroundSpecies.md)
-  : Remove all background species
-- [`scaleAbundance()`](https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.md)
+- [`scaleAbundance`](https://sizespectrum.org/mizerExperimental/reference/scaleAbundance.md)
   : Rescale Abundance
-- [`scaleDownBackground()`](https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.md)
+- [`scaleDownBackground`](https://sizespectrum.org/mizerExperimental/reference/scaleDownBackground.md)
   : Scale background down by a factor
-- [`updateInitialValues()`](https://sizespectrum.org/mizerExperimental/reference/updateInitialValues.md)
+- [`updateInitialValues`](https://sizespectrum.org/mizerExperimental/reference/updateInitialValues.md)
   : Update the initial values
-- [`pruneSpecies()`](https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.md)
+- [`pruneSpecies`](https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.md)
   : Removes species with abundance below a threshold
-- [`getYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
+- [`getYieldVsF`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
   : Calculate a yield-vs-F curve
-- [`alignResource()`](https://sizespectrum.org/mizerExperimental/reference/alignResource.md)
+- [`alignResource`](https://sizespectrum.org/mizerExperimental/reference/alignResource.md)
   : Rescale resource to be in line with fish community
 
 ## Helper functions for `plotYieldVsF()`
 
-- [`distanceSSLogYield()`](https://sizespectrum.org/mizerExperimental/reference/distanceSSLogYield.md)
+- [`distanceSSLogYield`](https://sizespectrum.org/mizerExperimental/reference/distanceSSLogYield.md)
   : Measure distance between current and previous state in terms of
   yield.
-- [`yieldCalculator()`](https://sizespectrum.org/mizerExperimental/reference/yieldCalculator.md)
+- [`yieldCalculator`](https://sizespectrum.org/mizerExperimental/reference/yieldCalculator.md)
   : Calculates yield from steady sim

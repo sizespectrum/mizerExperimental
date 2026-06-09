@@ -3,16 +3,6 @@
 **\[deprecated\]** This function has been renamed to
 [`mizer::steadySingleSpecies()`](https://sizespectrum.org/mizer/reference/steadySingleSpecies.html).
 
-## Usage
-
-``` r
-singleSpeciesSteady(
-  params,
-  species = NULL,
-  keep = c("egg", "biomass", "number")
-)
-```
-
 ## Arguments
 
 - params:
@@ -33,6 +23,10 @@ singleSpeciesSteady(
   which keeps the total biomass of the species constant and "number"
   which keeps the total number of individuals constant.
 
+- ...:
+
+  Not used.
+
 ## Value
 
 A MizerParams object in which the initial abundances of the selected
@@ -47,3 +41,6 @@ determine the steady-state abundances of the selected species.
 The result of applying this function is of course not a multi-species
 steady state, because after changing the abundances of the selected
 species the growth and death rates will have changed.
+
+This is a generic function with a method for objects of class
+[MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).

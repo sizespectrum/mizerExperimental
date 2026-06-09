@@ -2,12 +2,9 @@
 % Please edit documentation in R/matchYield.R
 \name{matchYield}
 \alias{matchYield}
-\alias{matchYield.MizerParams}
 \title{Match observed yields}
 \usage{
-matchYield(params, ...)
-
-\method{matchYield}{MizerParams}(
+matchYield(
   params,
   species = NULL,
   gears = NULL,
@@ -17,8 +14,6 @@ matchYield(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
-
-\item{...}{Not used.}
 
 \item{species}{The species to be affected. Optional. By default all observed
 biomasses will be matched. A vector of species names, or a numeric vector
@@ -32,6 +27,8 @@ affected. A vector of gear names.}
 choices are "egg" which keeps the egg density constant, "biomass" which
 keeps the total biomass of the species constant and "number" which keeps
 the total number of individuals constant.}
+
+\item{...}{Not used.}
 }
 \value{
 A MizerParams object with updated catchabilities
@@ -40,4 +37,8 @@ A MizerParams object with updated catchabilities
 This function matches the observed yields of all the gears for all the
 species by scaling the catchabilities by the ratio between current modelled
 yield and observed yield.
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }

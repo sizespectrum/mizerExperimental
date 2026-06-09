@@ -2,16 +2,10 @@
 % Please edit documentation in R/plots.R
 \name{plotEnergyBudget}
 \alias{plotEnergyBudget}
-\alias{plotEnergyBudget.MizerSim}
-\alias{plotEnergyBudget.MizerParams}
 \alias{plotlyEnergyBudget}
 \title{Plot the energy budget of each species through size.}
 \usage{
-plotEnergyBudget(object, ...)
-
-\method{plotEnergyBudget}{MizerSim}(object, ...)
-
-\method{plotEnergyBudget}{MizerParams}(
+plotEnergyBudget(
   object,
   species = NULL,
   logarithmic = TRUE,
@@ -25,8 +19,6 @@ plotlyEnergyBudget(object, species = NULL, logarithmic = TRUE, ...)
 \item{object}{An object of class \linkS4class{MizerSim} or
 \linkS4class{MizerParams}.}
 
-\item{...}{Other arguments (currently unused)}
-
 \item{species}{The name of the predator species for which to plot the
 mortality.}
 
@@ -36,6 +28,8 @@ displayed logarithmicly or linearly. Default is TRUE.}
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a list composed of
@@ -45,6 +39,12 @@ two slots is returned. First slot is a data frame with the four variables 'w', '
 }
 \description{
 This budget is divided between growth, income, metabolic loss and reproduction.
+}
+\details{
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the energy budget in the initial state of the
+simulation. An interactive version is available as \code{plotlyEnergyBudget()}.
 }
 \examples{
 \donttest{

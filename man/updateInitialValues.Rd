@@ -2,12 +2,9 @@
 % Please edit documentation in R/manipulateParams.R
 \name{updateInitialValues}
 \alias{updateInitialValues}
-\alias{updateInitialValues.MizerParams}
 \title{Update the initial values}
 \usage{
 updateInitialValues(params, ...)
-
-\method{updateInitialValues}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
@@ -23,4 +20,8 @@ Recalculates the steady-state abundances in a fixed background
 given by the current abundances, keeping the abundances fixed in the
 smallest size class for each species. Then readjusts the \code{erepro}
 values.
+}
+\details{
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }

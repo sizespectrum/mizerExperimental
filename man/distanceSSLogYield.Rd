@@ -2,17 +2,12 @@
 % Please edit documentation in R/getYieldVsFcurve.R
 \name{distanceSSLogYield}
 \alias{distanceSSLogYield}
-\alias{distanceSSLogYield.MizerParams}
 \title{Measure distance between current and previous state in terms of yield.}
 \usage{
-distanceSSLogYield(params, ...)
-
-\method{distanceSSLogYield}{MizerParams}(params, current, previous, criterion = "SSE", ...)
+distanceSSLogYield(params, current, previous, criterion = "SSE", ...)
 }
 \arguments{
 \item{params}{MizerParams}
-
-\item{...}{Not used.}
 
 \item{current}{A named list with entries \code{n}, \code{n_pp} and \code{n_other}
 describing the current state}
@@ -21,6 +16,8 @@ describing the current state}
 describing the previous state}
 
 \item{criterion}{TODO: document}
+
+\item{...}{Not used.}
 }
 \value{
 proportional difference between current and previous state
@@ -29,5 +26,8 @@ proportional difference between current and previous state
 Calculates the proportional difference between getYield() outputs of current
 and previous state. This function can be used in projectToSteady() to decide
 when sufficient convergence to steady state has been achieved.
+
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }
 \concept{distance functions}

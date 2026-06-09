@@ -1,5 +1,19 @@
 # Changelog
 
+## mizerExperimental 3.0.0
+
+- Now works with and requires mizer 3.0.0.
+- `plotSpectra2()`, `plotSpectraRelative()`, `markBackground()` and
+  `removeBackgroundSpecies()` have been moved to core mizer.
+- [`plotBiomassRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.md)
+  and
+  [`plotYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
+  (and their `plotly` variants) have been soft-deprecated in favour of
+  mizer’s new `plotRelative()`, which works directly on the arrays
+  returned by `getBiomass()` and `getYield()`.
+- Functions acting on a MizerParams or MizerSim object have been
+  converted into S3 methods
+
 ## mizerExperimental 2.5.4
 
 - [`tuneParams()`](https://sizespectrum.org/mizerExperimental/reference/tuneParams.md)
@@ -36,8 +50,7 @@ Now works with and expects mizer 2.5.3
   that caused it to crash when no `F_max` was specified
   ([\#61](https://github.com/sizespectrum/mizerExperimental/issues/61))
   thanks to [@SamikDatta](https://github.com/SamikDatta)
-- [`plotSpectra2()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.md)
-  now shows models in the expected order
+- `plotSpectra2()` now shows models in the expected order
   ([\#63](https://github.com/sizespectrum/mizerExperimental/issues/63))
   thanks to [@cmbeese](https://github.com/cmbeese)
 - [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
@@ -89,8 +102,8 @@ Now works with and expects mizer 2.5.3
 
 - [`plotBiomassRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassRelative.md)
 - [`plotYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
-- [`plotSpectraRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectraRelative.md)
-- [`plotSpectra2()`](https://sizespectrum.org/mizerExperimental/reference/plotSpectra2.md)
+- `plotSpectraRelative()`
+- `plotSpectra2()`
 
 ## mizerExperimental 2.3.1
 

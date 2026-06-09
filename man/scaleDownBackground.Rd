@@ -2,21 +2,19 @@
 % Please edit documentation in R/manipulateParams.R
 \name{scaleDownBackground}
 \alias{scaleDownBackground}
-\alias{scaleDownBackground.MizerParams}
 \title{Scale background down by a factor}
 \usage{
-scaleDownBackground(params, ...)
-
-\method{scaleDownBackground}{MizerParams}(params, factor, ...)
+scaleDownBackground(params, factor, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
 
-\item{...}{Not used.}
-
 \item{factor}{A number giving the factor by which the background abundance
 will be reduced}
+
+\item{...}{Not used.}
 }
 \description{
-Scale background down by a factor
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }

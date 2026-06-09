@@ -1,14 +1,17 @@
 #' Plot the biomass against species
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param ... Not used.
 #' @examples
 #' plotBiomassVsSpecies(NS_params)
-#' 
+#'
+
 #' @export
 plotBiomassVsSpecies <- function(params, ...) UseMethod("plotBiomassVsSpecies")
 
-#' @rdname plotBiomassVsSpecies
 #' @export
 plotBiomassVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)

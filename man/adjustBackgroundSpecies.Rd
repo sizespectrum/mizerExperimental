@@ -2,12 +2,9 @@
 % Please edit documentation in R/manipulateParams.R
 \name{adjustBackgroundSpecies}
 \alias{adjustBackgroundSpecies}
-\alias{adjustBackgroundSpecies.MizerParams}
 \title{Retunes abundance of background species.}
 \usage{
 adjustBackgroundSpecies(params, ...)
-
-\method{adjustBackgroundSpecies}{MizerParams}(params, ...)
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
@@ -22,6 +19,10 @@ Rescales all background species in such a way that the total community
 spectrum is as close to the Sheldon power law as possible. Background
 species that are no longer needed are removed. The reproductive efficiencies
 of all species are retuned.
+}
+\details{
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }
 \seealso{
 \code{\link[mizer:markBackground]{markBackground()}}
