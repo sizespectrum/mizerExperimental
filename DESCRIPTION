@@ -40,7 +40,6 @@ Collate:
     plotNumberVsSpecies.R
     plotRelative.R
     tuneParams.R
-    plotSpectra2.R
     singleSpeciesSteady.R
     getYieldVsFcurve.R
     plots.R

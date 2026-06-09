@@ -24,5 +24,5 @@ species that are no longer needed are removed. The reproductive efficiencies
 of all species are retuned.
 }
 \seealso{
-\code{\link[=markBackground]{markBackground()}}
+\code{\link[mizer:markBackground]{markBackground()}}
 }
