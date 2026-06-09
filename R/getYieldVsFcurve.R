@@ -297,11 +297,10 @@ yieldCalculator.MizerParams <- function(params, effort_vec, idx_species,
         ft <- idxFinalT(sim)
         if (ft < t_max - 1) { # if convergence use final yield
             yield_vec[i] <- y[ft, idx_species]
-            params <- setInitialValues(params, sim)
+            params <- initialParams(sim)
         } else { # otherwise average over last 45 years (t_per = 1.5)
             yield_vec[i] <- mean(y[(ft - 30):ft, idx_species])
-            params <- setInitialValues(params, sim,
-                                       time_range = c(65, 100))
+            params <- initialParams(sim, time_range = c(65, 100))
         }
     }
 

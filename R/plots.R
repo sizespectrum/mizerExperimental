@@ -40,7 +40,7 @@ plotDeath <- function(object, ...) UseMethod("plotDeath")
 #' @rdname plotDeath
 #' @export
 plotDeath.MizerSim <- function(object, ...) {
-    plotDeath(setInitialValues(object@params, object), ...)
+    plotDeath(initialParams(object), ...)
 }
 
 #' @rdname plotDeath
@@ -137,7 +137,7 @@ plotResourcePred <- function(object, ...) UseMethod("plotResourcePred")
 #' @rdname plotResourcePred
 #' @export
 plotResourcePred.MizerSim <- function(object, ...) {
-    plotResourcePred(setInitialValues(object@params, object), ...)
+    plotResourcePred(initialParams(object), ...)
 }
 
 #' @rdname plotResourcePred
@@ -202,7 +202,7 @@ plotResourceLevel <- function(object, ...) UseMethod("plotResourceLevel")
 #' @rdname plotResourceLevel
 #' @export
 plotResourceLevel.MizerSim <- function(object, ...) {
-    plotResourceLevel(setInitialValues(object@params, object), ...)
+    plotResourceLevel(initialParams(object), ...)
 }
 
 #' @rdname plotResourceLevel
@@ -252,7 +252,7 @@ plotEnergyBudget <- function(object, ...) UseMethod("plotEnergyBudget")
 #' @rdname plotEnergyBudget
 #' @export
 plotEnergyBudget.MizerSim <- function(object, ...) {
-    plotEnergyBudget(setInitialValues(object@params, object), ...)
+    plotEnergyBudget(initialParams(object), ...)
 }
 
 #' @rdname plotEnergyBudget
@@ -387,7 +387,7 @@ plotYieldVsSize <- function(object, ...) UseMethod("plotYieldVsSize")
 #' @rdname plotYieldVsSize
 #' @export
 plotYieldVsSize.MizerSim <- function(object, ...) {
-    plotYieldVsSize(setInitialValues(object@params, object), ...)
+    plotYieldVsSize(initialParams(object), ...)
 }
 
 #' @rdname plotYieldVsSize

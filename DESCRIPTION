@@ -1,7 +1,7 @@
 Package: mizerExperimental
 Type: Package
 Title: Extends the mizer package with experimental features
-Version: 2.5.4
+Version: 3.0.0
 Author: Various contributors
 Maintainer: Gustav Delius <gustav.delius@gmail.com>
 Description: This mizer extension package collects contributions from the mizer
@@ -10,8 +10,8 @@ Description: This mizer extension package collects contributions from the mizer
     core mizer package.
 License: GPL-3
 Depends:
-    mizer (>= 2.5.3),
-    R (>= 3.1)
+    mizer (>= 3.0.0),
+    R (>= 3.5)
 Imports:
     assertthat,
     dplyr,
