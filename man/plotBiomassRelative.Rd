@@ -24,7 +24,13 @@ whether it is to be selected (TRUE) or not.}
 \item{...}{Parameters passed to \code{getBiomass()}}
 }
 \description{
-Plot change in biomass over time
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} A similar plot can now be produced with
+mizer's \code{\link[mizer:plotRelative]{mizer::plotRelative()}}, which works directly on the arrays returned
+by \code{\link[mizer:getBiomass]{mizer::getBiomass()}}, for example
+\code{plotRelative(getBiomass(sim_original), getBiomass(sim))}. Note that
+\code{\link[mizer:plotRelative]{mizer::plotRelative()}} shows the symmetric relative difference
+\eqn{2(N_2 - N_1)/(N_1 + N_2)} rather than the percentage change relative to
+the reference.
 }
 \examples{
 plotBiomassRelative(NS_sim)
