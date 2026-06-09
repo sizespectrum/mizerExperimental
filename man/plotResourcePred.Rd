@@ -5,7 +5,7 @@
 \alias{plotlyResourcePred}
 \title{Plot the mortality applied on the resource spectrum(s)}
 \usage{
-plotResourcePred(object, proportion = TRUE, return_data = FALSE)
+plotResourcePred(object, proportion = TRUE, return_data = FALSE, ...)
 
 plotlyResourcePred(object, proportion = TRUE, ...)
 }
@@ -29,7 +29,10 @@ frame with the four variables 'w', 'value', 'Predator', 'Resource' is
 returned.
 }
 \description{
-Plot the mortality applied on the resource spectrum(s)
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the mortality in the initial state of the
+simulation. An interactive version is available as \code{plotlyResourcePred()}.
 }
 \examples{
 \donttest{
@@ -41,13 +44,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

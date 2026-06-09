@@ -2,10 +2,10 @@
 % Please edit documentation in R/plots.R
 \name{plotResourceLevel}
 \alias{plotResourceLevel}
-\title{Plot the proportion of the resource spectrum(s) compared to
-their carrying capacity}
+\title{Plot the proportion of the resource abundance compared to
+the resource carrying capacity}
 \usage{
-plotResourceLevel(object, return_data = FALSE)
+plotResourceLevel(object, return_data = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{MizerSim} or
@@ -14,14 +14,18 @@ plotResourceLevel(object, return_data = FALSE)
 \item{return_data}{A boolean value that determines whether the formatted data
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
+
+\item{...}{Other arguments (currently unused)}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
 frame with the three variables 'w', 'value', 'Resource' is returned.
 }
 \description{
-Plot the proportion of the resource spectrum(s) compared to
-their carrying capacity
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the resource level in the initial state of the
+simulation.
 }
 \examples{
 \donttest{
@@ -33,13 +37,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

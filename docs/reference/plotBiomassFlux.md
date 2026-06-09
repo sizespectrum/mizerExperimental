@@ -8,12 +8,6 @@ biomass is transported through a particular size. So it is given as the
 product of the growth rate \\g(w)\\, the body mass \\w\\ and the density
 of individuals \\N(w)\\ of that size, \$\$J_B(w) = g(w) w N(w).\$\$
 
-## Usage
-
-``` r
-plotBiomassFlux(params, ylim = c(NA, NA), total = FALSE)
-```
-
 ## Arguments
 
 - params:
@@ -31,6 +25,15 @@ plotBiomassFlux(params, ylim = c(NA, NA), total = FALSE)
 
   A logical indicating whether to add a line for the total biomass flux.
   Default is FALSE.
+
+- ...:
+
+  Not used.
+
+## Details
+
+This is a generic function with a method for objects of class
+[MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).
 
 ## Examples
 

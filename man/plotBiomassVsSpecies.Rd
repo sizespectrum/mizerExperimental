@@ -4,11 +4,18 @@
 \alias{plotBiomassVsSpecies}
 \title{Plot the biomass against species}
 \usage{
-plotBiomassVsSpecies(params)
+plotBiomassVsSpecies(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \description{
-Plot the biomass against species
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
+}
+\examples{
+plotBiomassVsSpecies(NS_params)
+
 }

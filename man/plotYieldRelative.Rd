@@ -23,7 +23,13 @@ whether it is to be selected (TRUE) or not.}
 \item{...}{Parameters passed to \code{getYield()}}
 }
 \description{
-Plot change in yield over time
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} A similar plot can now be produced with
+mizer's \code{\link[mizer:plotRelative]{mizer::plotRelative()}}, which works directly on the arrays returned
+by \code{\link[mizer:getYield]{mizer::getYield()}}, for example
+\code{plotRelative(getYield(object_original), getYield(sim))}. Note that
+\code{\link[mizer:plotRelative]{mizer::plotRelative()}} shows the symmetric relative difference
+\eqn{2(N_2 - N_1)/(N_1 + N_2)} rather than the percentage change relative to
+the reference.
 }
 \examples{
 plotYieldRelative(NS_sim, NS_params)

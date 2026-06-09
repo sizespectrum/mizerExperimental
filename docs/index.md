@@ -17,6 +17,7 @@ You can install the development version of mizerExperimental from GitHub
 with
 
 ``` r
+
 remotes::install_github("sizespectrum/mizerExperimental")
 ```
 
@@ -24,6 +25,7 @@ If this gives an error saying “there is no package called `remotes`”
 then you also need to do
 
 ``` r
+
 install.packages("remotes")
 ```
 

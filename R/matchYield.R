@@ -2,8 +2,11 @@
 #' 
 #' This function matches the observed yields of all the gears for all the
 #' species by scaling the catchabilities by the ratio between current modelled
-#' yield and observed yield. 
-#' 
+#' yield and observed yield.
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param species The species to be affected. Optional. By default all observed
 #'   biomasses will be matched. A vector of species names, or a numeric vector
@@ -12,14 +15,20 @@
 #' @param gears The gears to be affected. Optional. By default all gears will be
 #'   affected. A vector of gear names.
 #' @param keep A string determining which quantity is to be kept constant. The
-#'   choices are "egg" which keeps the egg density constant, "biomass" which 
+#'   choices are "egg" which keeps the egg density constant, "biomass" which
 #'   keeps the total biomass of the species constant and "number" which keeps
 #'   the total number of individuals constant.
+#' @param ... Not used.
 #' @return A MizerParams object with updated catchabilities
+
 #' @export
 matchYield <- function(params, species = NULL, gears = NULL,
-                       keep = c("egg", "biomass", "number")) {
-    assert_that(is(params, "MizerParams"))
+                       keep = c("egg", "biomass", "number"), ...)
+    UseMethod("matchYield")
+
+#' @export
+matchYield.MizerParams <- function(params, species = NULL, gears = NULL,
+                       keep = c("egg", "biomass", "number"), ...) {
     keep <- match.arg(keep)
     species_selected <- valid_species_arg(params, species = species)
     gears_selected <- valid_gears_arg(params, gears = gears)

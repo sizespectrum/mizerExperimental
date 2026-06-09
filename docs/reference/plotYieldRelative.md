@@ -1,6 +1,14 @@
 # Plot change in yield over time
 
-Plot change in yield over time
+**\[deprecated\]** A similar plot can now be produced with mizer's
+[`mizer::plotRelative()`](https://sizespectrum.org/mizer/reference/plotRelative.html),
+which works directly on the arrays returned by
+[`mizer::getYield()`](https://sizespectrum.org/mizer/reference/getYield.html),
+for example `plotRelative(getYield(object_original), getYield(sim))`.
+Note that
+[`mizer::plotRelative()`](https://sizespectrum.org/mizer/reference/plotRelative.html)
+shows the symmetric relative difference \\2(N_2 - N_1)/(N_1 + N_2)\\
+rather than the percentage change relative to the reference.
 
 ## Usage
 
@@ -35,6 +43,9 @@ plotlyYieldRelative(sim, object_original, species = NULL, ...)
 
 ``` r
 plotYieldRelative(NS_sim, NS_params)
+#> Warning: `plotYieldRelative()` was deprecated in mizerExperimental 3.0.0.
+#> ℹ Please use `mizer::plotRelative()` instead.
+#> ℹ For example `plotRelative(getYield(object_original), getYield(sim))`.
 #> Warning: Removed 48 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 

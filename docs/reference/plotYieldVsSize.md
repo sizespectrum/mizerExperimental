@@ -9,15 +9,6 @@ individuals of the species.
 ## Usage
 
 ``` r
-plotYieldVsSize(
-  object,
-  species = NULL,
-  gear = NULL,
-  catch = NULL,
-  x_var = c("Weight", "Length"),
-  return_data = FALSE
-)
-
 plotlyYieldVsSize(
   object,
   species = NULL,
@@ -81,9 +72,16 @@ four variables 'w' or 'l' (depending on `x_var`), 'Catch density',
 variables 'w_mat', 'Species', 'y_coord', 'Type' (to plot vertical
 lines).
 
+## Details
+
+This is a generic function with methods for objects of class MizerSim
+and MizerParams. The method for a `MizerSim` object plots the catch in
+the initial state of the simulation. An interactive version is available
+as `plotlyYieldVsSize()`.
+
 ## See also
 
-[mizer::plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
+[plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
 
 Other plotting functions:
 [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md),

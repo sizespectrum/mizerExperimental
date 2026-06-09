@@ -4,22 +4,6 @@ Calculates the yield of a species for a range of fishing mortalities for
 that species while the fishing mortalities for the other species are
 held fixed.
 
-## Usage
-
-``` r
-getYieldVsF(
-  params,
-  species,
-  F_range,
-  F_max = 1,
-  F_min = 0,
-  no_steps = 10,
-  distance_func = distanceSSLogN,
-  tol = 0.001,
-  t_max = 100
-)
-```
-
 ## Arguments
 
 - params:
@@ -54,7 +38,7 @@ getYieldVsF(
   previous and the new state and that should return a number that in
   some sense measures the distance between the states. By default this
   uses the function
-  [`mizer::distanceSSLogN()`](https://sizespectrum.org/mizer/reference/distanceSSLogN.html)
+  [`distanceSSLogN()`](https://sizespectrum.org/mizer/reference/distanceSSLogN.html)
   that you can use as a model for your own distance function.
 
 - tol:
@@ -67,9 +51,18 @@ getYieldVsF(
 
   The longest time to run project to find steady state.
 
+- ...:
+
+  Not used.
+
 ## Value
 
 A data frame with columns `F` and `yield`.
+
+## Details
+
+This is a generic function with a method for objects of class
+[MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).
 
 ## See also
 

@@ -3,10 +3,21 @@
 # the removal of the `params@w` factor in the calculations.
 
 #' Plot the number against species
-#' 
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
+#' @param ... Not used.
+#' @examples
+#' plotNumberVsSpecies(NS_params)
+#'
+
 #' @export
-plotNumberVsSpecies <- function(params) {
+plotNumberVsSpecies <- function(params, ...) UseMethod("plotNumberVsSpecies")
+
+#' @export
+plotNumberVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$number_cutoff
     # When no cutoff known, set it to 0
@@ -16,7 +27,7 @@ plotNumberVsSpecies <- function(params) {
     if (is.null(observed)) observed <- rep(NA, no_sp)
     
     # selector for foreground species
-    foreground <- !is.na(params@A)
+    foreground <- !params@species_params$is_background
     foreground_indices <- (1:no_sp)[foreground]
     number_model <- foreground_indices  # create vector of right length
     for (i in seq_along(foreground_indices)) {

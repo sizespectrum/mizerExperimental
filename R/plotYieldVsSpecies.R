@@ -1,10 +1,21 @@
 #' Plot the yield against species
-#' 
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
+#' @param ... Not used.
+#' @examples
+#' plotYieldVsSpecies(NS_params)
+#'
+
 #' @export
-plotYieldVsSpecies <- function(params, gear = NULL) {
+plotYieldVsSpecies <- function(params, gear = NULL, ...) UseMethod("plotYieldVsSpecies")
+
+#' @export
+plotYieldVsSpecies.MizerParams <- function(params, gear = NULL, ...) {
     params <- validParams(params)
     gp <- params@gear_params %>%
         set_species_param_default("yield_observed", NA)
@@ -36,7 +47,7 @@ plotYieldVsSpecies <- function(params, gear = NULL) {
     yield_model <- rowSums(biomass * f_mort)
     
     # selector for foreground species
-    foreground <- !is.na(params@A)
+    foreground <- !params@species_params$is_background
     foreground_indices <- (1:no_sp)[foreground]
     yield_model <- yield_model[foreground_indices]
     observed <- observed[foreground_indices]

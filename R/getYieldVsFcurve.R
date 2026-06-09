@@ -4,6 +4,9 @@
 #' that species while the fishing mortalities for the other species are held
 #' fixed.
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params An object of class `MizerParams`.
 #' @param species Name of the target species
 #' @param F_range A sequence of fishing mortalities at which to evaluate the
@@ -20,8 +23,10 @@
 #' @param tol The `projectToSteady` function stops when the relative change in the egg production
 #' RDI over t_per years is less than tol for every species.
 #' @param t_max The longest time to run project to find steady state.
-#' 
+#' @param ... Not used.
+#'
 #' @return A data frame with columns `F` and `yield`.
+
 #' @export
 #' @family summary functions
 #' @concept summary_function
@@ -32,7 +37,13 @@
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' y <- getYieldVsF(params, "Cod", F_max = 1, no_steps = 5)
 #' }
-getYieldVsF <- function(params,
+getYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
+                        no_steps = 10, distance_func = distanceSSLogN,
+                        tol = 0.001, t_max = 100, ...)
+    UseMethod("getYieldVsF")
+
+#' @export
+getYieldVsF.MizerParams <- function(params,
                         species,
                         F_range,
                         F_max = 1,
@@ -40,8 +51,8 @@ getYieldVsF <- function(params,
                         no_steps = 10,
                         distance_func = distanceSSLogN,
                         tol = 0.001,
-                        t_max = 100
-                        ) {
+                        t_max = 100,
+                        ...) {
     # Check parameters
     params <- validParams(params)
     species <- valid_species_arg(params, species)
@@ -52,7 +63,7 @@ getYieldVsF <- function(params,
     if (length(idx_species) != 1) {
         stop("Invalid species specification")
     }
-    
+
     # Project to steady with the current fishing
     params <- projectToSteady(params, t_max = t_max, progress_bar = FALSE,
                               distance_func = distance_func, tol = tol)
@@ -65,7 +76,7 @@ getYieldVsF <- function(params,
     if (length(sp_sel) == 0) {
         stop(species, " is not selected by any gear.")
     }
-    current_FMort <- sum(params@initial_effort[gp$gear[sp_sel]] * 
+    current_FMort <- sum(params@initial_effort[gp$gear[sp_sel]] *
                              gp$catchability[sp_sel])
     # base the new gear on the first gear that catches this species
     # TODO: think about how to improve this arbitrary choice.
@@ -79,26 +90,26 @@ getYieldVsF <- function(params,
     if (missing(F_range)) {
         F_range = seq(F_min, F_max, length.out = no_steps)
     }
-    
+
     assert_that(is.numeric(F_range))
     sel <- F_range < current_FMort
     F_range1 <- sort(F_range[sel], decreasing = TRUE)
     F_range2 <- sort(F_range[!sel])
-    
+
     # First work down from current fishing
-    yield_vec1 <- 
-        yieldCalculator(params = params, effort_vec = F_range1, 
+    yield_vec1 <-
+        yieldCalculator(params = params, effort_vec = F_range1,
                         idx_species = idx_species,
-                        distance_func = distance_func, 
+                        distance_func = distance_func,
                         tol = tol, t_max = t_max)
     # Then work up from current fishing
-    yield_vec2 <- 
-        yieldCalculator(params = params, effort_vec = F_range2, 
+    yield_vec2 <-
+        yieldCalculator(params = params, effort_vec = F_range2,
                         idx_species = idx_species,
-                        distance_func = distance_func, 
+                        distance_func = distance_func,
                         tol = tol, t_max = t_max)
-    
-    return(data.frame(yield = c(yield_vec1, yield_vec2), 
+
+    return(data.frame(yield = c(yield_vec1, yield_vec2),
                       F = c(F_range1, F_range2)))
 }
 
@@ -109,6 +120,7 @@ getYieldVsF <- function(params,
 #' @inheritParams getYieldVsF
 #'
 #' @return A ggplot object
+
 #' @export
 #' @family plotting functions
 #' @seealso getYieldVsF
@@ -118,7 +130,13 @@ getYieldVsF <- function(params,
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' plotYieldVsF(params, "Cod")
 #' }
-plotYieldVsF <- function(params,
+plotYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
+                         no_steps = 10, distance_func = distanceSSLogN,
+                         tol = 0.001, t_max = 100, ...)
+    UseMethod("plotYieldVsF")
+
+#' @export
+plotYieldVsF.MizerParams <- function(params,
                          species,
                          F_range,
                          F_max = 1,
@@ -126,7 +144,8 @@ plotYieldVsF <- function(params,
                          no_steps = 10,
                          distance_func = distanceSSLogN,
                          tol = 0.001,
-                         t_max = 100) {
+                         t_max = 100,
+                         ...) {
     # Check parameters
     params <- validParams(params)
     species <- valid_species_arg(params, species)
@@ -141,19 +160,19 @@ plotYieldVsF <- function(params,
                          tol = tol,
                          t_max = t_max
                          )
-    
+
     pl <- ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
         xlab("Fishing mortality (1/yr)") +
         ylab("Yield") +
         ggtitle(species)
-    
+
     if ("F_MSY" %in% names(params@species_params)) {
         F_MSY = params@species_params$F_MSY
-        pl <- pl + 
+        pl <- pl +
             geom_vline(xintercept = F_MSY, linetype = dashed, colour = "grey")
     }
-    
+
     pl
 }
 
@@ -164,19 +183,28 @@ plotYieldVsF <- function(params,
 #' and previous state. This function can be used in projectToSteady() to decide
 #' when sufficient convergence to steady state has been achieved.
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params MizerParams
 #' @param current A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the current state
 #' @param previous A named list with entries `n`, `n_pp` and `n_other`
 #'   describing the previous state
 #' @param criterion TODO: document
+#' @param ... Not used.
 #'
 #' @return proportional difference between current and previous state
 #' @family distance functions
-#' @export
 
-distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
-{
+#' @export
+distanceSSLogYield <- function(params, current, previous,
+                               criterion = "SSE", ...)
+    UseMethod("distanceSSLogYield")
+
+#' @export
+distanceSSLogYield.MizerParams <- function(params, current, previous,
+                                           criterion = "SSE", ...) {
     effort <- params@initial_effort
     time_range <- 0
     t <- min(time_range)
@@ -259,31 +287,39 @@ distanceSSLogYield <- function(params, current, previous, criterion = "SSE")
 #' This function replaces a loop used multiple times within
 #' [getYieldVsF()]
 #'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @inheritParams getYieldVsF
 #' @param effort_vec TODO: document
 #' @param idx_species TODO: document
 #'
 #' @return a vector of yield value of same length as `effort_vec`
-#'
+
 yieldCalculator <- function(params, effort_vec, idx_species,
                             distance_func = distanceSSLogN,
-                            tol = 0.001, t_max = 100) {
+                            tol = 0.001, t_max = 100, ...)
+    UseMethod("yieldCalculator")
+
+#' @export
+yieldCalculator.MizerParams <- function(params, effort_vec, idx_species,
+                            distance_func = distanceSSLogN,
+                            tol = 0.001, t_max = 100, ...) {
     yield_vec <- effort_vec # To get the right length
     for (i in seq_along(effort_vec)) {
         message(paste("F =", effort_vec[i]))
         params@initial_effort["tmp"] <- effort_vec[i]
         sim <- projectToSteady(params, t_max = t_max, t_per = 1.5,
-                               return_sim = TRUE, progress_bar = FALSE, 
+                               return_sim = TRUE, progress_bar = FALSE,
                                distance_func = distance_func, tol = tol)
         y <- getYield(sim)
         ft <- idxFinalT(sim)
         if (ft < t_max - 1) { # if convergence use final yield
             yield_vec[i] <- y[ft, idx_species]
-            params <- setInitialValues(params, sim)
+            params <- initialParams(sim)
         } else { # otherwise average over last 45 years (t_per = 1.5)
             yield_vec[i] <- mean(y[(ft - 30):ft, idx_species])
-            params <- setInitialValues(params, sim,
-                                       time_range = c(65, 100))
+            params <- initialParams(sim, time_range = c(65, 100))
         }
     }
 

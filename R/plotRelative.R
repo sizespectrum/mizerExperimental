@@ -1,67 +1,12 @@
-#' Plot the relative difference between two spectra
-#' 
-#' This plots the difference between the spectra relative to their average. So
-#' if we denote the number density from the first object as \eqn{N_1(w)} and
-#' that from the second object as \eqn{N_2(w)}, then this plot shows
-#' \deqn{2 (N_2(w) - N_1(w)) / (N_2(w) + N_1(w)).}
-#' 
-#' The individual spectra are calculated by the [plotSpectra()] function which
-#' is passed all additional arguments you supply. So you can for example
-#' determine a size range over which to average the simulation results via the
-#' `time_range` argument. See [plotSpectra()] for more options.
-#' 
-#' Note that it does not matter whether the relative difference is calculated
-#' for the number density or the biomass density or the biomass density in log
-#' weight because the factors of \eqn{w} by which the densities differ cancels 
-#' out in the relative difference.
-#' 
-#' @param object1 An object of class MizerSim or MizerParams
-#' @param object2 An object of class MizerSim or MizerParams
-#' @param ... Parameters passed to `plotSpectra()`
-#' 
-#' @return A ggplot2 object
-#' @export
-#' @examples
-#' sim1 <- project(NS_params, t_max = 10)
-#' sim2 <- project(NS_params, effort = 0.5, t_max = 10)
-#' plotSpectraRelative(sim1, sim2)
-plotSpectraRelative <- function(object1, object2, ...) {
-    
-    # TODO: Add checks that the two objects are compatible
-    
-    sf1 <- mizer::plotSpectra(object1, return_data = TRUE, ...)
-    sf2 <- mizer::plotSpectra(object2, return_data = TRUE, ...)
-    
-    sf <- left_join(sf1, sf2, by = c("w", "Legend")) |>
-        mutate(rel_diff = (value.y - value.x) / (value.x + value.y))
-    
-    if (is(object1, "MizerSim")) {
-        params <- object1@params
-    } else {
-        params <- object1
-    }
-    legend_levels <- intersect(names(params@linecolour),
-                               unique(sf$Legend))
-    linecolours <- params@linecolour[legend_levels]
-    
-    ggplot(sf,
-           aes(x = w, y = rel_diff, colour = Legend)) +
-        geom_line() +
-        labs(x = "Weight [g]", y = "Relative difference") +
-        scale_x_log10() +
-        scale_color_manual(values = linecolours) +
-        geom_hline(yintercept = 0, linetype = 1,
-                   colour = "dark grey", linewidth = 0.75)
-}
-
-#' @rdname plotSpectraRelative
-#' @export
-plotlySpectraRelative <- function(object1, object2, ...) {
-    ggplotly(plotSpectraRelative(object1, object2, ...),
-             tooltip = c("Legend", "w", "rel_diff"))
-}
-
 #' Plot change in biomass over time
+#'
+#' `r lifecycle::badge("deprecated")` A similar plot can now be produced with
+#' mizer's [mizer::plotRelative()], which works directly on the arrays returned
+#' by [mizer::getBiomass()], for example
+#' `plotRelative(getBiomass(sim_original), getBiomass(sim))`. Note that
+#' [mizer::plotRelative()] shows the symmetric relative difference
+#' \eqn{2(N_2 - N_1)/(N_1 + N_2)} rather than the percentage change relative to
+#' the reference.
 #'
 #' @param sim A MizerSim object
 #' @param sim_original Another MizerSim object to compare the biomasses to. If
@@ -77,6 +22,10 @@ plotlySpectraRelative <- function(object1, object2, ...) {
 #' plotBiomassRelative(NS_sim)
 #' plotBiomassRelative(NS_sim, species = c("Cod", "Sole"))
 plotBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
+    lifecycle::deprecate_soft(
+        "3.0.0", "plotBiomassRelative()", "mizer::plotRelative()",
+        details = "For example `plotRelative(getBiomass(sim_original), getBiomass(sim))`."
+    )
     sel <- valid_species_arg(sim, species, return.logical = TRUE)
     if (is.null(sim_original)) {
         biomass_original <- getBiomass(sim@params, ...)[sel]
@@ -93,11 +42,23 @@ plotBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
 #' @rdname plotBiomassRelative
 #' @export
 plotlyBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...) {
+    lifecycle::deprecate_soft(
+        "3.0.0", "plotlyBiomassRelative()", "mizer::plotRelative()",
+        details = "For example `plotRelative(getBiomass(sim_original), getBiomass(sim))`."
+    )
     ggplotly(plotBiomassRelative(sim, sim_original, species = species, ...),
              tooltip = c("Species", "Year", "Change %"))
 }
 
 #' Plot change in yield over time
+#'
+#' `r lifecycle::badge("deprecated")` A similar plot can now be produced with
+#' mizer's [mizer::plotRelative()], which works directly on the arrays returned
+#' by [mizer::getYield()], for example
+#' `plotRelative(getYield(object_original), getYield(sim))`. Note that
+#' [mizer::plotRelative()] shows the symmetric relative difference
+#' \eqn{2(N_2 - N_1)/(N_1 + N_2)} rather than the percentage change relative to
+#' the reference.
 #'
 #' @param sim A MizerSim object
 #' @param object_original A MizerParams or MizerSim object to calculate
@@ -112,6 +73,10 @@ plotlyBiomassRelative <- function(sim, sim_original = NULL, species = NULL, ...)
 #' plotYieldRelative(NS_sim, NS_params)
 #' plotYieldRelative(NS_sim, NS_params, species = c("Cod", "Sole"))
 plotYieldRelative <- function(sim, object_original, species = NULL, ...) {
+    lifecycle::deprecate_soft(
+        "3.0.0", "plotYieldRelative()", "mizer::plotRelative()",
+        details = "For example `plotRelative(getYield(object_original), getYield(sim))`."
+    )
     sel <- valid_species_arg(sim, species, return.logical = TRUE)
     if (is(object_original, "MizerParams")) {
         yield_original <- getYield(object_original, ...)[sel]
@@ -128,6 +93,10 @@ plotYieldRelative <- function(sim, object_original, species = NULL, ...) {
 #' @rdname plotYieldRelative
 #' @export
 plotlyYieldRelative <- function(sim, object_original, species = NULL, ...) {
+    lifecycle::deprecate_soft(
+        "3.0.0", "plotlyYieldRelative()", "mizer::plotRelative()",
+        details = "For example `plotRelative(getYield(object_original), getYield(sim))`."
+    )
     ggplotly(plotYieldRelative(sim, object_original, species = species, ...),
              tooltip = c("Species", "Year", "Change %"))
 }

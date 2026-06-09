@@ -45,9 +45,7 @@ reference:
 - title: Helper functions for model tuning
 - contents:
   - matchYield
-  - markBackground
   - adjustBackgroundSpecies
-  - removeBackgroundSpecies
   - scaleAbundance
   - scaleDownBackground
   - updateInitialValues

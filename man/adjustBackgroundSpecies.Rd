@@ -4,10 +4,12 @@
 \alias{adjustBackgroundSpecies}
 \title{Retunes abundance of background species.}
 \usage{
-adjustBackgroundSpecies(params)
+adjustBackgroundSpecies(params, ...)
 }
 \arguments{
 \item{params}{A \linkS4class{MizerParams} object}
+
+\item{...}{Not used.}
 }
 \value{
 An object of type \code{MizerParams}
@@ -18,6 +20,10 @@ spectrum is as close to the Sheldon power law as possible. Background
 species that are no longer needed are removed. The reproductive efficiencies
 of all species are retuned.
 }
+\details{
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
+}
 \seealso{
-\code{\link[=markBackground]{markBackground()}}
+\code{\link[mizer:markBackground]{markBackground()}}
 }

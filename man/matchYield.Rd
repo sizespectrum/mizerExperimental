@@ -8,7 +8,8 @@ matchYield(
   params,
   species = NULL,
   gears = NULL,
-  keep = c("egg", "biomass", "number")
+  keep = c("egg", "biomass", "number"),
+  ...
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ affected. A vector of gear names.}
 choices are "egg" which keeps the egg density constant, "biomass" which
 keeps the total biomass of the species constant and "number" which keeps
 the total number of individuals constant.}
+
+\item{...}{Not used.}
 }
 \value{
 A MizerParams object with updated catchabilities
@@ -34,4 +37,8 @@ A MizerParams object with updated catchabilities
 This function matches the observed yields of all the gears for all the
 species by scaling the catchabilities by the ratio between current modelled
 yield and observed yield.
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }

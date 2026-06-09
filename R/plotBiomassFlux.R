@@ -8,7 +8,10 @@
 #' product of the growth rate \eqn{g(w)}, the body mass \eqn{w} and the 
 #' density of individuals \eqn{N(w)} of that size,
 #' \deqn{J_B(w) = g(w) w N(w).}
-#' 
+#'
+#' This is a generic function with a method for objects of class
+#' [MizerParams][mizer::MizerParams].
+#'
 #' @param params A MizerParams object
 #' @param ylim A numeric vector of length 2 giving the lower and upper limits
 #'   for the y-axis. If the lower limit is NA, it is set to 1e-20. If the upper
@@ -16,13 +19,18 @@
 #'   Default is c(NA, NA).
 #' @param total A logical indicating whether to add a line for the total biomass
 #'   flux. Default is FALSE.
-#'  
+#' @param ... Not used.
+#'
 #' @export
 #' @examples
 #' plotBiomassFlux(NS_params, ylim = c(1e7, NA), total = TRUE)
-plotBiomassFlux <- function(params,
+plotBiomassFlux <- function(params, ylim = c(NA, NA), total = FALSE, ...)
+    UseMethod("plotBiomassFlux")
+
+#' @export
+plotBiomassFlux.MizerParams <- function(params,
                             ylim = c(NA, NA),
-                            total = FALSE) {
+                            total = FALSE, ...) {
     params <- validParams(params)
     assert_that(length(ylim) == 2,
                 is.logical(total))

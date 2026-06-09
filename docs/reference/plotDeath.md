@@ -1,19 +1,13 @@
 # Plot the sources of external, predation and fishing mortality per species and size
 
-Plot the sources of external, predation and fishing mortality per
-species and size
+This is a generic function with methods for objects of class MizerSim
+and MizerParams. The method for a `MizerSim` object plots the mortality
+in the initial state of the simulation. An interactive version is
+available as `plotlyDeath()`.
 
 ## Usage
 
 ``` r
-plotDeath(
-  object,
-  species = NULL,
-  proportion = TRUE,
-  return_data = FALSE,
-  xtrans = c("log10", "identity")
-)
-
 plotlyDeath(object, species = NULL, proportion = TRUE, ...)
 ```
 
@@ -38,6 +32,11 @@ plotlyDeath(object, species = NULL, proportion = TRUE, ...)
   the plot is returned instead of the plot itself. Default value is
   FALSE
 
+- xtrans:
+
+  The transformation to apply to the x-axis. Either "log10" (default) or
+  "identity".
+
 - ...:
 
   Other arguments (currently unused)
@@ -50,7 +49,7 @@ returned.
 
 ## See also
 
-[mizer::plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
+[plotting_functions](https://sizespectrum.org/mizer/reference/plotting_functions.html)
 
 Other plotting functions:
 [`plotEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md),

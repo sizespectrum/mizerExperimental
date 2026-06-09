@@ -11,7 +11,8 @@ plotDeath(
   species = NULL,
   proportion = TRUE,
   return_data = FALSE,
-  xtrans = c("log10", "identity")
+  xtrans = c("log10", "identity"),
+  ...
 )
 
 plotlyDeath(object, species = NULL, proportion = TRUE, ...)
@@ -31,6 +32,9 @@ is TRUE.}
 used for the plot is returned instead of the plot itself. Default value is
 FALSE}
 
+\item{xtrans}{The transformation to apply to the x-axis. Either "log10"
+(default) or "identity".}
+
 \item{...}{Other arguments (currently unused)}
 }
 \value{
@@ -38,8 +42,10 @@ A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
 frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
 }
 \description{
-Plot the sources of external, predation and fishing mortality
-per species and size
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the mortality in the initial state of the
+simulation. An interactive version is available as \code{plotlyDeath()}.
 }
 \examples{
 \donttest{
@@ -51,13 +57,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

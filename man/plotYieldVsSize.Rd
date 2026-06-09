@@ -11,7 +11,8 @@ plotYieldVsSize(
   gear = NULL,
   catch = NULL,
   x_var = c("Weight", "Length"),
-  return_data = FALSE
+  return_data = FALSE,
+  ...
 )
 
 plotlyYieldVsSize(
@@ -68,6 +69,12 @@ observed catch will be plotted if it is supplied via the \code{catch} argument.
 Also superimposes a plot of the number density of all individuals of the
 species.
 }
+\details{
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the catch in the initial state of the simulation.
+An interactive version is available as \code{plotlyYieldVsSize()}.
+}
 \examples{
 \donttest{
 plotYieldVsSize(NS_params, species = "Cod")
@@ -78,13 +85,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}}
 }
 \concept{plotting functions}

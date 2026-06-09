@@ -4,11 +4,18 @@
 \alias{plotNumberVsSpecies}
 \title{Plot the number against species}
 \usage{
-plotNumberVsSpecies(params)
+plotNumberVsSpecies(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \description{
-Plot the number against species
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
+}
+\examples{
+plotNumberVsSpecies(NS_params)
+
 }

@@ -4,10 +4,12 @@
 \alias{alignResource}
 \title{Rescale resource to be in line with fish community}
 \usage{
-alignResource(params)
+alignResource(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \value{
 A MizerParams object with updated resource carrying capacity,
@@ -20,4 +22,8 @@ resource spectrum aligns approximately with the fish community spectrum and it
 then rescales the search volumes of all fish species so that their resource
 encounter rate stays the same. This will therefore modify the encounter rate
 with other prey.
+}
+\details{
+This is a generic function with a method for objects of class
+\link[mizer:MizerParams]{MizerParams}.
 }

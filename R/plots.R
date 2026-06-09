@@ -8,7 +8,12 @@ utils::globalVariables(c("y_coord"))
 
 #' Plot the sources of external, predation and fishing mortality
 #' per species and size
-
+#'
+#' This is a generic function with methods for objects of class
+#' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+#' `MizerSim` object plots the mortality in the initial state of the
+#' simulation. An interactive version is available as `plotlyDeath()`.
+#'
 #' @param object An object of class \linkS4class{MizerSim} or
 #'   \linkS4class{MizerParams}.
 #' @param species The name of the predator species for which to plot the
@@ -19,9 +24,12 @@ utils::globalVariables(c("y_coord"))
 #' @param return_data A boolean value that determines whether the formatted data
 #'   used for the plot is returned instead of the plot itself. Default value is
 #'   FALSE
+#' @param xtrans The transformation to apply to the x-axis. Either "log10"
+#'   (default) or "identity".
 #' @param ... Other arguments (currently unused)
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
+
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -35,13 +43,19 @@ utils::globalVariables(c("y_coord"))
 #' }
 plotDeath <- function(object, species = NULL, proportion = TRUE,
                       return_data = FALSE,
-                      xtrans = c("log10", "identity")) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+                      xtrans = c("log10", "identity"), ...)
+    UseMethod("plotDeath")
+
+#' @export
+plotDeath.MizerSim <- function(object, ...) {
+    plotDeath(initialParams(object), ...)
+}
+
+#' @export
+plotDeath.MizerParams <- function(object, species = NULL, proportion = TRUE,
+                      return_data = FALSE,
+                      xtrans = c("log10", "identity"), ...) {
+    params <- validParams(object)
     if (!"External" %in% names(getColours(params))) {
         params <- setColours(params, c("External" = "grey"))
     }
@@ -110,10 +124,16 @@ plotlyDeath <- function(object,
 
 #' Plot the mortality applied on the resource spectrum(s)
 #'
+#' This is a generic function with methods for objects of class
+#' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+#' `MizerSim` object plots the mortality in the initial state of the
+#' simulation. An interactive version is available as `plotlyResourcePred()`.
+#'
 #' @inheritParams plotDeath
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the four variables 'w', 'value', 'Predator', 'Resource' is
 #'   returned.
+
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -125,14 +145,19 @@ plotlyDeath <- function(object,
 #' fr <- plotResourcePred(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResourcePred <- function(object, proportion = TRUE, return_data = FALSE)
-{
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotResourcePred <- function(object, proportion = TRUE,
+                             return_data = FALSE, ...)
+    UseMethod("plotResourcePred")
+
+#' @export
+plotResourcePred.MizerSim <- function(object, ...) {
+    plotResourcePred(initialParams(object), ...)
+}
+
+#' @export
+plotResourcePred.MizerParams <- function(object, proportion = TRUE,
+                                         return_data = FALSE, ...) {
+    params <- validParams(object)
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
 
@@ -168,12 +193,18 @@ plotlyResourcePred <- function(object,
 }
 
 
-#' Plot the proportion of the resource spectrum(s) compared to
-#' their carrying capacity
+#' Plot the proportion of the resource abundance compared to
+#' the resource carrying capacity
+#'
+#' This is a generic function with methods for objects of class
+#' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+#' `MizerSim` object plots the resource level in the initial state of the
+#' simulation.
 #'
 #' @inheritParams plotDeath
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the three variables 'w', 'value', 'Resource' is returned.
+
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -185,13 +216,17 @@ plotlyResourcePred <- function(object,
 #' fr <- plotResourceLevel(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotResourceLevel <- function(object, return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotResourceLevel <- function(object, return_data = FALSE, ...)
+    UseMethod("plotResourceLevel")
+
+#' @export
+plotResourceLevel.MizerSim <- function(object, ...) {
+    plotResourceLevel(initialParams(object), ...)
+}
+
+#' @export
+plotResourceLevel.MizerParams <- function(object, return_data = FALSE, ...) {
+    params <- validParams(object)
 
     select <- (params@cc_pp > 0)
     plot_dat <- data.frame(
@@ -212,6 +247,11 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 #'
 #' This budget is divided between growth, income, metabolic loss and reproduction.
 #'
+#' This is a generic function with methods for objects of class
+#' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+#' `MizerSim` object plots the energy budget in the initial state of the
+#' simulation. An interactive version is available as `plotlyEnergyBudget()`.
+#'
 #' @inheritParams plotDeath
 #' @param logarithmic A boolean value that determines whether values should be
 #' displayed logarithmicly or linearly. Default is TRUE.
@@ -219,6 +259,7 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 #' two slots is returned. First slot is a data frame with the four variables 'w', 'value',
 #' 'Type', 'Species and the second slot is a data frame with the five variables 'w_mat',
 #' 'w_max', 'Species', 'y_coord', 'Type' (to plot vertical lines).
+
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -230,14 +271,20 @@ plotResourceLevel <- function(object, return_data = FALSE) {
 #' fr <- plotEnergyBudget(NS_params, return_data = TRUE)
 #' str(fr)
 #' }
-plotEnergyBudget <- function(object , species = NULL, logarithmic = TRUE,
-                             return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+plotEnergyBudget <- function(object, species = NULL, logarithmic = TRUE,
+                             return_data = FALSE, ...)
+    UseMethod("plotEnergyBudget")
+
+#' @export
+plotEnergyBudget.MizerSim <- function(object, ...) {
+    plotEnergyBudget(initialParams(object), ...)
+}
+
+#' @export
+plotEnergyBudget.MizerParams <- function(object, species = NULL,
+                                         logarithmic = TRUE,
+                                         return_data = FALSE, ...) {
+    params <- validParams(object)
     SpIdx <- factor(params@species_params$species,
                     levels = params@species_params$species)
     species <- valid_species_arg(params,species)
@@ -327,6 +374,12 @@ plotlyEnergyBudget <- function(object,
 #' observed catch will be plotted if it is supplied via the `catch` argument.
 #' Also superimposes a plot of the number density of all individuals of the
 #' species.
+#'
+#' This is a generic function with methods for objects of class
+#' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+#' `MizerSim` object plots the catch in the initial state of the simulation.
+#' An interactive version is available as `plotlyYieldVsSize()`.
+#'
 #' @inheritParams plotDeath
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
@@ -348,6 +401,7 @@ plotlyEnergyBudget <- function(object,
 #' variables 'w' or 'l' (depending on `x_var`), 'Catch density', 'Type', 'Species
 #' and the second slot is a data frame with the four variables 'w_mat',
 #' 'Species', 'y_coord', 'Type' (to plot vertical lines).
+
 #' @export
 #' @family plotting functions
 #' @seealso [plotting_functions]
@@ -359,15 +413,23 @@ plotlyEnergyBudget <- function(object,
 #' fr <- plotYieldVsSize(NS_params, species = "Cod", return_data = TRUE)
 #' str(fr)
 #' }
-plotYieldVsSize <- function(object, species = NULL, gear = NULL, catch = NULL,
+plotYieldVsSize <- function(object, species = NULL, gear = NULL,
+                            catch = NULL,
                             x_var = c("Weight", "Length"),
-                            return_data = FALSE) {
-    if (is(object, "MizerSim")) {
-        params <- object@params
-        params <- setInitialValues(params, object)
-    } else if (is(object, "MizerParams")) {
-        params <- validParams(object)
-    }
+                            return_data = FALSE, ...)
+    UseMethod("plotYieldVsSize")
+
+#' @export
+plotYieldVsSize.MizerSim <- function(object, ...) {
+    plotYieldVsSize(initialParams(object), ...)
+}
+
+#' @export
+plotYieldVsSize.MizerParams <- function(object, species = NULL, gear = NULL,
+                            catch = NULL,
+                            x_var = c("Weight", "Length"),
+                            return_data = FALSE, ...) {
+    params <- validParams(object)
 
     x_var = match.arg(x_var)
     if (!is.null(catch)) {

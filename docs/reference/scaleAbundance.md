@@ -3,12 +3,6 @@
 Multiplies the abundances of all or of selected species by given factors
 and then retunes the reproductive efficiencies accordingly.
 
-## Usage
-
-``` r
-scaleAbundance(params, factor)
-```
-
 ## Arguments
 
 - params:
@@ -26,6 +20,10 @@ scaleAbundance(params, factor)
 
   - A number that gives the factor for all foreground species.
 
+- ...:
+
+  Not used.
+
 ## Value
 
 An object of type MizerParams
@@ -33,5 +31,8 @@ An object of type MizerParams
 ## Details
 
 Does not run the system to steady state. For that you should call
-[`mizer::steady()`](https://sizespectrum.org/mizer/reference/steady.html)
+[`steady()`](https://sizespectrum.org/mizer/reference/steady.html)
 explicitly afterwards.
+
+This is a generic function with a method for objects of class
+MizerParams.

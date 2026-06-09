@@ -1,3 +1,15 @@
+# mizerExperimental 3.0.0
+
+* Now works with and requires mizer 3.0.0.
+* `plotSpectra2()`, `plotSpectraRelative()`, `markBackground()` and
+  `removeBackgroundSpecies()` have been moved to core mizer.
+* `plotBiomassRelative()` and `plotYieldRelative()` (and their `plotly`
+  variants) have been soft-deprecated in favour of mizer's new
+  `plotRelative()`, which works directly on the arrays returned by
+  `getBiomass()` and `getYield()`.
+* Functions acting on a MizerParams or MizerSim object have been converted
+  into S3 methods
+
 # mizerExperimental 2.5.4
 
 * `tuneParams()` and `tuneGrowth()` have now moved to the mizerEcopath package

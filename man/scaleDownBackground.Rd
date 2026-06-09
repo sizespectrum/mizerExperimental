@@ -4,14 +4,17 @@
 \alias{scaleDownBackground}
 \title{Scale background down by a factor}
 \usage{
-scaleDownBackground(params, factor)
+scaleDownBackground(params, factor, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
 
 \item{factor}{A number giving the factor by which the background abundance
 will be reduced}
+
+\item{...}{Not used.}
 }
 \description{
-Scale background down by a factor
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }

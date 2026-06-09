@@ -9,7 +9,8 @@ plotEnergyBudget(
   object,
   species = NULL,
   logarithmic = TRUE,
-  return_data = FALSE
+  return_data = FALSE,
+  ...
 )
 
 plotlyEnergyBudget(object, species = NULL, logarithmic = TRUE, ...)
@@ -39,6 +40,12 @@ two slots is returned. First slot is a data frame with the four variables 'w', '
 \description{
 This budget is divided between growth, income, metabolic loss and reproduction.
 }
+\details{
+This is a generic function with methods for objects of class
+\linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
+\code{MizerSim} object plots the energy budget in the initial state of the
+simulation. An interactive version is available as \code{plotlyEnergyBudget()}.
+}
 \examples{
 \donttest{
 plotEnergyBudget(NS_params, species = "Cod")
@@ -49,13 +56,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

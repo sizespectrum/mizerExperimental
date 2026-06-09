@@ -4,10 +4,12 @@
 \alias{updateInitialValues}
 \title{Update the initial values}
 \usage{
-updateInitialValues(params)
+updateInitialValues(params, ...)
 }
 \arguments{
 \item{params}{A MizerParams object}
+
+\item{...}{Not used.}
 }
 \value{
 The MizerParams object with updated \code{initial_n} and
@@ -18,4 +20,8 @@ Recalculates the steady-state abundances in a fixed background
 given by the current abundances, keeping the abundances fixed in the
 smallest size class for each species. Then readjusts the \code{erepro}
 values.
+}
+\details{
+This is a generic function with a method for objects of class
+\linkS4class{MizerParams}.
 }
