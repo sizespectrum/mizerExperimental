@@ -20,3 +20,7 @@ this gear will be displayed.}
 \description{
 Plot the yield against species
 }
+\examples{
+plotYieldVsSpecies(NS_params)
+
+}

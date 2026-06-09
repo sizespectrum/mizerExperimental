@@ -17,3 +17,7 @@ plotNumberVsSpecies(params, ...)
 \description{
 Plot the number against species
 }
+\examples{
+plotNumberVsSpecies(NS_params)
+
+}

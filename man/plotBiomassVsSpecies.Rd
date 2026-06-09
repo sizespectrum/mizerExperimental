@@ -17,3 +17,7 @@ plotBiomassVsSpecies(params, ...)
 \description{
 Plot the biomass against species
 }
+\examples{
+plotBiomassVsSpecies(NS_params)
+
+}

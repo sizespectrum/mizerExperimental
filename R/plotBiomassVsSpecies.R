@@ -2,6 +2,9 @@
 #'
 #' @param params A MizerParams object
 #' @param ... Not used.
+#' @examples
+#' plotBiomassVsSpecies(NS_params)
+#' 
 #' @export
 plotBiomassVsSpecies <- function(params, ...) UseMethod("plotBiomassVsSpecies")
 

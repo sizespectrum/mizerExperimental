@@ -4,6 +4,9 @@
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
 #' @param ... Not used.
+#' @examples
+#' plotYieldVsSpecies(NS_params)
+#' 
 #' @export
 plotYieldVsSpecies <- function(params, ...) UseMethod("plotYieldVsSpecies")
 
