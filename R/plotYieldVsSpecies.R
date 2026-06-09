@@ -41,7 +41,7 @@ plotYieldVsSpecies.MizerParams <- function(params, gear = NULL, ...) {
     yield_model <- rowSums(biomass * f_mort)
     
     # selector for foreground species
-    foreground <- !is.na(params@A)
+    foreground <- !params@species_params$is_background
     foreground_indices <- (1:no_sp)[foreground]
     yield_model <- yield_model[foreground_indices]
     observed <- observed[foreground_indices]
