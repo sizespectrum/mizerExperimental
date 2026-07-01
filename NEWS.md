@@ -12,6 +12,7 @@
 
 # mizerExperimental 2.5.4
 
+* Added `biomass_callback()` function to plot species biomasses in real-time during simulation.
 * `tuneParams()` and `tuneGrowth()` have now moved to the mizerEcopath package
 * `plotEnergyBudget()` now calculates ERepro correctly and uses line plot 
   instead of area plot.

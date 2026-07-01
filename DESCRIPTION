@@ -30,6 +30,7 @@ Suggests:
     vdiffr
 Collate:
     alignResource.R
+    biomass_callback.R
     manipulateParams.R
     matchYield.R
     mizerExperimental-package.R
