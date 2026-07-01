@@ -78,13 +78,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}}
 }
 \concept{plotting functions}

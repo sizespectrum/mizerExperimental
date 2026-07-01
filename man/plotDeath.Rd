@@ -51,13 +51,13 @@ str(fr)
 }
 }
 \seealso{
-\link[mizer:plotting_functions]{mizer::plotting_functions}
+\link[mizer:plotting_functions]{plotting_functions}
 
-Other plotting functions: 
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsF}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsF]{plotYieldVsF()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

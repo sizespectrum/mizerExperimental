@@ -26,10 +26,10 @@ that from the second object as \eqn{N_2(w)}, then this plot shows
 \deqn{2 (N_2(w) - N_1(w)) / (N_2(w) + N_1(w)).}
 }
 \details{
-The individual spectra are calculated by the \code{\link[mizer:plotSpectra]{mizer::plotSpectra()}} function which
+The individual spectra are calculated by the \code{\link[mizer:plotSpectra]{plotSpectra()}} function which
 is passed all additional arguments you supply. So you can for example
 determine a size range over which to average the simulation results via the
-\code{time_range} argument. See \code{\link[mizer:plotSpectra]{mizer::plotSpectra()}} for more options.
+\code{time_range} argument. See \code{\link[mizer:plotSpectra]{plotSpectra()}} for more options.
 
 Note that it does not matter whether the relative difference is calculated
 for the number density or the biomass density or the biomass density in log

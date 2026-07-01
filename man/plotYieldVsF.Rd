@@ -34,7 +34,7 @@ yield. If missing, it is set to
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number
 that in some sense measures the distance between the states. By default
-this uses the function \code{\link[mizer:distanceSSLogN]{mizer::distanceSSLogN()}} that you can use as a model for your
+this uses the function \code{\link[mizer:distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
 own distance function.}
 
 \item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
@@ -59,11 +59,11 @@ plotYieldVsF(params, "Cod")
 \seealso{
 getYieldVsF
 
-Other plotting functions: 
-\code{\link{plotDeath}()},
-\code{\link{plotEnergyBudget}()},
-\code{\link{plotResourceLevel}()},
-\code{\link{plotResourcePred}()},
-\code{\link{plotYieldVsSize}()}
+Other plotting functions:
+\code{\link[=plotDeath]{plotDeath()}},
+\code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
+\code{\link[=plotResourceLevel]{plotResourceLevel()}},
+\code{\link[=plotResourcePred]{plotResourcePred()}},
+\code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}

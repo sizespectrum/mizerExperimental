@@ -42,6 +42,7 @@ reference:
 - title: Plotting functions
 - contents:
   - starts_with("plot")
+  - biomass_callback
 - title: Helper functions for model tuning
 - contents:
   - matchYield

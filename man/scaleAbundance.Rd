@@ -27,5 +27,5 @@ then retunes the reproductive efficiencies accordingly.
 }
 \details{
 Does not run the system to steady state. For that you should call
-\code{\link[mizer:steady]{mizer::steady()}} explicitly afterwards.
+\code{\link[mizer:steady]{steady()}} explicitly afterwards.
 }
