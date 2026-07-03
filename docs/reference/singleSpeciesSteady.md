@@ -3,6 +3,17 @@
 **\[deprecated\]** This function has been renamed to
 [`mizer::steadySingleSpecies()`](https://sizespectrum.org/mizer/reference/steadySingleSpecies.html).
 
+## Usage
+
+``` r
+singleSpeciesSteady(
+  params,
+  species = NULL,
+  keep = c("egg", "biomass", "number"),
+  ...
+)
+```
+
 ## Arguments
 
 - params:

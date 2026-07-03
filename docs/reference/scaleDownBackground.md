@@ -3,6 +3,12 @@
 This is a generic function with a method for objects of class
 MizerParams.
 
+## Usage
+
+``` r
+scaleDownBackground(params, factor, ...)
+```
+
 ## Arguments
 
 - params:

@@ -3,6 +3,12 @@
 Multiplies the abundances of all or of selected species by given factors
 and then retunes the reproductive efficiencies accordingly.
 
+## Usage
+
+``` r
+scaleAbundance(params, factor, ...)
+```
+
 ## Arguments
 
 - params:

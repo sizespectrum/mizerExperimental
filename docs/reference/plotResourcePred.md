@@ -8,6 +8,8 @@ available as `plotlyResourcePred()`.
 ## Usage
 
 ``` r
+plotResourcePred(object, proportion = TRUE, return_data = FALSE, ...)
+
 plotlyResourcePred(object, proportion = TRUE, ...)
 ```
 

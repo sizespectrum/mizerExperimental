@@ -6,6 +6,20 @@ This function replaces a loop used multiple times within
 This is a generic function with a method for objects of class
 [MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).
 
+## Usage
+
+``` r
+yieldCalculator(
+  params,
+  effort_vec,
+  idx_species,
+  distance_func = distanceSSLogN,
+  tol = 0.001,
+  t_max = 100,
+  ...
+)
+```
+
 ## Arguments
 
 - params:

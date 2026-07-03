@@ -6,6 +6,14 @@ reproduction.
 ## Usage
 
 ``` r
+plotEnergyBudget(
+  object,
+  species = NULL,
+  logarithmic = TRUE,
+  return_data = FALSE,
+  ...
+)
+
 plotlyEnergyBudget(object, species = NULL, logarithmic = TRUE, ...)
 ```
 

@@ -1,8 +1,14 @@
-# Plot the proportion of the resource spectrum(s) compared to their carrying capacity
+# Plot the proportion of the resource abundance compared to the resource carrying capacity
 
 This is a generic function with methods for objects of class MizerSim
 and MizerParams. The method for a `MizerSim` object plots the resource
 level in the initial state of the simulation.
+
+## Usage
+
+``` r
+plotResourceLevel(object, return_data = FALSE, ...)
+```
 
 ## Arguments
 

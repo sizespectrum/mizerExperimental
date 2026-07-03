@@ -6,6 +6,12 @@ and it then rescales the search volumes of all fish species so that
 their resource encounter rate stays the same. This will therefore modify
 the encounter rate with other prey.
 
+## Usage
+
+``` r
+alignResource(params, ...)
+```
+
 ## Arguments
 
 - params:

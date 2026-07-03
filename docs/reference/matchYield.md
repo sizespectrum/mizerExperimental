@@ -4,6 +4,18 @@ This function matches the observed yields of all the gears for all the
 species by scaling the catchabilities by the ratio between current
 modelled yield and observed yield.
 
+## Usage
+
+``` r
+matchYield(
+  params,
+  species = NULL,
+  gears = NULL,
+  keep = c("egg", "biomass", "number"),
+  ...
+)
+```
+
 ## Arguments
 
 - params:

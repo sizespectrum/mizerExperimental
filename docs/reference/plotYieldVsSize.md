@@ -9,6 +9,16 @@ individuals of the species.
 ## Usage
 
 ``` r
+plotYieldVsSize(
+  object,
+  species = NULL,
+  gear = NULL,
+  catch = NULL,
+  x_var = c("Weight", "Length"),
+  return_data = FALSE,
+  ...
+)
+
 plotlyYieldVsSize(
   object,
   species = NULL,

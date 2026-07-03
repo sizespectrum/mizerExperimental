@@ -4,6 +4,12 @@ This function simply removes the low-abundance species from the params
 object. It does not recalculate the steady state for the remaining
 species or retune their reproductive efficiencies.
 
+## Usage
+
+``` r
+pruneSpecies(params, cutoff = 0.001, ...)
+```
+
 ## Arguments
 
 - params:

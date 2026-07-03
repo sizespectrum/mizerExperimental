@@ -3,6 +3,12 @@
 This is a generic function with a method for objects of class
 [MizerParams](https://sizespectrum.org/mizer/reference/MizerParams.html).
 
+## Usage
+
+``` r
+plotBiomassVsSpecies(params, ...)
+```
+
 ## Arguments
 
 - params:

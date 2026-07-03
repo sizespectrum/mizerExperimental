@@ -8,6 +8,15 @@ available as `plotlyDeath()`.
 ## Usage
 
 ``` r
+plotDeath(
+  object,
+  species = NULL,
+  proportion = TRUE,
+  return_data = FALSE,
+  xtrans = c("log10", "identity"),
+  ...
+)
+
 plotlyDeath(object, species = NULL, proportion = TRUE, ...)
 ```
 

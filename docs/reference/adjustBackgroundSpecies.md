@@ -5,6 +5,12 @@ spectrum is as close to the Sheldon power law as possible. Background
 species that are no longer needed are removed. The reproductive
 efficiencies of all species are retuned.
 
+## Usage
+
+``` r
+adjustBackgroundSpecies(params, ...)
+```
+
 ## Arguments
 
 - params:

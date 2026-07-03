@@ -4,6 +4,23 @@ Calculates the yield of a species for a range of fishing mortalities for
 that species while the fishing mortalities for the other species are
 held fixed.
 
+## Usage
+
+``` r
+plotYieldVsF(
+  params,
+  species,
+  F_range,
+  F_max = 1,
+  F_min = 0,
+  no_steps = 10,
+  distance_func = distanceSSLogN,
+  tol = 0.001,
+  t_max = 100,
+  ...
+)
+```
+
 ## Arguments
 
 - params:

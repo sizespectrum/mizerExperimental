@@ -16,6 +16,9 @@
 
 ## mizerExperimental 2.5.4
 
+- Added
+  [`biomass_callback()`](https://sizespectrum.org/mizerExperimental/reference/biomass_callback.md)
+  function to plot species biomasses in real-time during simulation.
 - [`tuneParams()`](https://sizespectrum.org/mizerExperimental/reference/tuneParams.md)
   and
   [`tuneGrowth()`](https://sizespectrum.org/mizerExperimental/reference/tuneGrowth.md)

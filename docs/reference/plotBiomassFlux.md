@@ -8,6 +8,12 @@ biomass is transported through a particular size. So it is given as the
 product of the growth rate \\g(w)\\, the body mass \\w\\ and the density
 of individuals \\N(w)\\ of that size, \$\$J_B(w) = g(w) w N(w).\$\$
 
+## Usage
+
+``` r
+plotBiomassFlux(params, ylim = c(NA, NA), total = FALSE, ...)
+```
+
 ## Arguments
 
 - params:
