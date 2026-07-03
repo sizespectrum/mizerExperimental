@@ -48,7 +48,11 @@ plotDeath <- function(object, species = NULL, proportion = TRUE,
 
 #' @export
 plotDeath.MizerSim <- function(object, ...) {
-    plotDeath(initialParams(object), ...)
+    params <- initialParams(object)
+    # Use the effort from the last time step of the simulation so that
+    # getFMort() returns non-zero fishing mortality rates.
+    initial_effort(params) <- object@effort[dim(object@effort)[[1]], ]
+    plotDeath(params, ...)
 }
 
 #' @export
@@ -421,7 +425,11 @@ plotYieldVsSize <- function(object, species = NULL, gear = NULL,
 
 #' @export
 plotYieldVsSize.MizerSim <- function(object, ...) {
-    plotYieldVsSize(initialParams(object), ...)
+    params <- initialParams(object)
+    # Use the effort from the last time step of the simulation so that
+    # getFMort() returns non-zero fishing mortality rates.
+    initial_effort(params) <- object@effort[dim(object@effort)[[1]], ]
+    plotYieldVsSize(params, ...)
 }
 
 #' @export

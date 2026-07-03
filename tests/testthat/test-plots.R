@@ -11,7 +11,7 @@ species <- c(11, 10)
 # Mark some species as background
 params_bkgrd <- markBackground(params, species = params@species_params$species[1:3])
 # params object with single species
-sp_single <- data.frame(species = 1, w_max = 1000, h = 30)
+sp_single <- data.frame(species = 1, w_inf = 1000, h = 30)
 params_single <- newMultispeciesParams(sp_single, no_w = 30)
 # Make some data frame for plotDataFrame
 sampleDf <- plotBiomass(sim, return_data = TRUE)
@@ -64,7 +64,7 @@ test_that("return_data is identical",{
 
     expect_equal(dim(plotEnergyBudget(sim, species = species, return_data = TRUE)[[1]]), c(224,4))
 
-    expect_equal(dim(plotYieldVsSize(sim, species = species, return_data = TRUE)[[1]]), c(43,4))
+    expect_equal(dim(plotYieldVsSize(sim, species = species, return_data = TRUE)[[1]]), c(42,4))
 }
 )
 
