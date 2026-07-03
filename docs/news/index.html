@@ -34,17 +34,24 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.1.0" id="mizerexperimental-310">mizerExperimental 3.1.0<a class="anchor" aria-label="anchor" href="#mizerexperimental-310"></a></h2>
+<ul><li>Now works with and requires mizer 3.1.0.</li>
+<li>
+<code>plotDeath(sim)</code> and <code>plotYieldVsSize(sim)</code> now correctly use the effort from the last time step of the simulation, so that fishing mortality rates are non-zero.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.0.0" id="mizerexperimental-300">mizerExperimental 3.0.0<a class="anchor" aria-label="anchor" href="#mizerexperimental-300"></a></h2>
 <ul><li>Now works with and requires mizer 3.0.0.</li>
 <li>
 <code>plotSpectra2()</code>, <code>plotSpectraRelative()</code>, <code>markBackground()</code> and <code>removeBackgroundSpecies()</code> have been moved to core mizer.</li>
 <li>
 <code><a href="../reference/plotBiomassRelative.html">plotBiomassRelative()</a></code> and <code><a href="../reference/plotYieldRelative.html">plotYieldRelative()</a></code> (and their <code>plotly</code> variants) have been soft-deprecated in favour of mizer’s new <code>plotRelative()</code>, which works directly on the arrays returned by <code>getBiomass()</code> and <code>getYield()</code>.</li>
-<li>Functions acting on a MizerParams or MizerSim object have been converted into S3 methods</li>
+<li>Functions acting on a MizerParams or MizerSim object have been converted into S3 methods.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5.4" id="mizerexperimental-254">mizerExperimental 2.5.4<a class="anchor" aria-label="anchor" href="#mizerexperimental-254"></a></h2>
-<ul><li>Added <code><a href="../reference/biomass_callback.html">biomass_callback()</a></code> function to plot species biomasses in real-time during simulation.</li>
+<ul><li>Now works with and expects mizer 2.5.4</li>
+<li>Added <code><a href="../reference/biomass_callback.html">biomass_callback()</a></code> function to plot species biomasses in real-time during simulation.</li>
 <li>
 <code><a href="../reference/tuneParams.html">tuneParams()</a></code> and <code><a href="../reference/tuneGrowth.html">tuneGrowth()</a></code> have now moved to the mizerEcopath package</li>
 <li>
@@ -53,8 +60,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5.3" id="mizerexperimental-253">mizerExperimental 2.5.3<a class="anchor" aria-label="anchor" href="#mizerexperimental-253"></a></h2>
-<p>Now works with and expects mizer 2.5.3</p>
-<div class="section level3">
+<ul><li>Now works with and expects mizer 2.5.3</li>
+</ul><div class="section level3">
 <h3 id="bug-fixes-in-tuneparams-gadget-2-5-3">Bug fixes in tuneParams gadget<a class="anchor" aria-label="anchor" href="#bug-fixes-in-tuneparams-gadget-2-5-3"></a></h3>
 <ul><li>Fixed bug that caused <code><a href="../reference/tuneParams.html">tuneParams()</a></code> to crash when some species had no associated gear.</li>
 <li>Fixed sliders for control of <code>double_sigmoid_length</code> gears</li>

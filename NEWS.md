@@ -1,3 +1,16 @@
+# Development version
+
+* Now works with and requires development version of mizer.
+* New `biomass_callback()` function that can be passed to `project()` to plot
+  species biomasses in real time during a simulation.
+
+# mizerExperimental 3.1.0
+
+* Now works with and requires mizer 3.1.0.
+* `plotDeath(sim)` and `plotYieldVsSize(sim)` now correctly use the effort from
+  the last time step of the simulation, so that fishing mortality rates are
+  non-zero.
+
 # mizerExperimental 3.0.0
 
 * Now works with and requires mizer 3.0.0.
@@ -8,10 +21,11 @@
   `plotRelative()`, which works directly on the arrays returned by
   `getBiomass()` and `getYield()`.
 * Functions acting on a MizerParams or MizerSim object have been converted
-  into S3 methods
+  into S3 methods.
 
 # mizerExperimental 2.5.4
 
+* Now works with and expects mizer 2.5.4
 * Added `biomass_callback()` function to plot species biomasses in real-time during simulation.
 * `tuneParams()` and `tuneGrowth()` have now moved to the mizerEcopath package
 * `plotEnergyBudget()` now calculates ERepro correctly and uses line plot 
@@ -20,7 +34,7 @@
 
 # mizerExperimental 2.5.3
 
-Now works with and expects mizer 2.5.3
+* Now works with and expects mizer 2.5.3
 
 ## Bug fixes in tuneParams gadget
 
