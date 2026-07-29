@@ -7,6 +7,7 @@
 plotYieldVsF(
   params,
   species,
+  gear = NULL,
   F_range,
   F_max = 1,
   F_min = 0,
@@ -21,6 +22,11 @@ plotYieldVsF(
 \item{params}{An object of class \code{MizerParams}.}
 
 \item{species}{Name of the target species}
+
+\item{gear}{Name of the gear whose fishing mortality on the target species
+is to be varied. Only needed when several gears catch the target species.
+If NULL (default), the fishing mortality from all gears catching the
+target species is varied together.}
 
 \item{F_range}{A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
@@ -54,6 +60,15 @@ that species while the fishing mortalities for the other species are held
 fixed.
 }
 \details{
+If the target species is caught by several gears you can use the \code{gear}
+argument to select the gear whose fishing mortality is to be varied. The
+fishing mortality that the other gears exert on the target species is then
+held fixed and the \code{F} values in the result refer only to the fishing
+mortality from the selected gear. If you do not select a gear, the fishing
+mortality from all gears on the target species is replaced by the fishing
+mortality given by \code{F_range}, using the selectivity of the first gear that
+catches the species.
+
 This is a generic function with a method for objects of class
 \link[mizer:MizerParams]{MizerParams}.
 }

@@ -4,11 +4,24 @@
 #' that species while the fishing mortalities for the other species are held
 #' fixed.
 #'
+#' If the target species is caught by several gears you can use the `gear`
+#' argument to select the gear whose fishing mortality is to be varied. The
+#' fishing mortality that the other gears exert on the target species is then
+#' held fixed and the `F` values in the result refer only to the fishing
+#' mortality from the selected gear. If you do not select a gear, the fishing
+#' mortality from all gears on the target species is replaced by the fishing
+#' mortality given by `F_range`, using the selectivity of the first gear that
+#' catches the species.
+#'
 #' This is a generic function with a method for objects of class
 #' [MizerParams][mizer::MizerParams].
 #'
 #' @param params An object of class `MizerParams`.
 #' @param species Name of the target species
+#' @param gear Name of the gear whose fishing mortality on the target species
+#'   is to be varied. Only needed when several gears catch the target species.
+#'   If NULL (default), the fishing mortality from all gears catching the
+#'   target species is varied together.
 #' @param F_range A sequence of fishing mortalities at which to evaluate the
 #'   yield. If missing, it is set to
 #'   `seq(from = 0, to = F_max, length.out = no_steps)`.
@@ -25,7 +38,9 @@
 #' @param t_max The longest time to run project to find steady state.
 #' @param ... Not used.
 #'
-#' @return A data frame with columns `F` and `yield`.
+#' @return A data frame with columns `F` and `yield`. If a `gear` was selected
+#'   then `F` is the fishing mortality exerted by that gear alone, otherwise it
+#'   is the total fishing mortality on the target species.
 
 #' @export
 #' @family summary functions
@@ -37,14 +52,16 @@
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' y <- getYieldVsF(params, "Cod", F_max = 1, no_steps = 5)
 #' }
-getYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
-                        no_steps = 10, distance_func = distanceSSLogN,
+getYieldVsF <- function(params, species, gear = NULL, F_range, F_max = 1,
+                        F_min = 0, no_steps = 10,
+                        distance_func = distanceSSLogN,
                         tol = 0.001, t_max = 100, ...)
     UseMethod("getYieldVsF")
 
 #' @export
 getYieldVsF.MizerParams <- function(params,
                         species,
+                        gear = NULL,
                         F_range,
                         F_max = 1,
                         F_min = 0,
@@ -64,11 +81,7 @@ getYieldVsF.MizerParams <- function(params,
         stop("Invalid species specification")
     }
 
-    # Project to steady with the current fishing
-    params <- projectToSteady(params, t_max = t_max, progress_bar = FALSE,
-                              distance_func = distance_func, tol = tol)
-
-    # First make a new gear for that specific species
+    # Determine the gear params rows whose fishing mortality is to be varied
     sp_name <- params@species_params$species[[idx_species]]
     gp <- gear_params(params)
     gp$gear <- as.character(gp$gear)
@@ -76,10 +89,33 @@ getYieldVsF.MizerParams <- function(params,
     if (length(sp_sel) == 0) {
         stop(species, " is not selected by any gear.")
     }
+    if (!is.null(gear)) {
+        gear <- as.character(gear)
+        if (length(gear) != 1) {
+            stop("You can only select a single gear.")
+        }
+        gear_sel <- sp_sel[gp$gear[sp_sel] == gear]
+        if (length(gear_sel) == 0) {
+            stop("The gear ", gear, " does not catch ", sp_name, ".")
+        }
+        # Only the fishing mortality from the selected gear will be varied,
+        # that from the other gears is kept fixed.
+        sp_sel <- gear_sel
+    } else if (length(sp_sel) > 1) {
+        message("Several gears catch ", sp_name,
+                ". The fishing mortality from all of them will be replaced. ",
+                "Use the `gear` argument if you want to vary the fishing ",
+                "mortality from only one gear.")
+    }
+
+    # Project to steady with the current fishing
+    params <- projectToSteady(params, t_max = t_max, progress_bar = FALSE,
+                              distance_func = distance_func, tol = tol)
+
     current_FMort <- sum(params@initial_effort[gp$gear[sp_sel]] *
                              gp$catchability[sp_sel])
-    # base the new gear on the first gear that catches this species
-    # TODO: think about how to improve this arbitrary choice.
+    # Make a new gear that exerts the fishing mortality that is to be varied,
+    # based on the first of the selected gears.
     gp_extra <- gp[sp_sel[1], ]
     gp_extra$gear <- "tmp"
     gp_extra$catchability <- 1
@@ -130,14 +166,16 @@ getYieldVsF.MizerParams <- function(params,
 #' params <- newMultispeciesParams(NS_species_params_gears, inter)
 #' plotYieldVsF(params, "Cod")
 #' }
-plotYieldVsF <- function(params, species, F_range, F_max = 1, F_min = 0,
-                         no_steps = 10, distance_func = distanceSSLogN,
+plotYieldVsF <- function(params, species, gear = NULL, F_range, F_max = 1,
+                         F_min = 0, no_steps = 10,
+                         distance_func = distanceSSLogN,
                          tol = 0.001, t_max = 100, ...)
     UseMethod("plotYieldVsF")
 
 #' @export
 plotYieldVsF.MizerParams <- function(params,
                          species,
+                         gear = NULL,
                          F_range,
                          F_max = 1,
                          F_min = 0,
@@ -152,6 +190,7 @@ plotYieldVsF.MizerParams <- function(params,
 
     curve <- getYieldVsF(params,
                          species = species,
+                         gear = gear,
                          F_range = F_range,
                          F_max = F_max,
                          F_min = F_min,
@@ -161,9 +200,15 @@ plotYieldVsF.MizerParams <- function(params,
                          t_max = t_max
                          )
 
+    xlabel <- if (is.null(gear)) {
+        "Fishing mortality (1/yr)"
+    } else {
+        paste0("Fishing mortality from ", gear, " (1/yr)")
+    }
+
     pl <- ggplot(curve, aes(x = F, y = yield)) +
         geom_line() +
-        xlab("Fishing mortality (1/yr)") +
+        xlab(xlabel) +
         ylab("Yield") +
         ggtitle(species)
 

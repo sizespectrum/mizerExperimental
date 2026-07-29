@@ -3,6 +3,10 @@
 * Now works with and requires development version of mizer.
 * New `biomass_callback()` function that can be passed to `project()` to plot
   species biomasses in real time during a simulation.
+* `getYieldVsF()` and `plotYieldVsF()` gained a `gear` argument to select which
+  gear's fishing mortality on the target species is varied when several gears
+  catch that species. The fishing mortality from the other gears is then kept
+  fixed.
 
 # mizerExperimental 3.1.0
 
