@@ -363,8 +363,8 @@ yieldCalculator.MizerParams <- function(params, effort_vec, idx_species,
             yield_vec[i] <- y[ft, idx_species]
             params <- initialParams(sim)
         } else { # otherwise average over last 45 years (t_per = 1.5)
-            yield_vec[i] <- mean(y[(ft - 30):ft, idx_species])
-            params <- initialParams(sim, time_range = c(65, 100))
+            yield_vec[i] <- mean(y[max(1, ft - 30):ft, idx_species])
+            params <- initialParams(sim, time_range = c(max(1, ft - 35), ft))
         }
     }
 
