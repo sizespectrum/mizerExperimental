@@ -7,6 +7,7 @@
 plotYieldVsF(
   params,
   species,
+  gear = NULL,
   F_range,
   F_max = 1,
   F_min = 0,
@@ -14,6 +15,12 @@ plotYieldVsF(
   distance_func = distanceSSLogN,
   tol = 0.001,
   t_max = 100,
+  t_per = 1.5,
+  dt = 0.1,
+  t_sample = 10,
+  amplitude_tol = 0.01,
+  extinction_threshold = 1e-06,
+  progress_bar = interactive(),
   ...
 )
 }
@@ -21,6 +28,11 @@ plotYieldVsF(
 \item{params}{An object of class \code{MizerParams}.}
 
 \item{species}{Name of the target species}
+
+\item{gear}{Name of the gear whose fishing mortality on the target species
+is to be varied. Only needed when several gears catch the target species.
+If NULL (default), the fishing mortality from all gears catching the
+target species is varied together.}
 
 \item{F_range}{A sequence of fishing mortalities at which to evaluate the
 yield. If missing, it is set to
@@ -38,12 +50,39 @@ that in some sense measures the distance between the states. By default
 this uses the function \code{\link[mizer:distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
 own distance function.}
 
-\item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
-RDI over t_per years is less than tol for every species.}
+\item{tol}{The simulation at each F value stops once the number returned by
+\code{distance_func} for two states \code{t_per} years apart drops below \code{tol}. This
+is the main knob for trading accuracy against speed: loosening it to
+mizer\'s own default of \code{0.1 * t_per} typically takes about half as long,
+and the \code{residual} column of the result tells you whether the states you
+settled on are still drifting.}
 
-\item{t_max}{The longest time to run project to find steady state.}
+\item{t_max}{The longest time to run the projection at each F value while
+looking for an attractor.}
 
-\item{...}{Not used.}
+\item{t_per}{The interval in years at which \code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}
+checks for convergence. Should be an odd multiple of \code{dt}.}
+
+\item{dt}{The time step used in the projections.}
+
+\item{t_sample}{The number of years over which to average the yield when the
+model has not settled onto an attractor within \code{t_max} years. When the
+model has settled onto a limit cycle the yield is averaged over exactly
+one period of that cycle instead. Default 10.}
+
+\item{amplitude_tol}{The minimum relative biomass amplitude for a persistent
+oscillation to be treated as a limit cycle rather than as a fixed point.
+Passed to \code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}.}
+
+\item{extinction_threshold}{A species is treated as going extinct, stopping
+the projection, once its reproduction rate falls below this fraction of
+its value at the start of the projection. Passed to
+\code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}.}
+
+\item{progress_bar}{Whether to show a text progress bar over the F values.
+Default TRUE in interactive sessions.}
+
+\item{...}{Further arguments are passed on to \code{distance_func}.}
 }
 \value{
 A ggplot object
@@ -54,9 +93,47 @@ that species while the fishing mortalities for the other species are held
 fixed.
 }
 \details{
-This is a generic function with a method for objects of class
-\link[mizer:MizerParams]{MizerParams}.
+Where the model settles onto a limit cycle rather than a fixed point, the
+line shows the yield averaged over one period of the cycle and a shaded band
+shows the range from the smallest to the largest yield over that cycle.
+
+If the species parameters contain an \code{F_MSY} column, the value for the
+plotted species is marked by a vertical dashed line.
 }
+\section{How the yield at each F is determined}{
+
+
+For every value in \code{F_range} the model is projected until it settles on an
+attractor, using \code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}. That function stops as soon as
+the state has stopped changing \emph{or} it recognises that the model has settled
+onto a limit cycle, and it reports which of the two happened in the
+\code{"convergence"} attribute of the object it returns. This function then reads
+the yield off that attractor:
+\itemize{
+\item \strong{Fixed point} (\code{type = "below_tolerance"}): the yield is read straight
+off the settled state, with no further projection.
+\item \strong{Limit cycle} (\code{type = "cycle"}): the model is projected for exactly one
+period of the detected cycle and the yield is averaged over that period,
+which is the long-term average yield. The minimum and maximum yield over
+the cycle are also returned.
+\item \strong{Neither} (\code{type = "not_converged"} or \code{"extinction"}): the model never
+settled within \code{t_max} years. The yield is averaged over the last
+\code{t_sample} years (10 by default) and a message names the F values
+concerned, because those points of the curve should not be trusted.
+}
+
+Averaging over exactly one period is both faster and more accurate than
+averaging over a fixed number of years: a window that is not a whole number
+of periods leaves a residue of the oscillation in the average, which shows
+up as a jagged yield curve.
+
+Each F value is started from the attractor reached at the previous F value,
+which cuts out most of the transient. The \code{F_range} is therefore worked
+through outwards from the current fishing mortality of the model: first
+downwards through the values below it and then upwards through the values
+above it.
+}
+
 \examples{
 \dontrun{
 params <- newMultispeciesParams(NS_species_params_gears, inter)

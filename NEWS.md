@@ -3,6 +3,40 @@
 * Now works with and requires development version of mizer.
 * New `biomass_callback()` function that can be passed to `project()` to plot
   species biomasses in real time during a simulation.
+* `getYieldVsF()` and `plotYieldVsF()` gained a `gear` argument to select which
+  gear's fishing mortality on the target species is varied when several gears
+  catch that species. The fishing mortality from the other gears is then kept
+  fixed.
+* `getYieldVsF()` and `plotYieldVsF()` now use the `"convergence"` attribute
+  that `projectToSteady()` attaches to its result to work out what kind of
+  attractor the model settled on at each F value, and read the yield off it
+  accordingly. On a fixed point the yield is taken straight from the settled
+  state. On a limit cycle the yield is now averaged over exactly one period of
+  the detected cycle, which is the long-term average yield. Previously the
+  yield was read off at whatever phase of the oscillation the projection
+  happened to stop at, which on a strongly oscillating model was wrong by tens
+  of percent and made the curve jagged.
+* `getYieldVsF()` now returns four further columns: `yield_min` and
+  `yield_max` give the range of the yield over the averaging window, `type` and
+  `period` report the kind of attractor found and, for a limit cycle, its
+  period, and `residual` says how far the state the yield was read off still is
+  from a fixed point, in 1/year. `plotYieldVsF()` shows the range as a shaded band around the curve,
+  so an oscillating model is visible as such instead of being silently averaged
+  away.
+* `getYieldVsF()` now says which F values did not settle onto an attractor
+  within `t_max` years, instead of quietly returning a number from a model that
+  was still changing.
+* `getYieldVsF()` and `plotYieldVsF()` gained `t_per`, `dt`, `t_sample`,
+  `amplitude_tol`, `extinction_threshold` and `progress_bar` arguments, and
+  pass `...` on to the distance function. They no longer print a message for
+  every F value; use `progress_bar = TRUE` to follow their progress.
+* `getYieldVsF()` no longer projects the model to steady state at the start
+  when it is already there, and no longer projects any further than it needs
+  to at each F value.
+* Bug fix: `plotYieldVsF()` errored instead of drawing the `F_MSY` line when
+  the species parameters had an `F_MSY` column, because the line type was given
+  as an undefined symbol `dashed` rather than as the string `"dashed"`. It also
+  drew one line per species instead of the line for the species being plotted.
 
 # mizerExperimental 3.1.0
 

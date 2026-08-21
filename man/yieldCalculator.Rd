@@ -2,7 +2,7 @@
 % Please edit documentation in R/getYieldVsFcurve.R
 \name{yieldCalculator}
 \alias{yieldCalculator}
-\title{Calculates yield from steady sim}
+\title{Calculate the yield on the attractor for a sequence of fishing mortalities}
 \usage{
 yieldCalculator(
   params,
@@ -11,15 +11,23 @@ yieldCalculator(
   distance_func = distanceSSLogN,
   tol = 0.001,
   t_max = 100,
+  t_per = 1.5,
+  dt = 0.1,
+  t_sample = 10,
+  amplitude_tol = 0.01,
+  extinction_threshold = 1e-06,
+  pb = NULL,
+  pb_offset = 0,
   ...
 )
 }
 \arguments{
 \item{params}{An object of class \code{MizerParams}.}
 
-\item{effort_vec}{TODO: document}
+\item{effort_vec}{A vector of fishing mortalities to impose via the "tmp"
+gear, ordered so that consecutive entries are close to each other.}
 
-\item{idx_species}{TODO: document}
+\item{idx_species}{The index of the target species in the species params.}
 
 \item{distance_func}{A function that will be called after every \code{t_per} years
 with both the previous and the new state and that should return a number
@@ -27,19 +35,55 @@ that in some sense measures the distance between the states. By default
 this uses the function \code{\link[mizer:distanceSSLogN]{distanceSSLogN()}} that you can use as a model for your
 own distance function.}
 
-\item{tol}{The \code{projectToSteady} function stops when the relative change in the egg production
-RDI over t_per years is less than tol for every species.}
+\item{tol}{The simulation at each F value stops once the number returned by
+\code{distance_func} for two states \code{t_per} years apart drops below \code{tol}. This
+is the main knob for trading accuracy against speed: loosening it to
+mizer\'s own default of \code{0.1 * t_per} typically takes about half as long,
+and the \code{residual} column of the result tells you whether the states you
+settled on are still drifting.}
 
-\item{t_max}{The longest time to run project to find steady state.}
+\item{t_max}{The longest time to run the projection at each F value while
+looking for an attractor.}
 
-\item{...}{Not used.}
+\item{t_per}{The interval in years at which \code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}
+checks for convergence. Should be an odd multiple of \code{dt}.}
+
+\item{dt}{The time step used in the projections.}
+
+\item{t_sample}{The number of years over which to average the yield when the
+model has not settled onto an attractor within \code{t_max} years. When the
+model has settled onto a limit cycle the yield is averaged over exactly
+one period of that cycle instead. Default 10.}
+
+\item{amplitude_tol}{The minimum relative biomass amplitude for a persistent
+oscillation to be treated as a limit cycle rather than as a fixed point.
+Passed to \code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}.}
+
+\item{extinction_threshold}{A species is treated as going extinct, stopping
+the projection, once its reproduction rate falls below this fraction of
+its value at the start of the projection. Passed to
+\code{\link[mizer:projectToSteady]{mizer::projectToSteady()}}.}
+
+\item{pb}{Either NULL or a \code{txtProgressBar} to advance after each entry of
+\code{effort_vec}.}
+
+\item{pb_offset}{The number of F values already handled, used to advance
+\code{pb} to the right position.}
+
+\item{...}{Further arguments are passed on to \code{distance_func}.}
 }
 \value{
-a vector of yield value of same length as \code{effort_vec}
+A data frame with one row for each entry of \code{effort_vec} and the
+columns \code{F}, \code{yield}, \code{yield_min}, \code{yield_max}, \code{type}, \code{period} and
+\code{residual}, as described in \code{\link[=getYieldVsF]{getYieldVsF()}}.
 }
 \description{
-This function replaces a loop used multiple times within
-\code{\link[=getYieldVsF]{getYieldVsF()}}
+This function does the work for \code{\link[=getYieldVsF]{getYieldVsF()}}. For each entry of
+\code{effort_vec} in turn it projects the model until it settles onto an
+attractor and then reads the yield of the target species off that attractor,
+see the details section of \code{\link[=getYieldVsF]{getYieldVsF()}}. Each projection starts from the
+attractor reached at the previous entry of \code{effort_vec}, so the entries
+should be ordered by their distance from the current state of \code{params}.
 
 This is a generic function with a method for objects of class
 \link[mizer:MizerParams]{MizerParams}.
