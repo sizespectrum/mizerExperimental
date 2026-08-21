@@ -51,10 +51,8 @@ reference:
   - scaleDownBackground
   - updateInitialValues
   - pruneSpecies
-  - getYieldVsF
   - alignResource
-- title: Helper functions for `plotYieldVsF()`
+- title: Distance functions
 - contents:
   - distanceSSLogYield
-  - yieldCalculator
 

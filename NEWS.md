@@ -4,6 +4,18 @@
 * New `biomass_callback()` function that can be passed to `project()` to plot
   species biomasses in real time during a simulation.
 
+## Functions moved to mizer
+
+* `plotYieldVsF()`, reimplemented there on top of the new `scanModel()`. The
+  mizer version takes the same `species`, `F_range`, `F_min`, `F_max` and
+  `no_steps` arguments, but marks the fishing mortality giving the largest
+  yield, draws the range covered by a limit cycle instead of averaging it away,
+  and gained a `gear` argument for picking which gear's fishing mortality is
+  varied when several catch the species.
+* `getYieldVsF()` and `yieldCalculator()` have not moved with it. Use
+  `plotYieldVsF(..., return_data = TRUE)`, which returns the `MizerScan` object
+  behind the plot, or `mizer::scanModel()` directly.
+
 # mizerExperimental 3.1.0
 
 * Now works with and requires mizer 3.1.0.

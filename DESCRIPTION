@@ -10,7 +10,7 @@ Description: This mizer extension package collects contributions from the mizer
     core mizer package.
 License: GPL-3
 Depends:
-    mizer (>= 3.1.0),
+    mizer (>= 3.2.1.9005),
     R (>= 3.5)
 Imports:
     assertthat,
@@ -42,11 +42,11 @@ Collate:
     plotRelative.R
     tuneParams.R
     singleSpeciesSteady.R
-    getYieldVsFcurve.R
+    distanceSSLogYield.R
     plots.R
     test-helpers.R
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URL: https://sizespectrum.org/mizerExperimental, https://github.com/sizespectrum/mizerExperimental
 BugReports: https://github.com/sizespectrum/mizerExperimental/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

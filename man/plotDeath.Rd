@@ -63,7 +63,6 @@ Other plotting functions:
 \code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
 \code{\link[=plotResourceLevel]{plotResourceLevel()}},
 \code{\link[=plotResourcePred]{plotResourcePred()}},
-\code{\link[=plotYieldVsF]{plotYieldVsF()}},
 \code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}
