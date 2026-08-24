@@ -37,7 +37,7 @@ An object of type MizerParams
 ## Details
 
 Does not run the system to steady state. For that you should call
-[`steady()`](https://sizespectrum.org/mizer/reference/steady.html)
+[`steady()`](https://sizespectrum.org/mizer/reference/superseded_steady.html)
 explicitly afterwards.
 
 This is a generic function with a method for objects of class

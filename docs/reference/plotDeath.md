@@ -64,7 +64,6 @@ Other plotting functions:
 [`plotEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md),
 [`plotResourceLevel()`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md),
 [`plotResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md),
-[`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md),
 [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
 
 ## Examples

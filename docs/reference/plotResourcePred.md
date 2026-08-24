@@ -48,7 +48,6 @@ Other plotting functions:
 [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md),
 [`plotEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md),
 [`plotResourceLevel()`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md),
-[`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md),
 [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
 
 ## Examples

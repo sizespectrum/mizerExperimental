@@ -97,8 +97,7 @@ Other plotting functions:
 [`plotDeath()`](https://sizespectrum.org/mizerExperimental/reference/plotDeath.md),
 [`plotEnergyBudget()`](https://sizespectrum.org/mizerExperimental/reference/plotEnergyBudget.md),
 [`plotResourceLevel()`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md),
-[`plotResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md),
-[`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
+[`plotResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md)
 
 ## Examples
 

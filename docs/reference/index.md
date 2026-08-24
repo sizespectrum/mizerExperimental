@@ -27,8 +27,6 @@
 - [`plotYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
   [`plotlyYieldRelative()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldRelative.md)
   **\[deprecated\]** : Plot change in yield over time
-- [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
-  : Plot a yield-vs-F curve
 - [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
   [`plotlyYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
   : Plot the size distribution of the catch
@@ -51,15 +49,11 @@
   : Update the initial values
 - [`pruneSpecies()`](https://sizespectrum.org/mizerExperimental/reference/pruneSpecies.md)
   : Removes species with abundance below a threshold
-- [`getYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
-  : Calculate a yield-vs-F curve
 - [`alignResource()`](https://sizespectrum.org/mizerExperimental/reference/alignResource.md)
   : Rescale resource to be in line with fish community
 
-## Helper functions for `plotYieldVsF()`
+## Distance functions
 
 - [`distanceSSLogYield()`](https://sizespectrum.org/mizerExperimental/reference/distanceSSLogYield.md)
   : Measure distance between current and previous state in terms of
   yield.
-- [`yieldCalculator()`](https://sizespectrum.org/mizerExperimental/reference/yieldCalculator.md)
-  : Calculates yield from steady sim

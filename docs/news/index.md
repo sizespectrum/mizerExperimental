@@ -1,5 +1,12 @@
 # Changelog
 
+## mizerExperimental 3.1.0
+
+- Now works with and requires mizer 3.1.0.
+- `plotDeath(sim)` and `plotYieldVsSize(sim)` now correctly use the
+  effort from the last time step of the simulation, so that fishing
+  mortality rates are non-zero.
+
 ## mizerExperimental 3.0.0
 
 - Now works with and requires mizer 3.0.0.
@@ -12,10 +19,11 @@
   mizer’s new `plotRelative()`, which works directly on the arrays
   returned by `getBiomass()` and `getYield()`.
 - Functions acting on a MizerParams or MizerSim object have been
-  converted into S3 methods
+  converted into S3 methods.
 
 ## mizerExperimental 2.5.4
 
+- Now works with and expects mizer 2.5.4
 - Added
   [`biomass_callback()`](https://sizespectrum.org/mizerExperimental/reference/biomass_callback.md)
   function to plot species biomasses in real-time during simulation.
@@ -31,7 +39,7 @@
 
 ## mizerExperimental 2.5.3
 
-Now works with and expects mizer 2.5.3
+- Now works with and expects mizer 2.5.3
 
 ### Bug fixes in tuneParams gadget
 
@@ -48,9 +56,8 @@ Now works with and expects mizer 2.5.3
 
 ### Other bug fixes
 
-- Fixed bug in
-  [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
-  that caused it to crash when no `F_max` was specified
+- Fixed bug in `plotYieldVsF()` that caused it to crash when no `F_max`
+  was specified
   ([\#61](https://github.com/sizespectrum/mizerExperimental/issues/61))
   thanks to [@SamikDatta](https://github.com/SamikDatta)
 - `plotSpectra2()` now shows models in the expected order
@@ -79,17 +86,10 @@ Now works with and expects mizer 2.5.3
   [`plotBiomassFlux()`](https://sizespectrum.org/mizerExperimental/reference/plotBiomassFlux.md),
   which plots the rate at which growth transports biomass up the size
   axis.
-- [`getYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
-  now also works for species targeted by multiple gears.
-- Introduced `F_min` argument to
-  [`getYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
-  and
-  [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
-  to allow the user to set a minimum fishing mortality rate for the
-  plot.
-- In
-  [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
-  set sensible default for `F_max`.
+- `getYieldVsF()` now also works for species targeted by multiple gears.
+- Introduced `F_min` argument to `getYieldVsF()` and `plotYieldVsF()` to
+  allow the user to set a minimum fishing mortality rate for the plot.
+- In `plotYieldVsF()` set sensible default for `F_max`.
 - `tuneYield()` can now keep biomass or numbers constant.
 
 ### Functions moved to mizer
@@ -117,9 +117,7 @@ Now works with and expects mizer 2.5.3
 - [`plotResourceLevel()`](https://sizespectrum.org/mizerExperimental/reference/plotResourceLevel.md)
 - [`plotResourcePred()`](https://sizespectrum.org/mizerExperimental/reference/plotResourcePred.md)
 - [`plotYieldVsSize()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsSize.md)
-- Also
-  [`plotYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/plotYieldVsF.md)
-  has been improved.
+- Also `plotYieldVsF()` has been improved.
 
 ### Other new functions
 
@@ -214,8 +212,7 @@ Now works with and expects mizer 2.5.3
 - New
   [`mizer::calibrateBiomass()`](https://sizespectrum.org/mizer/reference/calibrateBiomass.html),
   [`mizer::matchBiomasses()`](https://sizespectrum.org/mizer/reference/matchBiomasses.html),
-  [`mizer::calibrateYield()`](https://sizespectrum.org/mizer/reference/calibrateYield.html),
-  [`mizer::matchYields()`](https://sizespectrum.org/mizer/reference/matchYields.html),
+  `mizer::calibrateYield()`, `mizer::matchYields()`,
   [`mizer::scaleModel()`](https://sizespectrum.org/mizer/reference/scaleModel.html).
 
 ## mizerExperimental 2.2.1
@@ -231,8 +228,7 @@ Now works with and expects mizer 2.5.3
   because these are superseeded by the new `plotDataFrame()` in mizer.
 - Removed the vignette explaining size-spectrum dynamics in
   single-species example because this has graduated to mizer.
-- Improvements to argument checks in
-  [`getYieldVsF()`](https://sizespectrum.org/mizerExperimental/reference/getYieldVsF.md)
+- Improvements to argument checks in `getYieldVsF()`
 
 ## mizerExperimental 2.2.0
 
