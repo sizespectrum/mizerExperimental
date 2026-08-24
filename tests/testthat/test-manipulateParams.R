@@ -61,7 +61,11 @@ test_that("adjustBackgroundSpecies() reproduces scaling model", {
 
 # scaleAbundance ----
 test_that("scaleAbundance works", {
-    expect_warning(p <- setBevertonHolt(NS_params, reproduction_level = 1/4))
+    # scaleAbundance() runs its argument through validParams(), which fills in
+    # defaults for any missing species parameters, so the object we compare
+    # against has to be normalised in the same way.
+    expect_warning(p <- setBevertonHolt(validParams(NS_params),
+                                        reproduction_level = 1/4))
     factor <- c(Cod = 2, Haddock = 3)
     expect_warning(p2 <- scaleAbundance(NS_params, factor))
     expect_identical(p@initial_n["Cod"] * 2, p2@initial_n["Cod"])
