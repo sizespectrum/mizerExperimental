@@ -21,4 +21,4 @@
 "_PACKAGE"
 
 
-globalVariables(c("expect_equal", "other", "yield", "yield_min", "yield_max"))
+globalVariables(c("expect_equal", "other", "yield"))
