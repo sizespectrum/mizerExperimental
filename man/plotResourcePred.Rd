@@ -50,7 +50,6 @@ Other plotting functions:
 \code{\link[=plotDeath]{plotDeath()}},
 \code{\link[=plotEnergyBudget]{plotEnergyBudget()}},
 \code{\link[=plotResourceLevel]{plotResourceLevel()}},
-\code{\link[=plotYieldVsF]{plotYieldVsF()}},
 \code{\link[=plotYieldVsSize]{plotYieldVsSize()}}
 }
 \concept{plotting functions}
