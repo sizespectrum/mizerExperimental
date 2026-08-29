@@ -24,8 +24,9 @@ proportional difference between current and previous state
 }
 \description{
 Calculates the proportional difference between getYield() outputs of current
-and previous state. This function can be used in projectToSteady() to decide
-when sufficient convergence to steady state has been achieved.
+and previous state. This function can be used in findSteadyState() or
+tuneSteadyState() to decide when sufficient convergence to steady state has
+been achieved.
 
 This is a generic function with a method for objects of class
 \link[mizer:MizerParams]{MizerParams}.

@@ -31,7 +31,16 @@ alignResource.MizerParams <- function(params, ...) {
     params@resource_params$kappa <- params@resource_params$kappa * factor
     params@initial_n_pp <- params@initial_n_pp * factor
     params@search_vol = params@search_vol / factor
-    params@species_params$gamma <- params@species_params$gamma / factor
-    
+
+    # The rescaled `gamma` has to be recorded as a given species parameter,
+    # otherwise the next recalculation of the species parameters would put the
+    # old value back and silently undo the rescaling. `recalculate = FALSE`
+    # records it without rebuilding the rates, because the search volume has
+    # already been rescaled by hand above. This is the same treatment that
+    # `scaleModel()` received in mizer 3.4.
+    sp <- params@species_params
+    sp$gamma <- sp$gamma / factor
+    species_params(params, recalculate = FALSE) <- sp
+
     params
 }

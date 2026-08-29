@@ -20,21 +20,18 @@ plotNumberVsSpecies <- function(params, ...) UseMethod("plotNumberVsSpecies")
 plotNumberVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)
     cutoff <- params@species_params$number_cutoff
-    # When no cutoff known, set it to 0
-    if (is.null(cutoff)) cutoff <- rep(0, no_sp)
-    cutoff[is.na(cutoff)] <- 0
+    # A species without a cutoff is counted over its whole size range
+    if (is.null(cutoff)) cutoff <- rep(NA_real_, no_sp)
+    cutoff[is.na(cutoff)] <- min(params@w)
     observed <- params@species_params$number_observed
     if (is.null(observed)) observed <- rep(NA, no_sp)
-    
+
     # selector for foreground species
     foreground <- !params@species_params$is_background
-    foreground_indices <- (1:no_sp)[foreground]
-    number_model <- foreground_indices  # create vector of right length
-    for (i in seq_along(foreground_indices)) {
-        sp <- foreground_indices[i]
-        number_model[i] <- sum((params@initial_n[sp, ] * params@dw)
-                                [params@w >= cutoff[[sp]]])
-    }
+    # `sizeIntegral()` integrates over the size grid with the model's own
+    # quadrature scheme, and lets the bin straddling the cutoff contribute only
+    # the part of it that lies above the cutoff.
+    number_model <- unname(sizeIntegral(params, min_w = cutoff)[foreground])
     species <- factor(params@species_params$species[foreground],
                       levels = params@species_params$species[foreground])
     df <- rbind(

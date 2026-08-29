@@ -79,3 +79,17 @@ test_that("scaleAbundance warns on wrong names", {
     expect_error(scaleAbundance(NS_params, c(Kod = 2, Hadok = 3)),
                  "Kod, Hadok do not exist")
 })
+
+
+# updateInitialValues() ----
+test_that("updateInitialValues records the retuned erepro as given", {
+    params <- suppressWarnings(updateInitialValues(NS_params))
+    # The retuned `erepro` is recorded as user input, ...
+    expect_equal(species_params(params)$erepro,
+                 given_species_params(params)$erepro)
+    # ... so a later recalculation does not undo the retuning.
+    recalculated <- params
+    species_params(recalculated) <- species_params(params)
+    expect_equal(species_params(recalculated)$erepro,
+                 species_params(params)$erepro)
+})

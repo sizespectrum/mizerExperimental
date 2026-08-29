@@ -1,7 +1,7 @@
 # Distance function based on yield
 #
 # `distanceSSLogYield()` measures the distance between two states by how much
-# the yields differ, for use as the `distance_func` of `projectToSteady()`.
+# the yields differ, for use as the `distance_func` of `findSteadyState()`.
 #
 # The yield-versus-fishing-mortality curve that used to live in this file has
 # moved to mizer, where `plotYieldVsF()` is built on `scanModel()`.
@@ -10,8 +10,9 @@
 #'
 #' @description
 #' Calculates the proportional difference between getYield() outputs of current
-#' and previous state. This function can be used in projectToSteady() to decide
-#' when sufficient convergence to steady state has been achieved.
+#' and previous state. This function can be used in findSteadyState() or
+#' tuneSteadyState() to decide when sufficient convergence to steady state has
+#' been achieved.
 #'
 #' This is a generic function with a method for objects of class
 #' [MizerParams][mizer::MizerParams].
@@ -43,12 +44,10 @@ distanceSSLogYield.MizerParams <- function(params, current, previous,
     for (sim_version in c("current","previous")) {
         switch(sim_version,
                "current" = {
-                   biomass <- sweep(current$n, 2, params@w * params@dw, "*")
                    n <- current$n
                    n_pp <- current$n_pp
                    n_other <- current$n_other},
                "previous" = {
-                   biomass <- sweep(previous$n, 2, params@w * params@dw, "*")
                    n <- previous$n
                    n_pp <- previous$n_pp
                    n_other <- previous$n_other},
@@ -94,10 +93,13 @@ distanceSSLogYield.MizerParams <- function(params, current, previous,
 
         }
 
-        yield[[sim_version]] <- apply(f_mort * biomass,
-                                      c(1), sum)
-
-
+        # The weighting is the product F * w, which `sizeIntegral()` integrates
+        # over the size grid with the model's own quadrature scheme, the same
+        # way `getYield()` does.
+        yield[[sim_version]] <-
+            sizeIntegral(params, n = n,
+                         weighting = sweep(f_mort, length(dim(f_mort)),
+                                           params@w, "*"))
     }
 
     sel <- yield$current > 0 & yield$previous > 0

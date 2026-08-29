@@ -29,7 +29,7 @@ then retunes the reproductive efficiencies accordingly.
 }
 \details{
 Does not run the system to steady state. For that you should call
-\code{\link[mizer:steady]{steady()}} explicitly afterwards.
+\code{\link[mizer:tuneSteadyState]{mizer::tuneSteadyState()}} explicitly afterwards.
 
 This is a generic function with a method for objects of class
 \linkS4class{MizerParams}.

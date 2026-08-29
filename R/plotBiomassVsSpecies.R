@@ -15,22 +15,15 @@ plotBiomassVsSpecies <- function(params, ...) UseMethod("plotBiomassVsSpecies")
 #' @export
 plotBiomassVsSpecies.MizerParams <- function(params, ...) {
     no_sp <- length(params@species_params$species)
-    cutoff <- params@species_params$biomass_cutoff
-    # When no cutoff known, set it to 0
-    if (is.null(cutoff)) cutoff <- rep(0, no_sp)
-    cutoff[is.na(cutoff)] <- 0
     observed <- params@species_params$biomass_observed
     if (is.null(observed)) observed <- rep(NA, no_sp)
-    
+
     # selector for foreground species
     foreground <- !params@species_params$is_background
-    foreground_indices <- (1:no_sp)[foreground]
-    biomass_model <- foreground_indices  # create vector of right length
-    for (i in seq_along(foreground_indices)) {
-        sp <- foreground_indices[i]
-        biomass_model[i] <- sum((params@initial_n[sp, ] * params@w * params@dw)
-                                [params@w >= cutoff[[sp]]])
-    }
+    # `getBiomass()` observes the `biomass_cutoff` column and integrates over
+    # the size grid with the model's own quadrature scheme, so the model
+    # biomass agrees with the one the calibration functions match.
+    biomass_model <- unname(getBiomass(params, use_cutoff = TRUE)[foreground])
     species <- factor(params@species_params$species[foreground],
                       levels = params@species_params$species[foreground])
     df <- rbind(

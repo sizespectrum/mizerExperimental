@@ -467,8 +467,9 @@ plotYieldVsSize.MizerParams <- function(object, species = NULL, gear = NULL,
     species <- valid_species_arg(params,species)
     species <- which(params@species_params$species %in% species)
 
-    params <- set_species_param_default(params, "a", 0.006)
-    params <- set_species_param_default(params, "b", 3)
+    # Since mizer 3.3.1 the weight-length parameters `a` and `b` are always
+    # present after validation, filled with the reported defaults a = 0.01 and
+    # b = 3 where the user gave none, so there is nothing to default here.
 
     plot_dat <- NULL
     for (iSpecies in species) {

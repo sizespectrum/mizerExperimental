@@ -117,7 +117,7 @@ pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
 #'
 #' @details
 #' Does not run the system to steady state. For that you should call
-#' [steady()] explicitly afterwards.
+#' [mizer::tuneSteadyState()] explicitly afterwards.
 #'
 #' This is a generic function with a method for objects of class
 #' \linkS4class{MizerParams}.
@@ -212,15 +212,23 @@ updateInitialValues.MizerParams <- function(params, ...) {
     mumu <- getMort(params)
     gg <- getEGrowth(params)
     rdd <- getRDD(params)
+    sp <- params@species_params
     # TODO: vectorise this
-    for (i in (1:length(params@species_params$species))) {
+    for (i in (1:length(sp$species))) {
         gg0 <- gg[i, params@w_min_idx[i]]
         mumu0 <- mumu[i, params@w_min_idx[i]]
         DW <- params@dw[params@w_min_idx[i]]
-        params@species_params$erepro[i] <- params@species_params$erepro[i] *
+        sp$erepro[i] <- sp$erepro[i] *
             params@initial_n[i, params@w_min_idx[i]] *
             (gg0 + DW * mumu0) / rdd[i]
     }
+    # The retuned `erepro` has to be recorded as a given species parameter,
+    # otherwise the next recalculation of the species parameters would put the
+    # old value back and silently undo the retuning. `recalculate = FALSE`
+    # records it without rebuilding the rates, none of which depend on
+    # `erepro`. This is the treatment that `setBevertonHolt()` and, since mizer
+    # 3.4, `scaleModel()` give to the parameters they calculate.
+    species_params(params, recalculate = FALSE) <- sp
     return(params)
 }
 

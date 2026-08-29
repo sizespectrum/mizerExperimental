@@ -38,13 +38,14 @@ plotYieldVsSpecies.MizerParams <- function(params, gear = NULL, ...) {
     names(observed) <- params@species_params$species
     observed[gp$species] <- gp$yield_observed
     
-    biomass <- sweep(params@initial_n, 2, params@w * params@dw, "*")
+    # `getYield()` and `getYieldGear()` integrate over the size grid with the
+    # model's own quadrature scheme, so the model yield agrees with the yield
+    # that `matchYield()` matches.
     if (is.null(gear)) {
-        f_mort <- getFMort(params)
+        yield_model <- getYield(params)
     } else {
-        f_mort <- getFMortGear(params)[gear, , ]
+        yield_model <- getYieldGear(params)[gear, ]
     }
-    yield_model <- rowSums(biomass * f_mort)
     
     # selector for foreground species
     foreground <- !params@species_params$is_background

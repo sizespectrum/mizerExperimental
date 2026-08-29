@@ -1,3 +1,52 @@
+# mizerExperimental 3.3.1
+
+* Now works with and requires mizer 3.3.1.
+
+## Size-grid integrals follow the model's quadrature
+
+Mizer 3.3 fixed the summary and plotting functions that hand-rolled their own
+first-order sum over the size grid instead of using the model's quadrature, so
+that they stay correct when a model opts in to bin averaging with
+`second_order_w()`. The same functions in this package have now been given the
+same treatment:
+
+* `plotBiomassVsSpecies()` calls `mizer::getBiomass(use_cutoff = TRUE)` for the
+  model biomasses, so they agree with the biomasses that `calibrateBiomass()`
+  and `matchBiomasses()` match and that `plotBiomassObservedVsModel()` plots.
+* `plotNumberVsSpecies()` calls `mizer::sizeIntegral()`. As well as following
+  the quadrature scheme, this lets the bin straddling `number_cutoff`
+  contribute only the part of it that lies above the cutoff, where before the
+  whole bin was counted.
+* `plotYieldVsSpecies()` calls `mizer::getYield()` and `mizer::getYieldGear()`,
+  so the model yields agree with the yields that `matchYield()` matches. Under
+  bin averaging the yields it plotted were about 10--20% too low.
+* `distanceSSLogYield()` measures its yields with `mizer::sizeIntegral()`.
+
+Under the default first-order scheme none of these values change.
+
+## Rescaled species parameters are recorded as given
+
+Mizer 3.4 fixed `scaleModel()` so that the `R_max` and `gamma` it rescales are
+recorded in `given_species_params()` rather than written straight into the
+species parameter table, where the next recalculation of the species parameters
+would silently undo the rescaling. The two functions in this package that
+adjust species parameters by hand now do the same:
+
+* `alignResource()` records the rescaled `gamma`, so a later recalculation no
+  longer restores the unscaled `gamma` and with it an unscaled search volume.
+* `updateInitialValues()` records the retuned `erepro`, as
+  `mizer::setBevertonHolt()` already did.
+
+## Other changes
+
+* `plotYieldVsSize()` no longer supplies its own defaults for the weight-length
+  parameters `a` and `b`. Since mizer 3.3.1 these are always present after
+  validation, filled with mizer's reported defaults `a = 0.01` and `b = 3`, so
+  the local default of `a = 0.006` could never take effect.
+* Documentation now points at the renamed steady-state finders
+  `mizer::tuneSteadyState()` and `mizer::findSteadyState()` rather than the
+  superseded `steady()` and `projectToSteady()`.
+
 # mizerExperimental 3.3.0
 
 * Now works with and requires mizer 3.3.0. There is no 3.2.0 release; the
