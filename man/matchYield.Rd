@@ -36,7 +36,8 @@ A MizerParams object with updated catchabilities
 \description{
 This function matches the observed yields of all the gears for all the
 species by scaling the catchabilities by the ratio between current modelled
-yield and observed yield.
+yield and observed yield. Recruitment is then balanced for the selected
+species through the active reproduction law and its declared strategy.
 }
 \details{
 This is a generic function with a method for objects of class

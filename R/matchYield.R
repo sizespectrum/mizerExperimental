@@ -2,7 +2,8 @@
 #' 
 #' This function matches the observed yields of all the gears for all the
 #' species by scaling the catchabilities by the ratio between current modelled
-#' yield and observed yield.
+#' yield and observed yield. Recruitment is then balanced for the selected
+#' species through the active reproduction law and its declared strategy.
 #'
 #' This is a generic function with a method for objects of class
 #' [MizerParams][mizer::MizerParams].
@@ -57,7 +58,6 @@ matchYield.MizerParams <- function(params, species = NULL, gears = NULL,
     params <- steadySingleSpecies(params, species = species_selected,
                                   keep = keep)
     
-    erepro <- params@species_params[species_selected, "erepro"]
-    names(erepro) <- species_selected
-    setBevertonHolt(params, erepro = erepro)
+    target <- getRequiredRDD(params)[species_selected]
+    balanceRDD(params, rdd_target = target)
 }

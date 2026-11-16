@@ -1,4 +1,12 @@
-# mizerExperimental development version
+# mizerExperimental 3.3.1.9002
+
+* Calibration helpers (`scaleAbundance()`, `adjustBackgroundSpecies()`,
+  `updateInitialValues()` and `matchYield()`) balance required recruitment through
+  the active reproduction law and its declared strategy. They no longer switch
+  models to Beverton-Holt or impose a reproduction level of one quarter.
+  Undeclared custom reproduction providers now fail explicitly.
+* Fixes second-order size quadrature in the live biomass callback and updates
+  its tests for S3 simulation objects.
 
 * `plotDeath()` uses mizer's checked mortality decomposition, including declared
   extension contributions. Proportions use the effective total mortality;
@@ -6,7 +14,7 @@
   total. Predator-specific causes retain their established display when their
   sum agrees with effective predation mortality. Returned data retain the
   checked breakdown and plotting metadata as attributes.
-* This preview requires mizer 3.4.0.9011 or newer.
+* This preview requires mizer 3.4.0.9012 or newer.
 
 # mizerExperimental 3.3.1
 

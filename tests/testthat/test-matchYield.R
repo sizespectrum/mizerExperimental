@@ -23,9 +23,26 @@ test_that("matchYield works", {
     expect_equal(getBiomass(p), getBiomass(params))
     
     # Change all catchabilities
-    p <- matchYield(params,
-                    keep = "biomass")
+    p <- with_info_level(matchYield(params, keep = "biomass"), info_level = 0)
     expect_equal(p@gear_params$catchability,
                  params@gear_params$catchability / 2)
     expect_equal(getBiomass(p), getBiomass(params))
+})
+
+
+test_that("yield calibration retains the active Ricker law", {
+    p <- setReproduction(validParams(NS_params), RDD = "RickerRDD")
+    initial_effort(p) <- 1
+    yields <- getYieldGear(p)
+    gp <- p$gear_params
+    gp$yield_observed <- vapply(seq_len(nrow(gp)), function(i) {
+        yields[gp$gear[i], gp$species[i]] / 2
+    }, numeric(1))
+    gear_params(p) <- gp
+    q <- matchYield(p, species = c("Dab", "Sole"), gears = "Beam",
+                    keep = "biomass")
+    expect_identical(q$rates_funcs$RDD, "RickerRDD")
+    expect_equal(getRates(q)$rdd[c("Dab", "Sole")],
+                 getRequiredRDD(q)[c("Dab", "Sole")])
+    expect_equal(getBiomass(q), getBiomass(p))
 })

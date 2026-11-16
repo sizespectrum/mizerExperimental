@@ -2,8 +2,8 @@
 #'
 #' Rescales all background species in such a way that the total community
 #' spectrum is as close to the Sheldon power law as possible. Background
-#' species that are no longer needed are removed. The reproductive efficiencies
-#' of all species are retuned.
+#' species that are no longer needed are removed. Recruitment is balanced
+#' through the active reproduction law and its declared strategy.
 #'
 #' This is a generic function with a method for objects of class
 #' \linkS4class{MizerParams}.
@@ -68,7 +68,7 @@ adjustBackgroundSpecies.MizerParams <- function(params, ...) {
         params@initial_n <- params@initial_n * A2
     }
 
-    return(setBevertonHolt(params, reproduction_level = 1/4))
+    balanceRDD(params, rdd_target = getRequiredRDD(params))
 }
 
 #' Removes species with abundance below a threshold
@@ -113,7 +113,8 @@ pruneSpecies.MizerParams <- function(params, cutoff = 1e-3, ...) {
 #' Rescale Abundance
 #'
 #' Multiplies the abundances of all or of selected species by given factors and
-#' then retunes the reproductive efficiencies accordingly.
+#' then balances recruitment through the active reproduction law. The law's
+#' declared default strategy chooses which parameters may change.
 #'
 #' @details
 #' Does not run the system to steady state. For that you should call
@@ -160,7 +161,7 @@ scaleAbundance.MizerParams <- function(params, factor, ...) {
     params@initial_n[to_rescale, ] <-
         params@initial_n[to_rescale, ] * factor
 
-    return(setBevertonHolt(params, reproduction_level = 1/4))
+    balanceRDD(params, rdd_target = getRequiredRDD(params))
 }
 
 #' Update the initial values
@@ -207,29 +208,10 @@ updateInitialValues.MizerParams <- function(params, ...) {
             n0
     }
 
-    # Retune the values of erepro so that we get the correct level of
-    # recruitment
-    mumu <- getMort(params)
-    gg <- getEGrowth(params)
-    rdd <- getRDD(params)
-    sp <- params@species_params
-    # TODO: vectorise this
-    for (i in (1:length(sp$species))) {
-        gg0 <- gg[i, params@w_min_idx[i]]
-        mumu0 <- mumu[i, params@w_min_idx[i]]
-        DW <- params@dw[params@w_min_idx[i]]
-        sp$erepro[i] <- sp$erepro[i] *
-            params@initial_n[i, params@w_min_idx[i]] *
-            (gg0 + DW * mumu0) / rdd[i]
-    }
-    # The retuned `erepro` has to be recorded as a given species parameter,
-    # otherwise the next recalculation of the species parameters would put the
-    # old value back and silently undo the retuning. `recalculate = FALSE`
-    # records it without rebuilding the rates, none of which depend on
-    # `erepro`. This is the treatment that `setBevertonHolt()` and, since mizer
-    # 3.4, `scaleModel()` give to the parameters they calculate.
-    species_params(params, recalculate = FALSE) <- sp
-    return(params)
+    # Match the recruitment needed by the new state through the active law.
+    # The provider's declared default chooses which reproductive parameters
+    # may change, and mizer independently verifies the effective rates.
+    balanceRDD(params, rdd_target = getRequiredRDD(params))
 }
 
 #' Scale background down by a factor
