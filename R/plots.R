@@ -12,7 +12,18 @@ utils::globalVariables(c("y_coord"))
 #' This is a generic function with methods for objects of class
 #' \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
 #' `MizerSim` object plots the mortality in the initial state of the
-#' simulation. An interactive version is available as `plotlyDeath()`.
+#' simulation, with effort from its final saved time. An interactive version
+#' is available as `plotlyDeath()`.
+#'
+#' Causes come from [mizer::getMortByCause()] and are checked against the
+#' effective total mortality. Predator species are shown separately when that
+#' refinement agrees with effective predation mortality; otherwise predation
+#' remains a single cause. Extension contributions are included using their
+#' registered labels and colours.
+#'
+#' An incomplete decomposition is labelled in the plot caption. Proportions
+#' always use the effective total, so shown causes need not sum to one when
+#' coverage is incomplete. No unexplained residual is assigned to a cause.
 #'
 #' @param object An object of class \linkS4class{MizerSim} or
 #'   \linkS4class{MizerParams}.
@@ -26,9 +37,12 @@ utils::globalVariables(c("y_coord"))
 #'   FALSE
 #' @param xtrans The transformation to apply to the x-axis. Either "log10"
 #'   (default) or "identity".
-#' @param ... Other arguments (currently unused)
+#' @param ... Arguments passed to [mizer::getMortByCause()], including
+#'   `predation_by_species = FALSE` to retain aggregate predation.
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
-#'   frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
+#'   frame with the four variables `w`, `value`, `Cause`, `Prey` is returned.
+#'   Its `mortality_breakdown` attribute retains the checked total, causes,
+#'   completeness and reasons; `series` carries the plotting metadata.
 
 #' @export
 #' @family plotting functions
@@ -43,8 +57,9 @@ utils::globalVariables(c("y_coord"))
 #' }
 plotDeath <- function(object, species = NULL, proportion = TRUE,
                       return_data = FALSE,
-                      xtrans = c("log10", "identity"), ...)
+                      xtrans = c("log10", "identity"), ...) {
     UseMethod("plotDeath")
+}
 
 #' @export
 plotDeath.MizerSim <- function(object, ...) {
@@ -57,8 +72,8 @@ plotDeath.MizerSim <- function(object, ...) {
 
 #' @export
 plotDeath.MizerParams <- function(object, species = NULL, proportion = TRUE,
-                      return_data = FALSE,
-                      xtrans = c("log10", "identity"), ...) {
+                                  return_data = FALSE,
+                                  xtrans = c("log10", "identity"), ...) {
     params <- validParams(object)
     if (!"External" %in% names(getColours(params))) {
         params <- setColours(params, c("External" = "grey"))
@@ -67,51 +82,69 @@ plotDeath.MizerParams <- function(object, species = NULL, proportion = TRUE,
 
     species <- valid_species_arg(params, species)
 
-    pred_rate <- getPredRate(params)
-    f_mort <- getFMort(params)
-    mort <- getMort(params)
-    plot_dat <- NULL
-    for (iSpecies in species) {
-        fish_idx_full <- (params@w_full >= params@species_params[iSpecies, "w_min"]) &
-            (params@w_full <= params@species_params[iSpecies, "w_max"])
-        fish_idx <- (params@w >= params@species_params[iSpecies, "w_min"]) &
-            (params@w <= params@species_params[iSpecies, "w_max"])
-        predation <- params@interaction[, iSpecies] *
-            pred_rate[, fish_idx_full]
-        fishing <- f_mort[iSpecies, fish_idx]
-        external <- ext_mort(params)[iSpecies, fish_idx]
-        total <- mort[iSpecies, fish_idx]
-        ylab <- "Death rate [1/year]"
-        if (proportion) {
-            predation <- predation / rep(total, each = dim(predation)[[1]])
-            external <- external / total
-            fishing <- fishing / total
-            ylab <- "Proportion of all death"
-        }
-        # Make data.frame for plot
-        plot_dat <-
-            rbind(plot_dat,
-                  data.frame(w = params@w[fish_idx],
-                             value = external,
-                             Cause = "External",
-                             Prey = iSpecies),
-                  data.frame(w = params@w[fish_idx],
-                             value = fishing,
-                             Cause = "Fishing",
-                             Prey = iSpecies),
-                  data.frame(w = rep(params@w[fish_idx],
-                                     each = dim(predation)[[1]]),
-                             value = c(predation),
-                             Cause = params@species_params$species,
-                             Prey = iSpecies)
-            )
+    arguments <- list(...)
+    if (is.null(arguments$predation_by_species)) {
+        arguments$predation_by_species <- TRUE
     }
-
+    mortality <- do.call(getMortByCause, c(list(object = params), arguments))
+    if (!length(mortality$causes)) {
+        stop("Mortality breakdown is unavailable: ",
+             paste(unique(mortality$unavailable$reason), collapse = "; "),
+             ". Use `plot(getMortByCause(object)$total)` for total mortality.",
+             call. = FALSE)
+    }
+    metadata <- mortality$metadata
+    # Preserve established labels in returned data, but never merge distinct
+    # causes just because their authors chose the same display label.
+    plot_ids <- metadata$label
+    duplicated_labels <- duplicated(plot_ids) | duplicated(plot_ids, fromLast = TRUE)
+    plot_ids[duplicated_labels] <- metadata$id[duplicated_labels]
+    if (anyDuplicated(plot_ids)) plot_ids <- metadata$id
+    names(plot_ids) <- metadata$id
+    order <- c(intersect(c("external", "fishing"), metadata$id),
+               setdiff(metadata$id, c("external", "fishing")))
+    rows <- list()
+    for (iSpecies in species) {
+        fish_idx <- params@w >= params@species_params[iSpecies, "w_min"] &
+            params@w <= params@species_params[iSpecies, "w_max"]
+        total <- mortality$total[iSpecies, fish_idx]
+        for (id in order) {
+            value <- mortality$causes[[id]][iSpecies, fish_idx]
+            if (proportion) {
+                zero <- value == 0 & total == 0
+                value <- value / total
+                value[zero] <- 0
+            }
+            rows[[length(rows) + 1L]] <- data.frame(
+                w = params@w[fish_idx], value = value,
+                Cause = unname(plot_ids[[id]]), Prey = iSpecies
+            )
+        }
+    }
+    plot_dat <- do.call(rbind, rows)
+    series <- metadata
+    series$id <- unname(plot_ids[metadata$id])
+    attr(plot_dat, "series") <- series
+    attr(plot_dat, "mortality_breakdown") <- mortality
     if (return_data) return(plot_dat)
 
-    plotDataFrame(plot_dat, params, style = "area", xtrans = xtrans,
-                  wrap_var = "Prey", wrap_scale = "free_x",
-                  xlab = "Size [g]", ylab = ylab)
+    ylab <- if (proportion) "Proportion of all death" else "Death rate [1/year]"
+    plot <- plotDataFrame(plot_dat, params, style = "area", xtrans = xtrans,
+                          wrap_var = "Prey", wrap_scale = "free_x",
+                          xlab = "Size [g]", ylab = ylab)
+    if (!isTRUE(mortality$complete)) {
+        plot <- plot + labs(caption = paste0(
+            "Incomplete mortality breakdown: ",
+            paste(unique(mortality$unavailable$reason), collapse = "; "),
+            if (proportion) {
+                ". Shown causes are fractions of the authoritative total."
+            } else {
+                ". Only the declared causes are shown."
+            }
+        ))
+    }
+    plot
+
 }
 
 
@@ -134,6 +167,7 @@ plotlyDeath <- function(object,
 #' simulation. An interactive version is available as `plotlyResourcePred()`.
 #'
 #' @inheritParams plotDeath
+#' @param ... Other arguments (currently unused)
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the four variables 'w', 'value', 'Predator', 'Resource' is
 #'   returned.
@@ -206,6 +240,7 @@ plotlyResourcePred <- function(object,
 #' simulation.
 #'
 #' @inheritParams plotDeath
+#' @param ... Other arguments (currently unused)
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a data
 #'   frame with the three variables 'w', 'value', 'Resource' is returned.
 
@@ -257,6 +292,7 @@ plotResourceLevel.MizerParams <- function(object, return_data = FALSE, ...) {
 #' simulation. An interactive version is available as `plotlyEnergyBudget()`.
 #'
 #' @inheritParams plotDeath
+#' @param ... Other arguments (currently unused)
 #' @param logarithmic A boolean value that determines whether values should be
 #' displayed logarithmicly or linearly. Default is TRUE.
 #' @return A ggplot2 object, unless `return_data = TRUE`, in which case a list composed of
@@ -385,6 +421,7 @@ plotlyEnergyBudget <- function(object,
 #' An interactive version is available as `plotlyYieldVsSize()`.
 #'
 #' @inheritParams plotDeath
+#' @param ... Other arguments (currently unused)
 #' @param gear Optional. The name of a gear. If supplied, only the yield from
 #'   this gear will be displayed.
 #' @param catch Data frame holding binned observed catch data. The data can be

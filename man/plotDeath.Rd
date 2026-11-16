@@ -35,17 +35,32 @@ FALSE}
 \item{xtrans}{The transformation to apply to the x-axis. Either "log10"
 (default) or "identity".}
 
-\item{...}{Other arguments (currently unused)}
+\item{...}{Arguments passed to \code{\link[mizer:getMortByCause]{mizer::getMortByCause()}}, including
+\code{predation_by_species = FALSE} to retain aggregate predation.}
 }
 \value{
 A ggplot2 object, unless \code{return_data = TRUE}, in which case a data
-frame with the four variables 'w', 'value', 'Cause', 'Species' is returned.
+frame with the four variables \code{w}, \code{value}, \code{Cause}, \code{Prey} is returned.
+Its \code{mortality_breakdown} attribute retains the checked total, causes,
+completeness and reasons; \code{series} carries the plotting metadata.
 }
 \description{
 This is a generic function with methods for objects of class
 \linkS4class{MizerSim} and \linkS4class{MizerParams}. The method for a
 \code{MizerSim} object plots the mortality in the initial state of the
-simulation. An interactive version is available as \code{plotlyDeath()}.
+simulation, with effort from its final saved time. An interactive version
+is available as \code{plotlyDeath()}.
+}
+\details{
+Causes come from \code{\link[mizer:getMortByCause]{mizer::getMortByCause()}} and are checked against the
+effective total mortality. Predator species are shown separately when that
+refinement agrees with effective predation mortality; otherwise predation
+remains a single cause. Extension contributions are included using their
+registered labels and colours.
+
+An incomplete decomposition is labelled in the plot caption. Proportions
+always use the effective total, so shown causes need not sum to one when
+coverage is incomplete. No unexplained residual is assigned to a cause.
 }
 \examples{
 \donttest{

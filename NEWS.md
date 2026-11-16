@@ -1,3 +1,13 @@
+# mizerExperimental development version
+
+* `plotDeath()` uses mizer's checked mortality decomposition, including declared
+  extension contributions. Proportions use the effective total mortality;
+  incomplete attribution is labelled and is never rescaled into a complete
+  total. Predator-specific causes retain their established display when their
+  sum agrees with effective predation mortality. Returned data retain the
+  checked breakdown and plotting metadata as attributes.
+* This preview requires mizer 3.4.0.9011 or newer.
+
 # mizerExperimental 3.3.1
 
 * Now works with and requires mizer 3.3.1.
