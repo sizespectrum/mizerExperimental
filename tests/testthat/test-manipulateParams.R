@@ -61,15 +61,14 @@ test_that("adjustBackgroundSpecies() reproduces scaling model", {
 
 # scaleAbundance ----
 test_that("scaleAbundance works", {
-    # scaleAbundance() runs its argument through validParams(), which fills in
-    # defaults for any missing species parameters, so the object we compare
-    # against has to be normalised in the same way.
-    expect_warning(p <- setBevertonHolt(validParams(NS_params),
-                                        reproduction_level = 1/4))
+    p <- validParams(NS_params)
+    p <- balanceRDD(p, rdd_target = getRequiredRDD(p), info_level = 0)
     factor <- c(Cod = 2, Haddock = 3)
-    expect_warning(p2 <- scaleAbundance(NS_params, factor))
-    expect_identical(p@initial_n["Cod"] * 2, p2@initial_n["Cod"])
-    expect_unchanged(p, expect_warning(scaleAbundance(p2, 1/factor)))
+    p2 <- with_info_level(scaleAbundance(p, factor), info_level = 0)
+    expect_equal(p$initial_n["Cod", ] * 2, p2$initial_n["Cod", ])
+    expect_equal(getRates(p2)$rdd, getRequiredRDD(p2))
+    expect_unchanged(p, with_info_level(scaleAbundance(p2, 1 / factor),
+                                        info_level = 0))
 })
 test_that("scaleAbundance throws correct error",{
     expect_error(scaleAbundance(NS_params, c(2, 3)))
@@ -92,4 +91,27 @@ test_that("updateInitialValues records the retuned erepro as given", {
     species_params(recalculated) <- species_params(params)
     expect_equal(species_params(recalculated)$erepro,
                  species_params(params)$erepro)
+})
+
+
+test_that("abundance calibration retains Ricker and its required recruitment", {
+    p <- setReproduction(validParams(NS_params), RDD = "RickerRDD")
+    q <- scaleAbundance(p, c(Cod = 1.2))
+    expect_identical(q$rates_funcs$RDD, "RickerRDD")
+    expect_equal(q$initial_n["Cod", ], 1.2 * p$initial_n["Cod", ])
+    expect_equal(getRates(q)$rdd, getRequiredRDD(q))
+    updated <- updateInitialValues(p)
+    expect_identical(updated$rates_funcs$RDD, "RickerRDD")
+    expect_equal(getRates(updated)$rdd, getRequiredRDD(updated))
+})
+
+test_that("abundance calibration rejects an undeclared reproduction law", {
+    custom <- function(params, rdi, ...) rdi
+    assign("review_custom_rdd", custom, envir = globalenv())
+    on.exit(rm("review_custom_rdd", envir = globalenv()))
+    p <- setRateFunction(validParams(NS_params), "RDD", "review_custom_rdd")
+    original <- p
+    expect_error(scaleAbundance(p, 1.2), "support|stationary|strategy")
+    expect_equal(p, original)
+    expect_identical(p$rates_funcs$RDD, "review_custom_rdd")
 })

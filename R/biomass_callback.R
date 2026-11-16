@@ -64,14 +64,10 @@ biomass_callback <- local({
                                                    min_l = min_l, max_l = max_l)
             }
             
-            if (isTRUE(params@second_order_w[["bin_average"]])) {
-                weight <<- sweep(
-                    mizer:::bin_average_weight(sweep(size_range, 2, params@w, "*")),
-                    2, params@dw, "*")
-            } else {
-                weight <<- sweep(size_range, 2, params@w * params@dw, "*")
-            }
-            
+            weighting <- sweep(size_range, 2, params@w, "*")
+            weighting <- mizer::bin_average_weight(weighting, params)
+            weight <<- sweep(weighting, 2, params@dw, "*")
+
             # Calculate initial biomass
             bm_init <- rowSums(sim@n[1, , ] * weight)
             

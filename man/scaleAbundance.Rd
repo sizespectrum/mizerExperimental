@@ -25,7 +25,8 @@ An object of type \linkS4class{MizerParams}
 }
 \description{
 Multiplies the abundances of all or of selected species by given factors and
-then retunes the reproductive efficiencies accordingly.
+then balances recruitment through the active reproduction law. The law's
+declared default strategy chooses which parameters may change.
 }
 \details{
 Does not run the system to steady state. For that you should call

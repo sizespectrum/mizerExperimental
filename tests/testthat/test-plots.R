@@ -76,3 +76,140 @@ test_that("plotYieldVsSize works with single species and single gear", {
                                  gear = "knife_edge_gear"),
                  NA)
 })
+
+death_test_params <- function() {
+    newMultispeciesParams(NS_species_params[1:2, ], no_w = 20)
+}
+
+test_that("plotDeath uses checked causes and authoritative proportions", {
+    p <- death_test_params()
+    initial_effort(p) <- 1
+    data <- plotDeath(p, proportion = FALSE, return_data = TRUE)
+    report <- attr(data, "mortality_breakdown")
+    expect_true(report$complete)
+    expect_named(data, c("w", "value", "Cause", "Prey"))
+    expect_true(all(p$species_params$species %in% data$Cause))
+    summed <- aggregate(value ~ w + Prey, data, sum)
+    for (i in seq_len(nrow(summed))) {
+        size <- match(summed$w[i], p$w)
+        expect_equal(summed$value[i],
+                     as.numeric(report$total[summed$Prey[i], size]))
+    }
+    fractions <- plotDeath(p, return_data = TRUE)
+    summed <- aggregate(value ~ w + Prey, fractions, sum)
+    expect_equal(summed$value, rep(1, nrow(summed)))
+    expect_true(all(c("id", "label", "colour") %in%
+                        names(attr(data, "series"))))
+})
+
+test_that("plotDeath includes extension causes without a second rate pipeline", {
+    count <- 0L
+    rlang::local_bindings(
+        death_counted_rates = function(params, ...) {
+            count <<- count + 1L
+            mizerRates(params, ...)
+        },
+        death_declared_total = function(params, total, ...) {
+            list(causes = list(author = total), complete = TRUE,
+                 metadata = data.frame(id = "author", label = "Authored",
+                                       colour = "red"))
+        },
+        death_additive_mort = function(params, n, ...) n * 0 + 0.2,
+        .env = .GlobalEnv
+    )
+    p <- death_test_params()
+    other_mort(p)$extra <- "death_additive_mort"
+    data <- plotDeath(p, proportion = FALSE, return_data = TRUE)
+    report <- attr(data, "mortality_breakdown")
+    expect_true(report$complete)
+    expect_true("contribution:extra" %in% names(report$causes))
+    expect_equal(as.numeric(report$causes[["contribution:extra"]]),
+                 rep(0.2, length(p$initial_n)))
+    p <- setRateFunction(p, "Rates", "death_counted_rates")
+    p <- setProcess(p, "consumers", mortality_fun = "death_declared_total")
+    count <- 0L
+    data <- plotDeath(p, return_data = TRUE)
+    expect_identical(count, 1L)
+    expect_identical(unique(data$Cause), "Authored")
+    expect_equal(data$value, rep(1, nrow(data)))
+})
+
+test_that("plotDeath labels partial coverage and does not invent attribution", {
+    rlang::local_bindings(
+        death_partial = function(params, total, ...) {
+            list(causes = list(known = total / 2), complete = FALSE)
+        },
+        death_wrong_complete = function(params, total, ...) {
+            list(causes = list(known = total / 2), complete = TRUE)
+        },
+        death_unregistered_rates = function(params, ...) mizerRates(params, ...),
+        .env = .GlobalEnv
+    )
+    p <- death_test_params()
+    p <- setProcess(p, "consumers", mortality_fun = "death_partial")
+    data <- plotDeath(p, return_data = TRUE)
+    expect_equal(data$value, rep(0.5, nrow(data)))
+    expect_false(attr(data, "mortality_breakdown")$complete)
+    expect_identical(unique(data$Cause), "known")
+    expect_match(plotDeath(p)$labels$caption, "Incomplete mortality breakdown")
+    p <- setProcess(p, "consumers", mortality_fun = "death_wrong_complete")
+    expect_error(plotDeath(p), "Complete mortality decomposition disagrees")
+    p <- setRateFunction(p, "Rates", "death_unregistered_rates")
+    expect_error(plotDeath(p), "Mortality breakdown is unavailable")
+})
+
+test_that("plotDeath preserves distinct IDs when labels coincide", {
+    rlang::local_bindings(
+        death_duplicate_labels = function(params, total, ...) {
+            list(causes = list(first = total / 2, second = total / 2),
+                 complete = TRUE,
+                 metadata = data.frame(id = c("first", "second"),
+                                       label = c("Same", "Same")))
+        }, .env = .GlobalEnv
+    )
+    p <- setProcess(death_test_params(), "consumers",
+                    mortality_fun = "death_duplicate_labels")
+    data <- plotDeath(p, return_data = TRUE)
+    expect_setequal(data$Cause, c("first", "second"))
+    expect_identical(attr(data, "series")$label, c("Same", "Same"))
+    expect_error(ggplot2::ggplot_build(plotDeath(p)), NA)
+})
+
+test_that("plotDeath retains aggregate modified predation when needed", {
+    rlang::local_bindings(
+        death_modified_predation = function(params, ...) {
+            2 * mizerPredMort(params, ...)
+        }, .env = .GlobalEnv
+    )
+    p <- setRateFunction(death_test_params(), "PredMort",
+                         "death_modified_predation")
+    data <- plotDeath(p, return_data = TRUE)
+    expect_true("Predation" %in% data$Cause)
+    expect_false(any(p$species_params$species %in% data$Cause))
+    expect_true(attr(data, "mortality_breakdown")$complete)
+})
+
+test_that("plotDeath retains legacy controls and simulation state selection", {
+    p <- death_test_params()
+    simulation <- project(p, effort = 1, t_max = 0.2, dt = 0.1, t_save = 0.1)
+    species <- as.character(p$species_params$species[1])
+    data <- plotDeath(simulation, species, FALSE, TRUE, "identity")
+    expected <- initialParams(simulation)
+    initial_effort(expected) <- simulation$effort[nrow(simulation$effort), ]
+    reference <- plotDeath(expected, species, FALSE, TRUE, "identity")
+    expect_equal(lapply(data, identity), lapply(reference, identity))
+    expect_identical(unique(data$Prey), species)
+    plot <- plotDeath(expected, species, FALSE, FALSE, "identity")
+    expect_identical(plot$scales$get_scales("x")$trans$name, "identity")
+    expect_identical(plot$scales$get_scales("y")$name, "Death rate [1/year]")
+})
+
+test_that("Zero mortality is drawn without undefined proportions", {
+    p <- death_test_params()
+    p$initial_n[] <- 0
+    initial_effort(p) <- 0
+    ext_mort(p) <- p$mu_b * 0
+    data <- plotDeath(p, return_data = TRUE)
+    expect_true(all(is.finite(data$value)))
+    expect_true(all(data$value == 0))
+})
